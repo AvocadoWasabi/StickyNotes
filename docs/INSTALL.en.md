@@ -29,6 +29,8 @@ If today's file is missing, existing daily sticky notes explain automatic displa
 
 Click the body or `編集` (Ctrl+E) to edit, and `保存` (Ctrl+S) to save. Changed text prompts to save, discard, or continue when focus leaves. Enable `編集欄からフォーカスが外れたら、確認せず自動保存する` in Settings to save without confirmation; it defaults to off. Failed saves retain input. Checkboxes, links, and scrollbars work directly in reading mode.
 
+Adjust rendered content to 50–200% with `… → 表示スケール` (Display scale). In reading mode, use Ctrl+wheel over the body, Ctrl++ / Ctrl+-, or Ctrl+0 to reset. Each note saves its own scale without changing the source. See the [README](../README.md) for details.
+
 ## Updates
 
 Exit through `終了` in the notification-area menu, extract the new ZIP to a separate directory, and run `Install.cmd` to replace the app files. Notes, settings, and backups are stored separately from the installation.

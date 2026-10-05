@@ -107,6 +107,8 @@ Edit, Save, Reload, More, New, Pin, and Close share one row below the title. Edi
 | `×` | Close this note without deleting its Markdown file |
 | `… → アプリを終了`, or notification-area `終了` | Exit the app |
 
+Use `… → 表示スケール` (Display scale) to resize a note's rendered content from **50–200%** (default 100%). Select a percentage or adjust by ten percentage points. In reading mode, use `Ctrl+mouse wheel` over the body, or `Ctrl++` / `Ctrl+-`; `Ctrl+0` resets to 100%. Headings, body text, tables, code, and checkboxes keep their proportions; Calendar results and daily-note guidance use the same scale. Buttons, title, tags, status, and the Markdown editor keep their normal sizes. Each note saves its own scale across reloads and restarts. Scaling does not modify the source Markdown or unsaved input.
+
 The app saves note positions, sizes, and always-on-top settings as notes move and when you exit, then restores them on the next launch. It supports multiple monitors, negative screen coordinates, and PerMonitorV2 DPI. Notes on a disconnected display are moved back onto an available screen. Unsaved changes trigger a confirmation before exit.
 
 Click body text or blank space in the body area to enter the Markdown editor. `編集` (Edit) and `Ctrl+E` also work. Checkboxes, links, and scrollbars keep their own actions without entering editing. Select `保存` (Save) or press `Ctrl+S` to save and return to reading. Selecting Edit again preserves your draft.

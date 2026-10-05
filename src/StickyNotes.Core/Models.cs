@@ -18,6 +18,10 @@ public sealed class Settings : IJsonOnDeserialized
 
 public sealed class NotePlacement
 {
+    public const int MinContentScale = 50;
+    public const int MaxContentScale = 200;
+    private int contentScale = 100;
+    public int ContentScale { get => contentScale; set => contentScale = Math.Clamp(value, MinContentScale, MaxContentScale); }
     public string Path { get; set; } = "";
     public string Heading { get; set; } = "";
     public bool Daily { get; set; }

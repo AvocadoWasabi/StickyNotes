@@ -78,6 +78,7 @@ internal static class Program
             MarkdownEditingTests(root);
             FocusEditingTests(root);
             LinkPreviewTests(root);
+            ContentScaleTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -98,6 +99,84 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void ContentScaleTests(string root)
+    {
+        Check(JsonSerializer.Deserialize<NotePlacement>("{}")!.ContentScale == 100, "existing note settings default to 100% scale");
+        Check(JsonSerializer.Deserialize<NotePlacement>("{\"ContentScale\":-100}")!.ContentScale == 50 &&
+            JsonSerializer.Deserialize<NotePlacement>("{\"ContentScale\":1000000}")!.ContentScale == 200, "loaded content scale is bounded to 50–200%");
+        var path = Path.Combine(root, "content-scale.md");
+        const string markdown = "# Heading\n\nBody **bold** [link](https://example.com)\n\n- [ ] task\n\n```text\ncode\n```\n\n| A | B |\n|---|---|\n| one | two |\n";
+        File.WriteAllText(path, markdown);
+        var app = App.Current;
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        T Field<T>(NoteWindow note, string name) => (T)typeof(NoteWindow).GetField(name, flags)!.GetValue(note)!;
+        void Call(NoteWindow note, string method) => typeof(NoteWindow).GetMethod(method, flags)!.Invoke(note, null);
+        var note = new NoteWindow(new NotePlacement { Path = path }, () => MessageBoxResult.Cancel, _ => { });
+        var other = new NoteWindow(new NotePlacement { Path = path });
+        app.Notes.Add(note); app.Notes.Add(other);
+        try
+        {
+            Call(note, "Reload"); Call(other, "Reload");
+            var preview = Field<FlowDocumentScrollViewer>(note, "preview");
+            var document = preview.Document;
+            var toolbarSize = note.NoteControls.Children.OfType<Button>().First().FontSize;
+            var menu = note.ContentScaleMenu();
+            menu.Items.OfType<MenuItem>().Single(x => (string)x.Header == "150%").RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Check(note.Placement.ContentScale == 150 && preview.Zoom == 150 && ReferenceEquals(document, preview.Document), "scale menu zooms the complete document without replacing content or task callbacks");
+            Check(document.Blocks.OfType<Paragraph>().Any(p => p.FontSize == 25) && document.Blocks.OfType<Table>().Single().FontSize == 12, "zoom preserves relative heading and table font sizes");
+            Check(((System.Windows.Media.ScaleTransform)Field<StackPanel>(note, "eventsPanel").LayoutTransform).ScaleX == 1.5 &&
+                ((System.Windows.Media.ScaleTransform)Field<TextBlock>(note, "dailyNotice").LayoutTransform).ScaleY == 1.5, "calendar results and daily guidance share the content scale");
+            Check(note.NoteControls.Children.OfType<Button>().First().FontSize == toolbarSize && Field<TextBox>(note, "editor").FontSize == 14 &&
+                other.Placement.ContentScale == 100 && Field<FlowDocumentScrollViewer>(other, "preview").Zoom == 100, "content scaling leaves toolbar, source editor, and other notes unchanged");
+            var saved = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!;
+            var savedNotes = saved.Windows.Where(x => x.Path == path).ToArray();
+            Check(savedNotes.Select(x => x.ContentScale).SequenceEqual(new[] { 150, 100 }), "each note's scale is saved separately to settings");
+            var restored = new NoteWindow(savedNotes[0]);
+            Check(Field<FlowDocumentScrollViewer>(restored, "preview").Zoom == 150, "reopened note restores saved scale");
+            restored.Close();
+            Check(File.ReadAllText(path) == markdown, "display scaling never modifies source Markdown");
+            Call(note, "Reload");
+            Check(preview.Zoom == 150, "reloading the Markdown retains content scale");
+            preview.Zoom = 175;
+            Check(note.Placement.ContentScale == 175 && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.Windows.First(x => x.Path == path).ContentScale == 175, "native document zoom also updates saved scale");
+            Check(note.HandleScaleKey(System.Windows.Input.Key.OemPlus, System.Windows.Input.ModifierKeys.Control | System.Windows.Input.ModifierKeys.Shift) && preview.Zoom == 185, "Ctrl plus increases scale by ten percentage points");
+            note.HandleScaleKey(System.Windows.Input.Key.Subtract, System.Windows.Input.ModifierKeys.Control);
+            Check(preview.Zoom == 175, "Ctrl numpad minus decreases scale");
+            note.HandleScaleKey(System.Windows.Input.Key.D0, System.Windows.Input.ModifierKeys.Control);
+            Check(preview.Zoom == 100 && note.ContentScaleMenu().Items.OfType<MenuItem>().Single(x => (string)x.Header == "100%").IsChecked, "Ctrl zero restores default and menu checks current scale");
+            Check(!note.HandleScaleKey(System.Windows.Input.Key.OemPlus, System.Windows.Input.ModifierKeys.None) &&
+                !note.HandleScaleKey(System.Windows.Input.Key.OemPlus, System.Windows.Input.ModifierKeys.Control | System.Windows.Input.ModifierKeys.Alt), "unmodified keys and AltGr do not change scale");
+            Check(!note.HandleScaleWheel(120, System.Windows.Input.ModifierKeys.None) && preview.Zoom == 100, "ordinary mouse wheel keeps normal scrolling behavior");
+            Check(note.HandleScaleWheel(120, System.Windows.Input.ModifierKeys.Control) && preview.Zoom == 110 &&
+                note.HandleScaleWheel(-120, System.Windows.Input.ModifierKeys.Control) && preview.Zoom == 100, "Ctrl wheel zooms in both directions without native double zoom");
+            note.SetContentScale(int.MaxValue);
+            Check(preview.Zoom == 200 && !note.ContentScaleMenu().Items.OfType<MenuItem>().First().IsEnabled, "maximum scale disables further enlargement");
+            var notice = Field<TextBlock>(note, "dailyNotice");
+            notice.Text = NoteWindow.DailyWaitingMessage; notice.Visibility = Visibility.Visible;
+            var noticeScroll = Field<DockPanel>(note, "reading").Children.OfType<ScrollViewer>().Single(x => ReferenceEquals(x.Content, notice));
+            noticeScroll.Measure(new Size(260, 120)); noticeScroll.Arrange(new Rect(0, 0, 260, 120)); noticeScroll.UpdateLayout();
+            Check(noticeScroll.ScrollableHeight > 0, "enlarged daily guidance remains scrollable in a small note");
+            notice.Visibility = Visibility.Collapsed;
+            note.SetContentScale(int.MinValue);
+            Check(preview.Zoom == 50 && !note.ContentScaleMenu().Items.OfType<MenuItem>().ElementAt(1).IsEnabled, "minimum scale disables further reduction");
+            note.SetContentScale(150);
+            var paragraph = preview.Document.Blocks.OfType<System.Windows.Documents.List>().Single().ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single();
+            var checkbox = (CheckBox)paragraph.Inlines.OfType<InlineUIContainer>().Single().Child;
+            checkbox.IsChecked = true;
+            checkbox.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(File.ReadAllText(path).Contains("- [x] task") && preview.Zoom == 150, "task interaction still writes the correct source line after scaling");
+            Call(note, "BeginEdit");
+            var editor = Field<TextBox>(note, "editor"); editor.Text = "unsaved draft";
+            Check(!note.HandleScaleKey(System.Windows.Input.Key.D0, System.Windows.Input.ModifierKeys.Control) &&
+                !note.HandleScaleWheel(120, System.Windows.Input.ModifierKeys.Control) && preview.Zoom == 150, "reading zoom shortcuts do not intercept source editing");
+            var before = File.ReadAllBytes(path);
+            note.SetContentScale(125);
+            Check(editor.Text == "unsaved draft" && Field<bool>(note, "dirty") && editor.Visibility == Visibility.Visible && File.ReadAllBytes(path).SequenceEqual(before), "scale change preserves active draft and does not save source text");
+            Call(note, "Reload");
+        }
+        finally { note.Close(); other.Close(); }
     }
 
     private static void LinkPreviewTests(string root)

@@ -14,6 +14,8 @@ public sealed class NoteWindow : Window
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
     private readonly FlowDocumentScrollViewer preview = new() { IsToolBarVisible = false, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Background = Brushes.Transparent };
+    private static readonly DependencyPropertyDescriptor PreviewZoom = DependencyPropertyDescriptor.FromProperty(FlowDocumentScrollViewer.ZoomProperty, typeof(FlowDocumentScrollViewer));
+    private bool applyingScale;
     private readonly DockPanel reading = new();
     private readonly TextBlock title = new() { FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(12, 0, 3, 0) };
     private readonly TextBlock status = new() { FontSize = 11, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(12, 6, 12, 8), Foreground = Brushes.DarkSlateGray };
@@ -84,9 +86,18 @@ public sealed class NoteWindow : Window
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
         var grid = new Grid();
         var eventScroll = new ScrollViewer { Content = eventsPanel, MaxHeight = 210, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
-        DockPanel.SetDock(dailyNotice, Dock.Top); reading.Children.Add(dailyNotice);
+        var noticeScroll = new ScrollViewer { Content = dailyNotice, MaxHeight = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        noticeScroll.SetBinding(VisibilityProperty, new System.Windows.Data.Binding(nameof(Visibility)) { Source = dailyNotice });
+        DockPanel.SetDock(noticeScroll, Dock.Top); reading.Children.Add(noticeScroll);
         DockPanel.SetDock(eventScroll, Dock.Bottom); reading.Children.Add(eventScroll); reading.Children.Add(preview);
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
+        preview.MinZoom = NotePlacement.MinContentScale; preview.MaxZoom = NotePlacement.MaxContentScale; preview.ZoomIncrement = 10;
+        ApplyContentScale();
+        PreviewZoom.AddValueChanged(preview, OnPreviewZoomChanged);
+        reading.PreviewMouseWheel += (_, e) =>
+        {
+            if (HandleScaleWheel(e.Delta, Keyboard.Modifiers)) e.Handled = true;
+        };
         preview.PreviewMouseLeftButtonDown += (_, e) =>
         {
             if (!IsBodyEditTarget(e.OriginalSource as DependencyObject)) return;
@@ -105,7 +116,12 @@ public sealed class NoteWindow : Window
             if (editorContextMenuOpen || (IsActive && editor.IsKeyboardFocusWithin)) return;
             FinishFocusEditing();
         };
-        PreviewKeyDown += (_, e) => { if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; } else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.E) { BeginEdit(); e.Handled = true; } };
+        PreviewKeyDown += (_, e) =>
+        {
+            if (HandleScaleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; }
+            else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.E) { BeginEdit(); e.Handled = true; }
+        };
         Loaded += (_, _) => { MonitorLayout.Restore(this, Placement); initialized = true; Reload(); poll.Start(); QueueGeometry(); };
         LocationChanged += (_, _) => QueueGeometry(); SizeChanged += (_, _) => QueueGeometry();
         geometrySave.Tick += (_, _) => { geometrySave.Stop(); if (initialized && !closed) app.Safe(() => { MonitorLayout.Capture(this, Placement); app.SaveConfig(); }); };
@@ -115,6 +131,75 @@ public sealed class NoteWindow : Window
     }
 
     private void QueueGeometry() { if (initialized) { MonitorLayout.Capture(this, Placement); geometrySave.Stop(); geometrySave.Start(); } }
+
+    private void ApplyContentScale()
+    {
+        applyingScale = true;
+        try
+        {
+            preview.Zoom = Placement.ContentScale;
+            var scale = Placement.ContentScale / 100.0;
+            // Zoom the document and the other rendered content, keeping window controls at their normal size.
+            eventsPanel.LayoutTransform = new ScaleTransform(scale, scale);
+            dailyNotice.LayoutTransform = new ScaleTransform(scale, scale);
+        }
+        finally { applyingScale = false; }
+    }
+
+    private void OnPreviewZoomChanged(object? sender, EventArgs e)
+    {
+        if (!applyingScale && !closed) app.Safe(() => SetContentScale((int)Math.Round(preview.Zoom)));
+    }
+
+    internal void SetContentScale(int value)
+    {
+        if (closed) return;
+        var previous = Placement.ContentScale;
+        Placement.ContentScale = value;
+        ApplyContentScale();
+        if (Placement.ContentScale == previous) return;
+        try { app.SaveConfig(); }
+        catch { Placement.ContentScale = previous; ApplyContentScale(); throw; }
+    }
+
+    internal bool HandleScaleKey(Key key, ModifierKeys modifiers)
+    {
+        if (editing || (modifiers & ModifierKeys.Control) == 0 || (modifiers & ~(ModifierKeys.Control | ModifierKeys.Shift)) != 0) return false;
+        int? next = key switch
+        {
+            Key.Add or Key.OemPlus => Placement.ContentScale + 10,
+            Key.Subtract or Key.OemMinus => Placement.ContentScale - 10,
+            Key.D0 or Key.NumPad0 => 100,
+            _ => null
+        };
+        if (next is null) return false;
+        app.Safe(() => SetContentScale(next.Value));
+        return true;
+    }
+
+    internal bool HandleScaleWheel(int delta, ModifierKeys modifiers)
+    {
+        if (editing || modifiers != ModifierKeys.Control || delta == 0) return false;
+        app.Safe(() => SetContentScale(Placement.ContentScale + (delta > 0 ? 10 : -10)));
+        return true;
+    }
+
+    internal MenuItem ContentScaleMenu()
+    {
+        var menu = new MenuItem { Header = $"表示スケール（{Placement.ContentScale}%）" };
+        void Add(string label, int value, bool enabled = true, bool checkable = false)
+        {
+            var item = new MenuItem { Header = label, IsEnabled = enabled, IsCheckable = checkable, IsChecked = checkable && Placement.ContentScale == value };
+            item.Click += (_, _) => app.Safe(() => SetContentScale(value));
+            menu.Items.Add(item);
+        }
+        Add("拡大（Ctrl＋＋ / Ctrl＋ホイール上）", Placement.ContentScale + 10, Placement.ContentScale < NotePlacement.MaxContentScale);
+        Add("縮小（Ctrl＋－ / Ctrl＋ホイール下）", Placement.ContentScale - 10, Placement.ContentScale > NotePlacement.MinContentScale);
+        Add("標準に戻す（Ctrl＋0）", 100);
+        menu.Items.Add(new Separator());
+        foreach (var value in new[] { 50, 75, 100, 125, 150, 175, 200 }) Add($"{value}%", value, checkable: true);
+        return menu;
+    }
 
     public Action Relocate(IReadOnlyDictionary<string, string> paths)
     {
@@ -372,6 +457,7 @@ public sealed class NoteWindow : Window
         var menu = new ContextMenu();
         void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
         Add("タグ・タイトル・状態・色", EditMetadata);
+        menu.Items.Add(ContentScaleMenu());
         Add("予定を今すぐ取得", () => { _ = RefreshCalendar(); });
         Add("元ファイルを既定アプリで開く", () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add("Markdownを開く…", app.OpenNote);
@@ -415,6 +501,7 @@ public sealed class NoteWindow : Window
     {
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop();
+        PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }
 }
