@@ -8,6 +8,10 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add an opt-in setting to show note icons in the taskbar alongside the notification-area icon, applying immediately to open notes and persisting across restarts.
+- Preserve saved note positions and sizes while minimized from the taskbar.
+- Add a notification-area and note menu action to bring all open notes to the top for 10 seconds, restore minimized notes, and then return to each note's permanent pin setting. Repeating restarts the interval; pin changes take effect immediately without persisting temporary state.
+
 ## [0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) — 2026-10-06
 
 ### Features

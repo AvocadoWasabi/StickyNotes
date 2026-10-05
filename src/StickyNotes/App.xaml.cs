@@ -49,6 +49,7 @@ public partial class App : Application
         menu.Items.Add("ノートの一部分を付箋にする…", null, (_, _) => Safe(LinkSection));
         menu.Items.Add("デイリーノートを表示…", null, (_, _) => Safe(LinkDaily));
         menu.Items.Add("すべて表示", null, (_, _) => { foreach (var note in Notes) { note.Show(); note.Activate(); } });
+        menu.Items.Add("一時的に付箋を最前面に表示する（10秒間）", null, (_, _) => Safe(BringNotesToFrontTemporarily));
         menu.Items.Add("設定…", null, (_, _) => new SettingsWindow().ShowDialog());
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add("終了", null, (_, _) => Quit());
@@ -106,6 +107,11 @@ public partial class App : Application
         File.Move(temporary, ConfigPath, true);
     }
 
+    public void BringNotesToFrontTemporarily()
+    {
+        foreach (var note in Notes.ToArray()) note.BringToFrontTemporarily();
+    }
+
     public void ApplySettings(Settings next, bool migrate)
     {
         var previous = Config;
@@ -129,7 +135,11 @@ public partial class App : Application
         if (migrate)
             NoteFolderMigration.Move(previous.NotesFolder, next.NotesFolder, Commit);
         else Commit(new Dictionary<string, string>());
-        foreach (var note in Notes) note.ApplyButtonDisplay();
+        foreach (var note in Notes)
+        {
+            note.ApplyButtonDisplay();
+            note.ApplyTaskbarDisplay();
+        }
     }
 
     private bool PrepareExit()

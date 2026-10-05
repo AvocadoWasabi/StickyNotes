@@ -29,6 +29,7 @@ public sealed class NoteWindow : Window
     private readonly DispatcherTimer poll = new() { Interval = TimeSpan.FromSeconds(2) };
     private readonly DispatcherTimer geometrySave = new() { Interval = TimeSpan.FromMilliseconds(600) };
     private readonly DispatcherTimer focusLossTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
+    private readonly DispatcherTimer temporaryFrontTimer = new() { Interval = TimeSpan.FromSeconds(10) };
     private readonly Func<MessageBoxResult>? confirmFocusSave;
     private readonly Action<Exception>? reportSaveError;
     private bool decisionInProgress, editorContextMenuOpen;
@@ -58,7 +59,8 @@ public sealed class NoteWindow : Window
         MinWidth = 280; MinHeight = 240;
         Left = placement.Left; Top = placement.Top;
         WindowStyle = WindowStyle.None; ResizeMode = ResizeMode.CanResizeWithGrip;
-        ShowInTaskbar = app.TestMode; Topmost = placement.Pinned;
+        ApplyTaskbarDisplay(); Topmost = placement.Pinned;
+        temporaryFrontTimer.Tick += (_, _) => EndTemporaryFront();
         WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0, ResizeBorderThickness = new Thickness(6), CornerRadius = new CornerRadius(0), GlassFrameThickness = new Thickness(0) });
         var outer = new Border { BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromArgb(45, 70, 60, 30)), BorderThickness = new Thickness(1) };
         var dock = new DockPanel(); outer.Child = dock; Content = outer;
@@ -84,8 +86,8 @@ public sealed class NoteWindow : Window
         Control("再読込", ReloadAsked, 58, "#FFF0CC");
         Control("…", Menu, 30, "#E9E0F2", "その他の操作");
         Control("＋", app.NewNote, 28, "#F3F1EB", "新しい付箋");
-        var pin = Control(placement.Pinned ? "●" : "○", () => { Topmost = !Topmost; Placement.Pinned = Topmost; app.SaveConfig(); }, 28, "#F3F1EB", "最前面を切り替え");
-        pin.Click += (_, _) => pin.Content = Topmost ? "●" : "○";
+        var pin = Control(placement.Pinned ? "●" : "○", () => { Placement.Pinned = !Placement.Pinned; EndTemporaryFront(); app.SaveConfig(); }, 28, "#F3F1EB", "最前面を切り替え");
+        pin.Click += (_, _) => pin.Content = Placement.Pinned ? "●" : "○";
         Control("×", Close, 28, "#F3F1EB", "この付箋を閉じる（ファイルは残ります）");
         var controlsRow = new DockPanel();
         DockPanel.SetDock(dragHandle, Dock.Left); controlsRow.Children.Add(dragHandle); controlsRow.Children.Add(NoteControls);
@@ -146,6 +148,31 @@ public sealed class NoteWindow : Window
     }
 
     private void QueueGeometry() { if (initialized) { MonitorLayout.Capture(this, Placement); geometrySave.Stop(); geometrySave.Start(); } }
+
+    internal void ApplyTaskbarDisplay() => ShowInTaskbar = app.Config.ShowInTaskbar || app.TestMode;
+
+    internal void BringToFrontTemporarily()
+    {
+        if (closed) return;
+        temporaryFrontTimer.Stop();
+        // Raising every note must not move keyboard focus away from an unsaved editor.
+        var activateOnShow = ShowActivated;
+        try
+        {
+            ShowActivated = false;
+            Show();
+            if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+            Topmost = true;
+        }
+        finally { ShowActivated = activateOnShow; }
+        temporaryFrontTimer.Start();
+    }
+
+    private void EndTemporaryFront()
+    {
+        temporaryFrontTimer.Stop();
+        Topmost = Placement.Pinned;
+    }
 
     internal void ApplyButtonDisplay()
     {
@@ -494,6 +521,7 @@ public sealed class NoteWindow : Window
         void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
         Add("タグ・タイトル・状態・色", EditMetadata);
         menu.Items.Add(ContentScaleMenu());
+        Add("一時的に付箋を最前面に表示する（10秒間）", app.BringNotesToFrontTemporarily);
         Add("予定を今すぐ取得", () => { _ = RefreshCalendar(); });
         Add("元ファイルを既定アプリで開く", () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add("Markdownを開く…", app.OpenNote);
@@ -536,7 +564,7 @@ public sealed class NoteWindow : Window
     private void OnClosing(object? sender, CancelEventArgs e)
     {
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
-        closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop();
+        closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }

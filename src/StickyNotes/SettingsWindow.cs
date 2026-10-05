@@ -19,6 +19,9 @@ public sealed class SettingsWindow : Window
         var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = "編集欄からフォーカスが外れたら、確認せず自動保存する", IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(autoSave);
         panel.Children.Add(new TextBlock { Text = "オフの場合は変更の保存を確認します。保存エラー時は入力を保持します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        var taskbar = new CheckBox { Name = "ShowInTaskbar", Content = "タスクバーにも付箋のアイコンを表示する", IsChecked = app.Config.ShowInTaskbar, Margin = new Thickness(0, 8, 0, 8) };
+        panel.Children.Add(taskbar);
+        panel.Children.Add(new TextBlock { Text = "保存すると、開いているすべての付箋に反映します。通知領域のアイコンも引き続き利用できます。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         var overlay = new CheckBox { Name = "TitleButtonOverlay", Content = "タイトルにマウスカーソルを重ねるとボタンを表示する", IsChecked = app.Config.TitleButtonOverlay, Margin = new Thickness(0, 8, 0, 8) };
         panel.Children.Add(overlay);
         panel.Children.Add(new TextBlock { Text = "オン: タイトルにマウスを重ねるとボタンを表示します。F6でも表示・キーボード操作ができます。左端の移動ハンドルをドラッグして付箋を動かせます。オフ: タイトルの下に常に表示します（既定）。保存すると開いているすべての付箋に反映します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
@@ -146,6 +149,7 @@ public sealed class SettingsWindow : Window
                 DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 TitleButtonOverlay = overlay.IsChecked == true,
+                ShowInTaskbar = taskbar.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text
             }, migrate);
             notes.Text = app.Config.NotesFolder; daily.Text = app.Config.DailyFolder;

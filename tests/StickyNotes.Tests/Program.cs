@@ -80,6 +80,7 @@ internal static class Program
             LinkPreviewTests(root);
             ContentScaleTests(root);
             TitleButtonOverlayTests(root);
+            TaskbarAndTemporaryFrontTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -100,6 +101,100 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void TaskbarAndTemporaryFrontTests(string root)
+    {
+        Check(!JsonSerializer.Deserialize<Settings>("{}")!.ShowInTaskbar, "older settings retain tray-only notes");
+        var app = App.Current;
+        var previous = app.Config;
+        app.ApplySettings(new Settings { NotesFolder = previous.NotesFolder, DailyFolder = root }, false);
+        var path = Path.Combine(root, "temporary-front.md");
+        File.WriteAllText(path, "# Temporary front\nbody\n");
+        var note = new NoteWindow(new NotePlacement { Path = path }, () => MessageBoxResult.Cancel, _ => { });
+        var pinned = new NoteWindow(new NotePlacement { Path = path, Pinned = true });
+        app.Notes.Add(note); app.Notes.Add(pinned);
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        T Field<T>(NoteWindow window, string name) => (T)typeof(NoteWindow).GetField(name, flags)!.GetValue(window)!;
+        var timer = Field<System.Windows.Threading.DispatcherTimer>(note, "temporaryFrontTimer");
+        var pinnedTimer = Field<System.Windows.Threading.DispatcherTimer>(pinned, "temporaryFrontTimer");
+        void ClickPin(NoteWindow window) => window.NoteControls.Children.OfType<Button>().Single(x => (string)x.Content is "○" or "●")
+            .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        try
+        {
+            note.Show(); pinned.Show();
+            WaitFor(() => note.IsLoaded && pinned.IsLoaded, "temporary-front test windows load");
+            Check(!note.ShowInTaskbar && !pinned.ShowInTaskbar, "notes start outside the taskbar");
+            var settings = new SettingsWindow();
+            var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            panel.Children.OfType<CheckBox>().Single(x => x.Name == "ShowInTaskbar").IsChecked = true;
+            Check(!note.ShowInTaskbar && !app.Config.ShowInTaskbar, "taskbar option waits for Save");
+            panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる")
+                .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(note.ShowInTaskbar && pinned.ShowInTaskbar, "taskbar setting applies to all existing windows");
+            Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.ShowInTaskbar, "taskbar setting persists for restart");
+            var next = new NoteWindow(new NotePlacement { Path = path });
+            Check(next.ShowInTaskbar, "new windows inherit taskbar setting"); next.Close();
+            settings = new SettingsWindow(); panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            var taskbar = panel.Children.OfType<CheckBox>().Single(x => x.Name == "ShowInTaskbar");
+            Check(taskbar.IsChecked == true, "reopened settings retain taskbar preference");
+            taskbar.IsChecked = false;
+            panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる")
+                .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(!note.ShowInTaskbar && !pinned.ShowInTaskbar, "taskbar display can be disabled immediately");
+            Check(timer.Interval == TimeSpan.FromSeconds(10), "temporary front lasts ten seconds by default");
+            MonitorLayout.Capture(note, note.Placement);
+            var normalPlacement = JsonSerializer.Serialize(note.Placement);
+            note.WindowState = WindowState.Minimized;
+            MonitorLayout.Capture(note, note.Placement);
+            var minimizedElapsed = System.Diagnostics.Stopwatch.StartNew();
+            WaitFor(() => minimizedElapsed.ElapsedMilliseconds >= 700, "geometry save settles while minimized");
+            Check(JsonSerializer.Serialize(note.Placement) == normalPlacement, "minimizing preserves restored note position and size");
+            pinned.Hide();
+            app.BringNotesToFrontTemporarily();
+            Check(note.WindowState == WindowState.Normal && pinned.IsVisible && note.Topmost && pinned.Topmost, "temporary front restores minimized and hidden notes");
+            app.SaveConfig();
+            var saved = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.Windows.Where(x => x.Path == path).ToArray();
+            Check(!saved[0].Pinned && saved[1].Pinned, "temporary front never persists as permanent pinning");
+            timer.Interval = pinnedTimer.Interval = TimeSpan.FromMilliseconds(120);
+            WaitFor(() => !timer.IsEnabled && !pinnedTimer.IsEnabled, "temporary timers expire automatically");
+            Check(!note.Topmost && pinned.Topmost, "expiration restores each note's permanent pin state");
+            timer.Interval = TimeSpan.FromMilliseconds(400);
+            note.BringToFrontTemporarily();
+            var elapsed = System.Diagnostics.Stopwatch.StartNew();
+            WaitFor(() => elapsed.ElapsedMilliseconds >= 250, "part of the temporary interval elapses");
+            note.BringToFrontTemporarily();
+            elapsed.Restart();
+            WaitFor(() => elapsed.ElapsedMilliseconds >= 250, "repeated invocation passes the old expiry");
+            Check(note.Topmost && timer.IsEnabled, "repeated invocation restarts the temporary interval");
+            WaitFor(() => !timer.IsEnabled, "restarted interval expires");
+            note.BringToFrontTemporarily(); ClickPin(note);
+            Check(note.Placement.Pinned && note.Topmost && !timer.IsEnabled, "pinning during temporary front becomes permanent");
+            pinned.BringToFrontTemporarily(); ClickPin(pinned);
+            Check(!pinned.Placement.Pinned && !pinned.Topmost && !pinnedTimer.IsEnabled, "unpinning during temporary front takes effect immediately");
+            note.NoteControls.Children.OfType<Button>().Single(x => (string)x.Content == "編集")
+                .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            var editor = Field<TextBox>(note, "editor"); editor.Text = "unsaved temporary-front draft";
+            foreach (var show in new[] { true, false })
+            {
+                var nextSettings = JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(app.Config))!;
+                nextSettings.ShowInTaskbar = show;
+                app.ApplySettings(nextSettings, false);
+                Check(note.ShowInTaskbar == show && editor.Text == "unsaved temporary-front draft" && editor.Visibility == Visibility.Visible,
+                    "taskbar changes preserve active draft: " + show);
+            }
+            app.BringNotesToFrontTemporarily();
+            WaitFor(() => !timer.IsEnabled && !pinnedTimer.IsEnabled, "temporary front expires while editing");
+            Check(editor.Text == "unsaved temporary-front draft" && File.ReadAllText(path).Contains("body"), "temporary front preserves unsaved input and source file");
+            typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(note, null);
+            note.BringToFrontTemporarily(); pinned.BringToFrontTemporarily();
+        }
+        finally
+        {
+            typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(note, null);
+            note.Close(); pinned.Close(); app.ApplySettings(previous, false);
+        }
+        Check(!timer.IsEnabled && !pinnedTimer.IsEnabled, "closing notes stops temporary timers");
     }
 
     private static void TitleButtonOverlayTests(string root)
@@ -528,7 +623,7 @@ internal static class Program
         var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
         void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         var matchStatus = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
-        Check(panel.Children.OfType<CheckBox>().All(x => x.Name is "AutoSaveOnFocusLoss" or "TitleButtonOverlay"), "settings offer only tagged regex without a mode checkbox");
+        Check(panel.Children.OfType<CheckBox>().All(x => x.Name is "AutoSaveOnFocusLoss" or "TitleButtonOverlay" or "ShowInTaskbar"), "settings offer only tagged regex without a mode checkbox");
         Check(confirmations == 0 && pattern.Text == custom, "opening settings preserves custom regex without prompting");
         ClickInsert();
         Check(confirmations == 1 && pattern.Text == custom, "declining template button preserves existing expression");

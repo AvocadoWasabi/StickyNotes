@@ -27,6 +27,8 @@ internal static class MonitorLayout
 
     public static void Capture(Window window, NotePlacement placement)
     {
+        // Taskbar minimization must not replace the restored position with off-screen coordinates.
+        if (window.WindowState != WindowState.Normal) return;
         var handle = new WindowInteropHelper(window).Handle;
         if (handle == IntPtr.Zero || !GetWindowRect(handle, out var rect)) return;
         placement.PixelLeft = rect.Left; placement.PixelTop = rect.Top;
