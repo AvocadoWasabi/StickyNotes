@@ -2,11 +2,17 @@
 
 # Changelog
 
-User-facing changes are recorded here, newest releases first. Development commits are listed separately below. No versioned release has been published yet; the current features and improvements are **Unreleased**.
+User-facing changes are recorded here, newest releases first. Development commits are listed separately below.
 
 See the [README](README.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
 ## Unreleased
+
+No changes yet.
+
+## [0.0.1](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.1) — 2026-10-05
+
+First public release for Windows x64.
 
 ### Added
 

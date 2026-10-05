@@ -6,7 +6,7 @@ Windows 10 / 11の64bit（x64）環境向けです。.NETの追加インスト�
 
 ## インストール
 
-1. [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases)で `StickyNotes-win-x64.zip` をダウンロードします。`Source code` は開発者向けです。Releaseがまだない場合は公開待ちです。
+1. [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases)で `StickyNotes-win-x64.zip` をダウンロードします。`Source code` は開発者向けです。
 2. ZIPを右クリックして「すべて展開」します。
 3. 展開先の `Install.cmd` をダブルクリックします。
 4. スタートメニューの「Markdown Sticky Notes」から起動します。

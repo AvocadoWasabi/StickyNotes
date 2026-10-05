@@ -2,11 +2,17 @@
 
 # バージョン履歴
 
-利用者向けの変更を、新しいリリースから順に記録します。開発コミットの履歴は別にまとめています。正式なバージョン付きReleaseはまだ公開していないため、現在の機能・改善は **未リリース** として記載しています。
+利用者向けの変更を、新しいリリースから順に記録します。開発コミットの履歴は別にまとめています。
 
 使い方は [日本語README](README.ja.md)、公開後の配布ファイルは [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) を参照してください。
 
 ## 未リリース / Unreleased
+
+追加の変更はまだありません。
+
+## [0.0.1](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.1) — 2026-10-05
+
+Windows x64向けの初回公開版です。
 
 ### 追加
 

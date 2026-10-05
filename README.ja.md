@@ -42,7 +42,7 @@ Windows / C# / WPFで作成した、ObsidianのMarkdownと連携する付箋ア�
 4. 展開先の `Install.cmd` をダブルクリックします。
 5. スタートメニューの「Markdown Sticky Notes」から起動します。
 
-アプリは `%LOCALAPPDATA%\Programs\MarkdownStickyNotes` に配置されます。自動起動は登録しません。初回Release公開前はダウンロードできません。
+アプリは `%LOCALAPPDATA%\Programs\MarkdownStickyNotes` に配置されます。自動起動は登録しません。[v0.0.1のダウンロード](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.1)はこちらです。
 
 インストールせずに使う場合は、展開先の `StickyNotes.exe` を実行します。どちらの場合もEXE以外の同梱ファイルが必要です。未署名のためWindowsが確認を表示する場合は、配布元とファイルを確認してから実行してください。
 
