@@ -1,0 +1,127 @@
+using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using System.Threading;
+using Forms = System.Windows.Forms;
+
+namespace StickyNotes;
+
+public partial class App : Application
+{
+    public static new App Current => (App)Application.Current;
+    public Settings Config { get; private set; } = new();
+    public CalendarService Calendar { get; private set; } = null!;
+    public List<NoteWindow> Notes { get; } = [];
+    public bool Exiting { get; private set; }
+    public bool TestMode { get; private set; }
+    private Forms.NotifyIcon? tray;
+    private Mutex? mutex;
+    private bool ownsMutex;
+    public static string DataDirectory { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StickyNotes");
+    private static string ConfigPath => Path.Combine(DataDirectory, "settings.json");
+    private static string TokenPath => Path.Combine(DataDirectory, "google-token.bin");
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        if (e.Args.Length == 2 && e.Args[0] == "--data-dir")
+        {
+            TestMode = true;
+            DataDirectory = Path.GetFullPath(e.Args[1]);
+            Config.NotesFolder = Path.Combine(DataDirectory, "notes");
+        }
+        mutex = new Mutex(true, "Local\\StickyNotes.Desktop", out ownsMutex);
+        if (!ownsMutex) { MessageBox.Show("付箋アプリは起動済みです。通知領域のアイコンから操作できます。"); Shutdown(); return; }
+        Directory.CreateDirectory(DataDirectory);
+        if (File.Exists(ConfigPath))
+        {
+            try { Config = JsonSerializer.Deserialize<Settings>(File.ReadAllText(ConfigPath)) ?? new(); }
+            catch (Exception ex) { MessageBox.Show("設定を読み込めません。元ファイルを保護するため終了します。\n" + ex.Message); Shutdown(); return; }
+        }
+        Calendar = new CalendarService(
+            () => File.Exists(TokenPath) ? Encoding.UTF8.GetString(ProtectedData.Unprotect(File.ReadAllBytes(TokenPath), null, DataProtectionScope.CurrentUser)) : null,
+            value => File.WriteAllBytes(TokenPath, ProtectedData.Protect(Encoding.UTF8.GetBytes(value), null, DataProtectionScope.CurrentUser)));
+        var menu = new Forms.ContextMenuStrip();
+        menu.Items.Add("新しい付箋", null, (_, _) => Safe(NewNote));
+        menu.Items.Add("Markdownを開く…", null, (_, _) => Safe(OpenNote));
+        menu.Items.Add("ノートの見出しを表示…", null, (_, _) => Safe(LinkSection));
+        menu.Items.Add("すべて表示", null, (_, _) => { foreach (var note in Notes) { note.Show(); note.Activate(); } });
+        menu.Items.Add("設定…", null, (_, _) => new SettingsWindow().ShowDialog());
+        menu.Items.Add(new Forms.ToolStripSeparator());
+        menu.Items.Add("終了", null, (_, _) => Quit());
+        tray = new Forms.NotifyIcon { Icon = System.Drawing.SystemIcons.Information, Text = "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
+        tray.DoubleClick += (_, _) => { if (Notes.Count == 0) Safe(NewNote); else { Notes[0].Show(); Notes[0].Activate(); } };
+        foreach (var placement in Config.Windows.ToArray()) Safe(() => ShowNote(placement));
+        if (Notes.Count == 0) Safe(NewNote);
+        SessionEnding += (_, args) => { if (!PrepareExit()) args.Cancel = true; };
+    }
+
+    public void Safe(Action action)
+    {
+        try { action(); }
+        catch (Exception ex) { MessageBox.Show(ex.Message, "Sticky Notes", MessageBoxButton.OK, MessageBoxImage.Warning); }
+    }
+
+    public void NewNote() => ShowNote(new NotePlacement { Path = NoteStore.Create(Config.NotesFolder), Left = 100 + Notes.Count * 24, Top = 100 + Notes.Count * 24 });
+
+    public void OpenNote()
+    {
+        var picker = new Microsoft.Win32.OpenFileDialog { Filter = "Markdown|*.md", InitialDirectory = Config.NotesFolder };
+        if (picker.ShowDialog() == true) ShowNote(new() { Path = picker.FileName });
+    }
+
+    public void LinkSection()
+    {
+        var fields = new List<Ui.Field>
+        {
+            new("path", "既存Markdownの絶対パス（今日のノートの場合は空欄）", ""),
+            new("heading", "表示する見出し名（例: Tasks。# は不要）", "Tasks"),
+            new("daily", "毎日、今日のノートに切り替える: yes / no", "yes")
+        };
+        var values = Ui.Prompt("ノートの一部分を付箋にする", fields);
+        if (values is null) return;
+        var daily = values["daily"].Trim().Equals("yes", StringComparison.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(values["heading"])) throw new InvalidOperationException("見出しを指定してください。");
+        if (daily && string.IsNullOrWhiteSpace(Config.DailyFolder)) throw new InvalidOperationException("先に設定画面でデイリーノートフォルダを選択してください。");
+        if (!daily && (!Path.IsPathFullyQualified(values["path"]) || !File.Exists(values["path"]))) throw new InvalidOperationException("既存Markdownの絶対パスを指定してください。");
+        ShowNote(new() { Path = values["path"], Heading = values["heading"], Daily = daily, Color = "green" });
+    }
+
+    public void ShowNote(NotePlacement placement)
+    {
+        var existing = Notes.FirstOrDefault(n => n.Placement.Daily == placement.Daily &&
+            n.Placement.Heading == placement.Heading && string.Equals(n.Placement.Path, placement.Path, StringComparison.OrdinalIgnoreCase));
+        if (existing is not null) { existing.Show(); existing.Activate(); return; }
+        var window = new NoteWindow(placement);
+        Notes.Add(window);
+        window.Show();
+        SaveConfig();
+    }
+
+    public void SaveConfig()
+    {
+        Config.Windows = Notes.Select(x => x.Placement).ToList();
+        var temporary = ConfigPath + ".tmp";
+        File.WriteAllText(temporary, JsonSerializer.Serialize(Config, new JsonSerializerOptions { WriteIndented = true }));
+        File.Move(temporary, ConfigPath, true);
+    }
+
+    private bool PrepareExit()
+    {
+        foreach (var note in Notes.ToArray()) if (!note.CanClose()) return false;
+        SaveConfig();
+        Exiting = true;
+        return true;
+    }
+
+    public void Quit() { if (PrepareExit()) Shutdown(); }
+    protected override void OnExit(ExitEventArgs e)
+    {
+        tray?.Dispose();
+        Calendar?.Dispose();
+        if (ownsMutex) mutex?.ReleaseMutex();
+        mutex?.Dispose();
+        base.OnExit(e);
+    }
+}

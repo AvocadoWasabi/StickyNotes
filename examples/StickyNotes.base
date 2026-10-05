@@ -1,0 +1,14 @@
+filters:
+  and:
+    - 'file.ext == "md"'
+    - 'type == "sticky"'
+views:
+  - type: table
+    name: 付箋一覧
+    order:
+      - file.name
+      - title
+      - tags
+      - status
+      - color
+      - updated
