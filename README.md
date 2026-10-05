@@ -1,12 +1,34 @@
-[English](README.md) | [日本語](README.ja.md)
+[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md)
 
-# Markdown Sticky Notes
+# Markdown Sticky Notes — Obsidian and Google Calendar on your Windows desktop
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
 
-A Windows desktop sticky notes app that works with Markdown files and Obsidian vaults, built with C# and WPF.
+A Windows Markdown sticky notes app for keeping **Obsidian notes and Google Calendar events together on your desktop**. Open a daily-note task list beside a note showing calendar events, or display notes and events in the same sticky note.
 
-Keep tasks, notes, or a section of today's daily note on your desktop and edit them in place. Notes are ordinary Markdown files, so you can use the same files in Obsidian. The app also works on its own without Obsidian.
+Edit the original Markdown files in your Obsidian vault, check off tasks, and review appointments without leaving the sticky notes. Calendar event titles and descriptions can be edited after confirmation. Google Calendar is optional and requires your own OAuth setup; Markdown notes also work on their own, without Obsidian.
+
+## Use Obsidian notes and Google Calendar together
+
+| Workflow | How it works |
+| --- | --- |
+| Keep tasks and appointments side by side | Link the Tasks heading in today's daily note, then open another sticky note with a Calendar query |
+| Put meeting notes beside the event details | Add an `@calendar` command to the Markdown body shown in a sticky note; matching events appear below the rendered note |
+| Update information at its source | Task checks and Markdown edits are saved to the original `.md`; confirmed event title/description edits are sent to Google Calendar |
+
+For example, after [setting up Google Calendar](#initial-authentication), save this in a note. Replace the example date, time, time zone, and search word with your own:
+
+```markdown
+## Meeting preparation
+- [ ] Review the agenda in Obsidian
+- [ ] Write down questions
+
+@calendar 2026-10-05T09:00+09:00 meeting
+```
+
+The command searches events from the specified time; it does not automatically mean “today.” Calendar events refresh about every 60 seconds or on request. When linking only a heading, place the command within the displayed section. **Markdown tasks and calendar events remain separate data:** the app does not convert tasks into events, copy events into Markdown, or synchronize them automatically. Event times and attendees cannot be changed here.
+
+[Download for Windows](#download-and-install) · [Display an Obsidian daily note](#display-and-edit-a-daily-note-section) · [Google Calendar setup](#initial-authentication)
 
 ## Screenshots
 
@@ -30,7 +52,7 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 | Google Calendar (optional) | Search and display events; edit titles and descriptions after confirmation |
 | Data protection | Detect external changes, prevent conflicting overwrites, and back up files before writing |
 
-The app's interface and menus are currently in Japanese. This README is available in English and Japanese.
+The app's interface and menus are currently in Japanese. Documentation is available in English, Japanese, and Simplified Chinese.
 
 ## Download and install
 
@@ -61,9 +83,9 @@ To uninstall, exit the app, delete `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`
 ## Documentation and examples
 
 - [Changelog / version history](CHANGELOG.md)
-- [日本語 / Japanese README](README.ja.md)
-- [Installation, updates, and removal (Japanese)](docs/INSTALL.md)
-- [Development, branch workflow, and releases (Japanese)](docs/DEVELOPMENT.md)
+- [日本語 / Japanese README](README.ja.md) / [简体中文 / Simplified Chinese README](README.zh-CN.md)
+- [Installation, updates, and removal](docs/INSTALL.en.md)
+- [Development, branch workflow, and releases](docs/DEVELOPMENT.en.md)
 - [Third-party licenses](THIRD-PARTY-NOTICES.txt)
 - [Obsidian Bases example](examples/StickyNotes.base) / [Daily note example](examples/Daily.md)
 
@@ -205,7 +227,7 @@ Requires Windows and the .NET 8 SDK.
 .\build.ps1 -Publish
 ```
 
-The build uses `.tools/dotnet` when a local SDK is present. Tests use temporary files and simulated APIs, without accessing real vaults or external services. `-Publish` also creates a self-contained app, installer scripts, documentation, and `artifacts/StickyNotes-win-x64.zip` with a SHA256 checksum. Both README languages are included in the ZIP.
+The build uses `.tools/dotnet` when a local SDK is present. Tests use temporary files and simulated APIs, without accessing real vaults or external services. `-Publish` also creates a self-contained app, installer scripts, documentation, and `artifacts/StickyNotes-win-x64.zip` with a SHA256 checksum. Builds from this source include READMEs and changelogs in all three languages; previously published ZIPs retain their original documentation.
 
 To launch with a separate data directory for testing (notes also appear in the taskbar in this mode):
 
@@ -215,4 +237,4 @@ To launch with a separate data directory for testing (notes also appear in the t
 
 Project layout: `StickyNotes.Core` handles Markdown storage, section editing, and Calendar REST/OAuth; `StickyNotes` contains the WPF notes, rendering, notification-area integration, and monitor layout; `StickyNotes.Tests` contains executable data protection, rendering, and API tests.
 
-Work takes place on separate branches, with verification, code review, and security review before completion, and is committed locally. Unresolved critical or high-severity findings block merging and pushing. The normal workflow does not include creating a pull request. Merging into `main`, pushing any branch to GitHub, and publishing releases require an explicit instruction from the repository owner. See the [development guide (Japanese)](docs/DEVELOPMENT.md) for the release workflow.
+Work takes place on separate branches, with verification, code review, and security review before completion, and is committed locally. Unresolved critical or high-severity findings block merging and pushing. The normal workflow does not include creating a pull request. Merging into `main`, pushing any branch to GitHub, and publishing releases require an explicit instruction from the repository owner. Keep the English, Japanese, and Simplified Chinese documentation in sync. See the [development guide](docs/DEVELOPMENT.en.md) for the release workflow.

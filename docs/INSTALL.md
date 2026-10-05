@@ -1,3 +1,5 @@
+[English](INSTALL.en.md) | [日本語](INSTALL.md) | [简体中文](INSTALL.zh-CN.md)
+
 # インストール・更新・削除
 
 ## 必要な環境

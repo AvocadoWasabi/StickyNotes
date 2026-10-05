@@ -1,4 +1,4 @@
-[English](CHANGELOG.md) | [日本語](CHANGELOG.ja.md)
+[English](CHANGELOG.md) | [日本語](CHANGELOG.ja.md) | [简体中文](CHANGELOG.zh-CN.md)
 
 # Changelog
 
@@ -8,7 +8,10 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
-No changes yet.
+### Documentation
+
+- Explain using Obsidian Markdown notes and Google Calendar together, with a combined-use example and clear boundaries on synchronization and event editing.
+- Add Simplified Chinese documentation and language navigation, and English versions of the installation, development, and icon guides. Keep all three languages synchronized and include the Chinese README/changelog in future builds.
 
 ## [0.0.2](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.2) — 2026-10-05
 
@@ -84,6 +87,6 @@ These milestones are source commits, **not published versions**. All dates below
 
 ## Maintaining this history
 
-Record changes under **Unreleased** as features or fixes are completed, and keep both languages in sync. When a release is explicitly authorized, move its entries to a heading containing the actual version and publication date, link to its GitHub Release, and start a new Unreleased section. Do not record a planned or draft release as published.
+Record changes under **Unreleased** as features or fixes are completed, and keep English, Japanese, and Simplified Chinese in sync. When a release is explicitly authorized, move its entries to a heading containing the actual version and publication date, link to its GitHub Release, and start a new Unreleased section. Do not record a planned or draft release as published.
 
-See the [development guide](docs/DEVELOPMENT.md) for the branch and release process. Creating this history does not create a tag or publish a release.
+See the [development guide](docs/DEVELOPMENT.en.md) for the branch and release process. Creating this history does not create a tag or publish a release.

@@ -1,0 +1,51 @@
+[English](DEVELOPMENT.en.md) | [日本語](DEVELOPMENT.md) | [简体中文](DEVELOPMENT.zh-CN.md)
+
+# 开发与发布
+
+## 分支流程
+
+1. 修改前创建专用分支，例如 `git switch -c feat/example`。
+2. 实现、更新文档并验证；完成前对全部差异进行代码和安全审查。
+3. **若有未解决的重大问题（Critical / High、P0 / P1、严重数据丢失或泄露等），停止合并和推送。** 无法完成必要审查或验证时，也不能报告完成。修复后重新验证和审查。
+4. 将已验证修改本地提交，报告验证、两项审查及剩余限制。常规流程不创建 PR。
+5. **合并到 main 和推送任何分支均需所有者明确指示。** 推送标签和发布 Release 也需要授权。
+
+`AGENTS.md` 仅用于本地，不纳入 Git 或分发包。公开仓库为 [AvocadoWasabi/StickyNotes](https://github.com/AvocadoWasabi/StickyNotes)。
+
+## 构建与验证
+
+使用 Windows 和 .NET 8 SDK。存在本地 `.tools/dotnet` 时优先使用。
+
+```powershell
+./build.ps1
+./build.ps1 -Publish
+```
+
+前者还原依赖、构建 Release 并运行测试。后者还生成自包含应用、安装脚本、文档、许可、`artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。
+
+`src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
+
+## 文档语言
+
+修改 README、更新日志、安装／开发指南、相关资料和发布说明时，同步英语、日语和简体中文（zh-CN）。功能、限制、示例、版本和链接须对应；允许在同一文件中分语言列出。提供语言导航并检查构建时是否附带。文档翻译不代表界面或示例数据也已翻译。未经指示，不替换已发布的标签或 ZIP。
+
+## 发布流程（仅在收到指示时）
+
+功能或修复完成后，更新[英语](../CHANGELOG.md)、[日语](../CHANGELOG.ja.md)、[简体中文](../CHANGELOG.zh-CN.md)更新日志的 Unreleased 部分。正式发布时一致记录实际版本、日期及 Release 链接，不把草稿或计划写成已发布。`docs/RELEASE-NOTES.md` 也应反映该版本的主要变化。
+
+1. 统一 `src/StickyNotes/StickyNotes.csproj` 中的 `Version`、三种语言 README 下载链接、更新日志和发布说明。完成 `./build.ps1 -Publish` 和两项审查，本地提交后将指定分支合并到 main 并推送。
+2. 确认 GitHub Actions 的 **Build and test** 成功。
+3. 获得发布指示后，在 main 手动运行 **Package release**，指定新标签，如 `v1.0.0`。
+4. 工作流验证并生成 ZIP 和 **Release 草稿**。发布前检查 ZIP 的 SHA256、程序版本、标签目标提交、附带文档，以及是否混入个人设置等文件。
+
+仅推送不会创建或发布 Release。ZIP 作为 Release 附件分发，不进入 Git 历史。
+
+自定义本地测试包保存在 `artifacts` 内，不提交或上传。正式 Release 使用工作流从 main 新生成的 ZIP 和校验文件。
+
+## 排除的文件
+
+`.gitignore` 排除 SDK、NuGet 缓存、构建产物、个人设置、OAuth JSON、令牌和本地数据。提交前检查 `git status --short` 及差异。
+
+## 图标
+
+原图为 `docs/images/StickyNotes.png`，ICO 位于 `src/StickyNotes/Assets`。运行 `./scripts/Convert-AppIcon.ps1` 可重新生成 Windows 多尺寸 ICO。生成记录见[图标说明](ICON.zh-CN.md)。

@@ -1,0 +1,51 @@
+[English](DEVELOPMENT.en.md) | [日本語](DEVELOPMENT.md) | [简体中文](DEVELOPMENT.zh-CN.md)
+
+# Development and releases
+
+## Branch workflow
+
+1. Create a dedicated branch before implementing a change, for example `git switch -c feat/example`.
+2. Implement, update documentation, and validate. Review the complete diff for code quality and security before completion.
+3. **Stop merging and pushing if serious findings remain unresolved** (Critical / High, P0 / P1, or major data loss or disclosure). Do not report completion if required reviews or validation cannot be finished. Fix, retest, and review again.
+4. Commit verified changes locally and report validation, both reviews, and remaining limitations. Creating a PR is not part of the normal process.
+5. **Merging into main and pushing any branch require an explicit instruction from the owner.** Pushing tags and publishing releases also require authorization.
+
+`AGENTS.md` is local-only and excluded from Git and distributions. The public repository is [AvocadoWasabi/StickyNotes](https://github.com/AvocadoWasabi/StickyNotes).
+
+## Build and verify
+
+Use Windows and the .NET 8 SDK. A local `.tools/dotnet` SDK takes priority when present.
+
+```powershell
+./build.ps1
+./build.ps1 -Publish
+```
+
+The first command restores, builds Release, and runs tests. The second also produces a self-contained app, installer scripts, documentation, licenses, `artifacts/StickyNotes-win-x64.zip`, and a SHA256 checksum.
+
+`src/StickyNotes.Core` handles storage, section editing, and Calendar integration; `src/StickyNotes` contains the WPF UI; `tests` covers data protection, rendering, and APIs.
+
+## Documentation languages
+
+Update English, Japanese, and Simplified Chinese (zh-CN) together for READMEs, changelogs, installation/development guides, related documentation, and release descriptions. Match features, limitations, examples, versions, and links. A single file with all language sections is acceptable. Include language navigation and check packaging. Documentation translation does not imply translated UI or sample data. Do not replace published tags or ZIPs without an instruction.
+
+## Publishing (only when requested)
+
+Record completed features and fixes under Unreleased in the [English](../CHANGELOG.md), [Japanese](../CHANGELOG.ja.md), and [Simplified Chinese](../CHANGELOG.zh-CN.md) changelogs. On publication, record the actual version, date, and Release link consistently. Do not present drafts or plans as published. Update `docs/RELEASE-NOTES.md` for that release too.
+
+1. Align `Version` in `src/StickyNotes/StickyNotes.csproj`, download links in all three READMEs, changelogs, and release notes. Complete `./build.ps1 -Publish` and both reviews, commit locally, then merge the requested branch into main and push.
+2. Confirm GitHub Actions **Build and test** succeeds.
+3. When release publication is authorized, manually run **Package release** on main with a new tag, for example `v1.0.0`.
+4. The workflow validates, packages, and creates a **draft release**. Before publishing, check the ZIP's SHA256, executable version, tag target commit, bundled documentation, and absence of personal settings or other private files.
+
+A push alone does not create or publish a Release. ZIPs are Release assets, not Git history.
+
+Keep custom local test packages under `artifacts` and do not commit or upload them. Official releases use the ZIP and checksum freshly generated from main by the workflow.
+
+## Excluded files
+
+`.gitignore` excludes SDKs, NuGet caches, build output, personal settings, OAuth JSON, tokens, and local data. Check `git status --short` and the diff before committing.
+
+## Icon
+
+The source image is `docs/images/StickyNotes.png`, with the ICO under `src/StickyNotes/Assets`. Run `./scripts/Convert-AppIcon.ps1` to regenerate the multi-size Windows ICO. See [icon provenance](ICON.en.md).

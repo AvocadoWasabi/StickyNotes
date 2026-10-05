@@ -1,3 +1,5 @@
+[English](DEVELOPMENT.en.md) | [日本語](DEVELOPMENT.md) | [简体中文](DEVELOPMENT.zh-CN.md)
+
 # 開発と公開
 
 ## ブランチ運用
@@ -23,11 +25,15 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 
+## ドキュメントの言語
+
+README・変更履歴・導入／開発ガイド・関連資料・リリース説明を編集するときは、英語・日本語・簡体字中国語（zh-CN）を同じ変更内で同期します。機能、制約、例、バージョン、リンクを揃え、単一ファイル内の言語別併記も可とします。言語切替とビルド時の同梱を確認し、ドキュメントの翻訳とUI・サンプルの翻訳を区別します。公開済みタグ・ZIPは指示なく差し替えません。
+
 ## 公開手順（指示を受けた場合のみ）
 
-機能追加・修正の完了時に [日本語のバージョン履歴](../CHANGELOG.ja.md) と [英語の変更履歴](../CHANGELOG.md) の未リリース欄を更新します。正式公開時には実際のバージョン番号・公開日・Releaseリンクを記録し、両言語の内容を揃えます。下書きや予定を公開済みとして記載しないでください。`docs/RELEASE-NOTES.md` にも、そのリリースでの主な変更を反映します。
+機能追加・修正の完了時に [日本語のバージョン履歴](../CHANGELOG.ja.md)、[英語の変更履歴](../CHANGELOG.md)、[簡体字中国語の変更履歴](../CHANGELOG.zh-CN.md) の未リリース欄を更新します。正式公開時には実際のバージョン番号・公開日・Releaseリンクを記録し、3言語の内容を揃えます。下書きや予定を公開済みとして記載しないでください。`docs/RELEASE-NOTES.md` にも、そのリリースでの主な変更を反映します。
 
-1. `src/StickyNotes/StickyNotes.csproj` の `Version`、両言語READMEのダウンロードリンク、変更履歴、リリースノートを公開バージョンに揃えます。`./build.ps1 -Publish` と両レビューを完了し、ローカルコミット後、指示されたブランチをmainにマージしてpushします。
+1. `src/StickyNotes/StickyNotes.csproj` の `Version`、3言語READMEのダウンロードリンク、変更履歴、リリースノートを公開バージョンに揃えます。`./build.ps1 -Publish` と両レビューを完了し、ローカルコミット後、指示されたブランチをmainにマージしてpushします。
 2. GitHub Actionsの「Build and test」が成功したことを確認します。
 3. Releaseの公開指示を受けたら、「Package release」をmain上で手動実行し、新しいタグ（例: `v1.0.0`）を指定します。
 4. ワークフローが検証とZIP生成を実行し、**下書きRelease**を作成します。添付ZIPのSHA256、実行ファイルのバージョン、タグの対象コミット、同梱資料、個人設定などの混入がないことを確認してから公開します。

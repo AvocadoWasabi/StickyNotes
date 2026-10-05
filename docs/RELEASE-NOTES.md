@@ -1,6 +1,10 @@
+[English](#english) | [日本語](#日本語) | [简体中文](#简体中文)
+
 # Markdown Sticky Notes v0.0.2
 
 ## 日本語
+
+この文書の中国語訳は0.0.2公開後に追加しました。公開済みタグ・ZIPの同梱資料は当時のままです。
 
 Windows 10 / 11（x64）向け。Markdownの編集操作、デイリーノートの選択、保存フォルダ変更時の移行を改善しました。
 
@@ -30,6 +34,8 @@ Windows 10 / 11（x64）向け。Markdownの編集操作、デイリーノート
 
 ## English
 
+The Chinese translation of this document was added after 0.0.2 was published. The published tag and ZIP retain their original documentation.
+
 For **Windows 10 / 11 (x64)**. This release improves Markdown editing, daily-note selection, and migration when changing the notes folder.
 
 ### Changes
@@ -55,3 +61,33 @@ No administrator privileges or separate .NET installation are required. For port
 The app is unsigned and its controls are currently in Japanese. Google Calendar is optional and requires your own OAuth configuration. The SHA256 checksum is provided in `StickyNotes-win-x64.zip.sha256`.
 
 [User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.2/README.md) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.2/CHANGELOG.md)
+
+## 简体中文
+
+本文中文译文在 0.0.2 发布后添加；已发布标签和 ZIP 保留当时的文档。
+
+面向 **Windows 10 / 11（x64）**。本版本改进 Markdown 编辑、每日笔记选择和更改保存文件夹时的迁移。
+
+### 主要变化
+
+- 点击正文即可开始编辑。修复阅读视图和编辑器重叠、无法编辑文字的问题。
+- 编辑器失去焦点时询问保存、放弃或继续编辑。可在设置中开启免确认自动保存，默认关闭。
+- 编辑、保存、重新加载和更多与其他操作位于同一行，采用不同背景色。
+- 分离固定笔记和每日笔记选择菜单。固定笔记通过文件夹／文件选择器打开。
+- 共用的可编辑标题选择框可选择已有标题。新名称在点击显示时追加到原文件末尾，空白显示整个正文；两种窗口末尾可预览所选范围。
+- 每日笔记统一为带 `year`、`month`、`day` 命名日期组的正则表达式。设置中实时显示今天的匹配文件名，空白自动填默认值；插入示例前确认替换。
+- 修复便签文件夹和每日笔记文件夹的值错误联动。修改保存位置时询问是否迁移已有 Markdown（包含子文件夹），不覆盖目标文件。
+
+### 安装与更新
+
+1. 更新前，从通知区域菜单选择 `終了`（退出）。
+2. 下载 Assets 中的 **StickyNotes-win-x64.zip**，完整解压到另一个文件夹。
+3. 运行 **Install.cmd**，从开始菜单启动 **Markdown Sticky Notes**。
+
+无需管理员权限或单独安装 .NET。免安装使用可直接运行解压目录中的 `StickyNotes.exe`，但须保留所有附带文件。已有笔记、设置和备份会保留。
+
+**从 0.0.1 更新：**请在设置中确认两个文件夹和今天的匹配文件名。旧日期格式 `yyyy-MM-dd`、`yyyy/MM/yyyy-MM-dd` 及各自带 `(ddd)` / `(dddd)` 的变体会自动转换。其他自定义格式需要手动改写为正则表达式。转换本身不移动或创建笔记。更改保存文件夹后若选择是，旧目录中所有 Markdown 均属于迁移范围，请先确认范围和目标。
+
+应用未签名，界面控件为日语。Google Calendar 为可选功能，需要用户自行配置 OAuth。SHA256 位于 `StickyNotes-win-x64.zip.sha256`。
+
+[中文使用指南（main）](https://github.com/AvocadoWasabi/StickyNotes/blob/main/README.zh-CN.md) · [中文更新日志（main）](https://github.com/AvocadoWasabi/StickyNotes/blob/main/CHANGELOG.zh-CN.md)

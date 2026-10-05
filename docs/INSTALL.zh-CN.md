@@ -1,0 +1,42 @@
+[English](INSTALL.en.md) | [日本語](INSTALL.md) | [简体中文](INSTALL.zh-CN.md)
+
+# 安装、更新与卸载
+
+## 环境要求
+
+Windows 10 / 11 64 位（x64）。无需单独安装 .NET、管理员权限或 Obsidian 插件。
+
+## 安装
+
+1. 从 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) 下载 `StickyNotes-win-x64.zip`。`Source code` 供开发者使用。
+2. 右键点击 ZIP，选择“全部解压缩”。
+3. 双击解压目录中的 `Install.cmd`。
+4. 从开始菜单启动 Markdown Sticky Notes。
+
+安装目录为 `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`，不会设置开机自启。应用未签名，Windows 可能显示提示；请先确认来源和文件。
+
+免安装使用时，运行解压目录中的 `StickyNotes.exe`。请保留整个文件夹，程序需要其他附带文件。
+
+## 初次设置
+
+右键点击通知区域图标，打开 `設定`，指定便签和每日笔记文件夹。与 Obsidian 共用文件时，选择仓库内的目录。不使用 Google 功能时无需授权。两个文件夹独立保存。更改保存位置并保存时，应用询问是否迁移旧目录中的 Markdown：是为包含子文件夹的迁移，否为仅更改新便签位置，取消为中止保存设置。范围与限制见 [README](../README.zh-CN.md#文件存储与-obsidian)。
+
+完整操作与 Google Calendar 设置见 [README](../README.zh-CN.md)。`examples` 附带每日笔记和 Obsidian Bases 示例。
+
+每日笔记格式统一为带 year/month/day 日期标签的正则表达式。空白自动补默认值；插入默认示例按钮替换前会确认。输入时显示今日匹配文件名，正文预览位于固定笔记／每日笔记选择窗口末尾。保存设置后，从 `… → デイリーノートを表示…` 选择已有标题。新名称在点击 `表示` 时追加到末尾，空白显示整个正文。固定笔记通过 `… → ノートの一部分を付箋にする…` 选择文件夹／Markdown，使用同一标题选择框。含星期后缀的例子见[每日笔记说明](../README.zh-CN.md#显示和编辑每日笔记的指定部分)。
+
+点击正文或 `編集`（Ctrl+E）编辑，`保存`（Ctrl+S）保存。失去焦点且有修改时，询问保存、放弃或继续。设置中的 `編集欄からフォーカスが外れたら、確認せず自動保存する` 可启用免确认保存，默认关闭。保存失败保留输入。阅读时可直接操作复选框、链接和滚动条。
+
+## 更新
+
+从通知区域的 `終了` 退出应用，将新 ZIP 解压到另一目录并运行 `Install.cmd`，覆盖原应用文件。笔记、设置和备份保存在安装目录以外。
+
+从 0.0.1 更新后，请确认两个文件夹设置和今日匹配文件名。旧版标准日期格式会自动转为带日期标签的正则表达式，自定义格式需手动修正。免确认自动保存默认关闭。详见[更新日志](../CHANGELOG.zh-CN.md)。
+
+## 卸载
+
+1. 从通知区域的 `終了` 退出应用。
+2. 删除 `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`。
+3. 右键点击开始菜单中的 Markdown Sticky Notes，打开文件位置并删除快捷方式。
+
+设置、凭据和备份保留在 `%LOCALAPPDATA%\StickyNotes`；Markdown 保留在所选目录，默认 `Documents\StickyNotesData`。如需另外删除，请先确认要保留的数据。
