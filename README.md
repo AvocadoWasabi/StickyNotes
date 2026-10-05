@@ -71,6 +71,8 @@ Launch the installed app from the Start menu, or run `StickyNotes.exe` from the 
 
 Drag the top of a note to move it, or drag an edge or the bottom-right corner to resize it. Use `○ / ●` to toggle always-on-top mode. Notes have no standard title bar and normally stay out of the taskbar; the app runs in the notification area.
 
+Edit, Save, Reload, More, New, Pin, and Close share one row below the title. Edit has a blue background, Save green, Reload yellow, and More purple.
+
 | Control | Action |
 | --- | --- |
 | `＋` | Create a note |
@@ -118,7 +120,7 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 
 The app reads and writes the original Markdown file directly. No Obsidian CLI or plugin is needed.
 
-1. In Settings, configure your daily notes folder and tagged regular expression, check the live preview, then select `保存して閉じる` (Save and close).
+1. In Settings, configure your daily notes folder and tagged regular expression, check the matching filename, then select `保存して閉じる` (Save and close).
 2. Select `… → デイリーノートを表示…` (Display a daily note). The app loads today's file from Settings; no absolute-path input or daily-mode switch is needed.
 3. In the shared heading selector, choose an existing heading or type a new name without `#`. Leave it blank to display the entire body.
 4. Select `表示` (Display). A new name creates a `## Heading` at the end of the original file after making a backup. Typing or cancelling does not write anything. Clicking a task checkbox updates the corresponding source line.
@@ -129,7 +131,7 @@ Daily-note filenames use **date tags + a regular expression** only. There is no 
 (?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:\([^)]+\))?\.md
 ```
 
-A blank or whitespace-only field is filled with this default. The `日時タグ付きの既定例を挿入` (Insert default with date tags) button asks before replacing the entire input; **No** retains the existing expression. Opening Settings does not ask for confirmation. Changes update the preview and are persisted when you save.
+A blank or whitespace-only field is filled with this default. The `日時タグ付きの既定例を挿入` (Insert default with date tags) button asks before replacing the entire input; **No** retains the existing expression. Opening Settings does not ask for confirmation. Changes update filename matching and are persisted when you save.
 
 Each required tag must capture one numeric date part. Only a file whose captured date equals today's local date is selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; the extension is not appended automatically. Use `/` for subfolders; for example, prefix the expression with `Diary/` when selecting the parent folder. This example excludes other dates and prefix variants such as `WeeklyTasksLog-…`.
 
@@ -137,7 +139,9 @@ Existing regex settings are preserved. When loading older settings, `yyyy-MM-dd`
 
 The search includes subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. Missing or multiple matches produce an error without creating files or choosing one arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
 
-The Settings screen checks the unsaved folder and expression about 300 ms after you stop typing. A unique match for today displays its filename and a read-only Markdown preview (up to 4,000 characters). Invalid expressions, missing files, multiple matches, and read errors appear inline. Changing the folder also refreshes the preview. Searches run in the background, and outdated results are discarded. Previewing does not save settings, edit notes, or open a sticky note; follow the steps above to display the selected heading.
+The Settings screen checks the unsaved folder and expression about 300 ms after you stop typing, displaying today's matching filename or an inline error. Changing the folder also refreshes matching. Searches run in the background, and outdated results are discarded.
+
+The read-only content preview is the final item in both the daily-note and fixed-note linking dialogs. Loading or reloading a file, selecting a heading, or typing a heading updates the Markdown preview of the chosen range, up to 4,000 characters. A blank heading previews the entire body; a new heading shows a pending append. Previewing never writes to the source file.
 
 For a fixed note, use the separate `… → ノートの一部分を付箋にする…` (Link part of a note) menu. Select `フォルダを選択…` (Choose folder) to browse a folder and then select its Markdown file, or use `Markdownファイルを選択…` (Choose Markdown file) directly. There is no manual absolute-path field or daily-mode control. Both dialogs share the same heading selector: select an existing heading, enter a new one, or leave it blank for the whole body. Both menus are also available from the notification-area icon. Use `再読込` (Reload) to refresh the heading list.
 

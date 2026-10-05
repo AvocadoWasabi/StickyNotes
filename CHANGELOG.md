@@ -16,6 +16,9 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Changed
 
+- Place all note actions in one row beneath the title, with distinct backgrounds for Edit, Save, Reload, and More. Keep the row within the minimum note width.
+- Move content previews from Settings to the end of both note-linking dialogs, updating the preview for the selected heading. Settings retain live filename matching and errors.
+
 - Unify daily-note matching around date tags and regular expressions. Remove the format-mode checkbox, keep an explicit template-insertion button, and convert documented legacy date formats when loading settings. Preserve other custom formats for manual correction.
 
 ### Added
@@ -28,7 +31,7 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 - Auto-fill a blank daily regex with the default named-date expression. The template-insertion button asks before replacing existing text with that example; declining retains a nonempty expression.
 
-- Live daily-note preview in Settings: show today's matching filename and read-only Markdown while typing a tagged regex, with inline errors and background searches that discard outdated results. Include instructions for displaying a daily heading as a sticky note.
+- Live daily-note filename matching in Settings, with inline errors and background searches that discard outdated results. Show a read-only content preview in the note-linking dialogs.
 - Tagged regular expressions for daily-note paths, using named year/month/day groups to select today's file, including weekday suffixes and subfolders. Reject ambiguous matches and limit regex matching and search work.
 - Ask whether to migrate existing Markdown files when changing the notes folder, with Yes / No / Cancel choices. Include subfolders and closed notes, and preserve open-note edits and placement.
 - Prevent overwriting destination files and roll back moves if migration or settings persistence fails; report any files needing manual recovery.

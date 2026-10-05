@@ -10,6 +10,7 @@ namespace StickyNotes;
 public sealed class NoteWindow : Window
 {
     public NotePlacement Placement { get; }
+    internal StackPanel NoteControls { get; } = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(4, 0, 4, 3) };
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
     private readonly FlowDocumentScrollViewer preview = new() { IsToolBarVisible = false, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Background = Brushes.Transparent };
@@ -46,21 +47,31 @@ public sealed class NoteWindow : Window
         WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0, ResizeBorderThickness = new Thickness(6), CornerRadius = new CornerRadius(0), GlassFrameThickness = new Thickness(0) });
         var outer = new Border { BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromArgb(45, 70, 60, 30)), BorderThickness = new Thickness(1) };
         var dock = new DockPanel(); outer.Child = dock; Content = outer;
-        var header = new DockPanel { Height = 39, Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)) };
-        var controls = new StackPanel { Orientation = Orientation.Horizontal };
-        controls.Children.Add(Ui.Button("＋", app.NewNote, "新しい付箋"));
-        var pin = Ui.Button(placement.Pinned ? "●" : "○", () => { Topmost = !Topmost; Placement.Pinned = Topmost; app.SaveConfig(); }, "最前面を切り替え");
+        var header = new DockPanel { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)) };
+        title.Height = 27;
+        DockPanel.SetDock(title, Dock.Top); header.Children.Add(title);
+        Button Control(string label, Action action, double width, string color, string? tooltip = null)
+        {
+            var button = Ui.Button(label, action, tooltip);
+            button.Width = width; button.Height = 28; button.FontSize = 12;
+            button.Padding = new Thickness(0); button.Margin = new Thickness(1);
+            button.Background = (Brush)new BrushConverter().ConvertFromString(color)!;
+            button.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(37, 52, 69));
+            button.BorderBrush = Brushes.SlateGray;
+            NoteControls.Children.Add(button);
+            return button;
+        }
+        Control("編集", BeginEdit, 40, "#DFEAF7", "Markdown本文を編集（Ctrl+E）");
+        Control("保存", () => Save(), 40, "#DCEEDC", "保存（Ctrl+S）");
+        Control("再読込", ReloadAsked, 58, "#FFF0CC");
+        Control("…", Menu, 30, "#E9E0F2", "その他の操作");
+        Control("＋", app.NewNote, 28, "#F3F1EB", "新しい付箋");
+        var pin = Control(placement.Pinned ? "●" : "○", () => { Topmost = !Topmost; Placement.Pinned = Topmost; app.SaveConfig(); }, 28, "#F3F1EB", "最前面を切り替え");
         pin.Click += (_, _) => pin.Content = Topmost ? "●" : "○";
-        controls.Children.Add(pin);
-        controls.Children.Add(Ui.Button("×", Close, "この付箋を閉じる（ファイルは残ります）"));
-        DockPanel.SetDock(controls, Dock.Right); header.Children.Add(controls); header.Children.Add(title);
-        header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource is TextBlock || e.OriginalSource == header) { DragMove(); e.Handled = true; } };
+        Control("×", Close, 28, "#F3F1EB", "この付箋を閉じる（ファイルは残ります）");
+        header.Children.Add(NoteControls);
+        header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource == title || e.OriginalSource == header) { DragMove(); e.Handled = true; } };
         DockPanel.SetDock(header, Dock.Top); dock.Children.Add(header);
-        var toolbar = new WrapPanel { Margin = new Thickness(7, 5, 7, 3) };
-        toolbar.Children.Add(Ui.Button("編集", BeginEdit, "Markdown本文を編集（Ctrl+E）")); toolbar.Children.Add(Ui.Button("保存", () => Save()));
-        toolbar.Children.Add(Ui.Button("再読込", ReloadAsked));
-        toolbar.Children.Add(Ui.Button("…", Menu));
-        DockPanel.SetDock(toolbar, Dock.Top); dock.Children.Add(toolbar);
         DockPanel.SetDock(tags, Dock.Top); dock.Children.Add(tags);
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
         var grid = new Grid();

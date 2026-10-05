@@ -3,7 +3,7 @@ namespace StickyNotes;
 // Used by both fixed-note and daily-note linking dialogs.
 public sealed class HeadingPicker : StackPanel
 {
-    internal ComboBox Input { get; } = new() { IsEditable = true, IsTextSearchEnabled = false, MinHeight = 32 };
+    internal HeadingComboBox Input { get; } = new() { IsEditable = true, IsTextSearchEnabled = false, MinHeight = 32 };
     public string Heading => Input.Text.Trim();
 
     public HeadingPicker()
@@ -19,5 +19,15 @@ public sealed class HeadingPicker : StackPanel
         Input.ItemsSource = markdown is null ? Array.Empty<string>() : SectionEditor.Headings(markdown);
         Input.Text = text;
         IsEnabled = markdown is not null;
+    }
+}
+
+internal sealed class HeadingComboBox : ComboBox
+{
+    public event Action? TextUpdated;
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.Property == TextProperty) TextUpdated?.Invoke();
     }
 }

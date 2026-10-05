@@ -10,6 +10,7 @@ public sealed class NoteLinkWindow : Window
     private readonly TextBlock sourceLabel = new() { Text = "Markdownファイルを選択してください。", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 12) };
     private readonly TextBlock status = new() { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DarkRed, Margin = new Thickness(0, 10, 0, 10) };
     internal HeadingPicker Headings { get; } = new();
+    internal NoteLinkPreview Preview { get; } = new();
     public NotePlacement? Result { get; private set; }
 
     public NoteLinkWindow(bool daily) : this(daily, () => DailyNoteResolver.Resolve(App.Current.Config.DailyFolder, App.Current.Config.DailyPattern, DateTime.Today)) { }
@@ -45,6 +46,8 @@ public sealed class NoteLinkWindow : Window
             catch (Exception ex) { status.Text = ex.Message; }
         }));
         panel.Children.Add(buttons);
+        panel.Children.Add(Preview);
+        Headings.Input.TextUpdated += () => Preview.Update(source, Headings.Heading);
         Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         Headings.Load(null);
         if (daily) Loaded += (_, _) => TryLoad(null);
@@ -65,7 +68,7 @@ public sealed class NoteLinkWindow : Window
 
     internal void LoadSource(string? path = null)
     {
-        source = null; Headings.Load(null); sourceLabel.Text = "元ノートを読み込めません。";
+        source = null; Headings.Load(null); Preview.Update(null, ""); sourceLabel.Text = "元ノートを読み込めません。";
         path = daily ? resolveDaily() : path;
         if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path) || !Path.GetExtension(path).Equals(".md", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("既存のMarkdownファイルを選択してください。");
@@ -73,6 +76,7 @@ public sealed class NoteLinkWindow : Window
         var snapshot = NoteStore.Read(Path.GetFullPath(path));
         Headings.Load(snapshot.Text);
         source = snapshot;
+        Preview.Update(source, Headings.Heading);
         selectedFolder = Path.GetDirectoryName(snapshot.Path)!;
         sourceLabel.Text = (daily ? "今日のノート: " : "選択したノート: ") + snapshot.Path;
     }

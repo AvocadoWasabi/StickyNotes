@@ -39,11 +39,9 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray,
             Text = "year・month・day のタグで今日の日付を判別します。拡張子 .md を含む相対パス全体に照合し、区切りは / を使います。\n例: " + DailyNoteResolver.RegexExample });
         var previewStatus = new TextBlock { Name = "DailyPreviewStatus", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 4) };
-        var previewText = new TextBox { Name = "DailyPreviewText", IsReadOnly = true, TextWrapping = TextWrapping.Wrap,
-            Height = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Visibility = Visibility.Collapsed };
         var previewPanel = new StackPanel();
-        previewPanel.Children.Add(previewStatus); previewPanel.Children.Add(previewText);
-        previewPanel.Children.Add(new TextBlock { Text = "表示するには設定を保存し、付箋の「… → デイリーノートを表示…」で見出しを選択してください。空欄なら本文を全表示し、新しい見出し名なら表示時に末尾へ追加します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        previewPanel.Children.Add(previewStatus);
+        previewPanel.Children.Add(new TextBlock { Text = "内容プレビューは、設定を保存後に「… → デイリーノートを表示…」を開くと末尾に表示します。固定ノートは「ノートの一部分を付箋にする…」から確認できます。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         panel.Children.Add(previewPanel);
         var previewTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
         var previewGate = new SemaphoreSlim(1, 1);
@@ -56,7 +54,6 @@ public sealed class SettingsWindow : Window
             previewVersion++;
             previewCancellation?.Cancel();
             previewTimer.Stop();
-            previewText.Text = ""; previewText.Visibility = Visibility.Collapsed;
             previewStatus.Foreground = Brushes.DimGray;
             previewStatus.Text = "今日のデイリーノートを確認中…";
             previewTimer.Start();
@@ -72,14 +69,12 @@ public sealed class SettingsWindow : Window
             try
             {
                 await previewGate.WaitAsync(cancellation.Token);
-                DailyNotePreview result;
-                try { result = await Task.Run(() => DailyNotePreview.Read(folder, expression, today, cancellation.Token)); }
+                string path;
+                try { path = await Task.Run(() => DailyNoteResolver.Resolve(folder, expression, today, cancellation.Token)); }
                 finally { previewGate.Release(); }
                 if (previewClosed || version != previewVersion) return;
                 previewStatus.Foreground = Brushes.DarkGreen;
-                previewStatus.Text = "今日のノートが見つかりました: " + System.IO.Path.GetRelativePath(folder, result.Path) +
-                    "\n内容プレビュー（Markdown・読み取り専用）" + (result.Truncated ? " — 先頭4000文字まで" : "");
-                previewText.Text = result.Text; previewText.Visibility = Visibility.Visible;
+                previewStatus.Text = "今日のノートが見つかりました: " + System.IO.Path.GetRelativePath(folder, path);
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)

@@ -76,6 +76,7 @@ internal static class Program
             NoteLinkTests(root);
             MarkdownEditingTests(root);
             FocusEditingTests(root);
+            LinkPreviewTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -96,6 +97,46 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void LinkPreviewTests(string root)
+    {
+        var path = Path.Combine(root, "preview-link.md");
+        const string markdown = "---\ntitle: hidden metadata\n---\n# Journal\nintro\n## Tasks\n- [ ] preview only\n## Log\nother\n";
+        File.WriteAllText(path, markdown);
+        var before = File.ReadAllBytes(path);
+        foreach (var daily in new[] { false, true })
+        {
+            var dialog = new NoteLinkWindow(daily, () => path);
+            var panel = (StackPanel)((ScrollViewer)dialog.Content).Content;
+            Check(ReferenceEquals(panel.Children[panel.Children.Count - 1], dialog.Preview), (daily ? "daily" : "fixed") + ": content preview is the final dialog item");
+            dialog.LoadSource(path);
+            Check(dialog.Preview.Body.IsReadOnly && dialog.Preview.Body.Text == NoteStore.Split(markdown).Body, "blank heading previews whole body without YAML");
+            dialog.Headings.Input.Text = "Tasks";
+            Check(dialog.Preview.Body.Text == SectionEditor.Find(markdown, "Tasks").Content, "typing an existing heading refreshes the selected section preview");
+            dialog.Headings.Input.SelectedItem = "Log";
+            Check(dialog.Preview.Body.Text == "other\n", "dropdown selection refreshes the preview");
+            dialog.Headings.Input.Text = "New heading";
+            Check(dialog.Preview.Body.Text == "" && dialog.Preview.Status.Text.Contains("追加予定") && File.ReadAllBytes(path).SequenceEqual(before), "new heading previews the pending addition without modifying the file");
+            dialog.Headings.Input.Text = "Bad\nheading";
+            Check(dialog.Preview.Body.Visibility == Visibility.Collapsed && dialog.Preview.Body.Text == "" && dialog.Preview.Status.Text.StartsWith("確認できません:"), "invalid heading clears stale preview and shows an error");
+            dialog.Close();
+        }
+        var preview = new NoteLinkPreview();
+        preview.Update(new FileSnapshot(path, new string('a', 3999) + "😀tail", "unused"), "");
+        Check(preview.Body.Text.Length == 3999 && preview.Status.Text.Contains("4000"), "link preview limits content without splitting surrogate pairs");
+        preview.Update(new FileSnapshot(path, "## Same\na\n## Same\nb\n", "unused"), "Same");
+        Check(preview.Body.Visibility == Visibility.Collapsed && preview.Status.Text.Contains("複数"), "ambiguous headings display an error rather than a misleading preview");
+        preview.Update(null, "");
+        Check(preview.Body.Text == "" && preview.Body.Visibility == Visibility.Collapsed, "failed or cleared source removes previous preview content");
+
+        var note = new NoteWindow(new NotePlacement { Path = path });
+        var buttons = note.NoteControls.Children.OfType<Button>().ToArray();
+        Check(buttons.Select(b => (string)b.Content).SequenceEqual(new[] { "編集", "保存", "再読込", "…", "＋", "○", "×" }), "all note actions share one horizontal row");
+        note.NoteControls.Measure(new Size(278, 100));
+        Check(note.NoteControls.DesiredSize.Width <= 278, "action row fits the minimum 280-pixel note width");
+        Check(buttons.Take(4).Select(b => b.Background.ToString()).Distinct().Count() == 4 && buttons.Take(4).All(b => b.Background.ToString() != buttons[4].Background.ToString()), "edit/save/reload/menu use distinct backgrounds from other controls");
+        note.Close();
     }
 
     private static void FocusEditingTests(string root)
@@ -165,7 +206,7 @@ internal static class Program
         Check(confirmations == beforeAuto, "reverting to original text does not request a save");
         ClickBody(); editor.Text = "explicit save";
         typeof(NoteWindow).GetMethod("ScheduleFocusLoss", flags)!.Invoke(window, null);
-        var toolbar = dock.Children.OfType<WrapPanel>().Single();
+        var toolbar = window.NoteControls;
         toolbar.Children.OfType<Button>().Single(x => (string)x.Content == "保存").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         var settle = System.Diagnostics.Stopwatch.StartNew();
         WaitFor(() => settle.ElapsedMilliseconds >= 250, "queued focus handling settles after explicit Save");
@@ -209,7 +250,7 @@ internal static class Program
             var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
             var dock = (DockPanel)((Border)window.Content).Child;
-            var toolbar = dock.Children.OfType<WrapPanel>().Single();
+            var toolbar = window.NoteControls;
             var body = dock.Children.OfType<Grid>().Single();
             var reading = body.Children.OfType<DockPanel>().Single();
             var editor = body.Children.OfType<TextBox>().Single();
@@ -321,6 +362,7 @@ internal static class Program
         currentPath = Path.Combine(folder, "missing.md");
         Throws<FileNotFoundException>(() => dailyDialog.LoadSource(), "missing daily file reports load error");
         Check(!dailyDialog.Headings.IsEnabled && dailyDialog.Headings.Input.Items.Count == 0, "failed read removes stale heading choices");
+        Check(dailyDialog.Preview.Body.Text == "" && dailyDialog.Preview.Body.Visibility == Visibility.Collapsed, "failed daily read clears content preview");
         Throws<InvalidOperationException>(() => dailyDialog.Prepare(), "failed read blocks linking stale source");
         dailyDialog.Close();
     }
@@ -341,14 +383,14 @@ internal static class Program
         var pattern = panel.Children.OfType<TextBox>().ElementAt(2);
         var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
         void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
-        var preview = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBox>().Single();
+        var matchStatus = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
         Check(panel.Children.OfType<CheckBox>().All(x => x.Name == "AutoSaveOnFocusLoss"), "settings offer only tagged regex without a mode checkbox");
         Check(confirmations == 0 && pattern.Text == custom, "opening settings preserves custom regex without prompting");
         ClickInsert();
         Check(confirmations == 1 && pattern.Text == custom, "declining template button preserves existing expression");
         answer = true; ClickInsert();
         Check(confirmations == 2 && pattern.Text == DailyNoteResolver.RegexExample, "accepting template button inserts named-date regex example");
-        WaitFor(() => preview.Visibility == Visibility.Visible, "inserted date tags update live preview");
+        WaitFor(() => matchStatus.Text.StartsWith("今日のノートが見つかりました:"), "inserted date tags update the matching filename");
         pattern.Text = "";
         Check(pattern.Text == DailyNoteResolver.RegexExample && confirmations == 2, "clearing regex automatically fills default without another prompt");
         pattern.Text = " \t ";
@@ -398,12 +440,12 @@ internal static class Program
         var inputs = panel.Children.OfType<TextBox>().ToArray();
         var previewPanel = panel.Children.OfType<StackPanel>().Single();
         var status = previewPanel.Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
-        var preview = previewPanel.Children.OfType<TextBox>().Single();
+        Check(!previewPanel.Children.OfType<TextBox>().Any(), "settings no longer contain the note content preview");
         inputs[1].Text = folder; inputs[2].Text = DailyNoteResolver.RegexExample;
-        WaitFor(() => preview.Visibility == Visibility.Visible, "typing regex updates the live preview without saving");
-        Check(status.Text.Contains(Path.GetFileName(file)) && preview.Text == content && preview.IsReadOnly, "live preview shows matching filename and read-only content");
+        WaitFor(() => status.Text.StartsWith("今日のノートが見つかりました:"), "typing regex updates the matching filename without saving");
+        Check(status.Text.Contains(Path.GetFileName(file)), "settings show the matching filename");
         inputs[2].Text = "[";
-        Check(preview.Visibility == Visibility.Collapsed && preview.Text == "", "new input immediately removes stale content");
+        Check(!status.Text.Contains(Path.GetFileName(file)), "new input immediately removes the stale matching filename");
         WaitFor(() => status.Text.StartsWith("確認できません:"), "invalid regex displays an inline error");
         inputs[2].Text = "missing/" + DailyNoteResolver.RegexExample;
         WaitFor(() => status.Text.Contains("今日のデイリーノートがありません"), "no matching file displays an inline error");
@@ -413,11 +455,11 @@ internal static class Program
         WaitFor(() => status.Text.Contains("複数一致"), "ambiguous preview does not choose a file");
         File.Delete(duplicate);
         inputs[2].Text = DailyNoteResolver.RegexExample + "$";
-        WaitFor(() => preview.Visibility == Visibility.Visible, "correcting regex refreshes preview");
+        WaitFor(() => status.Text.StartsWith("今日のノートが見つかりました:"), "correcting regex refreshes the matching filename");
         inputs[1].Text = Path.Combine(folder, "missing");
         WaitFor(() => status.Text.StartsWith("確認できません:"), "changing daily folder refreshes preview");
         inputs[1].Text = folder; inputs[2].Text = "'missing'"; inputs[2].Text = DailyNoteResolver.RegexExample;
-        WaitFor(() => preview.Visibility == Visibility.Visible && status.Text.Contains(Path.GetFileName(file)), "rapid edits display only the latest input result");
+        WaitFor(() => status.Text.StartsWith("今日のノートが見つかりました:") && status.Text.Contains(Path.GetFileName(file)), "rapid edits display only the latest input result");
         Check(File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(config) && app.Config.DailyFolder == originalDaily && File.ReadAllText(file) == content, "live preview does not save settings or change note files");
         inputs[2].Text = "'missing'";
         window.Close();
