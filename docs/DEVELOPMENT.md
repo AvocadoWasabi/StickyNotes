@@ -21,7 +21,9 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 ./build.ps1 -Publish
 ```
 
-前者は復元・Releaseビルド・既存テスト、後者はさらに自己完結型アプリ、インストール用スクリプト、資料、ライセンスを同梱した `artifacts/StickyNotes-win-x64.zip` とSHA256チェックサムを生成します。
+どちらも復元・Releaseビルド・既存テストを実行し、自己完結型アプリ、インストール用スクリプト、3言語の資料、ライセンスを `artifacts/app` に生成します。通常の `./build.ps1` 完了後、そのまま `artifacts/app/Install.cmd` からローカルインストールできます。起動中のSticky Notesを通知領域から終了してから実行してください。ビルド完了時にもインストール先のスクリプトを案内します。ビルド自体はインストールを実行しません。
+
+`-Publish` は追加で `artifacts/StickyNotes-win-x64.zip` とSHA256チェックサムを生成・更新します。通常のビルドでは既存ZIPは更新しないため、ZIPを配布する場合は `-Publish` を使用してください。
 
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 

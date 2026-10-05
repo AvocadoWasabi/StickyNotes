@@ -235,7 +235,9 @@ Requires Windows and the .NET 8 SDK.
 .\build.ps1 -Publish
 ```
 
-The build uses `.tools/dotnet` when a local SDK is present. Tests use temporary files and simulated APIs, without accessing real vaults or external services. `-Publish` also creates a self-contained app, installer scripts, documentation, and `artifacts/StickyNotes-win-x64.zip` with a SHA256 checksum. Builds from this source include READMEs and changelogs in all three languages; previously published ZIPs retain their original documentation.
+The build uses `.tools/dotnet` when a local SDK is present. Tests use temporary files and simulated APIs, without accessing real vaults or external services. Every normal build generates a self-contained app, installer scripts, documentation, licenses, and READMEs/changelogs in all three languages under `artifacts/app`. On completion, exit any running Sticky Notes from the notification area, then run `artifacts/app/Install.cmd` to install locally. The build prints this path; installation is not automatic.
+
+`-Publish` additionally creates or updates `artifacts/StickyNotes-win-x64.zip` and its SHA256 checksum. Normal builds leave existing ZIPs unchanged. Builds from this source include all three documentation languages; previously published ZIPs retain their original documentation.
 
 To launch with a separate data directory for testing (notes also appear in the taskbar in this mode):
 

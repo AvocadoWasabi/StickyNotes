@@ -21,7 +21,9 @@
 ./build.ps1 -Publish
 ```
 
-前者还原依赖、构建 Release 并运行测试。后者还生成自包含应用、安装脚本、文档、许可、`artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。
+两种命令都会还原依赖、构建 Release、运行测试，并在 `artifacts/app` 中生成自包含应用、安装脚本、三种语言的文档和许可。普通 `./build.ps1` 完成后，即可运行 `artifacts/app/Install.cmd` 本地安装。请先从通知区域退出正在运行的 Sticky Notes。构建完成时会提示安装脚本路径，但不会自动执行安装。
+
+`-Publish` 额外生成或更新 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。普通构建不会更新已有 ZIP；分发 ZIP 时请使用 `-Publish`。
 
 `src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
 

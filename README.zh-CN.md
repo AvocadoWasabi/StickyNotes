@@ -237,7 +237,9 @@ updated: 2026-10-05T09:00:00+09:00
 .\build.ps1 -Publish
 ```
 
-若存在本地 `.tools/dotnet`，构建优先使用该 SDK。测试使用临时文件和模拟 API，不访问真实仓库或外部服务。`-Publish` 还会生成自包含应用、安装脚本、文档，以及 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。由当前源码构建的包包含三种语言的 README 和更新日志；已发布的旧 ZIP 保留原有文档。
+若存在本地 `.tools/dotnet`，构建优先使用该 SDK。测试使用临时文件和模拟 API，不访问真实仓库或外部服务。普通构建也会在 `artifacts/app` 生成自包含应用、安装脚本、相关文档、许可及三种语言的 README 和更新日志。完成后，先从通知区域退出正在运行的 Sticky Notes，再运行 `artifacts/app/Install.cmd` 即可本地安装。构建会提示该路径，但不会自动安装。
+
+`-Publish` 额外生成或更新 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。普通构建不会更新已有 ZIP。当前源码构建包含三种语言文档；已发布的旧 ZIP 保留原有文档。
 
 使用独立数据目录进行测试（此模式下便签也显示在任务栏）：
 

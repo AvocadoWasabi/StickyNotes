@@ -21,7 +21,9 @@ Use Windows and the .NET 8 SDK. A local `.tools/dotnet` SDK takes priority when 
 ./build.ps1 -Publish
 ```
 
-The first command restores, builds Release, and runs tests. The second also produces a self-contained app, installer scripts, documentation, licenses, `artifacts/StickyNotes-win-x64.zip`, and a SHA256 checksum.
+Both commands restore, build Release, run tests, and generate a self-contained app, installer scripts, documentation in all three languages, and licenses under `artifacts/app`. After a normal `./build.ps1`, run `artifacts/app/Install.cmd` to install locally. Exit any running Sticky Notes from the notification area first. The build prints the installer script path on completion; it does not run the installer itself.
+
+`-Publish` additionally creates or updates `artifacts/StickyNotes-win-x64.zip` and its SHA256 checksum. A normal build leaves any existing ZIP unchanged, so use `-Publish` when distributing a ZIP.
 
 `src/StickyNotes.Core` handles storage, section editing, and Calendar integration; `src/StickyNotes` contains the WPF UI; `tests` covers data protection, rendering, and APIs.
 
