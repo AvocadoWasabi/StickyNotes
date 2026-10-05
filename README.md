@@ -58,6 +58,7 @@ To uninstall, exit the app, delete `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`
 
 ## Documentation and examples
 
+- [Changelog / version history](CHANGELOG.md)
 - [日本語 / Japanese README](README.ja.md)
 - [Installation, updates, and removal (Japanese)](docs/INSTALL.md)
 - [Development, branch workflow, and releases (Japanese)](docs/DEVELOPMENT.md)

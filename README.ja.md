@@ -58,6 +58,7 @@ Windows / C# / WPFで作成した、ObsidianのMarkdownと連携する付箋ア�
 
 ## 関連資料
 
+- [バージョン履歴](CHANGELOG.ja.md)
 - [インストール・更新・削除](docs/INSTALL.md)
 - [開発・ブランチ運用・リリース](docs/DEVELOPMENT.md)
 - [サードパーティライセンス](THIRD-PARTY-NOTICES.txt)

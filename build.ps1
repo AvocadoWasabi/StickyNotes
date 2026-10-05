@@ -15,7 +15,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
 if ($Publish) {
     & $dotnet publish src/StickyNotes/StickyNotes.csproj -c Release -r win-x64 --self-contained true -o artifacts/app --configfile NuGet.Config
     if ($LASTEXITCODE -ne 0) { throw 'Publish failed' }
-    Copy-Item README.md,README.ja.md,THIRD-PARTY-NOTICES.txt -Destination artifacts/app
+    Copy-Item README.md,README.ja.md,CHANGELOG.md,CHANGELOG.ja.md,THIRD-PARTY-NOTICES.txt -Destination artifacts/app
     Copy-Item examples -Destination artifacts/app -Recurse -Force
     Copy-Item docs -Destination artifacts/app -Recurse -Force
     Copy-Item packaging/Install.cmd,packaging/Install.ps1 -Destination artifacts/app
