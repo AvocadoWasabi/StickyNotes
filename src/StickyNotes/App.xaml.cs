@@ -3,6 +3,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using System.Security.Principal;
+using System.Windows.Shell;
 using Forms = System.Windows.Forms;
 
 namespace StickyNotes;
@@ -19,6 +21,16 @@ public partial class App : Application
     private System.Drawing.Icon? trayIcon;
     private Mutex? mutex;
     private bool ownsMutex;
+    private AppCommandPipe? commandPipe;
+    private static string CommandPipeName
+    {
+        get
+        {
+            using var identity = WindowsIdentity.GetCurrent();
+            using var process = Process.GetCurrentProcess();
+            return $"StickyNotes.{identity.User!.Value}.{process.SessionId}";
+        }
+    }
     public static string DataDirectory { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StickyNotes");
     private static string ConfigPath => Path.Combine(DataDirectory, "settings.json");
     private static string TokenPath => Path.Combine(DataDirectory, "google-token.bin");
@@ -26,14 +38,29 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        var command = AppCommands.Parse(e.Args);
         if (e.Args.Length == 2 && e.Args[0] == "--data-dir")
         {
             TestMode = true;
             DataDirectory = Path.GetFullPath(e.Args[1]);
             Config.NotesFolder = Path.Combine(DataDirectory, "notes");
         }
+        else if (e.Args.Length > 0 && command is null)
+        {
+            MessageBox.Show("起動引数が正しくありません。"); Shutdown(); return;
+        }
         mutex = new Mutex(true, "Local\\StickyNotes.Desktop", out ownsMutex);
-        if (!ownsMutex) { MessageBox.Show("付箋アプリは起動済みです。通知領域のアイコンから操作できます。"); Shutdown(); return; }
+        if (!ownsMutex)
+        {
+            if (command is not null)
+            {
+                try { AppCommandPipe.Send(CommandPipeName, command).GetAwaiter().GetResult(); }
+                catch (Exception ex) { MessageBox.Show("起動中のアプリに操作を渡せませんでした。通知領域から操作するか、アプリを再起動してください。\n" + ex.Message); }
+            }
+            else MessageBox.Show("付箋アプリは起動済みです。通知領域またはタスクバーのメニューから操作できます。");
+            Shutdown(); return;
+        }
+        if (command?.Id == "exit") { Shutdown(); return; }
         Directory.CreateDirectory(DataDirectory);
         if (File.Exists(ConfigPath))
         {
@@ -43,22 +70,18 @@ public partial class App : Application
         Calendar = new CalendarService(
             () => File.Exists(TokenPath) ? Encoding.UTF8.GetString(ProtectedData.Unprotect(File.ReadAllBytes(TokenPath), null, DataProtectionScope.CurrentUser)) : null,
             value => File.WriteAllBytes(TokenPath, ProtectedData.Protect(Encoding.UTF8.GetBytes(value), null, DataProtectionScope.CurrentUser)));
-        var menu = new Forms.ContextMenuStrip();
-        menu.Items.Add("新しい付箋", null, (_, _) => Safe(NewNote));
-        menu.Items.Add("Markdownを開く…", null, (_, _) => Safe(OpenNote));
-        menu.Items.Add("ノートの一部分を付箋にする…", null, (_, _) => Safe(LinkSection));
-        menu.Items.Add("デイリーノートを表示…", null, (_, _) => Safe(LinkDaily));
-        menu.Items.Add("すべて表示", null, (_, _) => { foreach (var note in Notes) { note.Show(); note.Activate(); } });
-        menu.Items.Add("一時的に付箋を最前面に表示する（10秒間）", null, (_, _) => Safe(BringNotesToFrontTemporarily));
-        menu.Items.Add("設定…", null, (_, _) => new SettingsWindow().ShowDialog());
-        menu.Items.Add(new Forms.ToolStripSeparator());
-        menu.Items.Add("終了", null, (_, _) => Quit());
+        var menu = AppCommands.CreateTrayMenu(ExecuteCommand);
+        Safe(() => commandPipe = new AppCommandPipe(CommandPipeName, received =>
+            Dispatcher.BeginInvoke(new Action(() => { if (!Exiting) ExecuteCommand(received); }))));
+        if (!TestMode)
+            Safe(() => JumpList.SetJumpList(this, AppCommands.CreateJumpList(Environment.ProcessPath!)));
         using (var iconStream = GetResourceStream(new Uri("pack://application:,,,/StickyNotes;component/Assets/StickyNotes.ico")).Stream)
             trayIcon = new System.Drawing.Icon(iconStream, System.Windows.Forms.SystemInformation.SmallIconSize);
         tray = new Forms.NotifyIcon { Icon = trayIcon, Text = "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => { if (Notes.Count == 0) Safe(NewNote); else { Notes[0].Show(); Notes[0].Activate(); } };
         foreach (var placement in Config.Windows.ToArray()) Safe(() => ShowNote(placement));
-        if (Notes.Count == 0) Safe(NewNote);
+        if (Notes.Count == 0 && command?.Id != "new") Safe(NewNote);
+        if (command is not null) Dispatcher.BeginInvoke(new Action(() => ExecuteCommand(command)));
         SessionEnding += (_, args) => { if (!PrepareExit()) args.Cancel = true; };
     }
 
@@ -107,6 +130,28 @@ public partial class App : Application
         File.Move(temporary, ConfigPath, true);
     }
 
+    internal void ExecuteCommand(AppCommand command) => Safe(() =>
+    {
+        switch (command.Id)
+        {
+            case "new": NewNote(); break;
+            case "open": OpenNote(); break;
+            case "link-section": LinkSection(); break;
+            case "link-daily": LinkDaily(); break;
+            case "show-all":
+                foreach (var note in Notes.ToArray())
+                {
+                    note.Show();
+                    if (note.WindowState == WindowState.Minimized) note.WindowState = WindowState.Normal;
+                    note.Activate();
+                }
+                break;
+            case "temporary-front": BringNotesToFrontTemporarily(); break;
+            case "settings": new SettingsWindow().ShowDialog(); break;
+            case "exit": Quit(); break;
+        }
+    });
+
     public void BringNotesToFrontTemporarily()
     {
         foreach (var note in Notes.ToArray()) note.BringToFrontTemporarily();
@@ -153,6 +198,7 @@ public partial class App : Application
     public void Quit() { if (PrepareExit()) Shutdown(); }
     protected override void OnExit(ExitEventArgs e)
     {
+        commandPipe?.Dispose();
         tray?.Dispose();
         trayIcon?.Dispose();
         Calendar?.Dispose();

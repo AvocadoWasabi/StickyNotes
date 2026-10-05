@@ -97,6 +97,8 @@ Drag the top of a note to move it, or drag an edge or the bottom-right corner to
 
 To also show note icons in the taskbar, enable `タスクバーにも付箋のアイコンを表示する` in Settings and save. This applies to all open notes and new notes, persists after restarting, and can be disabled again. The notification-area icon remains available. Existing settings default to off.
 
+Right-click the taskbar icon to access the same eight operations as the notification-area menu: New note, Open Markdown, Link a section, Display a daily note, Show all, Temporarily bring notes to the top, Settings, and Exit. Windows displays these as Jump List tasks alongside its own pin/close commands. Show all also restores minimized notes. Operations are forwarded to the running app, retaining the usual save confirmation on exit. If the app is stopped, selecting a task starts it and performs that operation; Exit alone does not start a new session. Restart the updated app once to register the menu. The isolated `--data-dir` test mode does not register or replace the taskbar menu.
+
 Choose `一時的に付箋を最前面に表示する（10秒間）` from the notification-area menu or a note's `…` menu to bring all open notes to the top for **10 seconds**, including restoring minimized notes. Choosing it again restarts the interval. Afterward, each note returns to its permanent pin setting; this does not restore the previous window stacking order. Temporary display is not saved as pinning. Using `○ / ●` during the interval cancels temporary display for that note and immediately applies the new permanent setting. Closing a note still closes it normally.
 
 By default, Edit, Save, Reload, More, New, Pin, and Close are always visible in one row below the title. Edit has a blue background, Save green, Reload yellow, and More purple.

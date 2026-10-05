@@ -81,6 +81,8 @@ internal static class Program
             ContentScaleTests(root);
             TitleButtonOverlayTests(root);
             TaskbarAndTemporaryFrontTests(root);
+            AppCommandMenuTests();
+            Task.Run(AppCommandPipeTests).GetAwaiter().GetResult();
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -101,6 +103,62 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void AppCommandMenuTests()
+    {
+        var selected = new List<AppCommand>();
+        using var tray = AppCommands.CreateTrayMenu(selected.Add);
+        var executable = @"C:\A folder\日本語\StickyNotes.exe";
+        var jump = AppCommands.CreateJumpList(executable);
+        var tasks = jump.JumpItems.OfType<System.Windows.Shell.JumpTask>().Where(task => !string.IsNullOrEmpty(task.Title)).ToArray();
+        Check(tasks.Length == 8 && tasks.Select(task => task.Title).SequenceEqual(AppCommands.All.Select(command => command.Title)), "taskbar includes every tray operation in the same order");
+        Check(tray.Items.Count == jump.JumpItems.Count && tray.Items.Count == 9, "tray and taskbar include the same separator before Exit");
+        for (var index = 0; index < AppCommands.All.Count; index++)
+        {
+            var command = AppCommands.All[index];
+            tray.Items[index < 7 ? index : index + 1].PerformClick();
+            Check(selected[^1] == command && AppCommands.Parse(tasks[index].Arguments.Split(' ')) == command,
+                "tray and taskbar select the same command: " + command.Id);
+        }
+        Check(tasks.All(task => task.ApplicationPath == executable && task.IconResourcePath == executable), "taskbar uses the current executable including spaces and Unicode");
+        Check(!jump.ShowRecentCategory && !jump.ShowFrequentCategory, "taskbar does not publish recent note paths");
+        Check(AppCommands.Parse([]) is null && AppCommands.Parse(["--command", "unknown"]) is null &&
+            AppCommands.Parse(["--command", "new", "extra"]) is null && AppCommands.Parse(["--command", "new & calc"]) is null,
+            "command parser rejects missing, unknown, extra and injected arguments");
+    }
+
+    private static async Task AppCommandPipeTests()
+    {
+        var name = "StickyNotes.Tests." + Guid.NewGuid().ToString("N");
+        var received = new System.Collections.Concurrent.ConcurrentQueue<AppCommand>();
+        var pipe = new AppCommandPipe(name, received.Enqueue);
+        try
+        {
+            foreach (var command in AppCommands.All) await AppCommandPipe.Send(name, command);
+            using var deadline = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(5));
+            while (received.Count < AppCommands.All.Count) await Task.Delay(10, deadline.Token);
+            Check(received.Select(command => command.Id).SequenceEqual(AppCommands.All.Select(command => command.Id)), "pipe forwards all eight operations once and in order");
+            using (var invalid = new System.IO.Pipes.NamedPipeClientStream(".", name, System.IO.Pipes.PipeDirection.InOut, System.IO.Pipes.PipeOptions.Asynchronous | System.IO.Pipes.PipeOptions.CurrentUserOnly))
+            {
+                await invalid.ConnectAsync(deadline.Token);
+                await invalid.WriteAsync(new byte[] { 255 }, deadline.Token);
+                Check(await invalid.ReadAsync(new byte[1], deadline.Token) == 0, "unknown pipe command is rejected without acknowledgement");
+            }
+            await AppCommandPipe.Send(name, AppCommands.All[4]);
+            while (received.Count < 9) await Task.Delay(10, deadline.Token);
+            Check(received.Count == 9 && received.Last().Id == "show-all", "pipe remains usable after rejecting an unknown command");
+            using (var idle = new System.IO.Pipes.NamedPipeClientStream(".", name, System.IO.Pipes.PipeDirection.InOut, System.IO.Pipes.PipeOptions.Asynchronous | System.IO.Pipes.PipeOptions.CurrentUserOnly))
+            {
+                await idle.ConnectAsync(deadline.Token);
+                Check(await idle.ReadAsync(new byte[1], deadline.Token) == 0, "idle clients time out without blocking subsequent commands");
+            }
+            await AppCommandPipe.Send(name, AppCommands.All[0]);
+            while (received.Count < 10) await Task.Delay(10, deadline.Token);
+            Check(received.Last().Id == "new", "commands continue after idle client timeout");
+        }
+        finally { pipe.Dispose(); }
+        Check(pipe.Completion.IsCompletedSuccessfully, "pipe shuts down cleanly while awaiting clients");
     }
 
     private static void TaskbarAndTemporaryFrontTests(string root)
@@ -150,8 +208,11 @@ internal static class Program
             var minimizedElapsed = System.Diagnostics.Stopwatch.StartNew();
             WaitFor(() => minimizedElapsed.ElapsedMilliseconds >= 700, "geometry save settles while minimized");
             Check(JsonSerializer.Serialize(note.Placement) == normalPlacement, "minimizing preserves restored note position and size");
+            app.ExecuteCommand(AppCommands.Parse(["--command", "show-all"])!);
+            Check(note.WindowState == WindowState.Normal, "shared Show all command restores minimized notes");
+            note.WindowState = WindowState.Minimized;
             pinned.Hide();
-            app.BringNotesToFrontTemporarily();
+            app.ExecuteCommand(AppCommands.Parse(["--command", "temporary-front"])!);
             Check(note.WindowState == WindowState.Normal && pinned.IsVisible && note.Topmost && pinned.Topmost, "temporary front restores minimized and hidden notes");
             app.SaveConfig();
             var saved = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.Windows.Where(x => x.Path == path).ToArray();

@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add the same eight notification-area operations to the taskbar right-click Jump List. Route selections to the running app through a bounded, current-user command channel, and restore minimized notes with Show all. Keep the normal unsaved-edit confirmation on Exit.
+
 - Add an opt-in setting to show note icons in the taskbar alongside the notification-area icon, applying immediately to open notes and persisting across restarts.
 - Preserve saved note positions and sizes while minimized from the taskbar.
 - Add a notification-area and note menu action to bring all open notes to the top for 10 seconds, restore minimized notes, and then return to each note's permanent pin setting. Repeating restarts the interval; pin changes take effect immediately without persisting temporary state.
