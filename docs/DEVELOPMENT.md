@@ -3,10 +3,12 @@
 ## ブランチ運用
 
 1. 新しい変更の実装前に専用ブランチを作成します（例: `git switch -c feat/example`）。
-2. 実装・資料更新・検証を行い、ローカルでコミットします。
-3. **ユーザーが明示的に指示するまでmainへのマージとGitHubへのpushは行いません。** タグのpushやReleaseの公開も指示が必要です。
+2. 実装・資料更新・検証を行い、PR作成前に提出予定の差分全体をコードレビュー・セキュリティレビューします。
+3. **重大な未解決指摘（Critical / High、P0 / P1、重大なデータ損失・情報流出など）があればPR作成と提出用ブランチのpushを中止します。** 必要なレビュー・検証を完了できない場合もPRを作成せず、状況を報告します。修正後は再検証・再レビューします。
+4. 検証済みの変更をローカルでコミットします。両レビューを完了し、重大な未解決指摘がなければ作業ブランチをpushし、main向けにPRを作成します。PR本文に検証結果・両レビューの結果・残る制限を記載します。
+5. **ユーザーの明示的な指示があるまでmainへのマージ・pushは行いません。** タグのpushやReleaseの公開も指示が必要です。PRの自動マージは設定しません。
 
-継続作業時のルールは [AGENTS.md](../AGENTS.md) にも記載しています。公開先は [AvocadoWasabi/StickyNotes](https://github.com/AvocadoWasabi/StickyNotes) です。
+`AGENTS.md` はローカル開発用のためGit管理・配布の対象外です。公開先は [AvocadoWasabi/StickyNotes](https://github.com/AvocadoWasabi/StickyNotes) です。
 
 ## ビルドと検証
 

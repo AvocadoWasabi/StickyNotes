@@ -3,6 +3,8 @@
 **/obj/
 artifacts/
 .vs/
+# Local development instructions (keep on disk, never commit)
+AGENTS.md
 *.user
 .env
 .env.*

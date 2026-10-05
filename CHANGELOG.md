@@ -24,6 +24,7 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Changed
 
+- Keep local development instructions (`AGENTS.md`) out of Git and distribution packages. Require code and security reviews before PR creation; unresolved major findings block branch submission and PR creation.
 - Buttons use a pale blue background with darker text and borders, making folder selection and other actions easier to distinguish from input fields.
 
 ### Current limitations

@@ -184,4 +184,4 @@ updated: 2026-10-05T09:00:00+09:00
 
 構成: `StickyNotes.Core`（Markdown保存・見出し編集・Calendar REST/OAuth）、`StickyNotes`（WPF付箋・描画・通知領域・モニター配置）、`StickyNotes.Tests`（データ保護・描画・APIの実行可能テスト）。
 
-変更は専用ブランチで実装し、ローカルでコミットします。mainへのマージ、GitHubへのpush、Releaseの公開は、リポジトリ所有者の明示的な指示を受けた場合に行います。詳細は [開発ガイド](docs/DEVELOPMENT.md) を参照してください。
+変更は専用ブランチで実装し、ローカルでコミットします。PR作成前に検証・コードレビュー・セキュリティレビューを行い、重大な未解決指摘があればブランチの提出とPR作成を中止します。レビュー済みの作業ブランチをpushしてPRを作成し、mainへのマージ・pushやReleaseの公開は、リポジトリ所有者の明示的な指示を受けた場合に行います。詳細は [開発ガイド](docs/DEVELOPMENT.md) を参照してください。
