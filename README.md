@@ -125,6 +125,16 @@ The app reads and writes the original Markdown file directly. No Obsidian CLI or
 
 Date patterns use .NET syntax, which differs from Obsidian's Moment syntax and is case-sensitive. For example, use `yyyy-MM-dd` instead of `YYYY-MM-DD`, or `yyyy-MM-dd(ddd)` instead of `YYYY-MM-DD(ddd)`. Weekday names follow your Windows culture settings. The `.md` extension is added automatically. Subfolder patterns such as `yyyy/MM/yyyy-MM-dd` are supported.
 
+To match flexible filenames, enable `デイリーノートの形式に正規表現を使う` (Use a regular expression) in Settings. Existing settings keep using date formats until you enable this option. For names such as `2026-10-05(月).md`, select the folder containing those notes and enter:
+
+```regex
+(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:\([^)]+\))?\.md
+```
+
+The required named groups `year`, `month`, and `day` must each capture one numeric date part. Only a file whose captured date equals today's local date is selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; use `/` for subfolders. For example, add `Diary/` before the expression when selecting its parent folder. Unlike date-format mode, regex mode does not append an extension. Other dated files and prefix variants such as `WeeklyTasksLog-…` are not selected by this example.
+
+Regex mode searches subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. Missing or multiple matches produce an error without creating files or choosing one arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
+
 To link a fixed note, enter its absolute path and set daily switching to `no`. When daily switching is `yes`, the path field is unused.
 
 A section starts immediately after the selected heading and ends before the next heading at the same or a higher level. Subheadings are included. Other sections and YAML front matter are preserved. Duplicate matching headings prevent editing to avoid ambiguity. Headings inside fenced code are ignored. Use `#`-style (ATX) headings.

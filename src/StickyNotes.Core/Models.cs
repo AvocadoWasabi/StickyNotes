@@ -5,6 +5,7 @@ public sealed class Settings
     public string NotesFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StickyNotesData");
     public string DailyFolder { get; set; } = "";
     public string DailyPattern { get; set; } = "yyyy-MM-dd";
+    public bool DailyPatternIsRegex { get; set; }
     public string GoogleCredentialsFile { get; set; } = "";
     public string CalendarId { get; set; } = "primary";
     public List<NotePlacement> Windows { get; set; } = [];

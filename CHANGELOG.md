@@ -10,6 +10,7 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Added
 
+- Optional regular expressions for daily-note paths, using named year/month/day groups to select today's file, including weekday suffixes and subfolders. Keep existing date-format settings compatible, reject ambiguous matches, and limit regex matching and search work.
 - Ask whether to migrate existing Markdown files when changing the notes folder, with Yes / No / Cancel choices. Include subfolders and closed notes, preserve open-note edits and placement, and update daily-note folder references inside the old folder.
 - Prevent overwriting destination files and roll back moves if migration or settings persistence fails; report any files needing manual recovery.
 

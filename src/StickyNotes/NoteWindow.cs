@@ -89,11 +89,7 @@ public sealed class NoteWindow : Window
     private string ResolvePath()
     {
         if (!Placement.Daily) return Placement.Path;
-        if (string.IsNullOrWhiteSpace(app.Config.DailyFolder)) throw new InvalidOperationException("設定でデイリーノートフォルダを選んでください。");
-        var root = Path.GetFullPath(app.Config.DailyFolder).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-        var path = Path.GetFullPath(Path.Combine(root, DateTime.Today.ToString(app.Config.DailyPattern) + ".md"));
-        if (!path.StartsWith(root, StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("日付書式がデイリーフォルダ外を指しています。");
-        return path;
+        return DailyNoteResolver.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, app.Config.DailyPatternIsRegex, DateTime.Today);
     }
 
     private void Reload()
@@ -106,15 +102,17 @@ public sealed class NoteWindow : Window
             editor.Visibility = Visibility.Collapsed;
             Render(); status.Text = Placement.Daily ? "今日のノートと連動 • " + Path.GetFileName(fresh.Path) : "保存済み • " + Path.GetFileName(fresh.Path);
         }
-        catch (Exception ex)
-        {
-            snapshot = null; content = ""; activeCommand = null;
-            editing = false; dirty = false; editor.Visibility = Visibility.Collapsed;
-            preview.Document = new System.Windows.Documents.FlowDocument();
-            eventsPanel.Children.Clear(); tags.Text = "";
-            title.Text = Placement.Daily ? "今日のノートを待機中" : "元ノートを読み込めません";
-            status.Text = ex.Message;
-        }
+        catch (Exception ex) { ShowReadError(ex); }
+    }
+
+    private void ShowReadError(Exception error)
+    {
+        snapshot = null; content = ""; activeCommand = null;
+        editing = false; dirty = false; editor.Visibility = Visibility.Collapsed;
+        preview.Document = new System.Windows.Documents.FlowDocument();
+        eventsPanel.Children.Clear(); tags.Text = "";
+        title.Text = Placement.Daily ? "今日のノートを待機中" : "元ノートを読み込めません";
+        status.Text = error.Message;
     }
 
     private void Render()
@@ -200,7 +198,11 @@ public sealed class NoteWindow : Window
                 status.Text = "元ノートの変更または日付切替を検出。編集を保存・退避してから再読込してください。";
             if (!editing && snapshot is not null && (DateTime.Now - lastCalendarCheck).TotalSeconds >= 60) await RefreshCalendar();
         }
-        catch (Exception ex) { status.Text = ex.Message; }
+        catch (Exception ex)
+        {
+            if (!dirty && !editing) ShowReadError(ex);
+            else status.Text = ex.Message;
+        }
     }
 
     private async Task RefreshCalendar()

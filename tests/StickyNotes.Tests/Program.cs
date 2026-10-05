@@ -63,6 +63,7 @@ internal static class Program
             NoteStore.Save(bom, bom.Text + "!", backups);
             Check(File.ReadAllBytes(bomPath).Take(3).SequenceEqual(new byte[] { 239, 187, 191 }), "UTF8 BOM preserved");
             MigrationTests(root);
+            DailyRegexTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -83,6 +84,56 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void DailyRegexTests(string root)
+    {
+        var folder = Path.Combine(root, "daily-regex");
+        Directory.CreateDirectory(folder);
+        var today = new DateTime(2026, 10, 5);
+        var current = Path.Combine(folder, "2026-10-05(月).md");
+        File.WriteAllText(current, "## Tasks\n- [ ] today");
+        File.WriteAllText(Path.Combine(folder, "2026-10-04(日).md"), "## Tasks\nyesterday");
+        File.WriteAllText(Path.Combine(folder, "WeeklyTasksLog-2026-10-05(月).md"), "unrelated");
+        Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today) == current, "regex selects today's Japanese weekday filename and ignores prefixes");
+        Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today.AddDays(-1)).EndsWith("2026-10-04(日).md"), "regex rolls over using requested date");
+        Check(DailyNoteResolver.Resolve(folder, "yyyy/MM/yyyy-MM-dd", false, today) == Path.Combine(folder, "2026", "10", "2026-10-05.md"), "legacy date formats and automatic extension remain compatible");
+        Check(!JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy-MM-dd\"}")!.DailyPatternIsRegex, "existing settings default to date-format mode");
+        var settings = new Settings { DailyPattern = DailyNoteResolver.RegexExample, DailyPatternIsRegex = true };
+        Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(settings))!.DailyPatternIsRegex, "regex setting round trips");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate("[", true), "invalid regex rejected at settings validation");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(@"\d{4}-\d{2}-\d{2}\.md", true), "regex without date groups rejected");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate("", true), "blank regex rejected");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(new string('a', 4097), true), "excessive regex length rejected");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Resolve(folder, "'../outside'", false, today), "legacy date path cannot escape daily folder");
+        Throws<FileNotFoundException>(() => DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today.AddDays(1)), "missing date does not fall back to another note");
+        File.WriteAllText(Path.Combine(folder, "2026-10-05.md"), "duplicate");
+        Throws<IOException>(() => DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today), "ambiguous same-date matches fail safely");
+        File.Delete(Path.Combine(folder, "2026-10-05.md"));
+        Directory.CreateDirectory(Path.Combine(folder, "Diary"));
+        var nested = Path.Combine(folder, "Diary", "2026-10-05(月).md");
+        File.WriteAllText(nested, "nested");
+        Check(DailyNoteResolver.Resolve(folder, "Diary/" + DailyNoteResolver.RegexExample, true, today) == nested, "regex uses slash-separated full relative path including extension");
+        File.WriteAllText(Path.Combine(folder, "2026-10-05" + new string('a', 80) + "!.md"), "timeout fixture");
+        Throws<IOException>(() => DailyNoteResolver.Resolve(folder, @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(a+)+\.md", true, today), "pathological regex times out instead of blocking indefinitely");
+
+        var app = App.Current;
+        app.Config.DailyFolder = folder; app.Config.DailyPattern = DailyNoteResolver.RegexExample; app.Config.DailyPatternIsRegex = true;
+        var window = new NoteWindow(new NotePlacement { Daily = true, Heading = "Tasks" });
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        var snapshotField = typeof(NoteWindow).GetField("snapshot", flags)!;
+        var tick = typeof(NoteWindow).GetMethod("Tick", flags)!;
+        // An invalid regex simulates a resolution failure independently of the machine's date.
+        app.Config.DailyPattern = "[";
+        snapshotField.SetValue(window, NoteStore.Read(current));
+        ((Task)tick.Invoke(window, null)!).GetAwaiter().GetResult();
+        Check(snapshotField.GetValue(window) is null, "failed daily resolution clears stale editable preview");
+        snapshotField.SetValue(window, NoteStore.Read(current));
+        var editor = (TextBox)typeof(NoteWindow).GetField("editor", flags)!.GetValue(window)!;
+        editor.Text = "keep unsaved edit";
+        typeof(NoteWindow).GetField("editing", flags)!.SetValue(window, true);
+        ((Task)tick.Invoke(window, null)!).GetAwaiter().GetResult();
+        Check(snapshotField.GetValue(window) is not null && editor.Text == "keep unsaved edit", "failed resolution retains unsaved editing");
     }
 
     private static void MigrationTests(string root)
