@@ -64,7 +64,7 @@
 4. 双击解压目录中的 `Install.cmd`。
 5. 从开始菜单启动 **Markdown Sticky Notes**。
 
-安装位置为 `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`，不会设置开机自启。[下载 v0.0.2](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.2)。
+安装位置为 `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`，不会设置开机自启。[下载 v0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3)。
 
 也可以直接运行解压目录中的 `StickyNotes.exe`，无需安装。两种方式都需要保留所有附带文件。应用未签名；若 Windows 显示提示，请确认下载来源和文件后再运行。
 

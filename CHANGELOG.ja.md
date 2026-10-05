@@ -8,6 +8,8 @@
 
 ## 未リリース / Unreleased
 
+## [0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) — 2026-10-06
+
 ### 機能
 
 - ボタン表示の設定項目名を「タイトルにマウスカーソルを重ねるとボタンを表示する」に変更。動作と保存済み設定は維持。

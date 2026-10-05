@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+## [0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) — 2026-10-06
+
 ### Features
 
 - Rename the button display setting to `タイトルにマウスカーソルを重ねるとボタンを表示する` (Show buttons when hovering the mouse cursor over the title), preserving behavior and saved preferences.

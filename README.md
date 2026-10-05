@@ -64,7 +64,7 @@ Requires **Windows 10 / 11 (x64)**. No administrator privileges, separate .NET i
 4. Double-click `Install.cmd` in the extracted folder.
 5. Launch **Markdown Sticky Notes** from the Start menu.
 
-The installer places the app in `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`. It does not enable automatic startup. [Download v0.0.2](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.2).
+The installer places the app in `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`. It does not enable automatic startup. [Download v0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3).
 
 For portable use, run `StickyNotes.exe` directly from the extracted folder. Keep all accompanying files in either case. The app is unsigned; if Windows displays a warning, check the download source and file before proceeding.
 

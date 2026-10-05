@@ -8,6 +8,8 @@
 
 ## 未发布 / Unreleased
 
+## [0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) — 2026-10-06
+
 ### 功能
 
 - 将按钮显示设置更名为 `タイトルにマウスカーソルを重ねるとボタンを表示する`（鼠标悬停在标题上时显示按钮），保持原有行为和已保存的设置。

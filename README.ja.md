@@ -64,7 +64,7 @@ Obsidian Vaultの元のMarkdownを編集し、タスクをチェックしなが�
 4. 展開先の `Install.cmd` をダブルクリックします。
 5. スタートメニューの「Markdown Sticky Notes」から起動します。
 
-アプリは `%LOCALAPPDATA%\Programs\MarkdownStickyNotes` に配置されます。自動起動は登録しません。[v0.0.2のダウンロード](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.2)はこちらです。
+アプリは `%LOCALAPPDATA%\Programs\MarkdownStickyNotes` に配置されます。自動起動は登録しません。[v0.0.3のダウンロード](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3)はこちらです。
 
 インストールせずに使う場合は、展開先の `StickyNotes.exe` を実行します。どちらの場合もEXE以外の同梱ファイルが必要です。未署名のためWindowsが確認を表示する場合は、配布元とファイルを確認してから実行してください。
 
