@@ -20,14 +20,21 @@ public sealed class NoteWindow : Window
     private readonly StackPanel eventsPanel = new() { Margin = new Thickness(10, 0, 10, 0) };
     private readonly DispatcherTimer poll = new() { Interval = TimeSpan.FromSeconds(2) };
     private readonly DispatcherTimer geometrySave = new() { Interval = TimeSpan.FromMilliseconds(600) };
+    private readonly DispatcherTimer focusLossTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
+    private readonly Func<MessageBoxResult>? confirmFocusSave;
+    private readonly Action<Exception>? reportSaveError;
+    private bool decisionInProgress, editorContextMenuOpen;
     private FileSnapshot? snapshot;
     private string content = "";
     private bool editing, dirty, loading, initialized, busy, closed;
     private DateTime lastCalendarCheck = DateTime.MinValue;
     private string? activeCommand;
 
-    public NoteWindow(NotePlacement placement)
+    public NoteWindow(NotePlacement placement) : this(placement, null, null) { }
+
+    internal NoteWindow(NotePlacement placement, Func<MessageBoxResult>? confirmFocusSave, Action<Exception>? reportSaveError)
     {
+        this.confirmFocusSave = confirmFocusSave; this.reportSaveError = reportSaveError;
         SetResourceReference(IconProperty, "AppIcon");
         Placement = placement;
         Title = "Markdown Sticky Notes";
@@ -60,7 +67,24 @@ public sealed class NoteWindow : Window
         var eventScroll = new ScrollViewer { Content = eventsPanel, MaxHeight = 210, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         DockPanel.SetDock(eventScroll, Dock.Bottom); reading.Children.Add(eventScroll); reading.Children.Add(preview);
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
-        editor.TextChanged += (_, _) => { if (!loading) { dirty = true; status.Text = "編集中 • Ctrl+S で保存"; } };
+        preview.PreviewMouseLeftButtonDown += (_, e) =>
+        {
+            if (!IsBodyEditTarget(e.OriginalSource as DependencyObject)) return;
+            BeginEdit(); e.Handled = true;
+        };
+        editor.TextChanged += (_, _) => { if (!loading) { dirty = editor.Text != content; status.Text = "編集中 • Ctrl+S で保存"; } };
+        editor.IsKeyboardFocusWithinChanged += (_, _) => { if (editor.IsKeyboardFocusWithin) focusLossTimer.Stop(); else ScheduleFocusLoss(); };
+        Deactivated += (_, _) => ScheduleFocusLoss();
+        editor.ContextMenuOpening += (_, _) => { editorContextMenuOpen = true; focusLossTimer.Stop(); };
+        editor.ContextMenuClosing += (_, _) => { editorContextMenuOpen = false; ScheduleFocusLoss(); };
+        focusLossTimer.Tick += (_, _) =>
+        {
+            // Let toolbar mouse-up/Click run before deciding whether a blur still needs saving.
+            if (Mouse.LeftButton == MouseButtonState.Pressed) return;
+            focusLossTimer.Stop();
+            if (editorContextMenuOpen || (IsActive && editor.IsKeyboardFocusWithin)) return;
+            FinishFocusEditing();
+        };
         PreviewKeyDown += (_, e) => { if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; } else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.E) { BeginEdit(); e.Handled = true; } };
         Loaded += (_, _) => { MonitorLayout.Restore(this, Placement); initialized = true; Reload(); poll.Start(); QueueGeometry(); };
         LocationChanged += (_, _) => QueueGeometry(); SizeChanged += (_, _) => QueueGeometry();
@@ -130,6 +154,7 @@ public sealed class NoteWindow : Window
 
     private void BeginEdit()
     {
+        focusLossTimer.Stop();
         if (snapshot is null) { Reload(); if (snapshot is null) return; }
         if (!editing)
         {
@@ -147,12 +172,22 @@ public sealed class NoteWindow : Window
 
     private void SetEditing(bool value)
     {
+        focusLossTimer.Stop();
         editing = value;
         reading.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
         editor.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private bool Save()
+    {
+        focusLossTimer.Stop();
+        var previousDecision = decisionInProgress;
+        decisionInProgress = true;
+        try { return SaveCore(); }
+        finally { decisionInProgress = previousDecision; }
+    }
+
+    private bool SaveCore()
     {
         if (snapshot is null) return false;
         if (!editing || !dirty) { SetEditing(false); return true; }
@@ -161,7 +196,48 @@ public sealed class NoteWindow : Window
             SaveContent(editor.Text); dirty = false; SetEditing(false);
             Render(); status.Text = "保存しました"; return true;
         }
-        catch (Exception ex) { status.Text = ex.Message; MessageBox.Show(this, ex.Message, "保存できません", MessageBoxButton.OK, MessageBoxImage.Warning); return false; }
+        catch (Exception ex)
+        {
+            status.Text = ex.Message;
+            if (reportSaveError is not null) reportSaveError(ex);
+            else MessageBox.Show(this, ex.Message, "保存できません", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+    }
+
+    internal static bool IsBodyEditTarget(DependencyObject? target)
+    {
+        for (var current = target; current is not null;)
+        {
+            if (current is System.Windows.Controls.Primitives.ButtonBase or System.Windows.Controls.Primitives.ScrollBar or System.Windows.Controls.Primitives.Thumb or System.Windows.Documents.Hyperlink) return false;
+            current = current is FrameworkContentElement contentElement ? contentElement.Parent
+                : current is Visual ? VisualTreeHelper.GetParent(current) : LogicalTreeHelper.GetParent(current);
+        }
+        return target is not null;
+    }
+
+    private void ScheduleFocusLoss()
+    {
+        if (closed || !editing || decisionInProgress || editorContextMenuOpen) return;
+        focusLossTimer.Stop(); focusLossTimer.Start();
+    }
+
+    internal void FinishFocusEditing()
+    {
+        focusLossTimer.Stop();
+        if (closed || !editing || decisionInProgress || editorContextMenuOpen) return;
+        decisionInProgress = true;
+        try
+        {
+            if (!dirty) { SetEditing(false); return; }
+            var answer = app.Config.AutoSaveOnFocusLoss ? MessageBoxResult.Yes : confirmFocusSave?.Invoke() ?? MessageBox.Show(this,
+                "変更を保存しますか？\n\nはい: 保存して閲覧表示に戻ります。\nいいえ: 変更を破棄して再読込します。\nキャンセル: 入力を保持して編集を続けます。",
+                "編集内容の保存", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+            if (answer == MessageBoxResult.Yes) { if (!Save() && IsActive) editor.Focus(); }
+            else if (answer == MessageBoxResult.No) Reload();
+            else if (IsActive) editor.Focus();
+        }
+        finally { decisionInProgress = false; }
     }
 
     private void SaveContent(string next)
@@ -194,8 +270,14 @@ public sealed class NoteWindow : Window
 
     private void ReloadAsked()
     {
-        if (dirty && MessageBox.Show(this, "未保存の編集を破棄して再読込しますか？", "再読込", MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
-        Reload();
+        focusLossTimer.Stop();
+        decisionInProgress = true;
+        try
+        {
+            if (dirty && MessageBox.Show(this, "未保存の編集を破棄して再読込しますか？", "再読込", MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
+            Reload();
+        }
+        finally { decisionInProgress = false; }
     }
 
     private async Task Tick()
@@ -285,17 +367,24 @@ public sealed class NoteWindow : Window
 
     public bool CanClose()
     {
-        if (!dirty) return true;
-        return MessageBox.Show(this, "変更を保存しますか？", title.Text, MessageBoxButton.YesNoCancel) switch
+        if (decisionInProgress) return false;
+        focusLossTimer.Stop();
+        decisionInProgress = true;
+        try
         {
-            MessageBoxResult.Yes => Save(), MessageBoxResult.No => true, _ => false
-        };
+            if (!dirty) return true;
+            return MessageBox.Show(this, "変更を保存しますか？", title.Text, MessageBoxButton.YesNoCancel) switch
+            {
+                MessageBoxResult.Yes => Save(), MessageBoxResult.No => true, _ => false
+            };
+        }
+        finally { decisionInProgress = false; }
     }
 
     private void OnClosing(object? sender, CancelEventArgs e)
     {
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
-        closed = true; poll.Stop(); geometrySave.Stop();
+        closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop();
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }
 }

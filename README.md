@@ -147,7 +147,9 @@ A section starts immediately after the selected heading and ends before the next
 
 When the date changes, the app switches to today's file. If you are editing, switching waits until you save or reload. A missing target file or heading produces an error. Files are not created automatically; new headings are added only when you enter a new name in the selection dialog and select Display. Creating them in Obsidian also makes them appear on a subsequent refresh.
 
-To change the body, select `編集` (Edit) or press `Ctrl+E`. Reading mode is replaced with a Markdown input field; use `保存` (Save) or `Ctrl+S` when finished. Task checkboxes can be toggled directly in reading mode. Selecting Edit again preserves the current draft.
+Click body text or blank space in the body area to enter the Markdown editor. `編集` (Edit) and `Ctrl+E` also work. Checkboxes, links, and scrollbars keep their own actions without entering editing. Select `保存` (Save) or press `Ctrl+S` to save and return to reading. Selecting Edit again preserves your draft.
+
+When focus leaves the editor for another control or application, changed text triggers a save dialog: **Yes** saves, **No** discards and reloads, and **Cancel** keeps the draft for continued editing. Unchanged text does not prompt. To save without confirmation, enable `編集欄からフォーカスが外れたら、確認せず自動保存する` in Settings and save the setting; it defaults to off. Automatic saves still create backups and check for external changes. A failed save reports the error and retains your input. The editor's context menu does not trigger this confirmation. Closing a note or exiting the app keeps the existing unsaved-change confirmation.
 
 ## Google Calendar
 

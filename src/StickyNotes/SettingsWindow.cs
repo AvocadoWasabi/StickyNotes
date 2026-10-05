@@ -16,6 +16,9 @@ public sealed class SettingsWindow : Window
         var app = App.Current;
         var panel = new StackPanel { Margin = new Thickness(24) };
         panel.Children.Add(new TextBlock { Text = "Markdown Sticky Notes", FontSize = 24, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
+        var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = "編集欄からフォーカスが外れたら、確認せず自動保存する", IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
+        panel.Children.Add(autoSave);
+        panel.Children.Add(new TextBlock { Text = "オフの場合は変更の保存を確認します。保存エラー時は入力を保持します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         TextBox Add(string label, string value)
         {
             panel.Children.Add(new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap });
@@ -136,6 +139,7 @@ public sealed class SettingsWindow : Window
             app.ApplySettings(new Settings
             {
                 NotesFolder = folder, DailyFolder = daily.Text, DailyPattern = pattern.Text,
+                AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text
             }, migrate);
             notes.Text = app.Config.NotesFolder; daily.Text = app.Config.DailyFolder;

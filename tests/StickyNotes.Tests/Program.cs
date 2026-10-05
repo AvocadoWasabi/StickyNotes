@@ -75,6 +75,7 @@ internal static class Program
             RegexDefaultsTests(root);
             NoteLinkTests(root);
             MarkdownEditingTests(root);
+            FocusEditingTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -95,6 +96,100 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void FocusEditingTests(string root)
+    {
+        var app = App.Current;
+        Check(!new Settings().AutoSaveOnFocusLoss && !JsonSerializer.Deserialize<Settings>("{}")!.AutoSaveOnFocusLoss, "focus-loss saving defaults to confirmation for new and old settings");
+        Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(new Settings { AutoSaveOnFocusLoss = true }))!.AutoSaveOnFocusLoss, "focus-loss autosave setting survives serialization");
+        var previousAutoSave = app.Config.AutoSaveOnFocusLoss;
+        app.Config.AutoSaveOnFocusLoss = false;
+        var folder = Path.Combine(root, "focus-editing"); Directory.CreateDirectory(folder);
+        var path = Path.Combine(folder, "note.md");
+        const string original = "## Tasks\n- [ ] initial\n\n[link](https://example.com)\n";
+        File.WriteAllText(path, original);
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        var answer = MessageBoxResult.Cancel;
+        var confirmations = 0; var errors = 0;
+        NoteWindow? window = null;
+        window = new NoteWindow(new NotePlacement { Path = path }, () =>
+        {
+            confirmations++;
+            window!.FinishFocusEditing();
+            Check(!window.CanClose(), "focus confirmation blocks a nested close confirmation");
+            return answer;
+        }, _ => errors++);
+        typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
+        var dock = (DockPanel)((Border)window.Content).Child;
+        var body = dock.Children.OfType<Grid>().Single();
+        var editor = body.Children.OfType<TextBox>().Single();
+        var reading = body.Children.OfType<DockPanel>().Single();
+        var preview = reading.Children.OfType<FlowDocumentScrollViewer>().Single();
+        void ClickBody() => preview.RaiseEvent(new System.Windows.Input.MouseButtonEventArgs(System.Windows.Input.Mouse.PrimaryDevice, Environment.TickCount, System.Windows.Input.MouseButton.Left) { RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent });
+        var checkbox = (CheckBox)preview.Document.Blocks.OfType<System.Windows.Documents.List>().Single().ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single().Inlines.OfType<InlineUIContainer>().Single().Child;
+        Check(!NoteWindow.IsBodyEditTarget(checkbox), "click editing excludes task checkboxes");
+        var link = preview.Document.Blocks.OfType<Paragraph>().SelectMany(p => p.Inlines.OfType<Hyperlink>()).Single();
+        Check(!NoteWindow.IsBodyEditTarget(link.Inlines.FirstInline) && !NoteWindow.IsBodyEditTarget(new System.Windows.Controls.Primitives.Thumb()), "click editing excludes hyperlink children and scroll controls");
+        Check(NoteWindow.IsBodyEditTarget(new Run("text")) && NoteWindow.IsBodyEditTarget(preview), "click editing accepts body text and blank preview space");
+        ClickBody();
+        Check(editor.Visibility == Visibility.Visible && reading.Visibility == Visibility.Collapsed, "body click enters editing without the Edit button");
+        window.FinishFocusEditing();
+        Check(confirmations == 0 && reading.Visibility == Visibility.Visible, "unchanged blur returns to reading without a dialog");
+        ClickBody(); editor.Text = "draft";
+        window.FinishFocusEditing();
+        Check(confirmations == 1 && editor.Text == "draft" && editor.Visibility == Visibility.Visible && File.ReadAllText(path) == original, "Cancel keeps unsaved input and never writes");
+        answer = MessageBoxResult.No; window.FinishFocusEditing();
+        Check(confirmations == 2 && reading.Visibility == Visibility.Visible && File.ReadAllText(path) == original, "No discards draft and reloads the original file");
+        ClickBody(); editor.Text = "saved after blur";
+        answer = MessageBoxResult.Yes; window.FinishFocusEditing();
+        Check(confirmations == 3 && File.ReadAllText(path) == "saved after blur" && reading.Visibility == Visibility.Visible, "Yes saves changed Markdown and returns to reading");
+        var beforeAuto = confirmations;
+        app.Config.AutoSaveOnFocusLoss = true;
+        ClickBody(); editor.Text = "automatic";
+        typeof(NoteWindow).GetMethod("ScheduleFocusLoss", flags)!.Invoke(window, null);
+        WaitFor(() => File.ReadAllText(path) == "automatic", "queued focus loss automatically saves");
+        Check(confirmations == beforeAuto && reading.Visibility == Visibility.Visible, "autosave bypasses confirmation and ends editing");
+        ClickBody(); editor.Text = "locked draft";
+        using (var locked = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) window.FinishFocusEditing();
+        Check(errors == 1 && editor.Text == "locked draft" && editor.Visibility == Visibility.Visible && File.ReadAllText(path) == "automatic", "failed autosave to a locked file retains input and original bytes");
+        window.FinishFocusEditing();
+        Check(File.ReadAllText(path) == "locked draft", "retained draft can save after the file becomes writable");
+        ClickBody(); editor.Text = "retained conflict draft";
+        File.WriteAllText(path, "external change");
+        window.FinishFocusEditing();
+        Check(errors == 2 && editor.Text == "retained conflict draft" && editor.Visibility == Visibility.Visible && File.ReadAllText(path) == "external change", "autosave conflict reports error and preserves both external data and draft");
+        typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
+        ClickBody(); editor.Text = "temporary"; editor.Text = "external change";
+        app.Config.AutoSaveOnFocusLoss = false; window.FinishFocusEditing();
+        Check(confirmations == beforeAuto, "reverting to original text does not request a save");
+        ClickBody(); editor.Text = "explicit save";
+        typeof(NoteWindow).GetMethod("ScheduleFocusLoss", flags)!.Invoke(window, null);
+        var toolbar = dock.Children.OfType<WrapPanel>().Single();
+        toolbar.Children.OfType<Button>().Single(x => (string)x.Content == "保存").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        var settle = System.Diagnostics.Stopwatch.StartNew();
+        WaitFor(() => settle.ElapsedMilliseconds >= 250, "queued focus handling settles after explicit Save");
+        Check(confirmations == beforeAuto && File.ReadAllText(path) == "explicit save", "explicit Save cancels the pending blur confirmation");
+        window.Close();
+        window.FinishFocusEditing();
+        Check(confirmations == beforeAuto && errors == 2, "closed note ignores delayed focus handling");
+
+        var savedConfig = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
+        var previousPattern = app.Config.DailyPattern;
+        app.Config.DailyPattern = DailyNoteResolver.RegexExample;
+        var settingsWindow = new SettingsWindow();
+        var panel = (StackPanel)((ScrollViewer)settingsWindow.Content).Content;
+        var autoSave = panel.Children.OfType<CheckBox>().Single(x => x.Name == "AutoSaveOnFocusLoss");
+        Check(autoSave.IsChecked == false, "settings display the confirmation default");
+        autoSave.IsChecked = true;
+        Check(!app.Config.AutoSaveOnFocusLoss && File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(savedConfig), "autosave preference is not applied before settings save");
+        panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        Check(app.Config.AutoSaveOnFocusLoss && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.AutoSaveOnFocusLoss, "settings Save applies and persists focus-loss autosave");
+        var reopened = new SettingsWindow();
+        Check(((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<CheckBox>().Single(x => x.Name == "AutoSaveOnFocusLoss").IsChecked == true, "reopened settings retain autosave preference");
+        reopened.Close();
+        app.Config.AutoSaveOnFocusLoss = previousAutoSave;
+        app.Config.DailyPattern = previousPattern;
     }
 
     private static void MarkdownEditingTests(string root)
@@ -247,7 +342,7 @@ internal static class Program
         var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
         void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         var preview = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBox>().Single();
-        Check(!panel.Children.OfType<CheckBox>().Any(), "settings offer only tagged regex without a mode checkbox");
+        Check(panel.Children.OfType<CheckBox>().All(x => x.Name == "AutoSaveOnFocusLoss"), "settings offer only tagged regex without a mode checkbox");
         Check(confirmations == 0 && pattern.Text == custom, "opening settings preserves custom regex without prompting");
         ClickInsert();
         Check(confirmations == 1 && pattern.Text == custom, "declining template button preserves existing expression");

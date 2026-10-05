@@ -20,6 +20,9 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Added
 
+- Click the note body to edit Markdown while preserving checkbox, link, and scrollbar actions.
+- Prompt to save, discard, or keep editing when the editor loses focus. Add an opt-in setting to save automatically without confirmation, retaining drafts on conflicts or write failures and preventing duplicate dialogs.
+
 - Separate fixed-note and daily-note display menus. Add folder/Markdown file pickers for fixed notes and remove manual absolute-path and daily-switch inputs.
 - Share an editable heading selector between both dialogs. Choose headings from the loaded note, leave the field blank for the entire body, or append a new heading at the end on Display with backups and external-change checks.
 
