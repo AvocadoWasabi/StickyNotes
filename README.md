@@ -8,6 +8,16 @@ A Windows desktop sticky notes app that works with Markdown files and Obsidian v
 
 Keep tasks, notes, or a section of today's daily note on your desktop and edit them in place. Notes are ordinary Markdown files, so you can use the same files in Obsidian. The app also works on its own without Obsidian.
 
+## Screenshots
+
+Actual app windows with English sample notes. The app's controls are currently in Japanese. Click an image to view it at full size.
+
+| Checklists at hand | Markdown notes | Linked daily notes |
+| :---: | :---: | :---: |
+| [<img src="docs/images/sticky-tasks-en.jpg" alt="Yellow sticky note with an English checklist and checked tasks" width="300">](docs/images/sticky-tasks-en.jpg) | [<img src="docs/images/sticky-markdown-en.jpg" alt="Blue sticky note displaying English Markdown headings, a numbered list, and a table" width="300">](docs/images/sticky-markdown-en.jpg) | [<img src="docs/images/sticky-daily-en.jpg" alt="Green sticky note linked to the Tasks section of a daily note, with English sample tasks" width="300">](docs/images/sticky-daily-en.jpg) |
+
+The screenshots use fictional sample content. [Sample files and capture instructions](docs/SCREENSHOTS.md) are included for reproduction.
+
 ## Features
 
 | Feature | What it does |

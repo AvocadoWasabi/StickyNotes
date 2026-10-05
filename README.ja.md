@@ -8,6 +8,16 @@ Windows / C# / WPFで作成した、ObsidianのMarkdownと連携する付箋ア�
 
 タスクやメモ、今日のデイリーノートの一部分をデスクトップに表示し、その場で編集できます。保存形式は通常のMarkdownファイルなので、Obsidianと同じノートを使えます。Obsidianがなくても単体で動作します。
 
+## スクリーンショット
+
+紹介用のサンプルを表示した実際のアプリ画面です。画像をクリックすると元のサイズで表示できます。
+
+| 手元にチェックリスト | Markdownでメモ | デイリーノートと連動 |
+| :---: | :---: | :---: |
+| [<img src="docs/images/sticky-tasks-ja.jpg" alt="日本語のチェックリストと完了済みタスクを表示した黄色の付箋" width="300">](docs/images/sticky-tasks-ja.jpg) | [<img src="docs/images/sticky-markdown-ja.jpg" alt="日本語の見出し・番号付きリスト・表をMarkdownで表示した青い付箋" width="300">](docs/images/sticky-markdown-ja.jpg) | [<img src="docs/images/sticky-daily-ja.jpg" alt="今日のデイリーノートのTasks見出しと連動する緑の付箋" width="300">](docs/images/sticky-daily-ja.jpg) |
+
+撮影用の架空データを使用しています。[サンプルファイルと撮影手順](docs/SCREENSHOTS.md)も同梱しています。
+
 ## 主な機能
 
 | 機能 | できること |
