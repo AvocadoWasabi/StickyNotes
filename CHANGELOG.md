@@ -8,6 +8,12 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+No changes yet.
+
+## [0.0.2](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.2) — 2026-10-05
+
+Easier Markdown editing, separate note-linking dialogs, tagged daily-note matching, and safer folder changes. When updating from 0.0.1, check the daily-note match and both folder settings; custom date formats may need manual correction.
+
 ### Fixed
 
 - Stop the reading preview from overlapping the transparent Markdown editor. Switch views, focus the input after layout, and preserve unsaved text when Edit is selected again.

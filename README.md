@@ -10,7 +10,7 @@ Keep tasks, notes, or a section of today's daily note on your desktop and edit t
 
 ## Screenshots
 
-Actual app windows with English sample notes. The app's controls are currently in Japanese. Click an image to view it at full size.
+Version 0.0.2 note views rendered with the app's WPF controls and English sample notes. The app's controls are currently in Japanese. Click an image to view it at full size.
 
 | Checklists at hand | Markdown notes | Linked daily notes |
 | :---: | :---: | :---: |
@@ -42,7 +42,7 @@ Requires **Windows 10 / 11 (x64)**. No administrator privileges, separate .NET i
 4. Double-click `Install.cmd` in the extracted folder.
 5. Launch **Markdown Sticky Notes** from the Start menu.
 
-The installer places the app in `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`. It does not enable automatic startup. [Download v0.0.1](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.1).
+The installer places the app in `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`. It does not enable automatic startup. [Download v0.0.2](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.2).
 
 For portable use, run `StickyNotes.exe` directly from the extracted folder. Keep all accompanying files in either case. The app is unsigned; if Windows displays a warning, check the download source and file before proceeding.
 
@@ -53,6 +53,8 @@ Right-click the notification-area icon and select `設定` (Settings), then choo
 ### Update and uninstall
 
 To update, select `終了` (Exit) from the notification-area menu, extract the new ZIP to a separate folder, and run `Install.cmd`. Your notes and settings are retained.
+
+**Updating from 0.0.1:** daily-note matching now uses named date tags and regular expressions. Documented date formats are converted automatically; check the matching filename in Settings and correct other custom formats manually. The notes folder and daily-note folder are now saved independently, so check both if they were previously mixed up. Saving on focus loss without confirmation is optional and off by default. See the [0.0.2 changelog](CHANGELOG.md) for all changes.
 
 To uninstall, exit the app, delete `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`, and remove its Start menu shortcut. You can locate the shortcut using **Open file location** from its context menu. Settings, credentials, and backups remain in `%LOCALAPPDATA%\StickyNotes`; Markdown files remain in the folder you selected, or `Documents/StickyNotesData` by default. Review any data you want to keep before deleting it separately.
 
@@ -84,6 +86,10 @@ Edit, Save, Reload, More, New, Pin, and Close share one row below the title. Edi
 | `… → アプリを終了`, or notification-area `終了` | Exit the app |
 
 The app saves note positions, sizes, and always-on-top settings as notes move and when you exit, then restores them on the next launch. It supports multiple monitors, negative screen coordinates, and PerMonitorV2 DPI. Notes on a disconnected display are moved back onto an available screen. Unsaved changes trigger a confirmation before exit.
+
+Click body text or blank space in the body area to enter the Markdown editor. `編集` (Edit) and `Ctrl+E` also work. Checkboxes, links, and scrollbars keep their own actions without entering editing. Select `保存` (Save) or press `Ctrl+S` to save and return to reading. Selecting Edit again preserves your draft.
+
+When focus leaves the editor for another control or application, changed text triggers a save dialog: **Yes** saves, **No** discards and reloads, and **Cancel** keeps the draft for continued editing. Unchanged text does not prompt. To save without confirmation, enable `編集欄からフォーカスが外れたら、確認せず自動保存する` in Settings and save the setting; it defaults to off. Automatic saves still create backups and check for external changes. A failed save reports the error and retains your input. The editor's context menu does not trigger this confirmation. Closing a note or exiting the app keeps the existing unsaved-change confirmation.
 
 ## Storage and Obsidian
 
@@ -150,10 +156,6 @@ If the source changes externally before Display, the app asks you to reload with
 A section starts immediately after the selected heading and ends before the next heading at the same or a higher level. Subheadings are included. Other sections and YAML front matter are preserved. Duplicate matching headings prevent editing to avoid ambiguity. Headings inside fenced code are ignored. Use `#`-style (ATX) headings.
 
 When the date changes, the app switches to today's file. If you are editing, switching waits until you save or reload. A missing target file or heading produces an error. Files are not created automatically; new headings are added only when you enter a new name in the selection dialog and select Display. Creating them in Obsidian also makes them appear on a subsequent refresh.
-
-Click body text or blank space in the body area to enter the Markdown editor. `編集` (Edit) and `Ctrl+E` also work. Checkboxes, links, and scrollbars keep their own actions without entering editing. Select `保存` (Save) or press `Ctrl+S` to save and return to reading. Selecting Edit again preserves your draft.
-
-When focus leaves the editor for another control or application, changed text triggers a save dialog: **Yes** saves, **No** discards and reloads, and **Cancel** keeps the draft for continued editing. Unchanged text does not prompt. To save without confirmation, enable `編集欄からフォーカスが外れたら、確認せず自動保存する` in Settings and save the setting; it defaults to off. Automatic saves still create backups and check for external changes. A failed save reports the error and retains your input. The editor's context menu does not trigger this confirmation. Closing a note or exiting the app keeps the existing unsaved-change confirmation.
 
 ## Google Calendar
 

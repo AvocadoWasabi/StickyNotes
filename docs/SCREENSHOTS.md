@@ -1,8 +1,8 @@
 # 紹介用スクリーンショット / Screenshots
 
-2026-10-05に、実際のWindowsアプリでサンプルのMarkdownを表示して撮影しました。UIの描き直しや合成は行っていません。個人のノート・認証情報は使用していません。
+2026-10-05に、バージョン0.0.2のWPFコントロールでサンプルMarkdownを描画して更新しました。付箋の内容領域を画像化しており、デスクトップのキャプチャではありません。個人のノート・設定・認証情報は使用していません。
 
-Captured from the running Windows app on 2026-10-05 using fictional Markdown samples. The interface has not been redrawn or composited. No personal notes or credentials are included. English screenshots use English note content with the app's current Japanese controls.
+Updated on 2026-10-05 by rendering fictional Markdown samples with version 0.0.2's WPF controls. These images show each note's content area, rather than a desktop capture. No personal notes, settings, or credentials are included. English images use English note content with the app's current Japanese controls.
 
 | 内容 / Content | 日本語 / Japanese | English |
 | --- | --- | --- |
@@ -14,7 +14,7 @@ Captured from the running Windows app on 2026-10-05 using fictional Markdown sam
 
 Each image is a 460 × 580 px JPEG. README thumbnails link to the original images.
 
-## 再現手順 / Reproduce the screenshots
+## 同じサンプルをアプリで表示 / View the samples in the app
 
 Windowsでリポジトリのルートから実行します。起動中のSticky Notesがあれば、未保存の内容を保存して通知領域の「終了」で終了してください。アプリは同時に複数のプロセスを起動できません。
 
