@@ -72,6 +72,7 @@ internal static class Program
             IndependentFolderSettingsTests(root);
             DailyRegexTests(root);
             DailyPreviewTests(root);
+            RegexDefaultsTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -92,6 +93,51 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void RegexDefaultsTests(string root)
+    {
+        var app = App.Current;
+        var previousPattern = app.Config.DailyPattern;
+        var previousMode = app.Config.DailyPatternIsRegex;
+        var previousFolder = app.Config.DailyFolder;
+        var savedConfig = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
+        app.Config.DailyPattern = "yyyy-MM-dd"; app.Config.DailyPatternIsRegex = false;
+        app.Config.DailyFolder = Path.Combine(root, "daily-preview");
+        var answer = false;
+        var confirmations = 0;
+        var window = new SettingsWindow(() => { confirmations++; return answer; });
+        var panel = (StackPanel)((ScrollViewer)window.Content).Content;
+        var pattern = panel.Children.OfType<TextBox>().ElementAt(2);
+        var mode = panel.Children.OfType<CheckBox>().Single();
+        var preview = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBox>().Single();
+        Check(confirmations == 0, "opening settings does not prompt for regex insertion");
+        mode.IsChecked = true;
+        Check(confirmations == 1 && pattern.Text == "yyyy-MM-dd", "enabling regex asks once and declining preserves existing text");
+        mode.IsChecked = false; answer = true; mode.IsChecked = true;
+        Check(confirmations == 2 && pattern.Text == DailyNoteResolver.RegexExample, "accepting insertion replaces field with named-date regex example");
+        WaitFor(() => preview.Visibility == Visibility.Visible, "inserted date tags update live preview");
+        pattern.Text = "";
+        Check(pattern.Text == DailyNoteResolver.RegexExample && confirmations == 2, "clearing regex automatically fills default without another prompt");
+        pattern.Text = " \t ";
+        Check(pattern.Text == DailyNoteResolver.RegexExample, "whitespace-only regex receives the default");
+        var custom = "Diary/" + DailyNoteResolver.RegexExample;
+        pattern.Text = custom;
+        Check(pattern.Text == custom, "nonempty custom regex remains unchanged");
+        mode.IsChecked = false; answer = false; mode.IsChecked = true;
+        Check(confirmations == 3 && pattern.Text == custom, "declining reinsertion preserves custom regex");
+        mode.IsChecked = false; pattern.Text = "";
+        Check(pattern.Text == "", "date-format mode does not auto-fill regex tags");
+        mode.IsChecked = true;
+        Check(confirmations == 4 && pattern.Text == DailyNoteResolver.RegexExample, "enabling regex on blank input asks and fills default even when insertion is declined");
+        window.Close();
+        app.Config.DailyPattern = ""; app.Config.DailyPatternIsRegex = true;
+        var reopened = new SettingsWindow(() => throw new Exception("Opening must not prompt"));
+        var reopenedPattern = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ElementAt(2);
+        Check(reopenedPattern.Text == DailyNoteResolver.RegexExample && app.Config.DailyPattern == "", "saved blank regex gets a default in the editor without changing saved configuration");
+        reopened.Close();
+        Check(File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(savedConfig), "regex assistance does not persist settings without Save");
+        app.Config.DailyPattern = previousPattern; app.Config.DailyPatternIsRegex = previousMode; app.Config.DailyFolder = previousFolder;
     }
 
     private static void DailyPreviewTests(string root)
@@ -122,7 +168,7 @@ internal static class Program
         app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         var config = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
         var originalDaily = app.Config.DailyFolder;
-        var window = new SettingsWindow();
+        var window = new SettingsWindow(() => false);
         var panel = (StackPanel)((ScrollViewer)window.Content).Content;
         var inputs = panel.Children.OfType<TextBox>().ToArray();
         var regexMode = panel.Children.OfType<CheckBox>().Single();
@@ -191,7 +237,7 @@ internal static class Program
         app.ApplySettings(new Settings { NotesFolder = target, DailyFolder = target }, false);
         Check(app.Config.NotesFolder == target && app.Config.DailyFolder == target, "changing notes folder without migration preserves chosen daily folder");
 
-        var settingsWindow = new SettingsWindow();
+        var settingsWindow = new SettingsWindow(() => false);
         var panel = (StackPanel)((ScrollViewer)settingsWindow.Content).Content;
         var inputs = panel.Children.OfType<TextBox>().ToArray();
         inputs[0].Text = source;
@@ -200,7 +246,7 @@ internal static class Program
         Check(inputs[0].Text == source, "editing daily input does not change notes input");
         settingsWindow.Close();
         app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = target }, false);
-        var reopened = new SettingsWindow();
+        var reopened = new SettingsWindow(() => false);
         var reopenedInputs = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ToArray();
         Check(reopenedInputs[0].Text == source && reopenedInputs[1].Text == target, "reopened settings display independently saved folders");
         reopened.Close();

@@ -10,6 +10,7 @@
     <Version>0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="StickyNotes.Tests" />
     <Resource Include="Assets/StickyNotes.ico" />
     <ProjectReference Include="../StickyNotes.Core/StickyNotes.Core.csproj" />
     <PackageReference Include="Markdig" Version="0.37.0" />

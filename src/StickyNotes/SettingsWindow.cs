@@ -5,7 +5,9 @@ namespace StickyNotes;
 
 public sealed class SettingsWindow : Window
 {
-    public SettingsWindow()
+    public SettingsWindow() : this(null) { }
+
+    internal SettingsWindow(Func<bool>? confirmRegexTemplate)
     {
         SetResourceReference(IconProperty, "AppIcon");
         Title = "Sticky Notes 設定"; Width = 600; SizeToContent = SizeToContent.Height;
@@ -26,6 +28,13 @@ public sealed class SettingsWindow : Window
         var useRegex = new CheckBox { Content = "デイリーノートの形式に正規表現を使う", IsChecked = app.Config.DailyPatternIsRegex, Margin = new Thickness(0, 8, 0, 8) };
         panel.Children.Add(useRegex);
         var pattern = Add("デイリーノートの形式（日付書式 / 正規表現）", app.Config.DailyPattern);
+        bool FillEmptyRegex()
+        {
+            if (useRegex.IsChecked != true || !string.IsNullOrWhiteSpace(pattern.Text)) return false;
+            pattern.Text = DailyNoteResolver.RegexExample;
+            pattern.SelectAll();
+            return true;
+        }
         var patternHelp = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray };
         void UpdatePatternHelp() => patternHelp.Text = useRegex.IsChecked == true
             ? "拡張子を含む相対パス全体に照合します。区切りは /。year・month・day で今日の日付を判別します。\n例: " + DailyNoteResolver.RegexExample
@@ -89,8 +98,21 @@ public sealed class SettingsWindow : Window
             }
         };
         daily.TextChanged += (_, _) => SchedulePreview();
-        pattern.TextChanged += (_, _) => SchedulePreview();
-        useRegex.Checked += (_, _) => SchedulePreview();
+        pattern.TextChanged += (_, _) => { if (!FillEmptyRegex()) SchedulePreview(); };
+        useRegex.Checked += (_, _) =>
+        {
+            var insert = confirmRegexTemplate?.Invoke() ?? MessageBox.Show(this,
+                "日時判定用のタグ year・month・day を含む正規表現を入力しますか？\n\n" + DailyNoteResolver.RegexExample +
+                "\n\nはい: 入力欄全体をこの既定例に置き換えます。\nいいえ: 入力済みの式を維持します。\n空欄の場合は、どちらを選んでも既定例を自動補完します。",
+                "日時タグ付き正規表現の挿入", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes;
+            if (insert)
+            {
+                pattern.Text = DailyNoteResolver.RegexExample;
+                pattern.Focus(); pattern.SelectAll();
+            }
+            FillEmptyRegex();
+            SchedulePreview();
+        };
         useRegex.Unchecked += (_, _) => SchedulePreview();
         Loaded += (_, _) => SchedulePreview();
         Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
@@ -139,6 +161,7 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(new TextBlock { Text = "保存先を変更して保存すると、既存の付箋ファイルも移行するか確認します。\nバックアップ・配置・認証情報は %LOCALAPPDATA%\\StickyNotes に保存します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         panel.Children.Add(Ui.Button("保存して閉じる", () => { if (Save()) Close(); }));
         Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        FillEmptyRegex();
     }
 
     private void PickFolder(TextBox input)

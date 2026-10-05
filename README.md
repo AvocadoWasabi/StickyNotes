@@ -125,7 +125,7 @@ The app reads and writes the original Markdown file directly. No Obsidian CLI or
 
 Date patterns use .NET syntax, which differs from Obsidian's Moment syntax and is case-sensitive. For example, use `yyyy-MM-dd` instead of `YYYY-MM-DD`, or `yyyy-MM-dd(ddd)` instead of `YYYY-MM-DD(ddd)`. Weekday names follow your Windows culture settings. The `.md` extension is added automatically. Subfolder patterns such as `yyyy/MM/yyyy-MM-dd` are supported.
 
-To match flexible filenames, enable `デイリーノートの形式に正規表現を使う` (Use a regular expression) in Settings. Existing settings keep using date formats until you enable this option. For names such as `2026-10-05(月).md`, select the folder containing those notes and enter:
+To match flexible filenames, enable `デイリーノートの形式に正規表現を使う` (Use a regular expression) in Settings. Turning the checkbox on asks whether to insert the default expression with `year`, `month`, and `day` tags: **Yes** replaces the entire field with the example below; **No** keeps a nonempty existing expression. A blank or whitespace-only field in regex mode is automatically filled with this example, including when you clear the field or reopen a saved blank setting. Blank fields are filled regardless of the confirmation answer. Reopening Settings does not prompt, and date-format mode does not auto-fill regex tags. These changes update the preview but are only persisted when you save. Existing settings keep using date formats until you enable this option. For names such as `2026-10-05(月).md`, select the folder containing those notes and enter:
 
 ```regex
 (?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:\([^)]+\))?\.md
