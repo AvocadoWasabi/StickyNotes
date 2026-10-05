@@ -73,6 +73,7 @@ internal static class Program
             DailyRegexTests(root);
             DailyPreviewTests(root);
             RegexDefaultsTests(root);
+            NoteLinkTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -93,6 +94,86 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void NoteLinkTests(string root)
+    {
+        const string markdown = "---\r\ntitle: Keep\r\n---\r\n# Journal\r\nintro\r\n## Tasks ##\r\n- [ ] one\r\n### Child\r\nsub\r\n```md\r\n## Fake\r\n```\r\n## Log\r\nlast";
+        Check(SectionEditor.Headings(markdown).SequenceEqual(new[] { "Journal", "Tasks", "Child", "Log" }), "heading choices share section boundaries and exclude YAML and fenced code");
+        Check(SectionEditor.EnsureHeading(markdown, "Tasks") == markdown, "existing heading never changes the source");
+        Check(SectionEditor.EnsureHeading(markdown, " ") == markdown, "blank heading displays whole note without adding a section");
+        var appended = SectionEditor.EnsureHeading(markdown, "New section");
+        Check(appended == markdown + "\r\n\r\n## New section\r\n" && SectionEditor.Find(appended, "New section").Content == "", "missing heading appended at EOF with original CRLF bytes intact");
+        Check(SectionEditor.EnsureHeading("", "First") == "## First\n", "empty Markdown accepts its first heading");
+        Throws<InvalidOperationException>(() => SectionEditor.EnsureHeading(markdown, "Bad\n## Injected"), "heading rejects newline injection");
+        Throws<InvalidOperationException>(() => SectionEditor.EnsureHeading("```\ncode", "Hidden"), "unclosed fence prevents invisible heading append");
+        Throws<InvalidOperationException>(() => SectionEditor.EnsureHeading(markdown, "Changed ##"), "heading syntax that alters its name is rejected");
+        Throws<InvalidOperationException>(() => SectionEditor.EnsureHeading("## Twice\na\n## Twice\nb", "Twice"), "duplicate headings cannot be linked or appended again");
+        var folder = Path.Combine(root, "link-picker");
+        var backups = Path.Combine(folder, "backups");
+        Directory.CreateDirectory(folder);
+        var path = Path.Combine(folder, "fixed.md");
+        File.WriteAllText(path, markdown, new UTF8Encoding(true));
+        var bytes = File.ReadAllBytes(path);
+        var source = NoteStore.Read(path);
+        var fixedPlacement = NoteLink.Prepare(source, " Tasks ", false, backups);
+        Check(fixedPlacement.Path == path && fixedPlacement.Heading == "Tasks" && !fixedPlacement.Daily, "fixed selection stores an absolute file and trimmed heading");
+        var dailyPlacement = NoteLink.Prepare(source, "", true, backups);
+        Check(dailyPlacement.Path == "" && dailyPlacement.Heading == "" && dailyPlacement.Daily, "daily whole-note selection has no fixed path");
+        Check(File.ReadAllBytes(path).SequenceEqual(bytes) && !Directory.Exists(backups), "selecting existing or blank headings performs no writes or backups");
+        NoteLink.Prepare(source, "Added", false, backups);
+        Check(NoteStore.Read(path).Text == markdown + "\r\n\r\n## Added\r\n" && File.ReadAllBytes(path).Take(3).SequenceEqual(new byte[] { 239, 187, 191 }), "confirmed new heading preserves source text and BOM");
+        Check(Directory.GetFiles(backups).Length == 1 && File.ReadAllBytes(Directory.GetFiles(backups)[0]).SequenceEqual(bytes), "heading append creates an exact recovery backup");
+        Throws<ConflictException>(() => NoteLink.Prepare(source, "Stale", false, backups), "stale append cannot overwrite external changes");
+        Throws<ConflictException>(() => NoteLink.Prepare(source, "Tasks", false, backups), "stale existing selection requires reloading");
+        Check(!File.ReadAllText(path).Contains("Stale"), "failed stale append leaves source intact");
+
+        var fixedDialog = new NoteLinkWindow(false, () => throw new Exception("Fixed dialog must not resolve daily files"));
+        var fixedPanel = (StackPanel)((ScrollViewer)fixedDialog.Content).Content;
+        Check(fixedPanel.Children.OfType<Button>().Any(x => (string)x.Content == "フォルダを選択…") && fixedPanel.Children.OfType<Button>().Any(x => (string)x.Content == "Markdownファイルを選択…"), "fixed dialog provides folder and Markdown file pickers");
+        Check(!fixedPanel.Children.OfType<TextBox>().Any() && !fixedPanel.Children.OfType<CheckBox>().Any(), "fixed dialog removes absolute path input and daily mode controls");
+        fixedDialog.LoadSource(path);
+        Check(fixedDialog.Headings.Input.Items.Cast<string>().Contains("Tasks"), "opening Markdown populates the shared editable heading choices");
+        fixedDialog.Headings.Input.SelectedItem = "Tasks";
+        Check(fixedDialog.Prepare().Heading == "Tasks", "choosing a dropdown item links the selected existing heading");
+        fixedDialog.Headings.Input.Text = "";
+        Check(fixedDialog.Prepare().Heading == "", "fixed dialog blank heading selects the whole body");
+        var noteWindow = new NoteWindow(fixedDialog.Prepare());
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(noteWindow, null);
+        Check((string)typeof(NoteWindow).GetField("content", flags)!.GetValue(noteWindow)! == NoteStore.Split(NoteStore.Read(path).Text).Body, "whole-note selection renders every body section");
+        noteWindow.Close();
+        fixedDialog.Headings.Input.Text = "Cancel draft";
+        var beforeCancel = File.ReadAllBytes(path);
+        fixedDialog.Close();
+        Check(File.ReadAllBytes(path).SequenceEqual(beforeCancel), "closing the heading dialog never appends typed names");
+
+        var invalidDialog = new NoteLinkWindow(false, () => "");
+        Throws<InvalidOperationException>(() => invalidDialog.LoadSource("relative.md"), "fixed picker rejects relative paths");
+        Throws<InvalidOperationException>(() => invalidDialog.LoadSource(Path.Combine(folder, "other.txt")), "fixed picker rejects non-Markdown files");
+        invalidDialog.Close();
+
+        var dailyPath = Path.Combine(folder, "today.md");
+        File.WriteAllText(dailyPath, "## Daily\ntoday\n");
+        var currentPath = dailyPath;
+        var dailyDialog = new NoteLinkWindow(true, () => currentPath);
+        var dailyPanel = (StackPanel)((ScrollViewer)dailyDialog.Content).Content;
+        Check(!dailyPanel.Children.OfType<Button>().Any(x => ((string)x.Content).Contains("選択")) && !dailyPanel.Children.OfType<TextBox>().Any(), "daily dialog has no folder picker or absolute path input");
+        dailyDialog.LoadSource();
+        Check(dailyDialog.Headings.GetType() == fixedDialog.Headings.GetType() && dailyDialog.Headings.Input.Items.Cast<string>().SequenceEqual(new[] { "Daily" }), "both dialogs use the same heading picker with the loaded note's choices");
+        dailyDialog.Headings.Input.Text = "Daily added";
+        var result = dailyDialog.Prepare();
+        Check(result.Daily && result.Path == "" && File.ReadAllText(dailyPath).EndsWith("## Daily added\n"), "daily dialog appends requested heading to today's file only");
+        dailyDialog.LoadSource();
+        currentPath = path;
+        dailyDialog.Headings.Input.Text = "Wrong day";
+        Throws<InvalidOperationException>(() => dailyDialog.Prepare(), "daily date change requires reloading before an append");
+        Check(!File.ReadAllText(dailyPath).Contains("Wrong day") && !File.ReadAllText(path).Contains("Wrong day"), "daily rollover cannot append to either stale or unreviewed file");
+        currentPath = Path.Combine(folder, "missing.md");
+        Throws<FileNotFoundException>(() => dailyDialog.LoadSource(), "missing daily file reports load error");
+        Check(!dailyDialog.Headings.IsEnabled && dailyDialog.Headings.Input.Items.Count == 0, "failed read removes stale heading choices");
+        Throws<InvalidOperationException>(() => dailyDialog.Prepare(), "failed read blocks linking stale source");
+        dailyDialog.Close();
     }
 
     private static void RegexDefaultsTests(string root)

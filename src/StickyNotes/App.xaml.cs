@@ -46,7 +46,8 @@ public partial class App : Application
         var menu = new Forms.ContextMenuStrip();
         menu.Items.Add("新しい付箋", null, (_, _) => Safe(NewNote));
         menu.Items.Add("Markdownを開く…", null, (_, _) => Safe(OpenNote));
-        menu.Items.Add("ノートの見出しを表示…", null, (_, _) => Safe(LinkSection));
+        menu.Items.Add("ノートの一部分を付箋にする…", null, (_, _) => Safe(LinkSection));
+        menu.Items.Add("デイリーノートを表示…", null, (_, _) => Safe(LinkDaily));
         menu.Items.Add("すべて表示", null, (_, _) => { foreach (var note in Notes) { note.Show(); note.Activate(); } });
         menu.Items.Add("設定…", null, (_, _) => new SettingsWindow().ShowDialog());
         menu.Items.Add(new Forms.ToolStripSeparator());
@@ -76,19 +77,14 @@ public partial class App : Application
 
     public void LinkSection()
     {
-        var fields = new List<Ui.Field>
-        {
-            new("path", "既存Markdownの絶対パス（今日のノートの場合は空欄）", ""),
-            new("heading", "表示する見出し名（例: Tasks。# は不要）", "Tasks"),
-            new("daily", "毎日、今日のノートに切り替える: yes / no", "yes")
-        };
-        var values = Ui.Prompt("ノートの一部分を付箋にする", fields);
-        if (values is null) return;
-        var daily = values["daily"].Trim().Equals("yes", StringComparison.OrdinalIgnoreCase);
-        if (string.IsNullOrWhiteSpace(values["heading"])) throw new InvalidOperationException("見出しを指定してください。");
-        if (daily && string.IsNullOrWhiteSpace(Config.DailyFolder)) throw new InvalidOperationException("先に設定画面でデイリーノートフォルダを選択してください。");
-        if (!daily && (!Path.IsPathFullyQualified(values["path"]) || !File.Exists(values["path"]))) throw new InvalidOperationException("既存Markdownの絶対パスを指定してください。");
-        ShowNote(new() { Path = values["path"], Heading = values["heading"], Daily = daily, Color = "green" });
+        var dialog = new NoteLinkWindow(false);
+        if (dialog.ShowDialog() == true && dialog.Result is { } placement) ShowNote(placement);
+    }
+
+    public void LinkDaily()
+    {
+        var dialog = new NoteLinkWindow(true);
+        if (dialog.ShowDialog() == true && dialog.Result is { } placement) ShowNote(placement);
     }
 
     public void ShowNote(NotePlacement placement)

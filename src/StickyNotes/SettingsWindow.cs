@@ -40,7 +40,7 @@ public sealed class SettingsWindow : Window
             Height = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Visibility = Visibility.Collapsed };
         var previewPanel = new StackPanel();
         previewPanel.Children.Add(previewStatus); previewPanel.Children.Add(previewText);
-        previewPanel.Children.Add(new TextBlock { Text = "表示するには設定を保存し、付箋の「… → ノートの見出しを表示…」で見出し名（# は不要）を入力して、毎日切替を yes にしてください。今日のノートの場合、パス欄は空欄です。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        previewPanel.Children.Add(new TextBlock { Text = "表示するには設定を保存し、付箋の「… → デイリーノートを表示…」で見出しを選択してください。空欄なら本文を全表示し、新しい見出し名なら表示時に末尾へ追加します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         panel.Children.Add(previewPanel);
         var previewTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
         var previewGate = new SemaphoreSlim(1, 1);

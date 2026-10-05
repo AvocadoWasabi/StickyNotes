@@ -119,9 +119,9 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 The app reads and writes the original Markdown file directly. No Obsidian CLI or plugin is needed.
 
 1. In Settings, configure your daily notes folder and tagged regular expression, check the live preview, then select `保存して閉じる` (Save and close).
-2. Select `… → ノートの見出しを表示` (Display a note heading).
-3. Leave the path empty, enter an existing heading such as `Tasks` without the `#` marks, and set daily switching to `yes`. `Tasks` is only an example: use a heading that actually exists in your note.
-4. The content under the selected heading in today's note appears in the sticky note. Clicking a checkbox updates the corresponding line in the source file.
+2. Select `… → デイリーノートを表示…` (Display a daily note). The app loads today's file from Settings; no absolute-path input or daily-mode switch is needed.
+3. In the shared heading selector, choose an existing heading or type a new name without `#`. Leave it blank to display the entire body.
+4. Select `表示` (Display). A new name creates a `## Heading` at the end of the original file after making a backup. Typing or cancelling does not write anything. Clicking a task checkbox updates the corresponding source line.
 
 Daily-note filenames use **date tags + a regular expression** only. There is no date-format mode or mode checkbox. The tags are the named groups `year`, `month`, and `day`. For names such as `2026-10-05(月).md`, choose the folder containing the notes and use:
 
@@ -139,11 +139,13 @@ The search includes subfolders but skips symbolic links and junctions; the selec
 
 The Settings screen checks the unsaved folder and expression about 300 ms after you stop typing. A unique match for today displays its filename and a read-only Markdown preview (up to 4,000 characters). Invalid expressions, missing files, multiple matches, and read errors appear inline. Changing the folder also refreshes the preview. Searches run in the background, and outdated results are discarded. Previewing does not save settings, edit notes, or open a sticky note; follow the steps above to display the selected heading.
 
-To link a fixed note, enter its absolute path and set daily switching to `no`. When daily switching is `yes`, the path field is unused.
+For a fixed note, use the separate `… → ノートの一部分を付箋にする…` (Link part of a note) menu. Select `フォルダを選択…` (Choose folder) to browse a folder and then select its Markdown file, or use `Markdownファイルを選択…` (Choose Markdown file) directly. There is no manual absolute-path field or daily-mode control. Both dialogs share the same heading selector: select an existing heading, enter a new one, or leave it blank for the whole body. Both menus are also available from the notification-area icon. Use `再読込` (Reload) to refresh the heading list.
+
+If the source changes externally before Display, the app asks you to reload without overwriting it. The same applies when the daily-note target changes, including at midnight. Appending preserves the original content, newlines, and UTF-8 BOM. Ambiguous duplicate headings and appends hidden inside an unclosed code fence are rejected.
 
 A section starts immediately after the selected heading and ends before the next heading at the same or a higher level. Subheadings are included. Other sections and YAML front matter are preserved. Duplicate matching headings prevent editing to avoid ambiguity. Headings inside fenced code are ignored. Use `#`-style (ATX) headings.
 
-When the date changes, the app switches to today's file. If you are editing, switching waits until you save or reload. Missing files or headings produce an error and are not created automatically. Once you create them in Obsidian, the app displays them on a subsequent refresh.
+When the date changes, the app switches to today's file. If you are editing, switching waits until you save or reload. A missing target file or heading produces an error. Files are not created automatically; new headings are added only when you enter a new name in the selection dialog and select Display. Creating them in Obsidian also makes them appear on a subsequent refresh.
 
 ## Google Calendar
 

@@ -18,6 +18,9 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Added
 
+- Separate fixed-note and daily-note display menus. Add folder/Markdown file pickers for fixed notes and remove manual absolute-path and daily-switch inputs.
+- Share an editable heading selector between both dialogs. Choose headings from the loaded note, leave the field blank for the entire body, or append a new heading at the end on Display with backups and external-change checks.
+
 - Auto-fill a blank daily regex with the default named-date expression. The template-insertion button asks before replacing existing text with that example; declining retains a nonempty expression.
 
 - Live daily-note preview in Settings: show today's matching filename and read-only Markdown while typing a tagged regex, with inline errors and background searches that discard outdated results. Include instructions for displaying a daily heading as a sticky note.

@@ -249,7 +249,8 @@ public sealed class NoteWindow : Window
         Add("予定を今すぐ取得", () => { _ = RefreshCalendar(); });
         Add("元ファイルを既定アプリで開く", () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add("Markdownを開く…", app.OpenNote);
-        Add("ノートの見出しを表示…", app.LinkSection);
+        Add("ノートの一部分を付箋にする…", app.LinkSection);
+        Add("デイリーノートを表示…", app.LinkDaily);
         Add("設定…", () => new SettingsWindow().ShowDialog());
         Add("アプリを終了（配置を保存）", app.Quit);
         menu.IsOpen = true;
