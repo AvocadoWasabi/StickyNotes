@@ -10,6 +10,7 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Features
 
+- Rename the button display setting to `タイトルにマウスカーソルを重ねるとボタンを表示する` (Show buttons when hovering the mouse cursor over the title), preserving behavior and saved preferences.
 - Add an option to overlay note buttons on the title when hovered, with a drag handle and F6/Tab keyboard access. Switching between overlay and always-visible modes applies to all notes and persists, while preserving body position and edits.
 - Add per-note display scaling from 50–200%, saved across restarts. Use the Display scale menu, Ctrl+wheel / Ctrl++ / Ctrl+- in reading mode, or Ctrl+0 to reset; Markdown content, events, and daily guidance scale together.
 - Generate the self-contained app and installer files under `artifacts/app` on every normal build, and print the `Install.cmd` path on completion. `-Publish` adds ZIP and SHA256 generation.

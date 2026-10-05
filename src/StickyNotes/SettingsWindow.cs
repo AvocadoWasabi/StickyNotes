@@ -19,7 +19,7 @@ public sealed class SettingsWindow : Window
         var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = "編集欄からフォーカスが外れたら、確認せず自動保存する", IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(autoSave);
         panel.Children.Add(new TextBlock { Text = "オフの場合は変更の保存を確認します。保存エラー時は入力を保持します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
-        var overlay = new CheckBox { Name = "TitleButtonOverlay", Content = "操作ボタンをタイトルに重ねて表示する", IsChecked = app.Config.TitleButtonOverlay, Margin = new Thickness(0, 8, 0, 8) };
+        var overlay = new CheckBox { Name = "TitleButtonOverlay", Content = "タイトルにマウスカーソルを重ねるとボタンを表示する", IsChecked = app.Config.TitleButtonOverlay, Margin = new Thickness(0, 8, 0, 8) };
         panel.Children.Add(overlay);
         panel.Children.Add(new TextBlock { Text = "オン: タイトルにマウスを重ねるとボタンを表示します。F6でも表示・キーボード操作ができます。左端の移動ハンドルをドラッグして付箋を動かせます。オフ: タイトルの下に常に表示します（既定）。保存すると開いているすべての付箋に反映します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         TextBox Add(string label, string value)
