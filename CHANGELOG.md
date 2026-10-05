@@ -24,7 +24,7 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Changed
 
-- Keep local development instructions (`AGENTS.md`) out of Git and distribution packages. Require code and security reviews before PR creation; unresolved major findings block branch submission and PR creation.
+- Keep local development instructions (`AGENTS.md`) out of Git and distribution packages. Use separate branches and local commits, with code and security reviews before completion. The normal workflow does not include PR creation; merging and pushing require explicit instructions, and unresolved major findings block both.
 - Buttons use a pale blue background with darker text and borders, making folder selection and other actions easier to distinguish from input fields.
 
 ### Current limitations
