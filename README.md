@@ -1,6 +1,17 @@
 # Markdown Sticky Notes
 
+<img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
+
 Windows / C# / WPFで作成した、ObsidianのMarkdownと連携する付箋アプリです。
+
+## ダウンロードとインストール
+
+[GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) の `StickyNotes-win-x64.zip` をダウンロードし、「すべて展開」して `Install.cmd` をダブルクリックしてください。スタートメニューから起動できるようになります。Windows 10 / 11（x64）向けで、管理者権限と.NETの追加インストールは不要です。初回Release公開前はダウンロードできません。
+
+- [インストール・更新・削除](docs/INSTALL.md)
+- [開発・ブランチ運用・リリース](docs/DEVELOPMENT.md)
+- [サードパーティライセンス](THIRD-PARTY-NOTICES.txt)
+- [Obsidian Basesのサンプル](examples/StickyNotes.base) / [デイリーノートのサンプル](examples/Daily.md)
 
 ## 起動
 

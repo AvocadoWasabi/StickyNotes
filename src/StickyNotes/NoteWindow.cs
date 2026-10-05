@@ -27,6 +27,7 @@ public sealed class NoteWindow : Window
 
     public NoteWindow(NotePlacement placement)
     {
+        SetResourceReference(IconProperty, "AppIcon");
         Placement = placement;
         Title = "Markdown Sticky Notes";
         Width = Math.Clamp(placement.Width, 280, 1800); Height = Math.Clamp(placement.Height, 240, 1500);

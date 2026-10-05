@@ -16,6 +16,7 @@ public partial class App : Application
     public bool Exiting { get; private set; }
     public bool TestMode { get; private set; }
     private Forms.NotifyIcon? tray;
+    private System.Drawing.Icon? trayIcon;
     private Mutex? mutex;
     private bool ownsMutex;
     public static string DataDirectory { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StickyNotes");
@@ -50,7 +51,9 @@ public partial class App : Application
         menu.Items.Add("設定…", null, (_, _) => new SettingsWindow().ShowDialog());
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add("終了", null, (_, _) => Quit());
-        tray = new Forms.NotifyIcon { Icon = System.Drawing.SystemIcons.Information, Text = "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
+        using (var iconStream = GetResourceStream(new Uri("pack://application:,,,/StickyNotes;component/Assets/StickyNotes.ico")).Stream)
+            trayIcon = new System.Drawing.Icon(iconStream, System.Windows.Forms.SystemInformation.SmallIconSize);
+        tray = new Forms.NotifyIcon { Icon = trayIcon, Text = "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => { if (Notes.Count == 0) Safe(NewNote); else { Notes[0].Show(); Notes[0].Activate(); } };
         foreach (var placement in Config.Windows.ToArray()) Safe(() => ShowNote(placement));
         if (Notes.Count == 0) Safe(NewNote);
@@ -119,6 +122,7 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         tray?.Dispose();
+        trayIcon?.Dispose();
         Calendar?.Dispose();
         if (ownsMutex) mutex?.ReleaseMutex();
         mutex?.Dispose();

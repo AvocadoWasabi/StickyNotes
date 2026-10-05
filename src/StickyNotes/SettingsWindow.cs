@@ -4,6 +4,7 @@ public sealed class SettingsWindow : Window
 {
     public SettingsWindow()
     {
+        SetResourceReference(IconProperty, "AppIcon");
         Title = "Sticky Notes 設定"; Width = 600; SizeToContent = SizeToContent.Height;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         var app = App.Current;
