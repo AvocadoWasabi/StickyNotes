@@ -19,7 +19,7 @@ Windows 10 / 11の64bit（x64）環境向けです。.NETの追加インスト�
 
 通知領域のアイコンを右クリックして「設定」を開き、付箋とデイリーノートの保存先を指定します。Obsidianと連携する場合はVault内のフォルダを選びます。Google連携を使わなければ認証設定は不要です。
 
-詳しい操作・Google Calendarの設定は [README](../README.md) を参照してください。`examples` にデイリーノートとObsidian Basesの例を同梱しています。
+詳しい操作・Google Calendarの設定は [日本語README](../README.ja.md) を参照してください。`examples` にデイリーノートとObsidian Basesの例を同梱しています。
 
 ## 更新
 

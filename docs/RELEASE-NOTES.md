@@ -5,4 +5,4 @@ Windows 10 / 11（x64）向けMarkdown付箋アプリです。
 - インストールせず、展開先の `StickyNotes.exe` から起動することもできます。
 - 更新前に通知領域のメニューからアプリを終了してください。
 
-使い方とGoogle Calendar連携の設定は同梱のREADME、導入・更新・削除の詳細は `docs/INSTALL.md` を参照してください。
+使い方とGoogle Calendar連携の設定は同梱の `README.ja.md`（日本語）または `README.md`（英語）、導入・更新・削除の詳細は `docs/INSTALL.md` を参照してください。
