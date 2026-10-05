@@ -25,23 +25,16 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(Ui.Button("保存フォルダを選択", () => PickFolder(notes)));
         var daily = Add("デイリーノートのフォルダ", app.Config.DailyFolder);
         panel.Children.Add(Ui.Button("デイリーフォルダを選択", () => PickFolder(daily)));
-        var useRegex = new CheckBox { Content = "デイリーノートの形式に正規表現を使う", IsChecked = app.Config.DailyPatternIsRegex, Margin = new Thickness(0, 8, 0, 8) };
-        panel.Children.Add(useRegex);
-        var pattern = Add("デイリーノートの形式（日付書式 / 正規表現）", app.Config.DailyPattern);
+        var pattern = Add("デイリーノートの形式（日時タグ + 正規表現）", app.Config.DailyPattern);
         bool FillEmptyRegex()
         {
-            if (useRegex.IsChecked != true || !string.IsNullOrWhiteSpace(pattern.Text)) return false;
+            if (!string.IsNullOrWhiteSpace(pattern.Text)) return false;
             pattern.Text = DailyNoteResolver.RegexExample;
             pattern.SelectAll();
             return true;
         }
-        var patternHelp = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray };
-        void UpdatePatternHelp() => patternHelp.Text = useRegex.IsChecked == true
-            ? "拡張子を含む相対パス全体に照合します。区切りは /。year・month・day で今日の日付を判別します。\n例: " + DailyNoteResolver.RegexExample
-            : "日付書式は.NET形式。例: yyyy-MM-dd / yyyy/MM/yyyy-MM-dd（.md は自動付加）";
-        useRegex.Checked += (_, _) => UpdatePatternHelp();
-        useRegex.Unchecked += (_, _) => UpdatePatternHelp();
-        UpdatePatternHelp(); panel.Children.Add(patternHelp);
+        panel.Children.Add(new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray,
+            Text = "year・month・day のタグで今日の日付を判別します。拡張子 .md を含む相対パス全体に照合し、区切りは / を使います。\n例: " + DailyNoteResolver.RegexExample });
         var previewStatus = new TextBlock { Name = "DailyPreviewStatus", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 4) };
         var previewText = new TextBox { Name = "DailyPreviewText", IsReadOnly = true, TextWrapping = TextWrapping.Wrap,
             Height = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Visibility = Visibility.Collapsed };
@@ -69,7 +62,7 @@ public sealed class SettingsWindow : Window
         {
             previewTimer.Stop();
             var version = previewVersion;
-            var folder = daily.Text; var expression = pattern.Text; var regex = useRegex.IsChecked == true;
+            var folder = daily.Text; var expression = pattern.Text;
             var today = DateTime.Today;
             using var cancellation = new CancellationTokenSource();
             previewCancellation = cancellation;
@@ -77,7 +70,7 @@ public sealed class SettingsWindow : Window
             {
                 await previewGate.WaitAsync(cancellation.Token);
                 DailyNotePreview result;
-                try { result = await Task.Run(() => DailyNotePreview.Read(folder, expression, regex, today, cancellation.Token)); }
+                try { result = await Task.Run(() => DailyNotePreview.Read(folder, expression, today, cancellation.Token)); }
                 finally { previewGate.Release(); }
                 if (previewClosed || version != previewVersion) return;
                 previewStatus.Foreground = Brushes.DarkGreen;
@@ -99,11 +92,11 @@ public sealed class SettingsWindow : Window
         };
         daily.TextChanged += (_, _) => SchedulePreview();
         pattern.TextChanged += (_, _) => { if (!FillEmptyRegex()) SchedulePreview(); };
-        useRegex.Checked += (_, _) =>
+        var insertTags = Ui.Button("日時タグ付きの既定例を挿入", () =>
         {
             var insert = confirmRegexTemplate?.Invoke() ?? MessageBox.Show(this,
                 "日時判定用のタグ year・month・day を含む正規表現を入力しますか？\n\n" + DailyNoteResolver.RegexExample +
-                "\n\nはい: 入力欄全体をこの既定例に置き換えます。\nいいえ: 入力済みの式を維持します。\n空欄の場合は、どちらを選んでも既定例を自動補完します。",
+                "\n\nはい: 入力欄全体をこの既定例に置き換えます。\nいいえ: 入力済みの式を維持します。",
                 "日時タグ付き正規表現の挿入", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes;
             if (insert)
             {
@@ -112,8 +105,8 @@ public sealed class SettingsWindow : Window
             }
             FillEmptyRegex();
             SchedulePreview();
-        };
-        useRegex.Unchecked += (_, _) => SchedulePreview();
+        });
+        panel.Children.Insert(panel.Children.IndexOf(previewPanel), insertTags);
         Loaded += (_, _) => SchedulePreview();
         Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
         var credentials = Add("Google OAuth デスクトップアプリのJSON", app.Config.GoogleCredentialsFile);
@@ -128,7 +121,7 @@ public sealed class SettingsWindow : Window
         {
             if (!Path.IsPathFullyQualified(notes.Text)) throw new InvalidOperationException("保存フォルダは絶対パスで指定してください。");
             if (daily.Text.Length > 0 && !Path.IsPathFullyQualified(daily.Text)) throw new InvalidOperationException("デイリーフォルダは絶対パスで指定してください。");
-            DailyNoteResolver.Validate(pattern.Text, useRegex.IsChecked == true);
+            DailyNoteResolver.Validate(pattern.Text);
             if (string.IsNullOrWhiteSpace(calendar.Text)) throw new InvalidOperationException("Calendar IDを指定してください。");
             var folder = NoteFolderMigration.Normalize(notes.Text);
             var migrate = false;
@@ -143,7 +136,6 @@ public sealed class SettingsWindow : Window
             app.ApplySettings(new Settings
             {
                 NotesFolder = folder, DailyFolder = daily.Text, DailyPattern = pattern.Text,
-                DailyPatternIsRegex = useRegex.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text
             }, migrate);
             notes.Text = app.Config.NotesFolder; daily.Text = app.Config.DailyFolder;

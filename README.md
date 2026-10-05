@@ -26,7 +26,7 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 | Markdown viewing and editing | Display headings, lists, checkboxes, tables, and code, and edit the Markdown source |
 | Obsidian integration | Read and write `.md` files in your vault; store titles, tags, status, and colors in YAML properties |
 | Linked sections | Display and edit a specific heading's section while preserving the rest of the source note |
-| Daily notes | Switch to today's file using a date pattern and check off tasks from the sticky note |
+| Daily notes | Match today's file using a tagged regex and check off tasks from the sticky note |
 | Google Calendar (optional) | Search and display events; edit titles and descriptions after confirmation |
 | Data protection | Detect external changes, prevent conflicting overwrites, and back up files before writing |
 
@@ -48,7 +48,7 @@ For portable use, run `StickyNotes.exe` directly from the extracted folder. Keep
 
 ### First-time setup
 
-Right-click the notification-area icon and select `設定` (Settings), then choose a folder for your notes. Select a folder inside your vault to use the notes with Obsidian. To use daily notes, also set their folder and date pattern. Google authentication is only needed if you use Google Calendar.
+Right-click the notification-area icon and select `設定` (Settings), then choose a folder for your notes. Select a folder inside your vault to use the notes with Obsidian. To use daily notes, also set their folder and tagged regular expression. Google authentication is only needed if you use Google Calendar.
 
 ### Update and uninstall
 
@@ -118,24 +118,26 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 
 The app reads and writes the original Markdown file directly. No Obsidian CLI or plugin is needed.
 
-1. In Settings, configure your daily notes folder and date pattern (or enable regex mode), check the live preview, then select `保存して閉じる` (Save and close).
+1. In Settings, configure your daily notes folder and tagged regular expression, check the live preview, then select `保存して閉じる` (Save and close).
 2. Select `… → ノートの見出しを表示` (Display a note heading).
 3. Leave the path empty, enter an existing heading such as `Tasks` without the `#` marks, and set daily switching to `yes`. `Tasks` is only an example: use a heading that actually exists in your note.
 4. The content under the selected heading in today's note appears in the sticky note. Clicking a checkbox updates the corresponding line in the source file.
 
-Date patterns use .NET syntax, which differs from Obsidian's Moment syntax and is case-sensitive. For example, use `yyyy-MM-dd` instead of `YYYY-MM-DD`, or `yyyy-MM-dd(ddd)` instead of `YYYY-MM-DD(ddd)`. Weekday names follow your Windows culture settings. The `.md` extension is added automatically. Subfolder patterns such as `yyyy/MM/yyyy-MM-dd` are supported.
-
-To match flexible filenames, enable `デイリーノートの形式に正規表現を使う` (Use a regular expression) in Settings. Turning the checkbox on asks whether to insert the default expression with `year`, `month`, and `day` tags: **Yes** replaces the entire field with the example below; **No** keeps a nonempty existing expression. A blank or whitespace-only field in regex mode is automatically filled with this example, including when you clear the field or reopen a saved blank setting. Blank fields are filled regardless of the confirmation answer. Reopening Settings does not prompt, and date-format mode does not auto-fill regex tags. These changes update the preview but are only persisted when you save. Existing settings keep using date formats until you enable this option. For names such as `2026-10-05(月).md`, select the folder containing those notes and enter:
+Daily-note filenames use **date tags + a regular expression** only. There is no date-format mode or mode checkbox. The tags are the named groups `year`, `month`, and `day`. For names such as `2026-10-05(月).md`, choose the folder containing the notes and use:
 
 ```regex
 (?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:\([^)]+\))?\.md
 ```
 
-The required named groups `year`, `month`, and `day` must each capture one numeric date part. Only a file whose captured date equals today's local date is selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; use `/` for subfolders. For example, add `Diary/` before the expression when selecting its parent folder. Unlike date-format mode, regex mode does not append an extension. Other dated files and prefix variants such as `WeeklyTasksLog-…` are not selected by this example.
+A blank or whitespace-only field is filled with this default. The `日時タグ付きの既定例を挿入` (Insert default with date tags) button asks before replacing the entire input; **No** retains the existing expression. Opening Settings does not ask for confirmation. Changes update the preview and are persisted when you save.
 
-Regex mode searches subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. Missing or multiple matches produce an error without creating files or choosing one arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
+Each required tag must capture one numeric date part. Only a file whose captured date equals today's local date is selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; the extension is not appended automatically. Use `/` for subfolders; for example, prefix the expression with `Diary/` when selecting the parent folder. This example excludes other dates and prefix variants such as `WeeklyTasksLog-…`.
 
-The Settings screen checks the unsaved folder and pattern about 300 ms after you stop typing. A unique match for today displays its filename and a read-only Markdown preview (up to 4,000 characters). Invalid expressions, missing files, multiple matches, and read errors appear inline. Changing the folder or format mode refreshes the preview too. Searches run in the background, and outdated results are discarded. Previewing does not save settings, edit notes, or open a sticky note; follow the steps above to display the selected heading.
+Existing regex settings are preserved. When loading older settings, `yyyy-MM-dd` and `yyyy/MM/yyyy-MM-dd`, including versions ending in `(ddd)` or `(dddd)`, are converted to tagged regex. Other custom date formats are kept as text for manual correction in Settings; they are no longer evaluated as date formats. Files and folders are not moved by this conversion.
+
+The search includes subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. Missing or multiple matches produce an error without creating files or choosing one arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
+
+The Settings screen checks the unsaved folder and expression about 300 ms after you stop typing. A unique match for today displays its filename and a read-only Markdown preview (up to 4,000 characters). Invalid expressions, missing files, multiple matches, and read errors appear inline. Changing the folder also refreshes the preview. Searches run in the background, and outdated results are discarded. Previewing does not save settings, edit notes, or open a sticky note; follow the steps above to display the selected heading.
 
 To link a fixed note, enter its absolute path and set daily switching to `no`. When daily switching is `yes`, the path field is unused.
 

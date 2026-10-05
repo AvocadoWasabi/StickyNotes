@@ -15,6 +15,6 @@ $windows = @(
     @{ Path = (Join-Path $notes 'Project.md'); Width = 460; Height = 580; PixelLeft = 600; PixelTop = 100; HasPixelPosition = $true; Color = 'blue' },
     @{ Path = ''; Heading = 'Tasks'; Daily = $true; Width = 460; Height = 580; PixelLeft = 1100; PixelTop = 100; HasPixelPosition = $true; Color = 'green' }
 )
-@{ NotesFolder = $notes; DailyFolder = $daily; DailyPattern = 'yyyy-MM-dd'; Windows = $windows } |
+@{ NotesFolder = $notes; DailyFolder = $daily; DailyPattern = '(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\.md'; Windows = $windows } |
     ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $data 'settings.json') -Encoding utf8
 Write-Output $data

@@ -99,45 +99,40 @@ internal static class Program
     {
         var app = App.Current;
         var previousPattern = app.Config.DailyPattern;
-        var previousMode = app.Config.DailyPatternIsRegex;
         var previousFolder = app.Config.DailyFolder;
         var savedConfig = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
-        app.Config.DailyPattern = "yyyy-MM-dd"; app.Config.DailyPatternIsRegex = false;
+        var custom = "Diary/" + DailyNoteResolver.RegexExample;
+        app.Config.DailyPattern = custom;
         app.Config.DailyFolder = Path.Combine(root, "daily-preview");
         var answer = false;
         var confirmations = 0;
         var window = new SettingsWindow(() => { confirmations++; return answer; });
         var panel = (StackPanel)((ScrollViewer)window.Content).Content;
         var pattern = panel.Children.OfType<TextBox>().ElementAt(2);
-        var mode = panel.Children.OfType<CheckBox>().Single();
+        var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
+        void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         var preview = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBox>().Single();
-        Check(confirmations == 0, "opening settings does not prompt for regex insertion");
-        mode.IsChecked = true;
-        Check(confirmations == 1 && pattern.Text == "yyyy-MM-dd", "enabling regex asks once and declining preserves existing text");
-        mode.IsChecked = false; answer = true; mode.IsChecked = true;
-        Check(confirmations == 2 && pattern.Text == DailyNoteResolver.RegexExample, "accepting insertion replaces field with named-date regex example");
+        Check(!panel.Children.OfType<CheckBox>().Any(), "settings offer only tagged regex without a mode checkbox");
+        Check(confirmations == 0 && pattern.Text == custom, "opening settings preserves custom regex without prompting");
+        ClickInsert();
+        Check(confirmations == 1 && pattern.Text == custom, "declining template button preserves existing expression");
+        answer = true; ClickInsert();
+        Check(confirmations == 2 && pattern.Text == DailyNoteResolver.RegexExample, "accepting template button inserts named-date regex example");
         WaitFor(() => preview.Visibility == Visibility.Visible, "inserted date tags update live preview");
         pattern.Text = "";
         Check(pattern.Text == DailyNoteResolver.RegexExample && confirmations == 2, "clearing regex automatically fills default without another prompt");
         pattern.Text = " \t ";
         Check(pattern.Text == DailyNoteResolver.RegexExample, "whitespace-only regex receives the default");
-        var custom = "Diary/" + DailyNoteResolver.RegexExample;
         pattern.Text = custom;
         Check(pattern.Text == custom, "nonempty custom regex remains unchanged");
-        mode.IsChecked = false; answer = false; mode.IsChecked = true;
-        Check(confirmations == 3 && pattern.Text == custom, "declining reinsertion preserves custom regex");
-        mode.IsChecked = false; pattern.Text = "";
-        Check(pattern.Text == "", "date-format mode does not auto-fill regex tags");
-        mode.IsChecked = true;
-        Check(confirmations == 4 && pattern.Text == DailyNoteResolver.RegexExample, "enabling regex on blank input asks and fills default even when insertion is declined");
         window.Close();
-        app.Config.DailyPattern = ""; app.Config.DailyPatternIsRegex = true;
+        app.Config.DailyPattern = "";
         var reopened = new SettingsWindow(() => throw new Exception("Opening must not prompt"));
         var reopenedPattern = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ElementAt(2);
-        Check(reopenedPattern.Text == DailyNoteResolver.RegexExample && app.Config.DailyPattern == "", "saved blank regex gets a default in the editor without changing saved configuration");
+        Check(reopenedPattern.Text == DailyNoteResolver.RegexExample && app.Config.DailyPattern == "", "blank setting gets a default in the editor without saving");
         reopened.Close();
         Check(File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(savedConfig), "regex assistance does not persist settings without Save");
-        app.Config.DailyPattern = previousPattern; app.Config.DailyPatternIsRegex = previousMode; app.Config.DailyFolder = previousFolder;
+        app.Config.DailyPattern = previousPattern; app.Config.DailyFolder = previousFolder;
     }
 
     private static void DailyPreviewTests(string root)
@@ -149,19 +144,19 @@ internal static class Program
         const string content = "## Tasks\n- [ ] read-only preview\n<script>literal text</script>";
         File.WriteAllText(file, content, new UTF8Encoding(true));
         var bytes = File.ReadAllBytes(file);
-        var result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today);
+        var result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, today);
         Check(result.Path == file && result.Text == content && !result.Truncated, "daily preview finds today's note and reads UTF8 without BOM");
         Check(File.ReadAllBytes(file).SequenceEqual(bytes), "daily preview never modifies note contents");
         File.WriteAllText(file, new string('x', DailyNotePreview.CharacterLimit) + "tail");
-        result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today);
+        result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, today);
         Check(result.Text.Length == DailyNotePreview.CharacterLimit && result.Truncated, "preview bounds large note contents");
         File.WriteAllText(file, new string('x', DailyNotePreview.CharacterLimit - 1) + "😀tail");
-        result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today);
+        result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, today);
         Check(!char.IsSurrogate(result.Text[^1]) && result.Truncated, "preview truncation does not split surrogate pairs");
         using (var cancelled = new CancellationTokenSource())
         {
             cancelled.Cancel();
-            Throws<OperationCanceledException>(() => DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today, cancelled.Token), "obsolete preview requests can be cancelled");
+            Throws<OperationCanceledException>(() => DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, today, cancelled.Token), "obsolete preview requests can be cancelled");
         }
         File.WriteAllText(file, content);
         var app = App.Current;
@@ -171,11 +166,10 @@ internal static class Program
         var window = new SettingsWindow(() => false);
         var panel = (StackPanel)((ScrollViewer)window.Content).Content;
         var inputs = panel.Children.OfType<TextBox>().ToArray();
-        var regexMode = panel.Children.OfType<CheckBox>().Single();
         var previewPanel = panel.Children.OfType<StackPanel>().Single();
         var status = previewPanel.Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
         var preview = previewPanel.Children.OfType<TextBox>().Single();
-        inputs[1].Text = folder; regexMode.IsChecked = true; inputs[2].Text = DailyNoteResolver.RegexExample;
+        inputs[1].Text = folder; inputs[2].Text = DailyNoteResolver.RegexExample;
         WaitFor(() => preview.Visibility == Visibility.Visible, "typing regex updates the live preview without saving");
         Check(status.Text.Contains(Path.GetFileName(file)) && preview.Text == content && preview.IsReadOnly, "live preview shows matching filename and read-only content");
         inputs[2].Text = "[";
@@ -188,11 +182,11 @@ internal static class Program
         inputs[2].Text = DailyNoteResolver.RegexExample;
         WaitFor(() => status.Text.Contains("複数一致"), "ambiguous preview does not choose a file");
         File.Delete(duplicate);
-        regexMode.IsChecked = false; inputs[2].Text = "yyyy-MM-dd";
-        WaitFor(() => preview.Visibility == Visibility.Visible, "switching to date-format mode refreshes preview");
+        inputs[2].Text = DailyNoteResolver.RegexExample + "$";
+        WaitFor(() => preview.Visibility == Visibility.Visible, "correcting regex refreshes preview");
         inputs[1].Text = Path.Combine(folder, "missing");
         WaitFor(() => status.Text.StartsWith("確認できません:"), "changing daily folder refreshes preview");
-        inputs[1].Text = folder; inputs[2].Text = "'missing'"; inputs[2].Text = "yyyy-MM-dd";
+        inputs[1].Text = folder; inputs[2].Text = "'missing'"; inputs[2].Text = DailyNoteResolver.RegexExample;
         WaitFor(() => preview.Visibility == Visibility.Visible && status.Text.Contains(Path.GetFileName(file)), "rapid edits display only the latest input result");
         Check(File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(config) && app.Config.DailyFolder == originalDaily && File.ReadAllText(file) == content, "live preview does not save settings or change note files");
         inputs[2].Text = "'missing'";
@@ -261,30 +255,61 @@ internal static class Program
         File.WriteAllText(current, "## Tasks\n- [ ] today");
         File.WriteAllText(Path.Combine(folder, "2026-10-04(日).md"), "## Tasks\nyesterday");
         File.WriteAllText(Path.Combine(folder, "WeeklyTasksLog-2026-10-05(月).md"), "unrelated");
-        Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today) == current, "regex selects today's Japanese weekday filename and ignores prefixes");
-        Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today.AddDays(-1)).EndsWith("2026-10-04(日).md"), "regex rolls over using requested date");
-        Check(DailyNoteResolver.Resolve(folder, "yyyy/MM/yyyy-MM-dd", false, today) == Path.Combine(folder, "2026", "10", "2026-10-05.md"), "legacy date formats and automatic extension remain compatible");
-        Check(!JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy-MM-dd\"}")!.DailyPatternIsRegex, "existing settings default to date-format mode");
-        var settings = new Settings { DailyPattern = DailyNoteResolver.RegexExample, DailyPatternIsRegex = true };
-        Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(settings))!.DailyPatternIsRegex, "regex setting round trips");
-        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate("[", true), "invalid regex rejected at settings validation");
-        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(@"\d{4}-\d{2}-\d{2}\.md", true), "regex without date groups rejected");
-        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate("", true), "blank regex rejected");
-        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(new string('a', 4097), true), "excessive regex length rejected");
-        Throws<InvalidOperationException>(() => DailyNoteResolver.Resolve(folder, "'../outside'", false, today), "legacy date path cannot escape daily folder");
-        Throws<FileNotFoundException>(() => DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today.AddDays(1)), "missing date does not fall back to another note");
+        Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, today) == current, "regex selects today's Japanese weekday filename and ignores prefixes");
+        Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, today.AddDays(-1)).EndsWith("2026-10-04(日).md"), "regex rolls over using requested date");
+        Check(new Settings().DailyPattern == DailyNoteResolver.RegexExample, "new settings default to tagged regex");
+        var settings = new Settings { DailyPattern = "Diary/" + DailyNoteResolver.RegexExample };
+        Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(settings))!.DailyPattern == settings.DailyPattern, "custom tagged regex round trips unchanged");
+        Check(!JsonSerializer.Serialize(settings).Contains("DailyPatternIsRegex"), "saved settings no longer contain a format mode flag");
+        var legacy = JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy-MM-dd(ddd)\",\"DailyPatternIsRegex\":false}")!;
+        Check(DailyNoteResolver.Resolve(folder, legacy.DailyPattern, today) == current, "legacy weekday format converts to tagged regex on load");
+        var customOldJson = JsonSerializer.Serialize(new { DailyPattern = settings.DailyPattern, DailyPatternIsRegex = true });
+        Check(JsonSerializer.Deserialize<Settings>(customOldJson)!.DailyPattern == settings.DailyPattern, "previous regex mode preserves custom expressions");
+        var unknown = JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy_MM_dd\"}")!;
+        Check(unknown.DailyPattern == "yyyy_MM_dd", "unsupported legacy formats are preserved for manual correction");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(unknown.DailyPattern), "unsupported legacy format is not executed as a date format");
+        Check(JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"\"}")!.DailyPattern == DailyNoteResolver.RegexExample, "empty saved pattern receives tagged default");
+        var plainLegacy = JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy-MM-dd\"}")!;
+        Throws<FileNotFoundException>(() => DailyNoteResolver.Resolve(folder, plainLegacy.DailyPattern, today), "legacy plain format conversion does not broaden to weekday suffixes");
+        Directory.CreateDirectory(Path.Combine(folder, "2026", "10"));
+        var nestedLegacyFile = Path.Combine(folder, "2026", "10", "2026-10-05.md");
+        File.WriteAllText(nestedLegacyFile, "nested legacy note");
+        var nestedLegacy = JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy/MM/yyyy-MM-dd\"}")!;
+        Check(DailyNoteResolver.Resolve(folder, nestedLegacy.DailyPattern, today) == nestedLegacyFile, "legacy nested format converts with matching directory date tags");
+        Directory.CreateDirectory(Path.Combine(folder, "2025", "10"));
+        File.WriteAllText(Path.Combine(folder, "2025", "10", "2026-10-05.md"), "wrong directory year");
+        Check(DailyNoteResolver.Resolve(folder, nestedLegacy.DailyPattern, today) == nestedLegacyFile, "converted nested regex rejects mismatched directory dates");
+        var legacyCases = new[]
+        {
+            ("yyyy-MM-dd(dddd)", "2026-10-05(月).md"),
+            ("yyyy/MM/yyyy-MM-dd(ddd)", "2026/10/2026-10-05(月).md"),
+            ("yyyy/MM/yyyy-MM-dd(dddd)", "2026/10/2026-10-05(月).md")
+        };
+        foreach (var (oldPattern, relativePath) in legacyCases)
+        {
+            var path = Path.Combine(folder, relativePath.Replace('/', Path.DirectorySeparatorChar));
+            File.WriteAllText(path, "weekday import");
+            var imported = JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(new { DailyPattern = oldPattern }))!;
+            Check(DailyNoteResolver.Resolve(folder, imported.DailyPattern, today) == path, "legacy weekday import: " + oldPattern);
+        }
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate("["), "invalid regex rejected at settings validation");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(@"\d{4}-\d{2}-\d{2}\.md"), "regex without date groups rejected");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(""), "blank regex rejected");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Validate(new string('a', 4097)), "excessive regex length rejected");
+        Throws<InvalidOperationException>(() => DailyNoteResolver.Resolve(folder, "yyyy-MM-dd", today), "runtime rejects date-format syntax without date tags");
+        Throws<FileNotFoundException>(() => DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, today.AddDays(1)), "missing date does not fall back to another note");
         File.WriteAllText(Path.Combine(folder, "2026-10-05.md"), "duplicate");
-        Throws<IOException>(() => DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, true, today), "ambiguous same-date matches fail safely");
+        Throws<IOException>(() => DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, today), "ambiguous same-date matches fail safely");
         File.Delete(Path.Combine(folder, "2026-10-05.md"));
         Directory.CreateDirectory(Path.Combine(folder, "Diary"));
         var nested = Path.Combine(folder, "Diary", "2026-10-05(月).md");
         File.WriteAllText(nested, "nested");
-        Check(DailyNoteResolver.Resolve(folder, "Diary/" + DailyNoteResolver.RegexExample, true, today) == nested, "regex uses slash-separated full relative path including extension");
+        Check(DailyNoteResolver.Resolve(folder, "Diary/" + DailyNoteResolver.RegexExample, today) == nested, "regex uses slash-separated full relative path including extension");
         File.WriteAllText(Path.Combine(folder, "2026-10-05" + new string('a', 80) + "!.md"), "timeout fixture");
-        Throws<IOException>(() => DailyNoteResolver.Resolve(folder, @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(a+)+\.md", true, today), "pathological regex times out instead of blocking indefinitely");
+        Throws<IOException>(() => DailyNoteResolver.Resolve(folder, @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(a+)+\.md", today), "pathological regex times out instead of blocking indefinitely");
 
         var app = App.Current;
-        app.Config.DailyFolder = folder; app.Config.DailyPattern = DailyNoteResolver.RegexExample; app.Config.DailyPatternIsRegex = true;
+        app.Config.DailyFolder = folder; app.Config.DailyPattern = DailyNoteResolver.RegexExample;
         var window = new NoteWindow(new NotePlacement { Daily = true, Heading = "Tasks" });
         var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
         var snapshotField = typeof(NoteWindow).GetField("snapshot", flags)!;

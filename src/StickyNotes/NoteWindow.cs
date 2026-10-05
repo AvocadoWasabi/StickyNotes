@@ -89,7 +89,7 @@ public sealed class NoteWindow : Window
     private string ResolvePath()
     {
         if (!Placement.Daily) return Placement.Path;
-        return DailyNoteResolver.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, app.Config.DailyPatternIsRegex, DateTime.Today);
+        return DailyNoteResolver.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, DateTime.Today);
     }
 
     private void Reload()

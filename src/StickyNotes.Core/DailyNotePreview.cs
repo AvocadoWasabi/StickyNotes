@@ -6,9 +6,9 @@ public sealed record DailyNotePreview(string Path, string Text, bool Truncated)
 {
     public const int CharacterLimit = 4000;
 
-    public static DailyNotePreview Read(string folder, string pattern, bool useRegex, DateTime today, CancellationToken cancellationToken = default)
+    public static DailyNotePreview Read(string folder, string pattern, DateTime today, CancellationToken cancellationToken = default)
     {
-        var path = DailyNoteResolver.Resolve(folder, pattern, useRegex, today, cancellationToken);
+        var path = DailyNoteResolver.Resolve(folder, pattern, today, cancellationToken);
         cancellationToken.ThrowIfCancellationRequested();
         using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
         using var reader = new StreamReader(stream, new UTF8Encoding(false, true), detectEncodingFromByteOrderMarks: false);

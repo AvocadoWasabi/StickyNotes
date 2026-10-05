@@ -8,15 +8,11 @@ public static class DailyNoteResolver
 {
     public const string RegexExample = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:\([^)]+\))?\.md";
 
-    public static void Validate(string pattern, bool useRegex)
-    {
-        if (string.IsNullOrWhiteSpace(pattern)) throw new InvalidOperationException("デイリーノートの書式を指定してください。");
-        if (useRegex) _ = CreateRegex(pattern);
-        else _ = DateTime.Today.ToString(pattern);
-    }
+    public static void Validate(string pattern) => _ = CreateRegex(pattern);
 
     private static Regex CreateRegex(string pattern)
     {
+        if (string.IsNullOrWhiteSpace(pattern)) throw new InvalidOperationException("デイリーノートの正規表現を指定してください。");
         if (pattern.Length > 4096) throw new InvalidOperationException("正規表現は4096文字以内で指定してください。");
         Regex regex;
         try { regex = new Regex(@"\A(?:" + pattern + @")\z", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100)); }
@@ -26,19 +22,11 @@ public static class DailyNoteResolver
         return regex;
     }
 
-    public static string Resolve(string folder, string pattern, bool useRegex, DateTime today, CancellationToken cancellationToken = default)
+    public static string Resolve(string folder, string pattern, DateTime today, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         if (string.IsNullOrWhiteSpace(folder)) throw new InvalidOperationException("設定でデイリーノートフォルダを選んでください。");
         var root = NoteFolderMigration.Normalize(folder);
-        Validate(pattern, useRegex);
-        if (!useRegex)
-        {
-            var path = Path.GetFullPath(Path.Combine(root, today.ToString(pattern) + ".md"));
-            if (!NoteFolderMigration.Contains(root, path)) throw new InvalidOperationException("日付書式がデイリーフォルダ外を指しています。");
-            return path;
-        }
-
         var regex = CreateRegex(pattern);
         // Check the selected root and its ancestors too; traversal below skips reparse points.
         for (string? parent = root; parent is not null; parent = Path.GetDirectoryName(parent))

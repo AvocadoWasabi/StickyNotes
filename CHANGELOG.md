@@ -12,12 +12,16 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 - Keep the notes folder and daily-note folder independent when saving settings, including when migrating notes from a shared or parent folder. Folder pickers open at their respective configured folders.
 
+### Changed
+
+- Unify daily-note matching around date tags and regular expressions. Remove the format-mode checkbox, keep an explicit template-insertion button, and convert documented legacy date formats when loading settings. Preserve other custom formats for manual correction.
+
 ### Added
 
-- Auto-fill a blank daily regex with the default named-date expression. When regex mode is enabled, ask before replacing existing text with that example; declining retains a nonempty expression.
+- Auto-fill a blank daily regex with the default named-date expression. The template-insertion button asks before replacing existing text with that example; declining retains a nonempty expression.
 
-- Live daily-note preview in Settings: show today's matching filename and read-only Markdown while typing a regex or date format, with inline errors and background searches that discard outdated results. Include instructions for displaying a daily heading as a sticky note.
-- Optional regular expressions for daily-note paths, using named year/month/day groups to select today's file, including weekday suffixes and subfolders. Keep existing date-format settings compatible, reject ambiguous matches, and limit regex matching and search work.
+- Live daily-note preview in Settings: show today's matching filename and read-only Markdown while typing a tagged regex, with inline errors and background searches that discard outdated results. Include instructions for displaying a daily heading as a sticky note.
+- Tagged regular expressions for daily-note paths, using named year/month/day groups to select today's file, including weekday suffixes and subfolders. Reject ambiguous matches and limit regex matching and search work.
 - Ask whether to migrate existing Markdown files when changing the notes folder, with Yes / No / Cancel choices. Include subfolders and closed notes, and preserve open-note edits and placement.
 - Prevent overwriting destination files and roll back moves if migration or settings persistence fails; report any files needing manual recovery.
 

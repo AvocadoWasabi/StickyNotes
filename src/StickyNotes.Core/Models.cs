@@ -1,14 +1,17 @@
+using System.Text.Json.Serialization;
+
 namespace StickyNotes.Core;
 
-public sealed class Settings
+public sealed class Settings : IJsonOnDeserialized
 {
     public string NotesFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StickyNotesData");
     public string DailyFolder { get; set; } = "";
-    public string DailyPattern { get; set; } = "yyyy-MM-dd";
-    public bool DailyPatternIsRegex { get; set; }
+    public string DailyPattern { get; set; } = DailyNoteResolver.RegexExample;
     public string GoogleCredentialsFile { get; set; } = "";
     public string CalendarId { get; set; } = "primary";
     public List<NotePlacement> Windows { get; set; } = [];
+
+    void IJsonOnDeserialized.OnDeserialized() => DailyPattern = DailyNotePatternMigration.Upgrade(DailyPattern);
 }
 
 public sealed class NotePlacement
