@@ -26,8 +26,9 @@ public static class DailyNoteResolver
         return regex;
     }
 
-    public static string Resolve(string folder, string pattern, bool useRegex, DateTime today)
+    public static string Resolve(string folder, string pattern, bool useRegex, DateTime today, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         if (string.IsNullOrWhiteSpace(folder)) throw new InvalidOperationException("設定でデイリーノートフォルダを選んでください。");
         var root = NoteFolderMigration.Normalize(folder);
         Validate(pattern, useRegex);
@@ -51,8 +52,10 @@ public static class DailyNoteResolver
         var count = 0;
         while (pending.TryPop(out var directory))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             foreach (var entry in Directory.EnumerateFileSystemEntries(directory))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (++count > 10000 || timer.Elapsed > TimeSpan.FromSeconds(1))
                     throw new IOException("デイリーノートの検索範囲が大きすぎます。対象フォルダを絞ってください（上限10000項目・1秒）。");
                 var attributes = File.GetAttributes(entry);

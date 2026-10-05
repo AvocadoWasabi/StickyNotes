@@ -118,10 +118,10 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 
 The app reads and writes the original Markdown file directly. No Obsidian CLI or plugin is needed.
 
-1. In Settings, configure your daily notes folder and date pattern.
+1. In Settings, configure your daily notes folder and date pattern (or enable regex mode), check the live preview, then select `保存して閉じる` (Save and close).
 2. Select `… → ノートの見出しを表示` (Display a note heading).
-3. Enter a heading such as `Tasks`, and set daily switching to `yes`.
-4. The content under today's `## Tasks` heading appears in the sticky note. Clicking a checkbox updates the corresponding line in the source file.
+3. Leave the path empty, enter an existing heading such as `Tasks` without the `#` marks, and set daily switching to `yes`. `Tasks` is only an example: use a heading that actually exists in your note.
+4. The content under the selected heading in today's note appears in the sticky note. Clicking a checkbox updates the corresponding line in the source file.
 
 Date patterns use .NET syntax, which differs from Obsidian's Moment syntax and is case-sensitive. For example, use `yyyy-MM-dd` instead of `YYYY-MM-DD`, or `yyyy-MM-dd(ddd)` instead of `YYYY-MM-DD(ddd)`. Weekday names follow your Windows culture settings. The `.md` extension is added automatically. Subfolder patterns such as `yyyy/MM/yyyy-MM-dd` are supported.
 
@@ -134,6 +134,8 @@ To match flexible filenames, enable `デイリーノートの形式に正規表�
 The required named groups `year`, `month`, and `day` must each capture one numeric date part. Only a file whose captured date equals today's local date is selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; use `/` for subfolders. For example, add `Diary/` before the expression when selecting its parent folder. Unlike date-format mode, regex mode does not append an extension. Other dated files and prefix variants such as `WeeklyTasksLog-…` are not selected by this example.
 
 Regex mode searches subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. Missing or multiple matches produce an error without creating files or choosing one arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
+
+The Settings screen checks the unsaved folder and pattern about 300 ms after you stop typing. A unique match for today displays its filename and a read-only Markdown preview (up to 4,000 characters). Invalid expressions, missing files, multiple matches, and read errors appear inline. Changing the folder or format mode refreshes the preview too. Searches run in the background, and outdated results are discarded. Previewing does not save settings, edit notes, or open a sticky note; follow the steps above to display the selected heading.
 
 To link a fixed note, enter its absolute path and set daily switching to `no`. When daily switching is `yes`, the path field is unused.
 

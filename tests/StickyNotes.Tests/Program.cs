@@ -11,6 +11,12 @@ using StickyNotes.Core;
 
 internal static class Program
 {
+    private sealed class TestApp : App
+    {
+        // Dispatcher-driven UI tests must not start the real tray app or acquire its mutex.
+        protected override void OnStartup(StartupEventArgs e) { }
+    }
+
     private static int count;
     private static void Check(bool condition, string name)
     {
@@ -65,6 +71,7 @@ internal static class Program
             MigrationTests(root);
             IndependentFolderSettingsTests(root);
             DailyRegexTests(root);
+            DailyPreviewTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -85,6 +92,81 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void DailyPreviewTests(string root)
+    {
+        var folder = Path.Combine(root, "daily-preview");
+        Directory.CreateDirectory(folder);
+        var today = DateTime.Today;
+        var file = Path.Combine(folder, today.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) + ".md");
+        const string content = "## Tasks\n- [ ] read-only preview\n<script>literal text</script>";
+        File.WriteAllText(file, content, new UTF8Encoding(true));
+        var bytes = File.ReadAllBytes(file);
+        var result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today);
+        Check(result.Path == file && result.Text == content && !result.Truncated, "daily preview finds today's note and reads UTF8 without BOM");
+        Check(File.ReadAllBytes(file).SequenceEqual(bytes), "daily preview never modifies note contents");
+        File.WriteAllText(file, new string('x', DailyNotePreview.CharacterLimit) + "tail");
+        result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today);
+        Check(result.Text.Length == DailyNotePreview.CharacterLimit && result.Truncated, "preview bounds large note contents");
+        File.WriteAllText(file, new string('x', DailyNotePreview.CharacterLimit - 1) + "😀tail");
+        result = DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today);
+        Check(!char.IsSurrogate(result.Text[^1]) && result.Truncated, "preview truncation does not split surrogate pairs");
+        using (var cancelled = new CancellationTokenSource())
+        {
+            cancelled.Cancel();
+            Throws<OperationCanceledException>(() => DailyNotePreview.Read(folder, DailyNoteResolver.RegexExample, true, today, cancelled.Token), "obsolete preview requests can be cancelled");
+        }
+        File.WriteAllText(file, content);
+        var app = App.Current;
+        app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        var config = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
+        var originalDaily = app.Config.DailyFolder;
+        var window = new SettingsWindow();
+        var panel = (StackPanel)((ScrollViewer)window.Content).Content;
+        var inputs = panel.Children.OfType<TextBox>().ToArray();
+        var regexMode = panel.Children.OfType<CheckBox>().Single();
+        var previewPanel = panel.Children.OfType<StackPanel>().Single();
+        var status = previewPanel.Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
+        var preview = previewPanel.Children.OfType<TextBox>().Single();
+        inputs[1].Text = folder; regexMode.IsChecked = true; inputs[2].Text = DailyNoteResolver.RegexExample;
+        WaitFor(() => preview.Visibility == Visibility.Visible, "typing regex updates the live preview without saving");
+        Check(status.Text.Contains(Path.GetFileName(file)) && preview.Text == content && preview.IsReadOnly, "live preview shows matching filename and read-only content");
+        inputs[2].Text = "[";
+        Check(preview.Visibility == Visibility.Collapsed && preview.Text == "", "new input immediately removes stale content");
+        WaitFor(() => status.Text.StartsWith("確認できません:"), "invalid regex displays an inline error");
+        inputs[2].Text = "missing/" + DailyNoteResolver.RegexExample;
+        WaitFor(() => status.Text.Contains("今日のデイリーノートがありません"), "no matching file displays an inline error");
+        var duplicate = Path.Combine(folder, today.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) + "(weekday).md");
+        File.WriteAllText(duplicate, "duplicate");
+        inputs[2].Text = DailyNoteResolver.RegexExample;
+        WaitFor(() => status.Text.Contains("複数一致"), "ambiguous preview does not choose a file");
+        File.Delete(duplicate);
+        regexMode.IsChecked = false; inputs[2].Text = "yyyy-MM-dd";
+        WaitFor(() => preview.Visibility == Visibility.Visible, "switching to date-format mode refreshes preview");
+        inputs[1].Text = Path.Combine(folder, "missing");
+        WaitFor(() => status.Text.StartsWith("確認できません:"), "changing daily folder refreshes preview");
+        inputs[1].Text = folder; inputs[2].Text = "'missing'"; inputs[2].Text = "yyyy-MM-dd";
+        WaitFor(() => preview.Visibility == Visibility.Visible && status.Text.Contains(Path.GetFileName(file)), "rapid edits display only the latest input result");
+        Check(File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(config) && app.Config.DailyFolder == originalDaily && File.ReadAllText(file) == content, "live preview does not save settings or change note files");
+        inputs[2].Text = "'missing'";
+        window.Close();
+        var closeStatus = status.Text;
+        var stop = System.Diagnostics.Stopwatch.StartNew();
+        WaitFor(() => stop.ElapsedMilliseconds >= 450, "closed settings cancel pending preview updates");
+        Check(status.Text == closeStatus, "closed preview cannot receive a delayed result");
+    }
+
+    private static void WaitFor(Func<bool> condition, string name)
+    {
+        var frame = new System.Windows.Threading.DispatcherFrame();
+        var timer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(20) };
+        var elapsed = System.Diagnostics.Stopwatch.StartNew();
+        timer.Tick += (_, _) => { if (condition() || elapsed.Elapsed > TimeSpan.FromSeconds(5)) frame.Continue = false; };
+        timer.Start();
+        try { System.Windows.Threading.Dispatcher.PushFrame(frame); }
+        finally { timer.Stop(); }
+        Check(condition(), name);
     }
 
     private static void IndependentFolderSettingsTests(string root)
@@ -227,7 +309,7 @@ internal static class Program
         }
         Check(File.ReadAllText(Path.Combine(recoverySource, "note.md")) == "concurrent creation" && File.ReadAllText(Path.Combine(recoveryDestination, "note.md")) == "original", "rollback never overwrites concurrent source files");
 
-        var app = new App();
+        var app = new TestApp { ShutdownMode = ShutdownMode.OnExplicitShutdown };
         typeof(App).GetProperty(nameof(App.DataDirectory))!.SetValue(null, Path.Combine(root, "app-settings"));
         Directory.CreateDirectory(App.DataDirectory);
         app.Config.NotesFolder = destination;

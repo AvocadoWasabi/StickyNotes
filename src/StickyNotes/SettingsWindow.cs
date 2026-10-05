@@ -1,3 +1,6 @@
+using System.Threading;
+using System.Windows.Threading;
+
 namespace StickyNotes;
 
 public sealed class SettingsWindow : Window
@@ -30,6 +33,67 @@ public sealed class SettingsWindow : Window
         useRegex.Checked += (_, _) => UpdatePatternHelp();
         useRegex.Unchecked += (_, _) => UpdatePatternHelp();
         UpdatePatternHelp(); panel.Children.Add(patternHelp);
+        var previewStatus = new TextBlock { Name = "DailyPreviewStatus", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 4) };
+        var previewText = new TextBox { Name = "DailyPreviewText", IsReadOnly = true, TextWrapping = TextWrapping.Wrap,
+            Height = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Visibility = Visibility.Collapsed };
+        var previewPanel = new StackPanel();
+        previewPanel.Children.Add(previewStatus); previewPanel.Children.Add(previewText);
+        previewPanel.Children.Add(new TextBlock { Text = "表示するには設定を保存し、付箋の「… → ノートの見出しを表示…」で見出し名（# は不要）を入力して、毎日切替を yes にしてください。今日のノートの場合、パス欄は空欄です。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        panel.Children.Add(previewPanel);
+        var previewTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
+        var previewGate = new SemaphoreSlim(1, 1);
+        CancellationTokenSource? previewCancellation = null;
+        var previewVersion = 0;
+        var previewClosed = false;
+        void SchedulePreview()
+        {
+            if (previewClosed) return;
+            previewVersion++;
+            previewCancellation?.Cancel();
+            previewTimer.Stop();
+            previewText.Text = ""; previewText.Visibility = Visibility.Collapsed;
+            previewStatus.Foreground = Brushes.DimGray;
+            previewStatus.Text = "今日のデイリーノートを確認中…";
+            previewTimer.Start();
+        }
+        previewTimer.Tick += async (_, _) =>
+        {
+            previewTimer.Stop();
+            var version = previewVersion;
+            var folder = daily.Text; var expression = pattern.Text; var regex = useRegex.IsChecked == true;
+            var today = DateTime.Today;
+            using var cancellation = new CancellationTokenSource();
+            previewCancellation = cancellation;
+            try
+            {
+                await previewGate.WaitAsync(cancellation.Token);
+                DailyNotePreview result;
+                try { result = await Task.Run(() => DailyNotePreview.Read(folder, expression, regex, today, cancellation.Token)); }
+                finally { previewGate.Release(); }
+                if (previewClosed || version != previewVersion) return;
+                previewStatus.Foreground = Brushes.DarkGreen;
+                previewStatus.Text = "今日のノートが見つかりました: " + System.IO.Path.GetRelativePath(folder, result.Path) +
+                    "\n内容プレビュー（Markdown・読み取り専用）" + (result.Truncated ? " — 先頭4000文字まで" : "");
+                previewText.Text = result.Text; previewText.Visibility = Visibility.Visible;
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception ex)
+            {
+                if (previewClosed || version != previewVersion) return;
+                previewStatus.Foreground = Brushes.DarkRed;
+                previewStatus.Text = "確認できません: " + ex.Message;
+            }
+            finally
+            {
+                if (ReferenceEquals(previewCancellation, cancellation)) previewCancellation = null;
+            }
+        };
+        daily.TextChanged += (_, _) => SchedulePreview();
+        pattern.TextChanged += (_, _) => SchedulePreview();
+        useRegex.Checked += (_, _) => SchedulePreview();
+        useRegex.Unchecked += (_, _) => SchedulePreview();
+        Loaded += (_, _) => SchedulePreview();
+        Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
         var credentials = Add("Google OAuth デスクトップアプリのJSON", app.Config.GoogleCredentialsFile);
         panel.Children.Add(Ui.Button("認証JSONを選択", () =>
         {
