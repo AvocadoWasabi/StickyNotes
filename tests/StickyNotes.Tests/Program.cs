@@ -74,6 +74,7 @@ internal static class Program
             DailyPreviewTests(root);
             RegexDefaultsTests(root);
             NoteLinkTests(root);
+            MarkdownEditingTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -94,6 +95,59 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void MarkdownEditingTests(string root)
+    {
+        var folder = Path.Combine(root, "markdown-editing");
+        Directory.CreateDirectory(folder);
+        const string original = "---\r\ntitle: Edit test\r\ncustom: keep\r\n---\r\n# Journal\r\nintro\r\n## Tasks\r\n- [ ] old\r\n## Log\r\nkeep\r\n";
+        var previousFolder = App.Current.Config.DailyFolder;
+        var previousPattern = App.Current.Config.DailyPattern;
+        App.Current.Config.DailyFolder = folder;
+        App.Current.Config.DailyPattern = DailyNoteResolver.RegexExample;
+        foreach (var mode in new[] { "whole", "section", "daily" })
+        {
+            var path = Path.Combine(folder, mode == "daily" ? DateTime.Today.ToString("yyyy-MM-dd") + ".md" : mode + ".md");
+            File.WriteAllText(path, original, new UTF8Encoding(true));
+            var window = new NoteWindow(new NotePlacement { Path = mode == "daily" ? "" : path, Heading = mode == "whole" ? "" : "Tasks", Daily = mode == "daily" });
+            var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
+            var dock = (DockPanel)((Border)window.Content).Child;
+            var toolbar = dock.Children.OfType<WrapPanel>().Single();
+            var body = dock.Children.OfType<Grid>().Single();
+            var reading = body.Children.OfType<DockPanel>().Single();
+            var editor = body.Children.OfType<TextBox>().Single();
+            void Click(string label) => toolbar.Children.OfType<Button>().Single(x => (string)x.Content == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(reading.Visibility == Visibility.Visible && editor.Visibility == Visibility.Collapsed, mode + ": opens in reading mode");
+            Click("編集");
+            Check(editor.Visibility == Visibility.Visible && reading.Visibility == Visibility.Collapsed && !editor.IsReadOnly, mode + ": Edit replaces preview with writable Markdown input");
+            var expectedInput = mode == "whole" ? NoteStore.Split(original).Body : SectionEditor.Find(original, "Tasks").Content;
+            Check(editor.Text == expectedInput, mode + ": editor loads the displayed Markdown range");
+            const string newContent = "- [ ] 日本語の本文を編集\r\n\r\n**Markdown** を追記\r\n";
+            editor.SelectAll(); editor.SelectedText = newContent;
+            Check(File.ReadAllText(path) == original, mode + ": typing does not save before explicit Save");
+            ((Task)typeof(NoteWindow).GetMethod("Tick", flags)!.Invoke(window, null)!).GetAwaiter().GetResult();
+            Check(editor.Text == newContent && editor.Visibility == Visibility.Visible && reading.Visibility == Visibility.Collapsed, mode + ": background refresh preserves the active editor and draft");
+            Click("編集");
+            Check(editor.Text == newContent, mode + ": clicking Edit again retains the unsaved draft");
+            Click("保存");
+            var expected = mode == "whole" ? original[..(original.Length - NoteStore.Split(original).Body.Length)] + newContent : SectionEditor.Replace(original, "Tasks", newContent);
+            Check(NoteStore.Read(path).Text == expected && File.ReadAllBytes(path).Take(3).SequenceEqual(new byte[] { 239, 187, 191 }), mode + ": Save persists text and preserves unrelated content and BOM");
+            Check(editor.Visibility == Visibility.Collapsed && reading.Visibility == Visibility.Visible, mode + ": Save restores only the rendered view");
+            Click("編集"); Click("保存");
+            Check(reading.Visibility == Visibility.Visible && editor.Visibility == Visibility.Collapsed, mode + ": unchanged Save also exits editing");
+            var preview = reading.Children.OfType<FlowDocumentScrollViewer>().Single();
+            var taskList = preview.Document.Blocks.OfType<System.Windows.Documents.List>().Single();
+            var paragraph = taskList.ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single();
+            var checkbox = (CheckBox)paragraph.Inlines.OfType<InlineUIContainer>().Single().Child;
+            checkbox.IsChecked = true;
+            checkbox.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(NoteStore.Read(path).Text.Contains("- [x] 日本語の本文を編集"), mode + ": checkbox still writes after returning from editing");
+            window.Close();
+        }
+        App.Current.Config.DailyFolder = previousFolder;
+        App.Current.Config.DailyPattern = previousPattern;
     }
 
     private static void NoteLinkTests(string root)

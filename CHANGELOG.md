@@ -10,6 +10,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ### Fixed
 
+- Stop the reading preview from overlapping the transparent Markdown editor. Switch views, focus the input after layout, and preserve unsaved text when Edit is selected again.
+
 - Keep the notes folder and daily-note folder independent when saving settings, including when migrating notes from a shared or parent folder. Folder pickers open at their respective configured folders.
 
 ### Changed

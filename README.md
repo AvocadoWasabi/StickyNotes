@@ -147,6 +147,8 @@ A section starts immediately after the selected heading and ends before the next
 
 When the date changes, the app switches to today's file. If you are editing, switching waits until you save or reload. A missing target file or heading produces an error. Files are not created automatically; new headings are added only when you enter a new name in the selection dialog and select Display. Creating them in Obsidian also makes them appear on a subsequent refresh.
 
+To change the body, select `編集` (Edit) or press `Ctrl+E`. Reading mode is replaced with a Markdown input field; use `保存` (Save) or `Ctrl+S` when finished. Task checkboxes can be toggled directly in reading mode. Selecting Edit again preserves the current draft.
+
 ## Google Calendar
 
 Enter a command on its own line in a note and save:

@@ -13,6 +13,7 @@ public sealed class NoteWindow : Window
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
     private readonly FlowDocumentScrollViewer preview = new() { IsToolBarVisible = false, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Background = Brushes.Transparent };
+    private readonly DockPanel reading = new();
     private readonly TextBlock title = new() { FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(12, 0, 3, 0) };
     private readonly TextBlock status = new() { FontSize = 11, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(12, 6, 12, 8), Foreground = Brushes.DarkSlateGray };
     private readonly TextBlock tags = new() { FontSize = 11, Margin = new Thickness(13, 0, 10, 3), Foreground = Brushes.DimGray, TextWrapping = TextWrapping.Wrap };
@@ -49,14 +50,13 @@ public sealed class NoteWindow : Window
         header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource is TextBlock || e.OriginalSource == header) { DragMove(); e.Handled = true; } };
         DockPanel.SetDock(header, Dock.Top); dock.Children.Add(header);
         var toolbar = new WrapPanel { Margin = new Thickness(7, 5, 7, 3) };
-        toolbar.Children.Add(Ui.Button("編集", BeginEdit)); toolbar.Children.Add(Ui.Button("保存", () => Save()));
+        toolbar.Children.Add(Ui.Button("編集", BeginEdit, "Markdown本文を編集（Ctrl+E）")); toolbar.Children.Add(Ui.Button("保存", () => Save()));
         toolbar.Children.Add(Ui.Button("再読込", ReloadAsked));
         toolbar.Children.Add(Ui.Button("…", Menu));
         DockPanel.SetDock(toolbar, Dock.Top); dock.Children.Add(toolbar);
         DockPanel.SetDock(tags, Dock.Top); dock.Children.Add(tags);
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
         var grid = new Grid();
-        var reading = new DockPanel();
         var eventScroll = new ScrollViewer { Content = eventsPanel, MaxHeight = 210, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         DockPanel.SetDock(eventScroll, Dock.Bottom); reading.Children.Add(eventScroll); reading.Children.Add(preview);
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
@@ -98,8 +98,7 @@ public sealed class NoteWindow : Window
         {
             var fresh = NoteStore.Read(ResolvePath());
             var nextContent = Placement.Heading.Length > 0 ? SectionEditor.Find(fresh.Text, Placement.Heading).Content : NoteStore.Split(fresh.Text).Body;
-            snapshot = fresh; content = nextContent; dirty = false; editing = false;
-            editor.Visibility = Visibility.Collapsed;
+            snapshot = fresh; content = nextContent; dirty = false; SetEditing(false);
             Render(); status.Text = Placement.Daily ? "今日のノートと連動 • " + Path.GetFileName(fresh.Path) : "保存済み • " + Path.GetFileName(fresh.Path);
         }
         catch (Exception ex) { ShowReadError(ex); }
@@ -108,7 +107,7 @@ public sealed class NoteWindow : Window
     private void ShowReadError(Exception error)
     {
         snapshot = null; content = ""; activeCommand = null;
-        editing = false; dirty = false; editor.Visibility = Visibility.Collapsed;
+        dirty = false; SetEditing(false);
         preview.Document = new System.Windows.Documents.FlowDocument();
         eventsPanel.Children.Clear(); tags.Text = "";
         title.Text = Placement.Daily ? "今日のノートを待機中" : "元ノートを読み込めません";
@@ -132,19 +131,34 @@ public sealed class NoteWindow : Window
     private void BeginEdit()
     {
         if (snapshot is null) { Reload(); if (snapshot is null) return; }
-        if (editing) return;
-        editing = true; loading = true; editor.Text = content; loading = false;
-        editor.Visibility = Visibility.Visible; editor.Focus();
+        if (!editing)
+        {
+            loading = true; editor.Text = content; loading = false;
+            SetEditing(true);
+        }
+        editor.Focus();
+        // Focus again after layout so a just-revealed editor can receive keyboard/IME input.
+        Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
+        {
+            if (!closed && editing && IsActive) Keyboard.Focus(editor);
+        }));
         status.Text = "Markdownを編集 • Ctrl+S で保存 • @calendar 日時 検索語";
+    }
+
+    private void SetEditing(bool value)
+    {
+        editing = value;
+        reading.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+        editor.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private bool Save()
     {
         if (snapshot is null) return false;
-        if (!editing || !dirty) { editing = false; editor.Visibility = Visibility.Collapsed; return true; }
+        if (!editing || !dirty) { SetEditing(false); return true; }
         try
         {
-            SaveContent(editor.Text); editing = false; dirty = false; editor.Visibility = Visibility.Collapsed;
+            SaveContent(editor.Text); dirty = false; SetEditing(false);
             Render(); status.Text = "保存しました"; return true;
         }
         catch (Exception ex) { status.Text = ex.Message; MessageBox.Show(this, ex.Message, "保存できません", MessageBoxButton.OK, MessageBoxImage.Warning); return false; }
