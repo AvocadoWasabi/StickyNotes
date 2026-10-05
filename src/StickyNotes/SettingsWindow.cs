@@ -43,6 +43,12 @@ public sealed class SettingsWindow : Window
         previewPanel.Children.Add(previewStatus);
         previewPanel.Children.Add(new TextBlock { Text = "内容プレビューは、設定を保存後に「… → デイリーノートを表示…」を開くと末尾に表示します。固定ノートは「ノートの一部分を付箋にする…」から確認できます。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         panel.Children.Add(previewPanel);
+        panel.Children.Add(new TextBlock { Text = "今日のデイリーノートが未作成のとき", TextWrapping = TextWrapping.Wrap });
+        var retention = new ComboBox { Name = "DailyRetention", ItemsSource = new[] {
+            "待機メッセージを表示（既定）", "1. 今日の分が作成されるまで昨日の分を表示", "2. 再読込するまで昨日の分を表示" },
+            SelectedIndex = Enum.IsDefined(app.Config.DailyRetention) ? (int)app.Config.DailyRetention : 0 };
+        panel.Children.Add(retention);
+        panel.Children.Add(new TextBlock { Text = "Obsidianで今日の分を作成すると自動表示します。設定で昨日の分を保持することもできます。1 は作成を検出すると自動切替、2 は作成後も付箋の「再読込」まで保持します。再読込時に今日の分がなければ待機表示になります。昨日の分もない場合は待機表示です。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         var previewTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
         var previewGate = new SemaphoreSlim(1, 1);
         CancellationTokenSource? previewCancellation = null;
@@ -134,6 +140,7 @@ public sealed class SettingsWindow : Window
             app.ApplySettings(new Settings
             {
                 NotesFolder = folder, DailyFolder = daily.Text, DailyPattern = pattern.Text,
+                DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text
             }, migrate);

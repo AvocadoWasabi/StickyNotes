@@ -8,6 +8,11 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+### Features
+
+- Show guidance inside daily sticky notes when today's file is missing, explaining automatic display after creation in Obsidian and the retention settings.
+- Add settings to keep yesterday's note until today's is created or until the sticky note is reloaded, with a visible date and protection for unsaved edits.
+
 ### Documentation
 
 - Explain using Obsidian Markdown notes and Google Calendar together, with a combined-use example and clear boundaries on synchronization and event editing.

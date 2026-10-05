@@ -30,11 +30,19 @@ public sealed class NoteWindow : Window
     private bool editing, dirty, loading, initialized, busy, closed;
     private DateTime lastCalendarCheck = DateTime.MinValue;
     private string? activeCommand;
+    private readonly DailyNoteDisplay dailyDisplay = new();
+    private readonly Func<DateTime> today;
+    private DateTime displayedDate;
+    private DateTime renderedToday;
+    private DailyNoteRetention renderedRetention;
+    private readonly TextBlock dailyNotice = new() { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(12, 8, 12, 8), Visibility = Visibility.Collapsed };
+    internal const string DailyWaitingMessage = "今日のデイリーノートはまだ作成されていません。\nObsidianで今日の分を作成すると、自動でここに表示されます。\n\n設定から、1. 今日の分が作成されるまで、または 2. 付箋の「再読込」を行うまで、昨日の分を表示したままにすることもできます。";
 
     public NoteWindow(NotePlacement placement) : this(placement, null, null) { }
 
-    internal NoteWindow(NotePlacement placement, Func<MessageBoxResult>? confirmFocusSave, Action<Exception>? reportSaveError)
+    internal NoteWindow(NotePlacement placement, Func<MessageBoxResult>? confirmFocusSave, Action<Exception>? reportSaveError, Func<DateTime>? today = null)
     {
+        this.today = today ?? (() => DateTime.Today);
         this.confirmFocusSave = confirmFocusSave; this.reportSaveError = reportSaveError;
         SetResourceReference(IconProperty, "AppIcon");
         Placement = placement;
@@ -76,6 +84,7 @@ public sealed class NoteWindow : Window
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
         var grid = new Grid();
         var eventScroll = new ScrollViewer { Content = eventsPanel, MaxHeight = 210, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        DockPanel.SetDock(dailyNotice, Dock.Top); reading.Children.Add(dailyNotice);
         DockPanel.SetDock(eventScroll, Dock.Bottom); reading.Children.Add(eventScroll); reading.Children.Add(preview);
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
         preview.PreviewMouseLeftButtonDown += (_, e) =>
@@ -124,7 +133,7 @@ public sealed class NoteWindow : Window
     private string ResolvePath()
     {
         if (!Placement.Daily) return Placement.Path;
-        return DailyNoteResolver.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, DateTime.Today);
+        return dailyDisplay.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, today(), app.Config.DailyRetention);
     }
 
     private void Reload()
@@ -134,7 +143,8 @@ public sealed class NoteWindow : Window
             var fresh = NoteStore.Read(ResolvePath());
             var nextContent = Placement.Heading.Length > 0 ? SectionEditor.Find(fresh.Text, Placement.Heading).Content : NoteStore.Split(fresh.Text).Body;
             snapshot = fresh; content = nextContent; dirty = false; SetEditing(false);
-            Render(); status.Text = Placement.Daily ? "今日のノートと連動 • " + Path.GetFileName(fresh.Path) : "保存済み • " + Path.GetFileName(fresh.Path);
+            displayedDate = dailyDisplay.TargetDate;
+            Render(); status.Text = Placement.Daily ? "デイリーノートと連動 • " + Path.GetFileName(fresh.Path) : "保存済み • " + Path.GetFileName(fresh.Path);
         }
         catch (Exception ex) { ShowReadError(ex); }
     }
@@ -144,6 +154,8 @@ public sealed class NoteWindow : Window
         snapshot = null; content = ""; activeCommand = null;
         dirty = false; SetEditing(false);
         preview.Document = new System.Windows.Documents.FlowDocument();
+        dailyNotice.Text = Placement.Daily && error is DailyNoteMissingException ? DailyWaitingMessage : "";
+        dailyNotice.Visibility = dailyNotice.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
         eventsPanel.Children.Clear(); tags.Text = "";
         title.Text = Placement.Daily ? "今日のノートを待機中" : "元ノートを読み込めません";
         status.Text = error.Message;
@@ -152,10 +164,15 @@ public sealed class NoteWindow : Window
     private void Render()
     {
         if (snapshot is null) return;
+        renderedToday = today().Date; renderedRetention = app.Config.DailyRetention;
+        var yesterday = Placement.Daily && displayedDate < today().Date;
+        dailyNotice.Text = yesterday ? $"昨日のノート（{displayedDate:yyyy-MM-dd}）を表示中。編集はこの日のファイルに保存されます。\n" +
+            (app.Config.DailyRetention == DailyNoteRetention.UntilRefresh ? "今日の分に切り替えるには「再読込」を押してください。" : "Obsidianで今日の分を作成すると自動で切り替わります。") : "";
+        dailyNotice.Visibility = yesterday ? Visibility.Visible : Visibility.Collapsed;
         var metadata = NoteStore.Metadata(snapshot.Text);
         if (Placement.Heading.Length == 0) Placement.Color = metadata.Color;
         Background = Ui.Color(Placement.Color);
-        title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? "今日 / " : "連動 / ") + Placement.Heading : metadata.Title;
+        title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? "昨日 / " : "今日 / ") : "連動 / ") + Placement.Heading : metadata.Title;
         Title = title.Text;
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
         preview.Document = MarkdownView.Render(content, ToggleTask);
@@ -286,6 +303,7 @@ public sealed class NoteWindow : Window
         try
         {
             if (dirty && MessageBox.Show(this, "未保存の編集を破棄して再読込しますか？", "再読込", MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
+            dailyDisplay.Refresh(today());
             Reload();
         }
         finally { decisionInProgress = false; }
@@ -299,7 +317,8 @@ public sealed class NoteWindow : Window
             var path = ResolvePath();
             if (!dirty && !editing)
             {
-                if (!File.Exists(path) || snapshot is null || snapshot.Path != path || NoteStore.Read(path).Hash != snapshot.Hash) Reload();
+                if (!File.Exists(path) || snapshot is null || snapshot.Path != path || NoteStore.Read(path).Hash != snapshot.Hash ||
+                    (Placement.Daily && (renderedToday != today().Date || renderedRetention != app.Config.DailyRetention))) Reload();
             }
             else if (snapshot is not null && (snapshot.Path != path || NoteStore.Read(snapshot.Path).Hash != snapshot.Hash))
                 status.Text = "元ノートの変更または日付切替を検出。編集を保存・退避してから再読込してください。";

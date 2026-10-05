@@ -71,6 +71,7 @@ internal static class Program
             MigrationTests(root);
             IndependentFolderSettingsTests(root);
             DailyRegexTests(root);
+            DailyWaitingTests(root);
             DailyPreviewTests(root);
             RegexDefaultsTests(root);
             NoteLinkTests(root);
@@ -516,6 +517,112 @@ internal static class Program
         var reopenedInputs = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ToArray();
         Check(reopenedInputs[0].Text == source && reopenedInputs[1].Text == target, "reopened settings display independently saved folders");
         reopened.Close();
+    }
+
+    private static void DailyWaitingTests(string root)
+    {
+        var folder = Path.Combine(root, "daily-waiting");
+        Directory.CreateDirectory(folder);
+        var date = new DateTime(2026, 12, 31);
+        string FileFor(DateTime day) => Path.Combine(folder, day.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) + ".md");
+        var yesterday = FileFor(date.AddDays(-1));
+        var current = FileFor(date);
+        File.WriteAllText(yesterday, "## Tasks\n- [ ] yesterday\n");
+        var app = App.Current;
+        var previous = app.Config;
+        app.ApplySettings(new Settings { NotesFolder = previous.NotesFolder, DailyFolder = folder }, false);
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        void Call(NoteWindow window, string method) => typeof(NoteWindow).GetMethod(method, flags)!.Invoke(window, null);
+        void Tick(NoteWindow window) => ((Task)typeof(NoteWindow).GetMethod("Tick", flags)!.Invoke(window, null)!).GetAwaiter().GetResult();
+        T Field<T>(NoteWindow window, string name) => (T)typeof(NoteWindow).GetField(name, flags)!.GetValue(window)!;
+        NoteWindow Open(DailyNoteRetention mode)
+        {
+            app.Config.DailyRetention = mode;
+            var window = new NoteWindow(new NotePlacement { Daily = true, Heading = "Tasks" }, () => MessageBoxResult.Cancel, _ => { }, () => date);
+            Call(window, "Reload");
+            return window;
+        }
+        try
+        {
+            var window = Open(DailyNoteRetention.ShowWaitingMessage);
+            Check(Field<FileSnapshot?>(window, "snapshot") is null && Field<TextBlock>(window, "dailyNotice").Text.Contains("Obsidian") && Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Visible, "missing daily note displays creation and settings guidance in the sticky body");
+            Call(window, "BeginEdit");
+            Check(!Field<bool>(window, "editing") && !File.Exists(current), "waiting message cannot be edited or saved as a note");
+            File.WriteAllText(current, "## Tasks\ntoday\n"); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current && Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Collapsed, "poll automatically displays newly created daily note");
+            window.Close(); File.Delete(current);
+
+            window = Open(DailyNoteRetention.UntilCreated);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == yesterday && Field<TextBlock>(window, "dailyNotice").Text.Contains("昨日"), "until-created mode loads yesterday on startup with a visible date notice");
+            File.WriteAllText(current, "## Tasks\ntoday\n"); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current, "until-created mode switches automatically when today appears");
+            date = date.AddDays(1); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current && Field<TextBlock>(window, "title").Text.StartsWith("昨日"), "year rollover retains exactly yesterday and relabels it");
+            Call(window, "BeginEdit"); Field<TextBox>(window, "editor").Text = "unsaved previous-day draft";
+            File.WriteAllText(FileFor(date), "## Tasks\nnew year\n"); Tick(window);
+            Check(Field<TextBox>(window, "editor").Text == "unsaved previous-day draft" && Field<FileSnapshot>(window, "snapshot").Path == current, "creation during editing preserves previous-day snapshot and draft");
+            Call(window, "Save");
+            Check(File.ReadAllText(current).Contains("unsaved previous-day draft") && File.ReadAllText(FileFor(date)).Contains("new year"), "retained edit saves only to its original dated file");
+            Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == FileFor(date), "automatic switching resumes after saving draft");
+            window.Close(); File.Delete(FileFor(date)); date = date.AddDays(-1); File.Delete(current);
+
+            window = Open(DailyNoteRetention.UntilRefresh);
+            File.WriteAllText(current, "## Tasks\ntoday\n"); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == yesterday, "until-refresh mode keeps yesterday after today's creation");
+            Call(window, "ReloadAsked");
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current, "manual refresh switches to today's existing file");
+            window.Close(); File.Delete(current);
+            window = Open(DailyNoteRetention.UntilRefresh);
+            Call(window, "ReloadAsked"); Tick(window);
+            Check(Field<FileSnapshot?>(window, "snapshot") is null && Field<TextBlock>(window, "dailyNotice").Text.Contains("Obsidian"), "refresh without today ends retention and remains waiting across polls");
+            File.WriteAllText(current, "## Tasks\ntoday\n"); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current, "creation after manual refresh automatically leaves waiting state");
+            window.Close(); File.Delete(current);
+            window = Open(DailyNoteRetention.UntilRefresh);
+            date = date.AddDays(1); Tick(window);
+            Check(Field<FileSnapshot?>(window, "snapshot") is null, "retention never keeps a file older than yesterday");
+            window.Close(); date = date.AddDays(-1);
+
+            window = Open(DailyNoteRetention.UntilCreated);
+            var duplicate = Path.Combine(folder, "2026-12-31(duplicate).md");
+            File.WriteAllText(current, "## Tasks\ntoday\n"); File.WriteAllText(duplicate, "## Tasks\nduplicate\n"); Tick(window);
+            Check(Field<FileSnapshot?>(window, "snapshot") is null && Field<TextBlock>(window, "status").Text.Contains("複数一致") && Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Collapsed, "ambiguous matches report an error instead of retaining yesterday or showing creation advice");
+            File.Delete(duplicate); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current, "poll recovers after ambiguous match is removed");
+            File.WriteAllText(current, "## Other\nmissing requested heading\n"); Tick(window);
+            Check(Field<FileSnapshot?>(window, "snapshot") is null && Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Collapsed, "missing heading is an error rather than a fallback or creation message");
+            window.Close();
+
+            File.Delete(current);
+            window = Open(DailyNoteRetention.UntilRefresh);
+            File.Delete(yesterday); File.WriteAllText(current, "## Tasks\ntoday\n"); Tick(window);
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current, "deleted retained note allows recovery to today's existing note");
+            window.Close();
+            File.Delete(current);
+            window = Open(DailyNoteRetention.UntilCreated);
+            Check(Field<FileSnapshot?>(window, "snapshot") is null && Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Visible, "retention mode waits when both days are missing");
+            app.Config.DailyPattern = "["; Tick(window);
+            Check(Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Collapsed && Field<TextBlock>(window, "status").Text.Contains("正規表現"), "invalid regex is not disguised as a missing daily note");
+            app.Config.DailyPattern = DailyNoteResolver.RegexExample;
+            app.Config.DailyFolder = Path.Combine(folder, "missing-folder"); Tick(window);
+            Check(Field<TextBlock>(window, "dailyNotice").Visibility == Visibility.Collapsed, "missing folder is not disguised as a note awaiting creation");
+            app.Config.DailyFolder = folder;
+            window.Close();
+
+            var settings = new SettingsWindow();
+            var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            var choice = panel.Children.OfType<ComboBox>().Single(x => x.Name == "DailyRetention");
+            choice.SelectedIndex = (int)DailyNoteRetention.UntilRefresh;
+            Check(app.Config.DailyRetention == DailyNoteRetention.UntilCreated, "retention selection is not applied before saving");
+            panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.DailyRetention == DailyNoteRetention.UntilRefresh, "settings persist retention mode for restart");
+            settings = new SettingsWindow();
+            Check(((StackPanel)((ScrollViewer)settings.Content).Content).Children.OfType<ComboBox>().Single().SelectedIndex == 2, "reopened settings show saved retention mode");
+            settings.Close();
+            Check(JsonSerializer.Deserialize<Settings>("{}")!.DailyRetention == DailyNoteRetention.ShowWaitingMessage, "older settings default to waiting message");
+        }
+        finally { app.ApplySettings(previous, false); }
     }
 
     private static void DailyRegexTests(string root)

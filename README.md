@@ -161,11 +161,11 @@ Daily-note filenames use **date tags + a regular expression** only. There is no 
 
 A blank or whitespace-only field is filled with this default. The `日時タグ付きの既定例を挿入` (Insert default with date tags) button asks before replacing the entire input; **No** retains the existing expression. Opening Settings does not ask for confirmation. Changes update filename matching and are persisted when you save.
 
-Each required tag must capture one numeric date part. Only a file whose captured date equals today's local date is selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; the extension is not appended automatically. Use `/` for subfolders; for example, prefix the expression with `Diary/` when selecting the parent folder. This example excludes other dates and prefix variants such as `WeeklyTasksLog-…`.
+Each required tag must capture one numeric date part. Only files matching the target local date (normally today, or yesterday with retention enabled) are selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; the extension is not appended automatically. Use `/` for subfolders; for example, prefix the expression with `Diary/` when selecting the parent folder. This example excludes other dates and prefix variants such as `WeeklyTasksLog-…`.
 
 Existing regex settings are preserved. When loading older settings, `yyyy-MM-dd` and `yyyy/MM/yyyy-MM-dd`, including versions ending in `(ddd)` or `(dddd)`, are converted to tagged regex. Other custom date formats are kept as text for manual correction in Settings; they are no longer evaluated as date formats. Files and folders are not moved by this conversion.
 
-The search includes subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. Missing or multiple matches produce an error without creating files or choosing one arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
+The search includes subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. A missing daily note follows the waiting/retention behavior below; multiple matches produce an error. No files are created or chosen arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
 
 The Settings screen checks the unsaved folder and expression about 300 ms after you stop typing, displaying today's matching filename or an inline error. Changing the folder also refreshes matching. Searches run in the background, and outdated results are discarded.
 
@@ -177,7 +177,15 @@ If the source changes externally before Display, the app asks you to reload with
 
 A section starts immediately after the selected heading and ends before the next heading at the same or a higher level. Subheadings are included. Other sections and YAML front matter are preserved. Duplicate matching headings prevent editing to avoid ambiguity. Headings inside fenced code are ignored. Use `#`-style (ATX) headings.
 
-When the date changes, the app switches to today's file. If you are editing, switching waits until you save or reload. A missing target file or heading produces an error. Files are not created automatically; new headings are added only when you enter a new name in the selection dialog and select Display. Creating them in Obsidian also makes them appear on a subsequent refresh.
+When the date changes, the app switches to today's file. If it has not been created, existing daily sticky notes show guidance in the body area: creating today's note in Obsidian will display it automatically, and Settings can keep yesterday's note visible. The app checks about every two seconds.
+
+Settings offers three choices under `今日のデイリーノートが未作成のとき` (When today's daily note is missing):
+
+- **Show waiting message (default)**: display guidance while today's note is missing.
+- **1. Keep yesterday until today is created**: automatically switch when today's file appears.
+- **2. Keep yesterday until Reload**: once yesterday is displayed because today is missing, keep it even after today's file appears, until you select `再読込` (Reload).
+
+If yesterday is also missing, show the waiting message; never go back further. Reload checks today in either retention mode; if missing, wait without returning to yesterday for the rest of that day. Retention state lasts while the sticky note is open; restarting shows today if it already exists. The setting itself is saved. A retained note displays its date and guidance; edits and task checks are saved to that dated source file. Automatic switching pauses during editing and preserves unsaved input. Folder/regex errors, multiple matches, and missing headings remain errors. Files are not created automatically; new headings are added only when entered in the selection dialog and confirmed with Display. Adding a daily sticky note for the first time requires today's file.
 
 ## Google Calendar
 

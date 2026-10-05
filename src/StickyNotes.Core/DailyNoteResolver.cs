@@ -61,6 +61,8 @@ public static class DailyNoteResolver
                 found = entry;
             }
         }
-        return found ?? throw new FileNotFoundException("正規表現に一致する今日のデイリーノートがありません。");
+        return found ?? throw new DailyNoteMissingException();
     }
 }
+
+public sealed class DailyNoteMissingException() : FileNotFoundException("正規表現に一致する今日のデイリーノートがありません。");
