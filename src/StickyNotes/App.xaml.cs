@@ -131,12 +131,7 @@ public partial class App : Application
             }
         }
         if (migrate)
-        {
-            if (next.DailyFolder.Length > 0 &&
-                (NoteFolderMigration.SameFolder(previous.NotesFolder, next.DailyFolder) || NoteFolderMigration.Contains(previous.NotesFolder, next.DailyFolder)))
-                next.DailyFolder = Path.GetFullPath(Path.Combine(next.NotesFolder, Path.GetRelativePath(previous.NotesFolder, next.DailyFolder)));
             NoteFolderMigration.Move(previous.NotesFolder, next.NotesFolder, Commit);
-        }
         else Commit(new Dictionary<string, string>());
     }
 

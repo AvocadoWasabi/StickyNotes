@@ -49,7 +49,7 @@ public sealed class SettingsWindow : Window
             if (!NoteFolderMigration.SameFolder(app.Config.NotesFolder, folder))
             {
                 var answer = MessageBox.Show(this,
-                    $"付箋の保存ファイルもすべて移行しますか？\n\n移行元: {app.Config.NotesFolder}\n移行先: {folder}\n\nはい: 旧フォルダ内のすべての .md ファイルを、サブフォルダ・閉じている付箋も含めて移行します。同名ファイルは上書きしません。旧フォルダ内のデイリーノートの参照先も変更します。\nいいえ: 新規付箋の保存先だけ変更し、既存ファイルは残します。\nキャンセル: 設定の保存を中止します。",
+                    $"付箋の保存ファイルもすべて移行しますか？\n\n移行元: {app.Config.NotesFolder}\n移行先: {folder}\n\nはい: 旧フォルダ内のすべての .md ファイルを、サブフォルダ・閉じている付箋も含めて移行します。同名ファイルは上書きしません。\nデイリーノートのフォルダ設定は自動変更しません。旧フォルダ内のデイリーノートも移動する場合は、その設定を別途変更してください。\nいいえ: 新規付箋の保存先だけ変更し、既存ファイルは残します。\nキャンセル: 設定の保存を中止します。",
                     "付箋ファイルの移行", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
                 if (answer is not (MessageBoxResult.Yes or MessageBoxResult.No)) return false;
                 migrate = answer == MessageBoxResult.Yes;
@@ -80,6 +80,7 @@ public sealed class SettingsWindow : Window
     private void PickFolder(TextBox input)
     {
         var picker = new Microsoft.Win32.OpenFolderDialog();
+        if (Directory.Exists(input.Text)) picker.InitialDirectory = input.Text;
         if (picker.ShowDialog(this) == true) input.Text = picker.FolderName;
     }
 }

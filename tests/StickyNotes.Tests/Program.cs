@@ -63,6 +63,7 @@ internal static class Program
             NoteStore.Save(bom, bom.Text + "!", backups);
             Check(File.ReadAllBytes(bomPath).Take(3).SequenceEqual(new byte[] { 239, 187, 191 }), "UTF8 BOM preserved");
             MigrationTests(root);
+            IndependentFolderSettingsTests(root);
             DailyRegexTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
@@ -84,6 +85,43 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void IndependentFolderSettingsTests(string root)
+    {
+        var app = App.Current;
+        var source = Path.Combine(root, "independent-source");
+        var target = Path.Combine(root, "independent-target");
+        Directory.CreateDirectory(source);
+        var note = NoteStore.Create(source);
+        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = source }, false);
+        app.ApplySettings(new Settings { NotesFolder = target, DailyFolder = source }, true);
+        Check(app.Config.NotesFolder == target && app.Config.DailyFolder == source, "migrating notes does not synchronize equal daily-folder setting");
+        Check(File.Exists(Path.Combine(target, Path.GetFileName(note))), "independent settings retain requested Markdown migration");
+        var saved = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!;
+        Check(saved.NotesFolder == target && saved.DailyFolder == source, "separate folder values persist for restart");
+
+        var chosenDaily = Path.Combine(target, "chosen-daily");
+        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = chosenDaily }, true);
+        Check(app.Config.DailyFolder == chosenDaily, "migration preserves explicitly selected daily folder inside old notes folder");
+        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = target }, false);
+        Check(app.Config.NotesFolder == source && app.Config.DailyFolder == target, "changing daily folder leaves notes folder unchanged");
+        app.ApplySettings(new Settings { NotesFolder = target, DailyFolder = target }, false);
+        Check(app.Config.NotesFolder == target && app.Config.DailyFolder == target, "changing notes folder without migration preserves chosen daily folder");
+
+        var settingsWindow = new SettingsWindow();
+        var panel = (StackPanel)((ScrollViewer)settingsWindow.Content).Content;
+        var inputs = panel.Children.OfType<TextBox>().ToArray();
+        inputs[0].Text = source;
+        Check(inputs[1].Text == target, "editing notes input does not change daily input");
+        inputs[1].Text = chosenDaily;
+        Check(inputs[0].Text == source, "editing daily input does not change notes input");
+        settingsWindow.Close();
+        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = target }, false);
+        var reopened = new SettingsWindow();
+        var reopenedInputs = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ToArray();
+        Check(reopenedInputs[0].Text == source && reopenedInputs[1].Text == target, "reopened settings display independently saved folders");
+        reopened.Close();
     }
 
     private static void DailyRegexTests(string root)
@@ -214,7 +252,7 @@ internal static class Program
         app.ApplySettings(new Settings { NotesFolder = next, DailyFolder = app.Config.DailyFolder }, true);
         Check(placement.Path == Path.Combine(next, "a.md") && placement.Left == 234 && placement.Pinned, "open window follows migration and retains placement");
         Check(((FileSnapshot)snapshotField.GetValue(window)!).Path == placement.Path && editor.Text == "unsaved edit" && (bool)dirtyField.GetValue(window)!, "migration retains unsaved editor and updates snapshot path");
-        Check(app.Config.DailyFolder == Path.Combine(next, "nested"), "daily folder inside source follows migration");
+        Check(app.Config.DailyFolder == Path.Combine(destination, "nested"), "daily folder inside source remains explicitly configured after migration");
         Check(((FileSnapshot)snapshotField.GetValue(dailyWindow)!).Path == Path.Combine(next, "nested", "b.MD") && outside.Placement.Path == Path.Combine(root, "bom.md"), "daily snapshot follows move while outside linked note stays in place");
         Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.Windows[0].Path == placement.Path, "restart settings contain migrated note paths");
         var oldConfig = app.Config;

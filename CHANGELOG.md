@@ -8,10 +8,14 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+### Fixed
+
+- Keep the notes folder and daily-note folder independent when saving settings, including when migrating notes from a shared or parent folder. Folder pickers open at their respective configured folders.
+
 ### Added
 
 - Optional regular expressions for daily-note paths, using named year/month/day groups to select today's file, including weekday suffixes and subfolders. Keep existing date-format settings compatible, reject ambiguous matches, and limit regex matching and search work.
-- Ask whether to migrate existing Markdown files when changing the notes folder, with Yes / No / Cancel choices. Include subfolders and closed notes, preserve open-note edits and placement, and update daily-note folder references inside the old folder.
+- Ask whether to migrate existing Markdown files when changing the notes folder, with Yes / No / Cancel choices. Include subfolders and closed notes, and preserve open-note edits and placement.
 - Prevent overwriting destination files and roll back moves if migration or settings persistence fails; report any files needing manual recovery.
 
 ## [0.0.1](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.1) — 2026-10-05
