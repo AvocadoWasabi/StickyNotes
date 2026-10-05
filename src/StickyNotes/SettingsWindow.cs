@@ -28,29 +28,42 @@ public sealed class SettingsWindow : Window
         }));
         var calendar = Add("Calendar ID（自分のメインカレンダーは primary）", app.Config.CalendarId);
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 10) };
-        void Save()
+        bool Save()
         {
             if (!Path.IsPathFullyQualified(notes.Text)) throw new InvalidOperationException("保存フォルダは絶対パスで指定してください。");
             if (daily.Text.Length > 0 && !Path.IsPathFullyQualified(daily.Text)) throw new InvalidOperationException("デイリーフォルダは絶対パスで指定してください。");
             if (string.IsNullOrWhiteSpace(pattern.Text)) throw new InvalidOperationException("日付の書式を指定してください。");
             _ = DateTime.Today.ToString(pattern.Text);
             if (string.IsNullOrWhiteSpace(calendar.Text)) throw new InvalidOperationException("Calendar IDを指定してください。");
-            app.Config.NotesFolder = notes.Text; app.Config.DailyFolder = daily.Text;
-            app.Config.DailyPattern = pattern.Text; app.Config.GoogleCredentialsFile = credentials.Text;
-            app.Config.CalendarId = calendar.Text;
-            app.SaveConfig();
+            var folder = NoteFolderMigration.Normalize(notes.Text);
+            var migrate = false;
+            if (!NoteFolderMigration.SameFolder(app.Config.NotesFolder, folder))
+            {
+                var answer = MessageBox.Show(this,
+                    $"付箋の保存ファイルもすべて移行しますか？\n\n移行元: {app.Config.NotesFolder}\n移行先: {folder}\n\nはい: 旧フォルダ内のすべての .md ファイルを、サブフォルダ・閉じている付箋も含めて移行します。同名ファイルは上書きしません。旧フォルダ内のデイリーノートの参照先も変更します。\nいいえ: 新規付箋の保存先だけ変更し、既存ファイルは残します。\nキャンセル: 設定の保存を中止します。",
+                    "付箋ファイルの移行", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+                if (answer is not (MessageBoxResult.Yes or MessageBoxResult.No)) return false;
+                migrate = answer == MessageBoxResult.Yes;
+            }
+            app.ApplySettings(new Settings
+            {
+                NotesFolder = folder, DailyFolder = daily.Text, DailyPattern = pattern.Text,
+                GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text
+            }, migrate);
+            notes.Text = app.Config.NotesFolder; daily.Text = app.Config.DailyFolder;
+            return true;
         }
         var login = new Button { Content = "設定を保存してGoogleにログイン" };
         login.Click += async (_, _) =>
         {
             login.IsEnabled = false;
-            try { Save(); app.Calendar.Configure(credentials.Text); status.Text = "ブラウザで認証してください（3分以内）…"; await app.Calendar.SignInAsync(); status.Text = "Googleと接続しました。付箋に @calendar コマンドを入力できます。"; }
+            try { if (!Save()) return; app.Calendar.Configure(credentials.Text); status.Text = "ブラウザで認証してください（3分以内）…"; await app.Calendar.SignInAsync(); status.Text = "Googleと接続しました。付箋に @calendar コマンドを入力できます。"; }
             catch (Exception ex) { status.Text = ex.Message; }
             finally { login.IsEnabled = true; }
         };
         panel.Children.Add(login); panel.Children.Add(status);
-        panel.Children.Add(new TextBlock { Text = "保存先の変更は新規付箋に適用されます。既存ファイルは移動しません。\nバックアップ・配置・認証情報は %LOCALAPPDATA%\\StickyNotes に保存します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
-        panel.Children.Add(Ui.Button("保存して閉じる", () => { Save(); Close(); }));
+        panel.Children.Add(new TextBlock { Text = "保存先を変更して保存すると、既存の付箋ファイルも移行するか確認します。\nバックアップ・配置・認証情報は %LOCALAPPDATA%\\StickyNotes に保存します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        panel.Children.Add(Ui.Button("保存して閉じる", () => { if (Save()) Close(); }));
         Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
     }
 

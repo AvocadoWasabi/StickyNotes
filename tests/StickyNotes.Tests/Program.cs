@@ -62,6 +62,7 @@ internal static class Program
             var bom = NoteStore.Read(bomPath);
             NoteStore.Save(bom, bom.Text + "!", backups);
             Check(File.ReadAllBytes(bomPath).Take(3).SequenceEqual(new byte[] { 239, 187, 191 }), "UTF8 BOM preserved");
+            MigrationTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -82,6 +83,98 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void MigrationTests(string root)
+    {
+        var source = Path.Combine(root, "migration-source");
+        var destination = Path.Combine(root, "migration-destination");
+        Directory.CreateDirectory(Path.Combine(source, "nested"));
+        var first = Path.Combine(source, "a.md");
+        var second = Path.Combine(source, "nested", "b.MD");
+        File.WriteAllText(first, "---\r\ntype: sticky\r\n---\r\n日本語", new UTF8Encoding(true));
+        File.WriteAllText(second, "closed note");
+        File.WriteAllText(Path.Combine(source, "keep.txt"), "unrelated");
+        var bytes = File.ReadAllBytes(first);
+        Check(NoteFolderMigration.SameFolder(source, source.ToUpperInvariant() + Path.DirectorySeparatorChar), "folder comparison normalizes case and trailing separator");
+        Throws<InvalidOperationException>(() => NoteFolderMigration.Normalize("relative"), "migration rejects relative paths");
+        Throws<IOException>(() => NoteFolderMigration.Move(source, Path.Combine(source, "child"), _ => { }), "migration rejects descendant destination");
+        Throws<IOException>(() => NoteFolderMigration.Move(source, root, _ => { }), "migration rejects ancestor destination");
+        Directory.CreateDirectory(Path.Combine(destination, "nested"));
+        File.WriteAllText(Path.Combine(destination, "nested", "b.MD"), "existing");
+        Throws<IOException>(() => NoteFolderMigration.Move(source, destination, _ => throw new Exception("must not commit")), "collision preflight stops all moves");
+        Check(File.Exists(first) && File.ReadAllText(Path.Combine(destination, "nested", "b.MD")) == "existing", "collision preserves both folders");
+        File.Delete(Path.Combine(destination, "nested", "b.MD"));
+        using (var locked = new FileStream(second, FileMode.Open, FileAccess.Read, FileShare.Read))
+            Throws<IOException>(() => NoteFolderMigration.Move(source, destination, _ => throw new Exception("must not commit")), "locked file rolls back earlier moves");
+        Check(File.Exists(first) && File.Exists(second) && !File.Exists(Path.Combine(destination, "a.md")), "move failure restores source files");
+        Throws<InvalidOperationException>(() => NoteFolderMigration.Move(source, destination, _ => throw new InvalidOperationException("settings write failed")), "settings failure rolls back migration");
+        Check(File.ReadAllBytes(first).SequenceEqual(bytes) && File.Exists(second), "rollback preserves exact note bytes");
+        NoteFolderMigration.Move(source, destination, paths =>
+        {
+            Check(paths.Count == 2 && paths[second] == Path.Combine(destination, "nested", "b.MD"), "migration maps all Markdown including closed and nested notes");
+            Check(paths.Values.All(File.Exists), "settings committed only after all files move");
+        });
+        Check(!File.Exists(first) && !File.Exists(second) && File.ReadAllBytes(Path.Combine(destination, "a.md")).SequenceEqual(bytes), "migration preserves BOM and bytes and removes originals");
+        Check(File.Exists(Path.Combine(source, "keep.txt")), "migration leaves non-Markdown files in place");
+        NoteFolderMigration.Move(Path.Combine(root, "missing-source"), Path.Combine(root, "empty-destination"), paths => Check(paths.Count == 0, "missing old folder allows first-time setup"));
+        NoteFolderMigration.Move(destination, destination + Path.DirectorySeparatorChar, paths => Check(paths.Count == 0, "same folder does not move files"));
+        var recoverySource = Path.Combine(root, "recovery-source");
+        var recoveryDestination = Path.Combine(root, "recovery-destination");
+        Directory.CreateDirectory(recoverySource);
+        File.WriteAllText(Path.Combine(recoverySource, "note.md"), "original");
+        try
+        {
+            NoteFolderMigration.Move(recoverySource, recoveryDestination, _ =>
+            {
+                File.WriteAllText(Path.Combine(recoverySource, "note.md"), "concurrent creation");
+                throw new IOException("settings failure");
+            });
+            throw new Exception("Expected rollback failure");
+        }
+        catch (IOException error)
+        {
+            Check(error.Message.Contains(Path.Combine(recoveryDestination, "note.md")), "rollback failure reports recoverable file location");
+        }
+        Check(File.ReadAllText(Path.Combine(recoverySource, "note.md")) == "concurrent creation" && File.ReadAllText(Path.Combine(recoveryDestination, "note.md")) == "original", "rollback never overwrites concurrent source files");
+
+        var app = new App();
+        typeof(App).GetProperty(nameof(App.DataDirectory))!.SetValue(null, Path.Combine(root, "app-settings"));
+        Directory.CreateDirectory(App.DataDirectory);
+        app.Config.NotesFolder = destination;
+        app.Config.DailyFolder = Path.Combine(destination, "nested");
+        var placement = new NotePlacement { Path = Path.Combine(destination, "a.md"), Left = 234, Pinned = true };
+        var window = new NoteWindow(placement);
+        app.Notes.Add(window);
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        var snapshotField = typeof(NoteWindow).GetField("snapshot", flags)!;
+        var dirtyField = typeof(NoteWindow).GetField("dirty", flags)!;
+        var editor = (TextBox)typeof(NoteWindow).GetField("editor", flags)!.GetValue(window)!;
+        var snapshot = NoteStore.Read(placement.Path);
+        snapshotField.SetValue(window, snapshot);
+        editor.Text = "unsaved edit";
+        typeof(NoteWindow).GetField("editing", flags)!.SetValue(window, true);
+        var dailyWindow = new NoteWindow(new NotePlacement { Daily = true, Heading = "Tasks" });
+        snapshotField.SetValue(dailyWindow, NoteStore.Read(Path.Combine(destination, "nested", "b.MD")));
+        app.Notes.Add(dailyWindow);
+        var outside = new NoteWindow(new NotePlacement { Path = Path.Combine(root, "bom.md"), Heading = "Tasks" });
+        app.Notes.Add(outside);
+        var next = Path.Combine(root, "app-migrated");
+        app.ApplySettings(new Settings { NotesFolder = next, DailyFolder = app.Config.DailyFolder }, true);
+        Check(placement.Path == Path.Combine(next, "a.md") && placement.Left == 234 && placement.Pinned, "open window follows migration and retains placement");
+        Check(((FileSnapshot)snapshotField.GetValue(window)!).Path == placement.Path && editor.Text == "unsaved edit" && (bool)dirtyField.GetValue(window)!, "migration retains unsaved editor and updates snapshot path");
+        Check(app.Config.DailyFolder == Path.Combine(next, "nested"), "daily folder inside source follows migration");
+        Check(((FileSnapshot)snapshotField.GetValue(dailyWindow)!).Path == Path.Combine(next, "nested", "b.MD") && outside.Placement.Path == Path.Combine(root, "bom.md"), "daily snapshot follows move while outside linked note stays in place");
+        Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.Windows[0].Path == placement.Path, "restart settings contain migrated note paths");
+        var oldConfig = app.Config;
+        // Block the temporary settings file to exercise application + filesystem rollback together.
+        Directory.CreateDirectory(Path.Combine(App.DataDirectory, "settings.json.tmp"));
+        Throws<UnauthorizedAccessException>(() => app.ApplySettings(new Settings { NotesFolder = destination }, true), "settings persistence error aborts application migration");
+        Check(ReferenceEquals(app.Config, oldConfig) && File.Exists(placement.Path) && ((FileSnapshot)snapshotField.GetValue(window)!).Path == placement.Path, "settings failure restores config, placement, snapshot, and files");
+        Directory.Delete(Path.Combine(App.DataDirectory, "settings.json.tmp"));
+        Check((bool)typeof(NoteWindow).GetMethod("Save", flags)!.Invoke(window, null)! && File.ReadAllText(placement.Path).Contains("unsaved edit") && !File.Exists(Path.Combine(destination, "a.md")), "unsaved editing saves to migrated file without recreating original");
+        app.ApplySettings(new Settings { NotesFolder = destination }, false);
+        Check(app.Config.NotesFolder == destination && placement.Path == Path.Combine(next, "a.md") && File.Exists(placement.Path), "declining migration changes only new-note folder");
     }
 
     private static async Task CalendarTests(string root)

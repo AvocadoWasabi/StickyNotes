@@ -85,7 +85,9 @@ The app saves note positions, sizes, and always-on-top settings as notes move an
 
 ## Storage and Obsidian
 
-New notes are saved in `Documents/StickyNotesData` by default. Open `… → 設定` (Settings) to select a folder in your Obsidian vault, such as `Vault/Sticky Notes`. A folder change applies to new notes; existing files are not moved.
+New notes are saved in `Documents/StickyNotesData` by default. Open `… → 設定` (Settings) to select a folder in your Obsidian vault, such as `Vault/Sticky Notes`. When you save a folder change, the app asks whether to migrate existing note files. Choose **Yes** to move every `.md` file in the old folder, including subfolders and closed notes; **No** changes only the folder for new notes; **Cancel** leaves settings unchanged. Open notes keep their placement and unsaved edits, and daily-note folders inside the old folder follow the move. Files outside the old folder and non-Markdown files stay in place.
+
+Migration never overwrites an existing file. Name collisions stop the move; other move or settings-save failures trigger a rollback. If a file cannot be restored, the error lists its location for manual recovery. Parent/child folder pairs and paths containing links or junctions cannot be migrated. Relative links to files left behind may need updating. Back up your notes before a large move: interruption or power loss can leave files in both folders, so check both before retrying.
 
 Notes are regular UTF-8 `.md` files with properties such as:
 

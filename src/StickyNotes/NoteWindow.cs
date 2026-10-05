@@ -72,6 +72,20 @@ public sealed class NoteWindow : Window
 
     private void QueueGeometry() { if (initialized) { MonitorLayout.Capture(this, Placement); geometrySave.Stop(); geometrySave.Start(); } }
 
+    public Action Relocate(IReadOnlyDictionary<string, string> paths)
+    {
+        var previousPath = Placement.Path;
+        var previousSnapshot = snapshot;
+        var nextPath = Placement.Path;
+        var nextSnapshot = snapshot;
+        if (Placement.Path.Length > 0 && paths.TryGetValue(Path.GetFullPath(Placement.Path), out var path)) nextPath = path;
+        // Retain the hash and editor state so unsaved text and conflict detection survive the move.
+        if (snapshot is not null && paths.TryGetValue(Path.GetFullPath(snapshot.Path), out var snapshotPath))
+            nextSnapshot = snapshot with { Path = snapshotPath };
+        Placement.Path = nextPath; snapshot = nextSnapshot;
+        return () => { Placement.Path = previousPath; snapshot = previousSnapshot; };
+    }
+
     private string ResolvePath()
     {
         if (!Placement.Daily) return Placement.Path;

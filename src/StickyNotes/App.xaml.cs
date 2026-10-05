@@ -110,6 +110,36 @@ public partial class App : Application
         File.Move(temporary, ConfigPath, true);
     }
 
+    public void ApplySettings(Settings next, bool migrate)
+    {
+        var previous = Config;
+        void Commit(IReadOnlyDictionary<string, string> paths)
+        {
+            var restore = new List<Action>();
+            try
+            {
+                if (paths.Count > 0)
+                    foreach (var note in Notes) restore.Add(note.Relocate(paths));
+                Config = next;
+                SaveConfig();
+            }
+            catch
+            {
+                Config = previous;
+                foreach (var undo in restore) undo();
+                throw;
+            }
+        }
+        if (migrate)
+        {
+            if (next.DailyFolder.Length > 0 &&
+                (NoteFolderMigration.SameFolder(previous.NotesFolder, next.DailyFolder) || NoteFolderMigration.Contains(previous.NotesFolder, next.DailyFolder)))
+                next.DailyFolder = Path.GetFullPath(Path.Combine(next.NotesFolder, Path.GetRelativePath(previous.NotesFolder, next.DailyFolder)));
+            NoteFolderMigration.Move(previous.NotesFolder, next.NotesFolder, Commit);
+        }
+        else Commit(new Dictionary<string, string>());
+    }
+
     private bool PrepareExit()
     {
         foreach (var note in Notes.ToArray()) if (!note.CanClose()) return false;
