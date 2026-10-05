@@ -129,6 +129,7 @@ public partial class App : Application
         if (migrate)
             NoteFolderMigration.Move(previous.NotesFolder, next.NotesFolder, Commit);
         else Commit(new Dictionary<string, string>());
+        foreach (var note in Notes) note.ApplyButtonDisplay();
     }
 
     private bool PrepareExit()

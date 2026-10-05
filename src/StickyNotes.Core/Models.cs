@@ -9,6 +9,7 @@ public sealed class Settings : IJsonOnDeserialized
     public string DailyPattern { get; set; } = DailyNoteResolver.RegexExample;
     public DailyNoteRetention DailyRetention { get; set; }
     public bool AutoSaveOnFocusLoss { get; set; }
+    public bool TitleButtonOverlay { get; set; }
     public string GoogleCredentialsFile { get; set; } = "";
     public string CalendarId { get; set; } = "primary";
     public List<NotePlacement> Windows { get; set; } = [];

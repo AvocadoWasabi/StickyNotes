@@ -11,6 +11,11 @@ public sealed class NoteWindow : Window
 {
     public NotePlacement Placement { get; }
     internal StackPanel NoteControls { get; } = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(4, 0, 4, 3) };
+    internal Grid NoteHeader { get; } = new() { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)), Focusable = true };
+    private readonly Border controlsHost = new();
+    private readonly TextBlock dragHandle = new() { Text = "⠿", Width = 24, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Stretch, Padding = new Thickness(0, 5, 0, 0), Cursor = Cursors.SizeAll, ToolTip = "ドラッグして付箋を移動", Background = Brushes.Transparent };
+    private readonly Dictionary<Button, double> controlWidths = new();
+    private bool toolbarMenuOpen, headerHovered;
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
     private readonly FlowDocumentScrollViewer preview = new() { IsToolBarVisible = false, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Background = Brushes.Transparent };
@@ -57,9 +62,11 @@ public sealed class NoteWindow : Window
         WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0, ResizeBorderThickness = new Thickness(6), CornerRadius = new CornerRadius(0), GlassFrameThickness = new Thickness(0) });
         var outer = new Border { BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromArgb(45, 70, 60, 30)), BorderThickness = new Thickness(1) };
         var dock = new DockPanel(); outer.Child = dock; Content = outer;
-        var header = new DockPanel { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)) };
+        var header = NoteHeader;
+        header.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        header.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         title.Height = 27;
-        DockPanel.SetDock(title, Dock.Top); header.Children.Add(title);
+        header.Children.Add(title);
         Button Control(string label, Action action, double width, string color, string? tooltip = null)
         {
             var button = Ui.Button(label, action, tooltip);
@@ -69,6 +76,7 @@ public sealed class NoteWindow : Window
             button.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(37, 52, 69));
             button.BorderBrush = Brushes.SlateGray;
             NoteControls.Children.Add(button);
+            controlWidths[button] = width;
             return button;
         }
         Control("編集", BeginEdit, 40, "#DFEAF7", "Markdown本文を編集（Ctrl+E）");
@@ -79,8 +87,14 @@ public sealed class NoteWindow : Window
         var pin = Control(placement.Pinned ? "●" : "○", () => { Topmost = !Topmost; Placement.Pinned = Topmost; app.SaveConfig(); }, 28, "#F3F1EB", "最前面を切り替え");
         pin.Click += (_, _) => pin.Content = Topmost ? "●" : "○";
         Control("×", Close, 28, "#F3F1EB", "この付箋を閉じる（ファイルは残ります）");
-        header.Children.Add(NoteControls);
-        header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource == title || e.OriginalSource == header) { DragMove(); e.Handled = true; } };
+        var controlsRow = new DockPanel();
+        DockPanel.SetDock(dragHandle, Dock.Left); controlsRow.Children.Add(dragHandle); controlsRow.Children.Add(NoteControls);
+        controlsHost.Child = controlsRow; header.Children.Add(controlsHost);
+        header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource == title || e.OriginalSource == header || e.OriginalSource == dragHandle) { DragMove(); e.Handled = true; } };
+        header.MouseEnter += (_, _) => { headerHovered = true; UpdateButtonOverlay(); };
+        header.MouseLeave += (_, _) => { headerHovered = false; UpdateButtonOverlay(); };
+        header.IsKeyboardFocusWithinChanged += (_, _) => UpdateButtonOverlay();
+        ApplyButtonDisplay();
         DockPanel.SetDock(header, Dock.Top); dock.Children.Add(header);
         DockPanel.SetDock(tags, Dock.Top); dock.Children.Add(tags);
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
@@ -118,6 +132,7 @@ public sealed class NoteWindow : Window
         };
         PreviewKeyDown += (_, e) =>
         {
+            if (e.Key == Key.F6 && Keyboard.Modifiers == ModifierKeys.None) { NoteHeader.Focus(); e.Handled = true; return; }
             if (HandleScaleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; }
             else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.E) { BeginEdit(); e.Handled = true; }
@@ -131,6 +146,25 @@ public sealed class NoteWindow : Window
     }
 
     private void QueueGeometry() { if (initialized) { MonitorLayout.Capture(this, Placement); geometrySave.Stop(); geometrySave.Start(); } }
+
+    internal void ApplyButtonDisplay()
+    {
+        var overlay = app.Config.TitleButtonOverlay;
+        headerHovered = NoteHeader.IsMouseOver;
+        Grid.SetRow(controlsHost, overlay ? 0 : 1);
+        NoteHeader.RowDefinitions[0].MinHeight = overlay ? 33 : 27;
+        dragHandle.Visibility = overlay ? Visibility.Visible : Visibility.Collapsed;
+        foreach (var (button, width) in controlWidths) button.Width = overlay ? width - 3 : width;
+        if (overlay) controlsHost.SetBinding(Border.BackgroundProperty, new System.Windows.Data.Binding(nameof(Background)) { Source = this });
+        else { controlsHost.ClearValue(Border.BackgroundProperty); controlsHost.Background = Brushes.Transparent; }
+        UpdateButtonOverlay();
+    }
+
+    private void UpdateButtonOverlay()
+    {
+        controlsHost.Visibility = !app.Config.TitleButtonOverlay || headerHovered || NoteHeader.IsKeyboardFocusWithin || toolbarMenuOpen
+            ? Visibility.Visible : Visibility.Collapsed;
+    }
 
     private void ApplyContentScale()
     {
@@ -455,6 +489,8 @@ public sealed class NoteWindow : Window
     private void Menu()
     {
         var menu = new ContextMenu();
+        toolbarMenuOpen = true; UpdateButtonOverlay();
+        menu.Closed += (_, _) => { toolbarMenuOpen = false; UpdateButtonOverlay(); };
         void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
         Add("タグ・タイトル・状態・色", EditMetadata);
         menu.Items.Add(ContentScaleMenu());

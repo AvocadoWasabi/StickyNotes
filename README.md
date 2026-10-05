@@ -95,7 +95,9 @@ Launch the installed app from the Start menu, or run `StickyNotes.exe` from the 
 
 Drag the top of a note to move it, or drag an edge or the bottom-right corner to resize it. Use `○ / ●` to toggle always-on-top mode. Notes have no standard title bar and normally stay out of the taskbar; the app runs in the notification area.
 
-Edit, Save, Reload, More, New, Pin, and Close share one row below the title. Edit has a blue background, Save green, Reload yellow, and More purple.
+By default, Edit, Save, Reload, More, New, Pin, and Close are always visible in one row below the title. Edit has a blue background, Save green, Reload yellow, and More purple.
+
+In Settings, enable `操作ボタンをタイトルに重ねて表示する` (Overlay buttons on the title) and save to show buttons over the title when you hover there. This removes the second header row; revealing or hiding buttons does not shift the body. Drag the handle at the left edge to move the note. Press `F6` to focus the title, then `Tab` to select buttons for keyboard operation. Buttons also remain visible while keyboard focus is within the title area or the More menu is open. The setting applies immediately to all open notes and persists after restarting. Disable it and save to restore the always-visible row.
 
 | Control | Action |
 | --- | --- |

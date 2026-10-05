@@ -31,6 +31,8 @@ Click the body or `編集` (Ctrl+E) to edit, and `保存` (Ctrl+S) to save. Chan
 
 Adjust rendered content to 50–200% with `… → 表示スケール` (Display scale). In reading mode, use Ctrl+wheel over the body, Ctrl++ / Ctrl+-, or Ctrl+0 to reset. Each note saves its own scale without changing the source. See the [README](../README.md) for details.
 
+In Settings, `操作ボタンをタイトルに重ねて表示する` switches between always-visible buttons (default) and an overlay on title hover. Save to apply it to all notes and retain it after restarting. The overlay includes a left-edge drag handle and supports F6/Tab keyboard access.
+
 ## Updates
 
 Exit through `終了` in the notification-area menu, extract the new ZIP to a separate directory, and run `Install.cmd` to replace the app files. Notes, settings, and backups are stored separately from the installation.

@@ -79,6 +79,7 @@ internal static class Program
             FocusEditingTests(root);
             LinkPreviewTests(root);
             ContentScaleTests(root);
+            TitleButtonOverlayTests(root);
 
             var query = CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 設計 会議");
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
@@ -99,6 +100,69 @@ internal static class Program
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
+    }
+
+    private static void TitleButtonOverlayTests(string root)
+    {
+        Check(!JsonSerializer.Deserialize<Settings>("{}")!.TitleButtonOverlay, "older settings keep the always-visible button row");
+        var app = App.Current;
+        var previous = app.Config;
+        app.ApplySettings(new Settings { NotesFolder = previous.NotesFolder, DailyFolder = root }, false);
+        var path = Path.Combine(root, "title-overlay.md");
+        File.WriteAllText(path, "# Overlay\nbody\n");
+        var note = new NoteWindow(new NotePlacement { Path = path }, () => MessageBoxResult.Cancel, _ => { });
+        var other = new NoteWindow(new NotePlacement { Path = path });
+        app.Notes.Add(note); app.Notes.Add(other);
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        T Field<T>(NoteWindow window, string name) => (T)typeof(NoteWindow).GetField(name, flags)!.GetValue(window)!;
+        void Reload() => typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(note, null);
+        void Hover(bool value) => note.NoteHeader.RaiseEvent(new System.Windows.Input.MouseEventArgs(System.Windows.Input.Mouse.PrimaryDevice, Environment.TickCount)
+            { RoutedEvent = value ? System.Windows.Input.Mouse.MouseEnterEvent : System.Windows.Input.Mouse.MouseLeaveEvent });
+        void Click(string label) => note.NoteControls.Children.OfType<Button>().Single(x => (string)x.Content == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        void Measure() { note.NoteHeader.Measure(new Size(278, 200)); note.NoteHeader.Arrange(new Rect(0, 0, 278, note.NoteHeader.DesiredSize.Height)); }
+        try
+        {
+            Reload();
+            var host = Field<Border>(note, "controlsHost");
+            Check(host.Visibility == Visibility.Visible && Grid.GetRow(host) == 1, "default controls remain visible below the title");
+            Measure(); var normalHeight = note.NoteHeader.DesiredSize.Height;
+            var before = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
+            var settings = new SettingsWindow();
+            var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            var checkbox = panel.Children.OfType<CheckBox>().Single(x => x.Name == "TitleButtonOverlay");
+            Check(checkbox.IsChecked == false, "overlay option displays the existing default");
+            checkbox.IsChecked = true;
+            Check(!app.Config.TitleButtonOverlay && host.Visibility == Visibility.Visible && File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(before), "changing the option does not affect notes or saved settings before Save");
+            panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(app.Config.TitleButtonOverlay && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.TitleButtonOverlay, "saving settings persists overlay mode");
+            Check(Grid.GetRow(host) == 0 && host.Visibility == Visibility.Collapsed && Grid.GetRow(Field<Border>(other, "controlsHost")) == 0, "saving applies hidden title overlays immediately to all open notes");
+            Measure(); var hiddenHeight = note.NoteHeader.DesiredSize.Height;
+            Hover(true); Measure();
+            Check(host.Visibility == Visibility.Visible && hiddenHeight == note.NoteHeader.DesiredSize.Height && hiddenHeight < normalHeight, "title hover reveals an overlay without shifting the body or reserving a second row");
+            Check(host.Child.DesiredSize.Width <= 278 && Field<TextBlock>(note, "dragHandle").Visibility == Visibility.Visible && Field<TextBlock>(note, "dragHandle").Width == 24, "overlay buttons and a dedicated drag handle fit the minimum note width");
+            Check(host.Background.ToString() == note.Background.ToString(), "overlay background covers the title using the note color");
+            Hover(false);
+            Check(host.Visibility == Visibility.Collapsed, "leaving the title hides the overlay");
+            Hover(true); Click("編集");
+            var editor = Field<TextBox>(note, "editor"); editor.Text = "edited with overlay";
+            Hover(false); Hover(true);
+            Check(editor.Text == "edited with overlay" && editor.Visibility == Visibility.Visible && File.ReadAllText(path).Contains("body"), "overlay visibility changes preserve unsaved editing");
+            Click("保存");
+            Check(File.ReadAllText(path) == "edited with overlay", "overlay Save still writes the edited note");
+            var restored = new NoteWindow(new NotePlacement { Path = path });
+            Check(Grid.GetRow(Field<Border>(restored, "controlsHost")) == 0 && Field<Border>(restored, "controlsHost").Visibility == Visibility.Collapsed, "new notes use the saved overlay preference");
+            restored.Close();
+            settings = new SettingsWindow(); panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            checkbox = panel.Children.OfType<CheckBox>().Single(x => x.Name == "TitleButtonOverlay");
+            Check(checkbox.IsChecked == true, "reopened settings retain overlay mode");
+            checkbox.IsChecked = false;
+            panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Hover(false); Measure();
+            Check(host.Visibility == Visibility.Visible && Grid.GetRow(host) == 1 && note.NoteHeader.DesiredSize.Height == normalHeight &&
+                note.NoteControls.Children.OfType<Button>().First().Width == 40, "disabling overlay restores the original always-visible row and button sizes");
+            Check(Field<TextBlock>(note, "dragHandle").Visibility == Visibility.Collapsed && !app.Config.TitleButtonOverlay, "normal mode removes the overlay-only drag handle");
+        }
+        finally { Reload(); note.Close(); other.Close(); app.ApplySettings(previous, false); }
     }
 
     private static void ContentScaleTests(string root)
@@ -243,7 +307,7 @@ internal static class Program
         }, _ => errors++);
         typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
         var dock = (DockPanel)((Border)window.Content).Child;
-        var body = dock.Children.OfType<Grid>().Single();
+        var body = dock.Children.OfType<Grid>().Single(x => x.Children.OfType<TextBox>().Any());
         var editor = body.Children.OfType<TextBox>().Single();
         var reading = body.Children.OfType<DockPanel>().Single();
         var preview = reading.Children.OfType<FlowDocumentScrollViewer>().Single();
@@ -331,7 +395,7 @@ internal static class Program
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
             var dock = (DockPanel)((Border)window.Content).Child;
             var toolbar = window.NoteControls;
-            var body = dock.Children.OfType<Grid>().Single();
+            var body = dock.Children.OfType<Grid>().Single(x => x.Children.OfType<TextBox>().Any());
             var reading = body.Children.OfType<DockPanel>().Single();
             var editor = body.Children.OfType<TextBox>().Single();
             void Click(string label) => toolbar.Children.OfType<Button>().Single(x => (string)x.Content == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
@@ -464,7 +528,7 @@ internal static class Program
         var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
         void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         var matchStatus = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
-        Check(panel.Children.OfType<CheckBox>().All(x => x.Name == "AutoSaveOnFocusLoss"), "settings offer only tagged regex without a mode checkbox");
+        Check(panel.Children.OfType<CheckBox>().All(x => x.Name is "AutoSaveOnFocusLoss" or "TitleButtonOverlay"), "settings offer only tagged regex without a mode checkbox");
         Check(confirmations == 0 && pattern.Text == custom, "opening settings preserves custom regex without prompting");
         ClickInsert();
         Check(confirmations == 1 && pattern.Text == custom, "declining template button preserves existing expression");
