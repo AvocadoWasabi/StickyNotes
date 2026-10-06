@@ -105,6 +105,8 @@ internal static partial class Program
             finally { System.Globalization.CultureInfo.CurrentCulture = culture; }
             CalendarTests(root).GetAwaiter().GetResult();
             CalendarTodayTests(root);
+            Task.Run(() => GoogleTasksTests(root)).GetAwaiter().GetResult();
+            GoogleTasksUiTests(root);
             Task.Run(() => OAuthFlowTests(root)).GetAwaiter().GetResult();
             GoogleSetupUiTests(root);
             GoogleCredentialsStoreTests(root);
@@ -1354,7 +1356,8 @@ internal static partial class Program
             var url = await opened.Task.WaitAsync(cancellation.Token);
             var query = System.Web.HttpUtility.ParseQueryString(url.Query);
             Check(url.Host == "accounts.google.com" && url.Scheme == "https" && query["code_challenge_method"] == "S256" &&
-                query["scope"] == "https://www.googleapis.com/auth/calendar.events", "OAuth uses Google, PKCE and calendar event scope");
+                query["scope"] == "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks.readonly",
+                "OAuth uses Google, PKCE, calendar events and read-only Tasks scopes");
             var redirect = query["redirect_uri"]!;
             Check(new Uri(redirect).Host == "127.0.0.1", "OAuth callback binds only to IPv4 loopback");
             Throws<InvalidOperationException>(() => service.Configure(credentials), "credentials cannot change during authentication");
@@ -1415,6 +1418,8 @@ internal static partial class Program
         public Action? OnRequest;
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            if (request.RequestUri!.Host == "tasks.googleapis.com")
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"items\":[]}") };
             Requests++;
             OnRequest?.Invoke();
             Uri = request.RequestUri!.OriginalString; Method = request.Method;

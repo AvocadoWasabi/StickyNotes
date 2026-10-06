@@ -27,6 +27,8 @@
 
 `src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
 
+Google Tasks 复用同一 OAuth 客户端和令牌，增加 `tasks.readonly` 范围。`GoogleTasks.cs` 仅向固定 HTTPS 端点发送 GET，处理分页并将计划日期作为日期标签（不从 UTC 转换为本地时间）。每次最多获取100项匹配任务、20次请求、30秒。测试无需真实凭据，覆盖分页、日期边界、筛选、取消、部分失败及日期切换。
+
 ### 使用独立数据验证
 
 测试使用临时文件和模拟 API，不连接真实仓库或 Google。真实账号的连接和更新验证需要自行配置 OAuth。

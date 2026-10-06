@@ -27,6 +27,8 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 
+Google Tasksは同じOAuthクライアント・トークンに `tasks.readonly` スコープを追加して利用します。`GoogleTasks.cs` は固定HTTPSエンドポイントにGETのみを送り、ページ送りと予定日の「日付」としての処理（UTCからローカル時刻への変換なし）を行います。1回の取得上限は一致する100件・20リクエスト・30秒です。ページ送り、日付境界、絞り込み、キャンセル、片方だけの失敗、日付変更を実認証情報なしでテストします。
+
 ### 独立データでの動作確認
 
 テストは一時ファイルと模擬APIを使用し、実際のVaultやGoogleには接続しません。実アカウントでの接続・更新確認には利用者自身のOAuth設定が必要です。

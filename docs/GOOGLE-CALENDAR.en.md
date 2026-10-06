@@ -30,15 +30,29 @@ Events refresh about every 60 seconds, or when you choose `… → Fetch events 
 
 Click an event to edit its title and description. Changes are sent to Google **only after you select OK** in the confirmation dialog, which shows the changes and attendee notification behavior. Times, attendees, and recurrence rules are not changed. Editing a recurring event affects the retrieved occurrence. If the event has changed on Google since it was loaded, an ETag check prevents overwriting it and asks you to refresh.
 
+<a id="tasks"></a>
+
+## Google Tasks
+
+`@calendar` also retrieves dated, incomplete Google Tasks from all lists of the signed-in account, including assigned tasks. Calendar ID only selects the calendar, not a task list. `today` selects the PC's current date; an explicit date selects that date and later dates, ignoring its time and offset for Tasks. Undated, completed, hidden and deleted tasks are excluded.
+
+Tasks appear separately below events with their list name, date and a “no time” label; hover to read notes. They are read-only: editing, completion, creation and Markdown synchronization are unsupported. A keyword matches the full entered phrase in the title or notes, ignoring case. Google exposes the scheduled date but not the scheduled time through the [Tasks API](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks).
+
+The existing approximately 60-second refresh also refreshes Tasks, pauses during editing, and follows date changes. Each note's Tasks refresh is bounded to 100 matching tasks, 20 API requests and 30 seconds. Lists and tasks are paginated within these limits; a visible warning identifies partial results, which are sorted by date, list and title. A Tasks failure leaves calendar events visible, and a calendar retrieval failure still allows Tasks to load. Each section shows its own error.
+
+**Existing users:** In the same Google Cloud project, enable [Google Tasks API](https://console.cloud.google.com/apis/library/tasks.googleapis.com), add `https://www.googleapis.com/auth/tasks.readonly` under Data Access, then use **Step 3** in Settings to sign in again and grant Tasks read access. Keep the existing desktop JSON. Step 4 checks access but cannot grant the additional permission. An unavailable API or denied Tasks permission shows this guidance in the note. [Tasks authorization](https://developers.google.com/workspace/tasks/auth).
+
 <a id="setup"></a>
 
 ## Initial authentication
 
-Open the connection guide in the right-hand `Google Calendar` pane of Settings. The left pane contains note and daily-note settings; each pane scrolls independently. These instructions cover personal use with your own Google account and were checked against official documentation on 2026-10-06. Buttons open your system browser, where you complete Google registration and consent. Labels vary with the display language.
+Open the connection guide in the right-hand `Google Calendar / Tasks` pane of Settings. The left pane contains note and daily-note settings; each pane scrolls independently. These instructions cover personal use with your own Google account and were checked against official documentation on 2026-10-06. Buttons open your system browser, where you complete Google registration and consent. Labels vary with the display language.
 
 ### 1-1: Enable the API
 
 Open [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com). Use the project selector at the top to select a project, or create and select one with **New project**, using a name such as `StickyNotes Personal`. Click **Enable**; **Manage** indicates it is already enabled. Keep **the same project** selected throughout the remaining steps.
+
+Also enable [Google Tasks API](https://console.cloud.google.com/apis/library/tasks.googleapis.com) in this same project.
 
 ### 1-2: Register the app
 
@@ -49,6 +63,8 @@ In [Branding](https://console.cloud.google.com/auth/branding), click **Get start
 In [Audience](https://console.cloud.google.com/auth/audience), when the user type is **External** and status is **Testing**, use **Test users → Add users**, enter the email of the account whose calendar you will access, and **Save**. This can differ from your Cloud administration account. You do not need to publish the app for this procedure.
 
 ### 1-4: Save the scope
+
+Add and save both scopes: `https://www.googleapis.com/auth/calendar.events` for viewing/editing events, and `https://www.googleapis.com/auth/tasks.readonly` for read-only Tasks access.
 
 For an external app, open [Data Access](https://console.cloud.google.com/auth/scopes) → **Add or Remove Scopes** and select `https://www.googleapis.com/auth/calendar.events`. If absent, enter the full URL under **Manually add scopes** and add it. Choose **Update**, then **Save**. This permits viewing and editing events; it differs from `calendar.events.readonly`. The app's Calendar ID does not restrict the OAuth grant to that single calendar.
 
@@ -62,7 +78,7 @@ Select the downloaded file with `Select and check JSON`, then click the adjacent
 
 ### App Step 3: Sign in
 
-Click `Step 3: Save settings and sign in to Google`. Within three minutes, select the account added in 1-3, verify the app name and allow calendar access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `Connection verified`. The app saves the token and verifies read access to the selected calendar without modifying events.
+Click `Step 3: Save settings and sign in to Google`. Within three minutes, select the account added in 1-3, verify the app name and allow Calendar access and Tasks read access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `Connection verified`. The app saves the token and verifies read access to the selected calendar and task lists without modifying events or tasks.
 
 ### App Step 4: Recheck the connection
 

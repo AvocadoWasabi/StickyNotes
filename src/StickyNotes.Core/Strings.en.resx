@@ -56,7 +56,8 @@
   <data name="CalendarCompletion.Text01" xml:space="preserve">
     <value>@calendar date-time-or-today [keyword]
 Time zone is optional (Windows local time).
-Keywords are optional. Refresh events from the specified time, or the PC's current day with today, about every 60 seconds.</value>
+Keywords are optional. Refresh events from the specified time, or the PC's current day with today, about every 60 seconds.
+Google Tasks are also displayed as read-only, without times.</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  Search Google Calendar</value>
@@ -92,7 +93,7 @@ Follow the current day: @calendar today</value>
     <value>Authentication received. Close this tab and return to Sticky Notes.</value>
   </data>
   <data name="CalendarService.Text08" xml:space="preserve">
-    <value>Google access was not granted. Try again and allow calendar access.</value>
+    <value>Google access was not granted. Try again and allow Calendar access and Tasks read access.</value>
   </data>
   <data name="CalendarService.Text09" xml:space="preserve">
     <value>Sign-in timed out after 3 minutes. Choose Sign in to Google to try again.</value>
@@ -619,7 +620,8 @@ No: Keep the existing expression.</value>
   <data name="SettingsWindow.Text28" xml:space="preserve">
     <value>Type @ at the start of a separate paragraph to see completion and examples (leave a blank line after preceding text).
 Example: @calendar 2026-10-06T09:00
-Time zone is optional (Windows local time). Keywords are optional too.</value>
+Time zone is optional (Windows local time). Keywords are optional too.
+Google Tasks are also displayed as read-only, without times.</value>
   </data>
   <data name="SettingsWindow.Text29" xml:space="preserve">
     <value>Step 1: Prepare Google (checked against official documentation on 2026-10-06)
@@ -653,10 +655,10 @@ If already configured, review it and continue to 1-3. Internal restricts access 
     <value>1-4. Open Data Access</value>
   </data>
   <data name="SettingsWindow.Text37" xml:space="preserve">
-    <value>For an external app, choose Add or Remove Scopes and select the scope below. If missing, paste the full URL into Manually add scopes and add it. Choose Update, then Save.</value>
+    <value>For an external app, choose Add or Remove Scopes and select both scopes below. If missing, enter each URL under Manually add scopes. Choose Update, then Save.</value>
   </data>
   <data name="SettingsWindow.Text38" xml:space="preserve">
-    <value>Select and copy the URL above. It allows viewing and editing calendar events, unlike calendar.events.readonly. The Calendar ID setting does not restrict the OAuth grant to that single calendar.</value>
+    <value>You can select and copy the URLs above. calendar.events permits viewing/editing events; tasks.readonly only permits reading Tasks. Calendar ID does not restrict the OAuth grant or select task lists.</value>
   </data>
   <data name="SettingsWindow.Text39" xml:space="preserve">
     <value>1-5. Open Clients</value>
@@ -666,7 +668,8 @@ If already configured, review it and continue to 1-3. Internal restricts access 
 Select the downloaded JSON in Step 2, then Import into app to copy it to app data. Renaming is unnecessary. API keys and service-account JSON are not supported.</value>
   </data>
   <data name="SettingsWindow.Text41" xml:space="preserve">
-    <value>Next: Select JSON → Import into app → Calendar ID: primary for your main calendar → Step 3 to sign in. In the browser, choose the account from 1-3, verify the app name, and allow calendar access. The app receives the result automatically. Close the tab and check for Connection verified in Settings.</value>
+    <value>Next: Select JSON → Import into app → Calendar ID: primary for your main calendar → Step 3 to sign in. In the browser, choose the account from 1-3, verify the app name, and allow Calendar access and Tasks read access. The app receives the result automatically. Close the tab and check for Connection verified in Settings.
+Google Tasks are also displayed as read-only, without times.</value>
   </data>
   <data name="SettingsWindow.Text42" xml:space="preserve">
     <value>Troubleshooting
@@ -768,13 +771,13 @@ Cancel: Do not save settings.</value>
     <value>Save and close</value>
   </data>
   <data name="SettingsWindow.Text69" xml:space="preserve">
-    <value>Sign in to Google in your browser and allow calendar access within 3 minutes. Connection verification follows automatically.</value>
+    <value>Sign in to Google within 3 minutes and allow Calendar access and Tasks read access. Connection verification follows automatically.</value>
   </data>
   <data name="SettingsWindow.Text70" xml:space="preserve">
-    <value>Checking the calendar connection…</value>
+    <value>Checking Calendar and Tasks connections…</value>
   </data>
   <data name="SettingsWindow.Text71" xml:space="preserve">
-    <value>Connection verified. Try @calendar 2026-10-06T09:00 in a note. No events were changed.</value>
+    <value>Connection verified. Try @calendar today in a note. No events or tasks were changed.</value>
   </data>
   <data name="SettingsWindow.Text72" xml:space="preserve">
     <value>Cancelled. Close the browser's sign-in tab. Completed authentication is kept.</value>
@@ -789,5 +792,42 @@ Backups, layout, and credentials are stored in %LOCALAPPDATA%\StickyNotes.</valu
   </data>
   <data name="Ui.Text01" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="GoogleTasks.Access" xml:space="preserve">
+    <value>Cannot read Google Tasks. Enable the Tasks API in the same Cloud project, add tasks.readonly, and sign in again using Step 3 in Settings.</value>
+  </data>
+  <data name="GoogleTasks.Error" xml:space="preserve">
+    <value>Google Tasks retrieval failed (HTTP {0}). The next refresh will retry.</value>
+  </data>
+  <data name="GoogleTasks.Invalid" xml:space="preserve">
+    <value>Invalid Google Tasks response.</value>
+  </data>
+  <data name="GoogleTasks.Timeout" xml:space="preserve">
+    <value>Google Tasks retrieval timed out after 30 seconds. The next refresh will retry.</value>
+  </data>
+  <data name="GoogleTasks.Enable" xml:space="preserve">
+    <value>1-1: Enable Google Tasks API</value>
+  </data>
+  <data name="GoogleTasks.Setup" xml:space="preserve">
+    <value>Also enable Google Tasks API in the same Cloud project as Calendar and add both calendar.events and tasks.readonly. Existing users must sign in again with Step 3 and allow Tasks read access. No new JSON is needed. Tasks displays dated, incomplete tasks from all lists as read-only. Calendar ID does not select task lists.</value>
+  </data>
+  <data name="GoogleTasks.Loading" xml:space="preserve">
+    <value>Loading Google Tasks…</value>
+  </data>
+  <data name="GoogleTasks.Count" xml:space="preserve">
+    <value>Google Tasks: {0} (read-only)</value>
+  </data>
+  <data name="GoogleTasks.Item" xml:space="preserve">
+    <value>{0} (no time) · {1}
+{2}</value>
+  </data>
+  <data name="GoogleTasks.Empty" xml:space="preserve">
+    <value>No dated, incomplete tasks match.</value>
+  </data>
+  <data name="GoogleTasks.Truncated" xml:space="preserve">
+    <value>Showing partial results because the retrieval limit was reached (100 tasks / 20 requests).</value>
+  </data>
+  <data name="GoogleTasks.Partial" xml:space="preserve">
+    <value>Some data could not be retrieved. Check the Calendar / Tasks messages.</value>
   </data>
 </root>

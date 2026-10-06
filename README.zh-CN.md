@@ -75,6 +75,8 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 @calendar 2026-10-06T09:00
 ```
 
+也以只读方式显示 Google Tasks。`@calendar today` 获取当天有日期的未完成任务。现有用户需启用 Tasks API 并重新授权 Tasks 读取权限，详见[Tasks 设置指南](docs/GOOGLE-CALENDAR.zh-CN.md#tasks)。
+
 `@calendar today` 自动跟随电脑当天的日期（本地时间0点至次日0点）。可用 `@calendar today 会议` 按关键词筛选。查看便签时约每60秒检查日期并获取日程，从睡眠恢复后也会跟随当前日期；编辑期间暂停自动刷新。
 
 **无需关键词或时区偏移也能搜索。** 省略时区时使用 Windows 本地时间。如需筛选，在末尾追加 `会议` 等关键词。

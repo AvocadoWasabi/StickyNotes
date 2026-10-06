@@ -134,7 +134,7 @@ public sealed class SettingsWindow : Window
         panel.Children.Insert(panel.Children.IndexOf(previewPanel), insertTags);
         Loaded += (_, _) => SchedulePreview();
         Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
-        googlePanel.Children.Add(new TextBlock { Text = "Google Calendar", FontSize = 24,
+        googlePanel.Children.Add(new TextBlock { Text = "Google Calendar / Tasks", FontSize = 24,
             FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
         googlePanel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text27"), Margin = new Thickness(0, 0, 0, 8) });
         googlePanel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text28"), TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 12) });
@@ -144,6 +144,7 @@ public sealed class SettingsWindow : Window
             () => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true })));
         Explain(L10n.Text("SettingsWindow.Text29"));
         Link(L10n.Text("SettingsWindow.Text30"), "https://console.cloud.google.com/apis/library/calendar-json.googleapis.com");
+        Link(L10n.Text("GoogleTasks.Enable"), "https://console.cloud.google.com/apis/library/tasks.googleapis.com");
         Explain(L10n.Text("SettingsWindow.Text31"));
         Link(L10n.Text("SettingsWindow.Text32"), "https://console.cloud.google.com/auth/branding");
         Explain(L10n.Text("SettingsWindow.Text33"));
@@ -153,6 +154,8 @@ public sealed class SettingsWindow : Window
         Explain(L10n.Text("SettingsWindow.Text37"));
         var scope = new TextBox { Text = "https://www.googleapis.com/auth/calendar.events", IsReadOnly = true, TextWrapping = TextWrapping.Wrap };
         guide.Children.Add(scope);
+        guide.Children.Add(new TextBox { Text = "https://www.googleapis.com/auth/tasks.readonly", IsReadOnly = true, TextWrapping = TextWrapping.Wrap });
+        Explain(L10n.Text("GoogleTasks.Setup"));
         Explain(L10n.Text("SettingsWindow.Text38"));
         Link(L10n.Text("SettingsWindow.Text39"), "https://console.cloud.google.com/auth/clients");
         Explain(L10n.Text("SettingsWindow.Text40"));
@@ -279,6 +282,7 @@ public sealed class SettingsWindow : Window
                 }
                 status.Text = L10n.Text("SettingsWindow.Text70");
                 await app.Calendar.VerifyConnectionAsync(calendar.Text, cancellation.Token);
+                await app.Calendar.VerifyTasksConnectionAsync(cancellation.Token);
                 status.Text = L10n.Text("SettingsWindow.Text71");
             }
             catch (OperationCanceledException) when (cancellation.IsCancellationRequested)

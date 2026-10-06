@@ -27,6 +27,8 @@ Both commands restore, build Release, run tests, and generate a self-contained a
 
 `src/StickyNotes.Core` handles storage, section editing, and Calendar integration; `src/StickyNotes` contains the WPF UI; `tests` covers data protection, rendering, and APIs.
 
+Google Tasks uses the same OAuth client/token with the additional `tasks.readonly` scope. `GoogleTasks.cs` performs GET-only, paginated reads from a fixed HTTPS endpoint, treats scheduled dates as date labels rather than UTC instants, and caps each refresh at 100 matching tasks / 20 requests / 30 seconds. Tests cover pagination, bounds, filters, cancellation, partial failures, and rollover without real credentials.
+
 ### Testing with isolated data
 
 Tests use temporary files and simulated APIs, without connecting to a real vault or Google. Real-account connection and update checks require your own OAuth setup.

@@ -30,15 +30,29 @@
 
 点击日程可编辑标题和说明。确认对话框显示修改及参与者通知方式，**点击 OK 后才发送到 Google**。不修改时间、参与者或重复规则。编辑重复日程仅影响本次获取的实例。如果日程在 Google 上已变化，ETag 检查会阻止覆盖并要求刷新。
 
+<a id="tasks"></a>
+
+## Google Tasks
+
+`@calendar` 还会从登录账号的所有列表获取有日期的未完成 Google Tasks，包括分配给自己的任务。Calendar ID 仅选择日历，不选择任务列表。`today` 使用电脑当天日期；明确指定日期时包含该日及之后的任务，Tasks 忽略时间与时区偏移，只处理日期。不包含无日期、已完成、隐藏或已删除的任务。
+
+任务与日程分开显示在下方，标注列表名、日期和“无时间”；悬停可查看说明。任务为只读，不支持编辑、完成、创建或与 Markdown 同步。关键词按输入的完整字符串匹配标题或说明，不区分大小写。[Tasks API](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks)提供计划日期，但无法获取计划时间。
+
+Tasks 复用约60秒的刷新周期，编辑时暂停并跟随日期变化。每张便签每次 Tasks 获取最多100项匹配任务、20次 API 请求、30秒。在此限制内对列表和任务分页，达到上限时明确提示仅显示部分结果。已获取任务按日期、列表名和标题排序。Tasks 失败时保留日历日程，日历获取失败时仍可获取 Tasks，各自显示错误。
+
+**现有用户：** 在同一 Google Cloud 项目启用 [Google Tasks API](https://console.cloud.google.com/apis/library/tasks.googleapis.com)，在数据访问中添加 `https://www.googleapis.com/auth/tasks.readonly`，然后通过设置的**步骤3**重新登录并允许读取 Tasks。继续使用现有桌面客户端 JSON 即可。步骤4仅检查连接，无法添加权限。API 未启用或 Tasks 权限不足时，便签会显示此指引。[Tasks 授权说明](https://developers.google.com/workspace/tasks/auth)。
+
 <a id="setup"></a>
 
 ## 初次授权
 
-打开设置窗口右侧 `Google Calendar` 窗格中的连接指南。左侧窗格包含便签和每日笔记设置，左右可独立滚动。以下适用于使用个人 Google 账号为自己配置，已于 2026-10-06 与官方文档核对。按钮打开系统浏览器，Google 注册和授权在浏览器中完成。界面名称随显示语言而异。
+打开设置窗口右侧 `Google Calendar / Tasks` 窗格中的连接指南。左侧窗格包含便签和每日笔记设置，左右可独立滚动。以下适用于使用个人 Google 账号为自己配置，已于 2026-10-06 与官方文档核对。按钮打开系统浏览器，Google 注册和授权在浏览器中完成。界面名称随显示语言而异。
 
 ### 1-1：启用 API
 
 打开 [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com)，从顶部项目选择器选择现有项目，或通过“新建项目（New project）”输入名称（例如 `StickyNotes Personal`）并创建、选中。点击“启用（Enable）”；显示“管理（Manage）”则表示已启用。后续步骤始终选择**同一项目**。
+
+在同一项目同时启用 [Google Tasks API](https://console.cloud.google.com/apis/library/tasks.googleapis.com)。
 
 ### 1-2：初次注册
 
@@ -49,6 +63,8 @@
 在[受众（Audience）](https://console.cloud.google.com/auth/audience)中，若为“外部”且发布状态为“测试中（Testing）”，进入“测试用户（Test users）”→“添加用户（Add users）”，输入**将要访问日历的账号**邮箱并“保存（Save）”。该账号可能与 Cloud 管理账号不同。此流程无需发布应用。
 
 ### 1-4：保存权限范围
+
+添加并保存两个范围：用于查看和编辑日程的 `https://www.googleapis.com/auth/calendar.events`，以及只读 Tasks 的 `https://www.googleapis.com/auth/tasks.readonly`。
 
 对于外部应用，进入[数据访问（Data Access）](https://console.cloud.google.com/auth/scopes)→“添加或移除范围（Add or Remove Scopes）”，选择 `https://www.googleapis.com/auth/calendar.events`。找不到时，在“手动添加范围（Manually add scopes）”中输入完整 URL 并添加。点击“更新（Update）”返回，再“保存（Save）”。这是日程查看和编辑权限，与 `calendar.events.readonly` 不同；应用中的 Calendar ID 不会将 OAuth 授权限制为仅该日历。
 
@@ -62,7 +78,7 @@
 
 ### 应用步骤3：登录
 
-点击 `步骤3：保存设置并登录 Google`，在三分钟内于浏览器中选择1-3添加的账号，检查应用名称并允许日历访问。应用自动接收结果。关闭浏览器标签页、返回设置，确认出现 `连接检查完成`。应用保存令牌后检查指定日历的读取权限，不修改日程。
+点击 `步骤3：保存设置并登录 Google`，在三分钟内于浏览器中选择1-3添加的账号，检查应用名称并允许访问 Calendar 和读取 Tasks。应用自动接收结果。关闭浏览器标签页、返回设置，确认出现 `连接检查完成`。应用保存令牌后检查指定日历和任务列表的读取权限，不修改日程或任务。
 
 ### 应用步骤4：仅重新检查连接
 

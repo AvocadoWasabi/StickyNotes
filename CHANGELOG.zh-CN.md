@@ -8,6 +8,8 @@
 
 ## 未发布 / Unreleased
 
+- 在 `@calendar` 日程旁以只读方式显示有日期的未完成 Google Tasks，支持 `today` 日期跟随和关键词筛选。增加 Tasks 只读 OAuth 权限、API 启用和重新授权指引及连接检查。限制分页请求，某一服务失败时仍显示另一服务的结果，关闭便签或更改命令时取消请求。
+
 - 新增 `@calendar today [关键词]`，显示电脑本地时间当天的日程。复用约60秒的刷新周期，跟随日期变化并在睡眠恢复后更新；刷新间隔不受时钟校正影响，丢弃前一天的结果。添加三种语言的示例，明确输入的日期仍保持固定。
 
 ## [0.0.5](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) — 2026-10-06

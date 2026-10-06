@@ -55,7 +55,7 @@ internal static partial class Program
         try
         {
             Call("Reload"); Tick();
-            Check(handler.Requests == 1 && panel.Children.Count == 2 && RequestedDay() == day,
+            Check(handler.Requests == 1 && panel.Children.OfType<Button>().Count() == 1 && RequestedDay() == day,
                 "today note fetches and displays events on first poll");
             Tick(); Tick();
             Check(handler.Requests == 1, "two-second note polling does not repeatedly request calendar data");
@@ -65,17 +65,17 @@ internal static partial class Program
             day = day.AddDays(-2); Due(); Tick();
             Check(handler.Requests == 3 && RequestedDay() == day, "backward PC date correction still refreshes");
             day = day.AddDays(4); handler.Conflict = true; Due(); Tick();
-            Check(panel.Children.Count == 0, "failed retrieval for a new day clears the old day's events");
+            Check(!panel.Children.OfType<Button>().Any(), "failed retrieval for a new day clears the old day's events");
             var requests = handler.Requests;
             Tick();
             Check(handler.Requests == requests, "failed retrieval retains the normal retry interval");
             handler.Conflict = false; Due(); Tick();
-            Check(panel.Children.Count == 2 && RequestedDay() == day, "retry displays the current day after an error");
+            Check(panel.Children.OfType<Button>().Count() == 1 && RequestedDay() == day, "retry displays the current day after an error");
             handler.OnRequest = () => { day = day.AddDays(1); handler.OnRequest = null; };
             Due(); Tick();
             Check(panel.Children.Count == 0, "response crossing midnight is discarded");
             Tick();
-            Check(panel.Children.Count == 2 && RequestedDay() == day, "discarded response is replaced on the next poll");
+            Check(panel.Children.OfType<Button>().Count() == 1 && RequestedDay() == day, "discarded response is replaced on the next poll");
             requests = handler.Requests;
             Set("editing", true); Due(); Tick();
             Check(handler.Requests == requests, "automatic calendar refresh pauses during note editing");

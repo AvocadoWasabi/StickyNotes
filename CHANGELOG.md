@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Display dated, incomplete Google Tasks alongside `@calendar` events as read-only entries, including `today` rollover and keyword filtering. Add Tasks read-only OAuth permission, API setup/re-authorization guidance and connection verification. Bound pagination, preserve the other service's results on failure, and cancel requests when the note closes or its command changes.
+
 - Add `@calendar today [keyword]` for the PC's current local day. Reuse the approximately 60-second refresh cycle to follow date changes and resume after sleep, use an interval unaffected by clock corrections, and discard results from the previous day. Add translated usage examples; explicit dates remain fixed.
 
 ## [0.0.5](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) — 2026-10-06

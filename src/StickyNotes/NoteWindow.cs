@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Input;
 using System.Windows.Shell;
 using System.Windows.Threading;
@@ -39,6 +40,7 @@ public sealed class NoteWindow : Window
     private bool editing, dirty, loading, initialized, busy, closed;
     private long? lastCalendarCheck;
     private CalendarQuery? displayedCalendarQuery;
+    private CancellationTokenSource? calendarRefreshCancellation;
     private string? activeCommand;
     private readonly DailyNoteDisplay dailyDisplay = new();
     private readonly Func<DateTime> today;
@@ -301,6 +303,7 @@ public sealed class NoteWindow : Window
 
     private void ShowReadError(Exception error)
     {
+        calendarRefreshCancellation?.Cancel();
         snapshot = null; content = ""; activeCommand = null;
         dirty = false; SetEditing(false);
         preview.Document = new System.Windows.Documents.FlowDocument();
@@ -327,7 +330,7 @@ public sealed class NoteWindow : Window
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
         preview.Document = MarkdownView.Render(content, ToggleTask);
         var command = MarkdownView.FindCalendarCommand(content);
-        if (activeCommand != command) { activeCommand = command; eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null; }
+        if (activeCommand != command) { calendarRefreshCancellation?.Cancel(); activeCommand = command; eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null; }
     }
 
     private void BeginEdit()
@@ -488,22 +491,31 @@ public sealed class NoteWindow : Window
         if (closed || busy || string.IsNullOrWhiteSpace(activeCommand)) return;
         busy = true; lastCalendarCheck = Environment.TickCount64;
         var command = activeCommand; var calendarId = app.Config.CalendarId;
+        using var cancellation = new CancellationTokenSource();
+        calendarRefreshCancellation = cancellation;
         try
         {
             var query = CalendarQuery.Parse(command, today());
             // Do not retain yesterday's events if today's request fails or is still loading.
             if (displayedCalendarQuery != query) { eventsPanel.Children.Clear(); displayedCalendarQuery = null; }
             app.Calendar.Configure(app.Config.GoogleCredentialsFile);
-            var items = await app.Calendar.SearchAsync(calendarId, query);
-            if (closed || activeCommand != command) return;
-            if (query.Until is not null && query != CalendarQuery.Parse(command, today()))
+            bool Current()
             {
+                if (closed || cancellation.IsCancellationRequested || activeCommand != command) return false;
+                if (calendarId == app.Config.CalendarId && (query.Until is null || query == CalendarQuery.Parse(command, today()))) return true;
                 eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null;
-                return;
+                return false;
             }
+            List<CalendarEvent> items = [];
+            string? calendarError = null;
+            try { items = await app.Calendar.SearchAsync(calendarId, query, cancellation.Token); }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { return; }
+            catch (Exception ex) { calendarError = ex.Message; }
+            if (!Current()) return;
             eventsPanel.Children.Clear();
             displayedCalendarQuery = query;
-            eventsPanel.Children.Add(new TextBlock { Text = L10n.Format("NoteWindow.Text38", items.Count), FontSize = 11, FontWeight = FontWeights.Bold });
+            eventsPanel.Children.Add(new TextBlock { Text = calendarError is null ? L10n.Format("NoteWindow.Text38", items.Count) : "Calendar: " + calendarError,
+                TextWrapping = TextWrapping.Wrap, FontSize = 11, FontWeight = FontWeights.Bold });
             foreach (var item in items)
             {
                 var captured = item;
@@ -511,11 +523,37 @@ public sealed class NoteWindow : Window
                 button.Click += async (_, _) => await EditEvent(calendarId, captured);
                 eventsPanel.Children.Add(button);
             }
-            if (items.Count == 0) eventsPanel.Children.Add(new TextBlock { Text = L10n.Text("NoteWindow.Text40") });
-            status.Text = L10n.Text("NoteWindow.Text41") + DateTime.Now.ToString("HH:mm");
+            if (items.Count == 0 && calendarError is null) eventsPanel.Children.Add(new TextBlock { Text = L10n.Text("NoteWindow.Text40") });
+            var taskPanel = new StackPanel { Name = "GoogleTasksResults", Margin = new Thickness(0, 8, 0, 0) };
+            taskPanel.Children.Add(new TextBlock { Text = L10n.Text("GoogleTasks.Loading") });
+            eventsPanel.Children.Add(taskPanel);
+            string? tasksError = null;
+            try
+            {
+                var tasks = await app.Calendar.SearchTasksAsync(query, cancellation.Token);
+                if (!Current()) return;
+                taskPanel.Children.Clear();
+                taskPanel.Children.Add(new TextBlock { Text = L10n.Format("GoogleTasks.Count", tasks.Items.Count), FontSize = 11, FontWeight = FontWeights.Bold, TextWrapping = TextWrapping.Wrap });
+                foreach (var task in tasks.Items)
+                    taskPanel.Children.Add(new TextBlock { Text = L10n.Format("GoogleTasks.Item", task.Date.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture), task.ListTitle, task.Title),
+                        TextWrapping = TextWrapping.Wrap, ToolTip = task.Notes, Margin = new Thickness(0, 4, 0, 4) });
+                if (tasks.Items.Count == 0 && !tasks.Truncated) taskPanel.Children.Add(new TextBlock { Text = L10n.Text("GoogleTasks.Empty"), TextWrapping = TextWrapping.Wrap });
+                if (tasks.Truncated) taskPanel.Children.Add(new TextBlock { Text = L10n.Text("GoogleTasks.Truncated"), TextWrapping = TextWrapping.Wrap });
+            }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { return; }
+            catch (Exception ex)
+            {
+                if (!Current()) return;
+                tasksError = ex.Message;
+                taskPanel.Children.Clear();
+                taskPanel.Children.Add(new TextBlock { Text = "Google Tasks: " + tasksError, TextWrapping = TextWrapping.Wrap });
+            }
+            status.Text = calendarError is not null || tasksError is not null ? L10n.Text("GoogleTasks.Partial") :
+                L10n.Text("NoteWindow.Text41") + DateTime.Now.ToString("HH:mm");
         }
+        catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
         catch (Exception ex) { status.Text = "Calendar: " + ex.Message; }
-        finally { busy = false; }
+        finally { calendarRefreshCancellation = null; busy = false; }
     }
 
     private async Task EditEvent(string calendarId, CalendarEvent item)
@@ -580,6 +618,7 @@ public sealed class NoteWindow : Window
     {
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
+        calendarRefreshCancellation?.Cancel();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }

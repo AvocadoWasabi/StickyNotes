@@ -39,7 +39,7 @@ public sealed class OAuthTokens
     public DateTimeOffset ExpiresAt { get; set; }
 }
 
-public sealed class CalendarService(Func<string?> loadToken, Action<string> saveToken, HttpMessageHandler? transport = null,
+public sealed partial class CalendarService(Func<string?> loadToken, Action<string> saveToken, HttpMessageHandler? transport = null,
     Action<Uri>? openBrowser = null) : IDisposable
 {
     private readonly HttpClient http = new(transport ?? new HttpClientHandler()) { Timeout = TimeSpan.FromSeconds(40) };
@@ -116,7 +116,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
             var parameters = new Dictionary<string, string>
             {
                 ["client_id"] = clientId, ["redirect_uri"] = redirect, ["response_type"] = "code",
-                ["scope"] = "https://www.googleapis.com/auth/calendar.events", ["access_type"] = "offline",
+                ["scope"] = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks.readonly", ["access_type"] = "offline",
                 ["prompt"] = "consent", ["state"] = state, ["code_challenge_method"] = "S256",
                 ["code_challenge"] = Base64(SHA256.HashData(Encoding.ASCII.GetBytes(verifier)))
             };
@@ -217,12 +217,12 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
     }
 
     // First 100 matching upcoming instances, including a currently ongoing event per Google's timeMin semantics.
-    public async Task<List<CalendarEvent>> SearchAsync(string calendarId, CalendarQuery query)
+    public async Task<List<CalendarEvent>> SearchAsync(string calendarId, CalendarQuery query, CancellationToken cancellationToken = default)
     {
         var path = $"calendars/{Escape(calendarId)}/events?singleEvents=true&orderBy=startTime&maxResults=100&timeMin={Escape(query.From.ToString("o"))}";
         if (query.Until is { } until) path += "&timeMax=" + Escape(until.ToString("o"));
         if (!string.IsNullOrWhiteSpace(query.Search)) path += "&q=" + Escape(query.Search);
-        using var json = await Send(HttpMethod.Get, path);
+        using var json = await Send(HttpMethod.Get, path, cancellationToken: cancellationToken);
         return json.RootElement.GetProperty("items").EnumerateArray().Select(ReadEvent).ToList();
     }
 
