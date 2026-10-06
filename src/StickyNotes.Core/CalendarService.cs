@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
@@ -15,7 +16,7 @@ public sealed record CalendarQuery(DateTimeOffset From, string Search)
     public static CalendarQuery Parse(string command)
     {
         var m = Regex.Match(command.Trim(), @"^@calendar\s+(\S+)(?:\s+(.*))?$", RegexOptions.IgnoreCase);
-        if (!m.Success || !DateTimeOffset.TryParse(m.Groups[1].Value, out var date))
+        if (!m.Success || !DateTimeOffset.TryParse(m.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date))
             throw new FormatException("例: @calendar 2026-10-05T09:00 会議（検索語は省略可、時差省略時はPCのローカル時間）");
         return new(date, m.Groups[2].Value.Trim());
     }
@@ -210,7 +211,8 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
     // First 100 matching upcoming instances, including a currently ongoing event per Google's timeMin semantics.
     public async Task<List<CalendarEvent>> SearchAsync(string calendarId, CalendarQuery query)
     {
-        var path = $"calendars/{Escape(calendarId)}/events?singleEvents=true&orderBy=startTime&maxResults=100&timeMin={Escape(query.From.ToString("o"))}&q={Escape(query.Search)}";
+        var path = $"calendars/{Escape(calendarId)}/events?singleEvents=true&orderBy=startTime&maxResults=100&timeMin={Escape(query.From.ToString("o"))}";
+        if (!string.IsNullOrWhiteSpace(query.Search)) path += "&q=" + Escape(query.Search);
         using var json = await Send(HttpMethod.Get, path);
         return json.RootElement.GetProperty("items").EnumerateArray().Select(ReadEvent).ToList();
     }

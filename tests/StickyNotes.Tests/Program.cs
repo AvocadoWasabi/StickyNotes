@@ -77,6 +77,7 @@ internal static class Program
             NoteLinkTests(root);
             MarkdownEditingTests(root);
             FocusEditingTests(root);
+            CalendarCompletionTests(root);
             LinkPreviewTests(root);
             ContentScaleTests(root);
             TitleButtonOverlayTests(root);
@@ -88,6 +89,20 @@ internal static class Program
             Check(query.From.Offset == TimeSpan.FromHours(9) && query.Search == "設計 会議", "calendar query parses offset and multiword search");
             Throws<FormatException>(() => CalendarQuery.Parse("@calendar invalid"), "invalid date rejected");
             Check(CalendarQuery.Parse("@calendar 2026-10-05").Search == "", "calendar search is optional");
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            try
+            {
+                foreach (var name in new[] { "ja-JP", "en-US", "ar-SA" })
+                {
+                    System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo(name);
+                    var local = CalendarQuery.Parse("@calendar 2026-10-06T09:00");
+                    Check(local.From == new DateTimeOffset(new DateTime(2026, 10, 6, 9, 0, 0, DateTimeKind.Local)) && local.Search == "",
+                        "timezone and keyword may both be omitted regardless of culture: " + name);
+                    Check(CalendarQuery.Parse("@calendar 2026-10-06T09:00+09:00 会議").From.Offset == TimeSpan.FromHours(9),
+                        "explicit timezone remains supported: " + name);
+                }
+            }
+            finally { System.Globalization.CultureInfo.CurrentCulture = culture; }
             CalendarTests(root).GetAwaiter().GetResult();
             Task.Run(() => OAuthFlowTests(root)).GetAwaiter().GetResult();
             GoogleSetupUiTests(root);
@@ -1111,6 +1126,8 @@ internal static class Program
         var events = await service.SearchAsync("primary", CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 会議"));
         Check(events.Count == 1 && events[0].Summary == "Meeting", "calendar response decoded");
         Check(handler.Uri!.Contains("singleEvents=true") && handler.Uri.Contains("timeMin=") && handler.Uri.Contains("q="), "calendar search bounded, ordered and filtered");
+        await service.SearchAsync("primary", CalendarQuery.Parse("@calendar 2026-10-06T09:00"));
+        Check(handler.Uri!.Contains("timeMin=") && !handler.Uri.Contains("q="), "keyword-free local-time search omits the keyword filter");
         await service.VerifyConnectionAsync("primary");
         Check(handler.Method == HttpMethod.Get && handler.Uri!.EndsWith("events?maxResults=1") && handler.Body is null,
             "connection verification reads at most one event without modifying calendar");
@@ -1121,6 +1138,71 @@ internal static class Program
         handler.Conflict = true;
         try { await service.UpdateAsync("primary", events[0], "Changed", ""); throw new Exception("Expected conflict"); }
         catch (ConflictException) { Check(true, "Google etag conflict becomes safe user-facing error"); }
+    }
+
+    private static void CalendarCompletionTests(string root)
+    {
+        foreach (var prefix in new[] { "@", "@c", "@cal", "@CALENDAR" })
+            Check(CalendarCompletion.FindStart(prefix, prefix.Length, 0) == 0, "calendar completion accepts prefix: " + prefix);
+        foreach (var text in new[] { "email@example", "text @", "```text\n@", "~~~\n@", "    @", "> @", "- @", "text\n@", "@unknown" })
+            Check(CalendarCompletion.FindStart(text, text.Length, 0) < 0, "completion avoids non-command context: " + text.Replace('\n', ' '));
+        Check(CalendarCompletion.FindStart("@calendar existing", 1, 0) < 0 && CalendarCompletion.FindStart("@", 1, 1) < 0,
+            "completion does not overwrite existing suffixes or selected text");
+        Check(CalendarCompletion.FindStart("@", 2, 0) < 0,
+            "completion rejects an out-of-range caret");
+        const string afterCode = "```\nexample\n```\n\n@";
+        Check(CalendarCompletion.FindStart(afterCode, afterCode.Length, 0) == afterCode.Length - 1,
+            "completion is available after a closed code block");
+        var path = Path.Combine(root, "calendar-completion.md");
+        File.WriteAllText(path, "original");
+        var confirmations = 0;
+        var window = new NoteWindow(new NotePlacement { Path = path }, () => { confirmations++; return MessageBoxResult.No; },
+            ex => throw ex, () => new DateTime(2026, 10, 6));
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        var editor = (TextBox)typeof(NoteWindow).GetField("editor", flags)!.GetValue(window)!;
+        var completion = (CalendarCompletion)typeof(NoteWindow).GetField("calendarCompletion", flags)!.GetValue(window)!;
+        try
+        {
+            window.Show(); window.Activate();
+            typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(window, null);
+            WaitFor(() => editor.IsKeyboardFocusWithin, "calendar completion editor receives keyboard focus");
+            editor.Text = "before\r\n\r\n@\r\n\r\nafter";
+            editor.CaretIndex = editor.Text.IndexOf('@') + 1;
+            WaitFor(() => completion.IsOpen, "typing an at sign opens floating calendar completion");
+            Check(completion.HandleKey(System.Windows.Input.Key.Tab, System.Windows.Input.ModifierKeys.None), "Tab accepts calendar completion");
+            Check(editor.Text == "before\r\n\r\n@calendar 2026-10-06T00:00\r\n\r\nafter" && editor.SelectedText == "2026-10-06T00:00",
+                "completion inserts timezone-free keyword-free example and selects date without changing surrounding text");
+            Check(!completion.IsOpen && editor.IsKeyboardFocusWithin && confirmations == 0 && File.ReadAllText(path) == "original",
+                "completion retains editor focus and never saves a draft");
+            editor.Undo();
+            Check(editor.Text == "before\r\n\r\n@\r\n\r\nafter", "calendar completion is one undoable edit");
+            editor.Text = "@ca"; editor.CaretIndex = 3;
+            WaitFor(() => completion.IsOpen, "partial command opens completion");
+            Check(completion.HandleKey(System.Windows.Input.Key.Escape, System.Windows.Input.ModifierKeys.None) && editor.Text == "@ca", "Escape dismisses without editing");
+            completion.Update(); Check(!completion.IsOpen, "dismissed suggestion stays closed for unchanged input");
+            editor.Text = "@cal"; editor.CaretIndex = 4;
+            WaitFor(() => completion.IsOpen, "typing again reopens completion");
+            Check(!completion.HandleKey(System.Windows.Input.Key.S, System.Windows.Input.ModifierKeys.Control), "completion leaves Ctrl+S available");
+            Check(completion.HandleKey(System.Windows.Input.Key.Enter, System.Windows.Input.ModifierKeys.None) && !editor.Text.Contains('\n'), "Enter accepts without inserting a newline");
+            editor.Text = "@"; editor.CaretIndex = 1;
+            WaitFor(() => completion.IsOpen, "completion can reopen after accepting a command");
+            var popup = (System.Windows.Controls.Primitives.Popup)typeof(CalendarCompletion).GetField("popup", flags)!.GetValue(completion)!;
+            var choose = ((StackPanel)((Border)popup.Child).Child).Children.OfType<Button>().Single();
+            choose.RaiseEvent(new System.Windows.Input.MouseButtonEventArgs(System.Windows.Input.Mouse.PrimaryDevice, 0, System.Windows.Input.MouseButton.Left)
+                { RoutedEvent = System.Windows.Input.Mouse.PreviewMouseDownEvent });
+            Check(editor.Text == "@calendar 2026-10-06T00:00" && editor.IsKeyboardFocusWithin && confirmations == 0,
+                "clicking the completion inserts without losing focus or saving");
+            editor.Text = "@c"; editor.CaretIndex = 2;
+            WaitFor(() => completion.IsOpen, "completion reopens after clicking");
+            window.Hide();
+            WaitFor(() => !completion.IsOpen, "hiding the note closes its floating completion");
+        }
+        finally
+        {
+            // This test deliberately leaves a draft; avoid the real close-confirmation dialog.
+            typeof(NoteWindow).GetField("dirty", flags)!.SetValue(window, false);
+            window.Close();
+        }
     }
 
     private static StackPanel SettingsPanel(SettingsWindow window, bool google = false) =>

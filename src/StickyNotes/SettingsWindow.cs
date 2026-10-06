@@ -128,6 +128,7 @@ public sealed class SettingsWindow : Window
         googlePanel.Children.Add(new TextBlock { Text = "Google Calendar", FontSize = 24,
             FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
         googlePanel.Children.Add(new TextBlock { Text = "接続ガイド・認証設定（任意）", Margin = new Thickness(0, 0, 0, 8) });
+        googlePanel.Children.Add(new TextBlock { Text = "付箋の編集で独立した段落の先頭に @ を入力すると候補と入力例を表示します（前に本文がある場合は空行を入れてください）。\n例: @calendar 2026-10-06T09:00\nタイムゾーンは省略可（Windowsのローカル時刻）。キーワードなしでも検索できます。", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 12) });
         var guide = new StackPanel();
         void Explain(string text) => guide.Children.Add(new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 4, 0, 4) });
         void Link(string label, string url) => guide.Children.Add(Ui.Button(label,

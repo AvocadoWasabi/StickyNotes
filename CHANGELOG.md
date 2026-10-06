@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add `@calendar` completion when typing `@` in a separate paragraph, with floating examples, Tab/Enter/click insertion, and Esc dismissal. Insert today's date without a time zone or keyword and select the date for editing. Clarify keyword-free searches and Windows local-time defaults in the app and documentation; parse dates consistently across regional settings.
+
 - Split Settings into two columns: move the Google Calendar guide, JSON management, authentication and connection checks into the right pane. Keep note and daily-note settings on the left, with independent scrolling in each pane.
 
 - Add adjacent buttons to import OAuth JSON into the app-data directory and delete the managed copy. Preserve the original, save only the credential path immediately, and restore the copy if settings cannot be saved. Deletion retains tokens and Google-side authorization.

@@ -18,6 +18,7 @@ public sealed class NoteWindow : Window
     private bool toolbarMenuOpen, headerHovered;
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
+    private readonly CalendarCompletion calendarCompletion;
     private readonly FlowDocumentScrollViewer preview = new() { IsToolBarVisible = false, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Background = Brushes.Transparent };
     private static readonly DependencyPropertyDescriptor PreviewZoom = DependencyPropertyDescriptor.FromProperty(FlowDocumentScrollViewer.ZoomProperty, typeof(FlowDocumentScrollViewer));
     private bool applyingScale;
@@ -107,6 +108,7 @@ public sealed class NoteWindow : Window
         DockPanel.SetDock(noticeScroll, Dock.Top); reading.Children.Add(noticeScroll);
         DockPanel.SetDock(eventScroll, Dock.Bottom); reading.Children.Add(eventScroll); reading.Children.Add(preview);
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
+        calendarCompletion = new CalendarCompletion(this, editor, this.today);
         preview.MinZoom = NotePlacement.MinContentScale; preview.MaxZoom = NotePlacement.MaxContentScale; preview.ZoomIncrement = 10;
         ApplyContentScale();
         PreviewZoom.AddValueChanged(preview, OnPreviewZoomChanged);
@@ -134,6 +136,7 @@ public sealed class NoteWindow : Window
         };
         PreviewKeyDown += (_, e) =>
         {
+            if (editor.IsKeyboardFocusWithin && calendarCompletion.HandleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (e.Key == Key.F6 && Keyboard.Modifiers == ModifierKeys.None) { NoteHeader.Focus(); e.Handled = true; return; }
             if (HandleScaleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; }
@@ -341,7 +344,7 @@ public sealed class NoteWindow : Window
         {
             if (!closed && editing && IsActive) Keyboard.Focus(editor);
         }));
-        status.Text = "Markdownを編集 • Ctrl+S で保存 • @calendar 日時 検索語";
+        status.Text = "Markdownを編集 • Ctrl+S で保存 • @で補完（タイムゾーン・キーワードは省略可）";
     }
 
     private void SetEditing(bool value)

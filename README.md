@@ -202,10 +202,12 @@ If yesterday is also missing, show the waiting message; never go back further. R
 Enter a command on its own line in a note and save:
 
 ```text
-@calendar 2026-10-05T09:00+09:00 meeting
+@calendar 2026-10-06T09:00
 ```
 
-The search term is optional. If you omit the time zone offset, the app uses Windows local time. It retrieves up to 100 events, ordered by start time. Google's `timeMin` filters by event end time, so events already in progress at the specified time may also appear. Recurring events are expanded into individual occurrences.
+**You can search without a keyword or time zone offset**, as in the example above. Without an offset, the app uses Windows local time. To filter events, append a keyword, for example `@calendar 2026-10-06T09:00 meeting`. Explicit offsets such as `2026-10-06T09:00+09:00` are also accepted. It retrieves up to 100 events, ordered by start time. Google's `timeMin` filters by event end time, so events already in progress at the specified time may also appear. Recurring events are expanded into individual occurrences.
+
+While editing, type `@` at the start of a separate paragraph (leave a blank line after preceding text) to show the `@calendar` suggestion and floating usage examples. Press Tab or Enter, or click the suggestion, to insert today's date at `00:00` without an offset or keyword. The date and time are selected so you can replace them, then save the note. The inserted date stays fixed; it does not advance automatically. Esc closes the suggestion. Completion does not save the note itself and does not appear inside email addresses or code blocks.
 
 Events refresh about every 60 seconds, or when you choose `… → 予定を今すぐ取得` (Fetch events now). Only the first command in each note is used. Leave blank lines around the command. Examples inside fenced code blocks are not executed.
 

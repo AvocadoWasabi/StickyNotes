@@ -10,7 +10,7 @@ namespace StickyNotes;
 
 public static class MarkdownView
 {
-    private static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+    internal static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 
     public static string FindCalendarCommand(string markdown)
     {
