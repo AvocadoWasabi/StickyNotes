@@ -7,7 +7,7 @@ public sealed class SettingsWindow : Window
 {
     public SettingsWindow() : this(null) { }
 
-    internal SettingsWindow(Func<bool>? confirmRegexTemplate)
+    internal SettingsWindow(Func<bool>? confirmRegexTemplate, Func<bool>? confirmCredentialDeletion = null)
     {
         SetResourceReference(IconProperty, "AppIcon");
         Title = "Sticky Notes 設定"; Width = 600; SizeToContent = SizeToContent.Height;
@@ -138,8 +138,8 @@ public sealed class SettingsWindow : Window
         guide.Children.Add(scope);
         Explain("上のURLは選択してコピーできます。これはカレンダーの予定の閲覧・編集を許可する権限です。calendar.events.readonlyとは異なります。設定のCalendar IDだけにOAuthの許可範囲を限定するものではありません。");
         Link("1-5. クライアント（Clients）を開く", "https://console.cloud.google.com/auth/clients");
-        Explain("「クライアントを作成（Create client）」→「アプリケーションの種類: デスクトップアプリ（Desktop app）」→名前（例: StickyNotes Desktop）→「作成（Create）」と進みます。作成結果の「JSONをダウンロード（Download JSON）」で、画面を閉じる前に保存してください。後からシークレットを再取得できない場合があります。Webアプリ用のリダイレクトURIやJavaScript生成元は設定しません。\nJSONは共有しない固定の場所へ移してから、下の手順2で選択します。名前の変更は不要です。APIキーやサービスアカウントのJSONは使用しません。");
-        Explain("手順2以降: JSONを選択 → Calendar IDは自分のメインカレンダーなら primary → 手順3でログインします。ブラウザでは1-3で追加したアカウントを選び、アプリ名を確認してカレンダーへのアクセスを許可してください。認証結果は自動で受信します。タブを閉じて設定画面の「接続確認が完了しました」を確認してください。");
+        Explain("「クライアントを作成（Create client）」→「アプリケーションの種類: デスクトップアプリ（Desktop app）」→名前（例: StickyNotes Desktop）→「作成（Create）」と進みます。作成結果の「JSONをダウンロード（Download JSON）」で、画面を閉じる前に保存してください。後からシークレットを再取得できない場合があります。Webアプリ用のリダイレクトURIやJavaScript生成元は設定しません。\nダウンロードしたJSONを下の手順2で選択し、横の「アプリに取り込む」でアプリ専用フォルダにコピーします。名前の変更は不要です。APIキーやサービスアカウントのJSONは使用しません。");
+        Explain("手順2以降: JSONを選択 → アプリに取り込む → Calendar IDは自分のメインカレンダーなら primary → 手順3でログインします。ブラウザでは1-3で追加したアカウントを選び、アプリ名を確認してカレンダーへのアクセスを許可してください。認証結果は自動で受信します。タブを閉じて設定画面の「接続確認が完了しました」を確認してください。");
         Explain("うまくいかない場合\n・ログイン画面の access_denied: テストユーザーとログイン先を確認。組織によりブロックされている場合は管理者へ確認。\n・未確認アプリの警告: 自分が作成したクライアントのアプリ名とアカウントか確認。不明な場合は進まず中止。\n・ログイン後の接続エラー: Calendar ID、同じプロジェクトのAPI有効化、許可した権限を確認。権限を許可し直す場合は手順3、接続だけ再確認する場合は手順4を使います。\n・外部／テスト中では、この権限の更新トークンは7日で期限切れになります。期限切れ後は手順3から再ログインしてください。\n・手順3・4ではGoogle関連以外も含め、設定画面の入力内容を保存します。");
         Link("Google公式: 同意画面の設定手順", "https://developers.google.com/workspace/guides/configure-oauth-consent");
         Link("Google公式: OAuthクライアントの管理", "https://support.google.com/cloud/answer/15549257");
@@ -157,11 +157,50 @@ public sealed class SettingsWindow : Window
             {
                 CalendarService.ValidateCredentials(picker.FileName);
                 credentials.Text = picker.FileName;
-                credentialStatus.Text = "デスクトップ用JSONを確認しました。手順3へ進んでください。";
+                credentialStatus.Text = "デスクトップ用JSONを確認しました。横の「アプリに取り込む」でコピーしてから手順3へ進んでください。";
             }
             catch (Exception ex) { credentialStatus.Text = ex.Message; }
         });
-        panel.Children.Add(pickCredentials); panel.Children.Add(credentialStatus);
+        var credentialStore = new GoogleCredentialsStore(App.DataDirectory);
+        var importCredentials = Ui.Button("アプリに取り込む", () =>
+        {
+            try
+            {
+                var alreadyManaged = credentialStore.IsManagedPath(credentials.Text);
+                credentialStore.Import(credentials.Text, app.SaveGoogleCredentialsPath);
+                credentials.Text = credentialStore.FilePath;
+                credentialStatus.Text = alreadyManaged ? "取り込み済みJSONを引き続き使用する設定を保存しました。" :
+                    "アプリの保存領域にコピーし、使用するパスを保存しました。元のJSONは移動・削除しても構いません。";
+            }
+            catch (Exception ex) { credentialStatus.Text = ex.Message; }
+        });
+        importCredentials.Name = "GoogleImportCredentials";
+        var deleteCredentials = Ui.Button("取り込み済みJSONを削除", () =>
+        {
+            try
+            {
+                if (confirmCredentialDeletion?.Invoke() ?? MessageBox.Show(this,
+                    "アプリに取り込んだJSONを削除しますか？\n\n" + credentialStore.FilePath +
+                    "\n\n元のJSONは削除しません。認証トークンの削除やGoogle側のアクセス許可の取り消しは行いません。",
+                    "取り込み済みJSONの削除", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+                {
+                    credentialStore.Delete(() =>
+                    {
+                        if (credentialStore.IsManagedPath(app.Config.GoogleCredentialsFile)) app.SaveGoogleCredentialsPath("");
+                    });
+                    if (credentialStore.IsManagedPath(credentials.Text)) credentials.Text = "";
+                    credentialStatus.Text = "取り込み済みJSONを削除しました。元のファイルと認証トークンは保持しています。";
+                }
+            }
+            catch (Exception ex) { credentialStatus.Text = ex.Message; }
+        });
+        deleteCredentials.Name = "GoogleDeleteCredentials";
+        var credentialButtons = new WrapPanel();
+        credentialButtons.Children.Add(pickCredentials);
+        credentialButtons.Children.Add(importCredentials);
+        credentialButtons.Children.Add(deleteCredentials);
+        panel.Children.Add(credentialButtons); panel.Children.Add(credentialStatus);
+        panel.Children.Add(new TextBlock { Text = "取り込み先: %LOCALAPPDATA%\\StickyNotes\\credentials-google.json\n取り込み・削除はすぐに反映します。他の設定欄は保存しません。削除はアプリ内のコピーだけが対象です。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         var calendar = Add("Calendar ID（自分のメインカレンダーは primary）", app.Config.CalendarId);
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 10) };
         bool Save()
@@ -204,6 +243,7 @@ public sealed class SettingsWindow : Window
             using var cancellation = new CancellationTokenSource();
             authentication = cancellation;
             login.IsEnabled = verify.IsEnabled = credentials.IsEnabled = pickCredentials.IsEnabled = calendar.IsEnabled = save.IsEnabled = false;
+            credentialButtons.IsEnabled = false;
             cancel.IsEnabled = true;
             var signedIn = false;
             try
@@ -230,6 +270,7 @@ public sealed class SettingsWindow : Window
             {
                 authentication = null;
                 login.IsEnabled = verify.IsEnabled = credentials.IsEnabled = pickCredentials.IsEnabled = calendar.IsEnabled = save.IsEnabled = true;
+                credentialButtons.IsEnabled = true;
                 cancel.IsEnabled = false;
             }
         }

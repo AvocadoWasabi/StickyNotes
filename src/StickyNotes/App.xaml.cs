@@ -130,6 +130,13 @@ public partial class App : Application
         File.Move(temporary, ConfigPath, true);
     }
 
+    public void SaveGoogleCredentialsPath(string path)
+    {
+        var previous = Config.GoogleCredentialsFile;
+        try { Config.GoogleCredentialsFile = path; SaveConfig(); }
+        catch { Config.GoogleCredentialsFile = previous; throw; }
+    }
+
     internal void ExecuteCommand(AppCommand command) => Safe(() =>
     {
         switch (command.Id)

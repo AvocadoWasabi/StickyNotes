@@ -91,6 +91,7 @@ internal static class Program
             CalendarTests(root).GetAwaiter().GetResult();
             Task.Run(() => OAuthFlowTests(root)).GetAwaiter().GetResult();
             GoogleSetupUiTests(root);
+            GoogleCredentialsStoreTests(root);
 
             var toggledLine = -1;
             var doc = MarkdownView.Render("# Title\n\n- [ ] task\n\n```md\n- [ ] example\n```\n\n| A | B |\n|---|---|\n| x | y |", (line, _) => toggledLine = line);
@@ -1144,6 +1145,81 @@ internal static class Program
                 "invalid credentials cannot overwrite existing settings: " + name);
         }
         settings.Close();
+    }
+
+    private static void GoogleCredentialsStoreTests(string root)
+    {
+        var directory = Path.Combine(root, "managed-credentials");
+        var store = new GoogleCredentialsStore(directory);
+        var source = Path.Combine(root, "source-client.json");
+        const string first = "{\"installed\":{\"client_id\":\"first-client\"}}";
+        const string second = "{\"installed\":{\"client_id\":\"second-client\"}}";
+        File.WriteAllText(source, first);
+        var savedPath = "";
+        store.Import(source, path => savedPath = path);
+        Check(savedPath == store.FilePath && File.ReadAllText(store.FilePath) == first && File.ReadAllText(source) == first,
+            "credential import copies exact JSON and preserves source");
+        File.Delete(source);
+        CalendarService.ValidateCredentials(store.FilePath);
+        Check(true, "imported JSON remains usable after original is removed");
+        store.Import(store.FilePath, _ => { });
+        Check(File.ReadAllText(store.FilePath) == first, "importing the managed copy itself is safe");
+        File.WriteAllText(source, "{\"web\":{\"client_id\":\"wrong-type\"}}");
+        Throws<FormatException>(() => store.Import(source, _ => throw new Exception("Must not save")), "invalid import rejected before settings change");
+        Check(File.ReadAllText(store.FilePath) == first, "invalid import preserves previous copy");
+        File.WriteAllText(source, second);
+        Throws<IOException>(() => store.Import(source, _ => throw new IOException("Simulated settings failure")), "import reports settings failure");
+        Check(File.ReadAllText(store.FilePath) == first && File.ReadAllText(source) == second, "failed import restores old copy and preserves source");
+        Throws<IOException>(() => store.Delete(() => throw new IOException("Simulated settings failure")), "deletion reports settings failure");
+        Check(File.ReadAllText(store.FilePath) == first, "failed deletion restores managed copy");
+        store.Delete(() => savedPath = "");
+        Check(savedPath == "" && !File.Exists(store.FilePath) && File.Exists(source), "deletion clears managed copy without deleting selected source");
+        Throws<IOException>(() => store.Import(source, _ => throw new IOException("Simulated settings failure")), "first import reports settings failure");
+        Check(!File.Exists(store.FilePath) && !Directory.EnumerateFiles(directory, "*.tmp").Any(), "failed first import leaves no copy or temporary JSON");
+        Check(!store.IsManagedPath(source) && !store.IsManagedPath("credentials-google.json"), "external and relative paths are not managed copies");
+
+        // Exercise the actual buttons and settings persistence without opening a file picker or confirmation dialog.
+        var app = App.Current;
+        var originalPath = app.Config.GoogleCredentialsFile;
+        var originalFolder = app.Config.NotesFolder;
+        var uiStore = new GoogleCredentialsStore(App.DataDirectory);
+        var window = new SettingsWindow(null, () => true);
+        var panel = (StackPanel)((ScrollViewer)window.Content).Content;
+        var buttons = panel.Children.OfType<WrapPanel>().Single();
+        var field = panel.Children.OfType<TextBox>().Single(x => x.Name == "GoogleCredentialsFile");
+        panel.Children.OfType<TextBox>().First().Text = "unsaved unrelated folder";
+        field.Text = source;
+        void Click(string name) => buttons.Children.OfType<Button>().Single(x => x.Name == name)
+            .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        Click("GoogleImportCredentials");
+        Check(field.Text == uiStore.FilePath && app.Config.GoogleCredentialsFile == uiStore.FilePath && File.Exists(source),
+            "import button immediately saves managed path and preserves source");
+        Check(app.Config.NotesFolder == originalFolder && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.GoogleCredentialsFile == uiStore.FilePath,
+            "import persists only credential selection, not unsaved folder edits");
+        var token = Path.Combine(App.DataDirectory, "google-token.bin");
+        File.WriteAllText(token, "test-token-placeholder");
+        Click("GoogleDeleteCredentials");
+        Check(field.Text == "" && app.Config.GoogleCredentialsFile == "" && !File.Exists(uiStore.FilePath) && File.Exists(source) && File.ReadAllText(token) == "test-token-placeholder",
+            "delete button clears managed selection but preserves original and token");
+        field.Text = source;
+        Click("GoogleImportCredentials");
+        window.Close();
+        var cancelWindow = new SettingsWindow(null, () => false);
+        var cancelPanel = (StackPanel)((ScrollViewer)cancelWindow.Content).Content;
+        cancelPanel.Children.OfType<WrapPanel>().Single().Children.OfType<Button>().Single(x => x.Name == "GoogleDeleteCredentials")
+            .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        Check(File.Exists(uiStore.FilePath) && app.Config.GoogleCredentialsFile == uiStore.FilePath, "cancelled deletion preserves imported credentials and saved selection");
+        cancelWindow.Close();
+        app.SaveGoogleCredentialsPath(source);
+        var externalWindow = new SettingsWindow(null, () => true);
+        var externalPanel = (StackPanel)((ScrollViewer)externalWindow.Content).Content;
+        externalPanel.Children.OfType<WrapPanel>().Single().Children.OfType<Button>().Single(x => x.Name == "GoogleDeleteCredentials")
+            .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        Check(app.Config.GoogleCredentialsFile == source && File.Exists(source) && !File.Exists(uiStore.FilePath),
+            "delete button never removes external selection or clears its saved path");
+        externalWindow.Close();
+        uiStore.Delete(() => app.SaveGoogleCredentialsPath(originalPath));
+        File.Delete(token);
     }
 
     private static async Task OAuthFlowTests(string root)
