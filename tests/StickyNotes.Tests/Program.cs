@@ -187,7 +187,7 @@ internal static class Program
             WaitFor(() => note.IsLoaded && pinned.IsLoaded, "temporary-front test windows load");
             Check(!note.ShowInTaskbar && !pinned.ShowInTaskbar, "notes start outside the taskbar");
             var settings = new SettingsWindow();
-            var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            var panel = SettingsPanel(settings);
             panel.Children.OfType<CheckBox>().Single(x => x.Name == "ShowInTaskbar").IsChecked = true;
             Check(!note.ShowInTaskbar && !app.Config.ShowInTaskbar, "taskbar option waits for Save");
             panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる")
@@ -196,7 +196,7 @@ internal static class Program
             Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.ShowInTaskbar, "taskbar setting persists for restart");
             var next = new NoteWindow(new NotePlacement { Path = path });
             Check(next.ShowInTaskbar, "new windows inherit taskbar setting"); next.Close();
-            settings = new SettingsWindow(); panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            settings = new SettingsWindow(); panel = SettingsPanel(settings);
             var taskbar = panel.Children.OfType<CheckBox>().Single(x => x.Name == "ShowInTaskbar");
             Check(taskbar.IsChecked == true, "reopened settings retain taskbar preference");
             taskbar.IsChecked = false;
@@ -287,7 +287,7 @@ internal static class Program
             Measure(); var normalHeight = note.NoteHeader.DesiredSize.Height;
             var before = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
             var settings = new SettingsWindow();
-            var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            var panel = SettingsPanel(settings);
             var checkbox = panel.Children.OfType<CheckBox>().Single(x => x.Name == "TitleButtonOverlay");
             Check(checkbox.IsChecked == false, "overlay option displays the existing default");
             checkbox.IsChecked = true;
@@ -311,7 +311,7 @@ internal static class Program
             var restored = new NoteWindow(new NotePlacement { Path = path });
             Check(Grid.GetRow(Field<Border>(restored, "controlsHost")) == 0 && Field<Border>(restored, "controlsHost").Visibility == Visibility.Collapsed, "new notes use the saved overlay preference");
             restored.Close();
-            settings = new SettingsWindow(); panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            settings = new SettingsWindow(); panel = SettingsPanel(settings);
             checkbox = panel.Children.OfType<CheckBox>().Single(x => x.Name == "TitleButtonOverlay");
             Check(checkbox.IsChecked == true, "reopened settings retain overlay mode");
             checkbox.IsChecked = false;
@@ -522,7 +522,7 @@ internal static class Program
         var previousPattern = app.Config.DailyPattern;
         app.Config.DailyPattern = DailyNoteResolver.RegexExample;
         var settingsWindow = new SettingsWindow();
-        var panel = (StackPanel)((ScrollViewer)settingsWindow.Content).Content;
+        var panel = SettingsPanel(settingsWindow);
         var autoSave = panel.Children.OfType<CheckBox>().Single(x => x.Name == "AutoSaveOnFocusLoss");
         Check(autoSave.IsChecked == false, "settings display the confirmation default");
         autoSave.IsChecked = true;
@@ -530,7 +530,7 @@ internal static class Program
         panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         Check(app.Config.AutoSaveOnFocusLoss && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.AutoSaveOnFocusLoss, "settings Save applies and persists focus-loss autosave");
         var reopened = new SettingsWindow();
-        Check(((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<CheckBox>().Single(x => x.Name == "AutoSaveOnFocusLoss").IsChecked == true, "reopened settings retain autosave preference");
+        Check((SettingsPanel(reopened)).Children.OfType<CheckBox>().Single(x => x.Name == "AutoSaveOnFocusLoss").IsChecked == true, "reopened settings retain autosave preference");
         reopened.Close();
         app.Config.AutoSaveOnFocusLoss = previousAutoSave;
         app.Config.DailyPattern = previousPattern;
@@ -682,7 +682,7 @@ internal static class Program
         var answer = false;
         var confirmations = 0;
         var window = new SettingsWindow(() => { confirmations++; return answer; });
-        var panel = (StackPanel)((ScrollViewer)window.Content).Content;
+        var panel = SettingsPanel(window);
         var pattern = panel.Children.OfType<TextBox>().ElementAt(2);
         var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
         void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
@@ -703,7 +703,7 @@ internal static class Program
         window.Close();
         app.Config.DailyPattern = "";
         var reopened = new SettingsWindow(() => throw new Exception("Opening must not prompt"));
-        var reopenedPattern = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ElementAt(2);
+        var reopenedPattern = (SettingsPanel(reopened)).Children.OfType<TextBox>().ElementAt(2);
         Check(reopenedPattern.Text == DailyNoteResolver.RegexExample && app.Config.DailyPattern == "", "blank setting gets a default in the editor without saving");
         reopened.Close();
         Check(File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json")).SequenceEqual(savedConfig), "regex assistance does not persist settings without Save");
@@ -739,7 +739,7 @@ internal static class Program
         var config = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
         var originalDaily = app.Config.DailyFolder;
         var window = new SettingsWindow(() => false);
-        var panel = (StackPanel)((ScrollViewer)window.Content).Content;
+        var panel = SettingsPanel(window);
         var inputs = panel.Children.OfType<TextBox>().ToArray();
         var previewPanel = panel.Children.OfType<StackPanel>().Single();
         var status = previewPanel.Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
@@ -807,7 +807,7 @@ internal static class Program
         Check(app.Config.NotesFolder == target && app.Config.DailyFolder == target, "changing notes folder without migration preserves chosen daily folder");
 
         var settingsWindow = new SettingsWindow(() => false);
-        var panel = (StackPanel)((ScrollViewer)settingsWindow.Content).Content;
+        var panel = SettingsPanel(settingsWindow);
         var inputs = panel.Children.OfType<TextBox>().ToArray();
         inputs[0].Text = source;
         Check(inputs[1].Text == target, "editing notes input does not change daily input");
@@ -816,7 +816,7 @@ internal static class Program
         settingsWindow.Close();
         app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = target }, false);
         var reopened = new SettingsWindow(() => false);
-        var reopenedInputs = ((StackPanel)((ScrollViewer)reopened.Content).Content).Children.OfType<TextBox>().ToArray();
+        var reopenedInputs = (SettingsPanel(reopened)).Children.OfType<TextBox>().ToArray();
         Check(reopenedInputs[0].Text == source && reopenedInputs[1].Text == target, "reopened settings display independently saved folders");
         reopened.Close();
     }
@@ -913,14 +913,14 @@ internal static class Program
             window.Close();
 
             var settings = new SettingsWindow();
-            var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+            var panel = SettingsPanel(settings);
             var choice = panel.Children.OfType<ComboBox>().Single(x => x.Name == "DailyRetention");
             choice.SelectedIndex = (int)DailyNoteRetention.UntilRefresh;
             Check(app.Config.DailyRetention == DailyNoteRetention.UntilCreated, "retention selection is not applied before saving");
             panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.DailyRetention == DailyNoteRetention.UntilRefresh, "settings persist retention mode for restart");
             settings = new SettingsWindow();
-            Check(((StackPanel)((ScrollViewer)settings.Content).Content).Children.OfType<ComboBox>().Single().SelectedIndex == 2, "reopened settings show saved retention mode");
+            Check((SettingsPanel(settings)).Children.OfType<ComboBox>().Single().SelectedIndex == 2, "reopened settings show saved retention mode");
             settings.Close();
             Check(JsonSerializer.Deserialize<Settings>("{}")!.DailyRetention == DailyNoteRetention.ShowWaitingMessage, "older settings default to waiting message");
         }
@@ -1123,6 +1123,10 @@ internal static class Program
         catch (ConflictException) { Check(true, "Google etag conflict becomes safe user-facing error"); }
     }
 
+    private static StackPanel SettingsPanel(SettingsWindow window, bool google = false) =>
+        (StackPanel)((Grid)window.Content).Children.OfType<ScrollViewer>()
+            .Single(x => x.Name == (google ? "GoogleSettingsPane" : "GeneralSettingsPane")).Content;
+
     private static void GoogleSetupUiTests(string root)
     {
         var path = Path.Combine(root, "invalid-setup.json");
@@ -1131,7 +1135,19 @@ internal static class Program
         var before = File.ReadAllBytes(settingsPath);
         var previousPath = App.Current.Config.GoogleCredentialsFile;
         var settings = new SettingsWindow();
-        var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+        var panel = SettingsPanel(settings, google: true);
+        var layout = (Grid)settings.Content;
+        layout.Measure(new Size(1100, 700)); layout.Arrange(new Rect(0, 0, 1100, 700)); layout.UpdateLayout();
+        var generalPane = layout.Children.OfType<ScrollViewer>().Single(x => x.Name == "GeneralSettingsPane");
+        var googlePane = layout.Children.OfType<ScrollViewer>().Single(x => x.Name == "GoogleSettingsPane");
+        Check(googlePane.TranslatePoint(new Point(), layout).X >= generalPane.ActualWidth &&
+            SettingsPanel(settings).Children.OfType<TextBox>().All(x => x.Name != "GoogleCredentialsFile"),
+            "Google credentials appear in a separate right-hand pane");
+        googlePane.ScrollToBottom(); layout.UpdateLayout();
+        Check(googlePane.VerticalOffset > 0 && generalPane.VerticalOffset == 0,
+            "long Google guide scrolls independently of general settings");
+        Check(googlePane.ScrollableWidth == 0 && generalPane.ScrollableWidth == 0,
+            "both settings panes fit the normal window width without horizontal scrolling");
         Check(panel.Children.OfType<Expander>().Single(x => x.Name == "GoogleSetupGuide").IsExpanded,
             "first-time Google setup displays the guide");
         panel.Children.OfType<TextBox>().Single(x => x.Name == "GoogleCredentialsFile").Text = path;
@@ -1184,10 +1200,10 @@ internal static class Program
         var originalFolder = app.Config.NotesFolder;
         var uiStore = new GoogleCredentialsStore(App.DataDirectory);
         var window = new SettingsWindow(null, () => true);
-        var panel = (StackPanel)((ScrollViewer)window.Content).Content;
+        var panel = SettingsPanel(window, google: true);
         var buttons = panel.Children.OfType<WrapPanel>().Single();
         var field = panel.Children.OfType<TextBox>().Single(x => x.Name == "GoogleCredentialsFile");
-        panel.Children.OfType<TextBox>().First().Text = "unsaved unrelated folder";
+        SettingsPanel(window).Children.OfType<TextBox>().First().Text = "unsaved unrelated folder";
         field.Text = source;
         void Click(string name) => buttons.Children.OfType<Button>().Single(x => x.Name == name)
             .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
@@ -1205,14 +1221,14 @@ internal static class Program
         Click("GoogleImportCredentials");
         window.Close();
         var cancelWindow = new SettingsWindow(null, () => false);
-        var cancelPanel = (StackPanel)((ScrollViewer)cancelWindow.Content).Content;
+        var cancelPanel = SettingsPanel(cancelWindow, google: true);
         cancelPanel.Children.OfType<WrapPanel>().Single().Children.OfType<Button>().Single(x => x.Name == "GoogleDeleteCredentials")
             .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         Check(File.Exists(uiStore.FilePath) && app.Config.GoogleCredentialsFile == uiStore.FilePath, "cancelled deletion preserves imported credentials and saved selection");
         cancelWindow.Close();
         app.SaveGoogleCredentialsPath(source);
         var externalWindow = new SettingsWindow(null, () => true);
-        var externalPanel = (StackPanel)((ScrollViewer)externalWindow.Content).Content;
+        var externalPanel = SettingsPanel(externalWindow, google: true);
         externalPanel.Children.OfType<WrapPanel>().Single().Children.OfType<Button>().Single(x => x.Name == "GoogleDeleteCredentials")
             .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         Check(app.Config.GoogleCredentialsFile == source && File.Exists(source) && !File.Exists(uiStore.FilePath),

@@ -10,11 +10,16 @@ public sealed class SettingsWindow : Window
     internal SettingsWindow(Func<bool>? confirmRegexTemplate, Func<bool>? confirmCredentialDeletion = null)
     {
         SetResourceReference(IconProperty, "AppIcon");
-        Title = "Sticky Notes 設定"; Width = 600; SizeToContent = SizeToContent.Height;
+        Title = "Sticky Notes 設定";
+        Width = Math.Min(1120, SystemParameters.WorkArea.Width);
+        Height = Math.Min(820, SystemParameters.WorkArea.Height);
+        MinWidth = Math.Min(800, SystemParameters.WorkArea.Width);
+        MinHeight = Math.Min(400, SystemParameters.WorkArea.Height);
         MaxHeight = SystemParameters.WorkArea.Height;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         var app = App.Current;
         var panel = new StackPanel { Margin = new Thickness(24) };
+        var googlePanel = new StackPanel { Margin = new Thickness(24) };
         panel.Children.Add(new TextBlock { Text = "Markdown Sticky Notes", FontSize = 24, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
         var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = "編集欄からフォーカスが外れたら、確認せず自動保存する", IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(autoSave);
@@ -25,10 +30,11 @@ public sealed class SettingsWindow : Window
         var overlay = new CheckBox { Name = "TitleButtonOverlay", Content = "タイトルにマウスカーソルを重ねるとボタンを表示する", IsChecked = app.Config.TitleButtonOverlay, Margin = new Thickness(0, 8, 0, 8) };
         panel.Children.Add(overlay);
         panel.Children.Add(new TextBlock { Text = "オン: タイトルにマウスを重ねるとボタンを表示します。F6でも表示・キーボード操作ができます。左端の移動ハンドルをドラッグして付箋を動かせます。オフ: タイトルの下に常に表示します（既定）。保存すると開いているすべての付箋に反映します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
-        TextBox Add(string label, string value)
+        TextBox Add(string label, string value, StackPanel? target = null)
         {
-            panel.Children.Add(new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap });
-            var input = new TextBox { Text = value }; panel.Children.Add(input); return input;
+            target ??= panel;
+            target.Children.Add(new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap });
+            var input = new TextBox { Text = value }; target.Children.Add(input); return input;
         }
         var notes = Add("付箋の保存フォルダ（Vault内の Sticky Notes など）", app.Config.NotesFolder);
         panel.Children.Add(Ui.Button("保存フォルダを選択", () => PickFolder(notes)));
@@ -119,8 +125,9 @@ public sealed class SettingsWindow : Window
         panel.Children.Insert(panel.Children.IndexOf(previewPanel), insertTags);
         Loaded += (_, _) => SchedulePreview();
         Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
-        panel.Children.Add(new TextBlock { Text = "Google Calendar 接続ガイド（任意）", FontSize = 18,
-            FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 20, 0, 8) });
+        googlePanel.Children.Add(new TextBlock { Text = "Google Calendar", FontSize = 24,
+            FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
+        googlePanel.Children.Add(new TextBlock { Text = "接続ガイド・認証設定（任意）", Margin = new Thickness(0, 0, 0, 8) });
         var guide = new StackPanel();
         void Explain(string text) => guide.Children.Add(new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 4, 0, 4) });
         void Link(string label, string url) => guide.Children.Add(Ui.Button(label,
@@ -143,9 +150,9 @@ public sealed class SettingsWindow : Window
         Explain("うまくいかない場合\n・ログイン画面の access_denied: テストユーザーとログイン先を確認。組織によりブロックされている場合は管理者へ確認。\n・未確認アプリの警告: 自分が作成したクライアントのアプリ名とアカウントか確認。不明な場合は進まず中止。\n・ログイン後の接続エラー: Calendar ID、同じプロジェクトのAPI有効化、許可した権限を確認。権限を許可し直す場合は手順3、接続だけ再確認する場合は手順4を使います。\n・外部／テスト中では、この権限の更新トークンは7日で期限切れになります。期限切れ後は手順3から再ログインしてください。\n・手順3・4ではGoogle関連以外も含め、設定画面の入力内容を保存します。");
         Link("Google公式: 同意画面の設定手順", "https://developers.google.com/workspace/guides/configure-oauth-consent");
         Link("Google公式: OAuthクライアントの管理", "https://support.google.com/cloud/answer/15549257");
-        panel.Children.Add(new Expander { Name = "GoogleSetupGuide", Header = "手順1: 初回準備のガイドを開く",
+        googlePanel.Children.Add(new Expander { Name = "GoogleSetupGuide", Header = "手順1: 初回準備のガイドを開く",
             IsExpanded = string.IsNullOrWhiteSpace(app.Config.GoogleCredentialsFile), Content = guide });
-        var credentials = Add("手順2: Google OAuth デスクトップアプリのJSON", app.Config.GoogleCredentialsFile);
+        var credentials = Add("手順2: Google OAuth デスクトップアプリのJSON", app.Config.GoogleCredentialsFile, googlePanel);
         credentials.Name = "GoogleCredentialsFile";
         var credentialStatus = new TextBlock { TextWrapping = TextWrapping.Wrap };
         credentials.TextChanged += (_, _) => credentialStatus.Text = "JSONはログインまたは接続確認時に検証します。";
@@ -199,9 +206,9 @@ public sealed class SettingsWindow : Window
         credentialButtons.Children.Add(pickCredentials);
         credentialButtons.Children.Add(importCredentials);
         credentialButtons.Children.Add(deleteCredentials);
-        panel.Children.Add(credentialButtons); panel.Children.Add(credentialStatus);
-        panel.Children.Add(new TextBlock { Text = "取り込み先: %LOCALAPPDATA%\\StickyNotes\\credentials-google.json\n取り込み・削除はすぐに反映します。他の設定欄は保存しません。削除はアプリ内のコピーだけが対象です。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
-        var calendar = Add("Calendar ID（自分のメインカレンダーは primary）", app.Config.CalendarId);
+        googlePanel.Children.Add(credentialButtons); googlePanel.Children.Add(credentialStatus);
+        googlePanel.Children.Add(new TextBlock { Text = "取り込み先: %LOCALAPPDATA%\\StickyNotes\\credentials-google.json\n取り込み・削除はすぐに反映します。他の設定欄は保存しません。削除はアプリ内のコピーだけが対象です。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        var calendar = Add("Calendar ID（自分のメインカレンダーは primary）", app.Config.CalendarId, googlePanel);
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 10) };
         bool Save()
         {
@@ -276,10 +283,27 @@ public sealed class SettingsWindow : Window
         }
         login.Click += async (_, _) => await Connect(true);
         verify.Click += async (_, _) => await Connect(false);
-        panel.Children.Add(login); panel.Children.Add(verify); panel.Children.Add(cancel); panel.Children.Add(status);
+        googlePanel.Children.Add(login); googlePanel.Children.Add(verify); googlePanel.Children.Add(cancel); googlePanel.Children.Add(status);
         panel.Children.Add(new TextBlock { Text = "保存先を変更して保存すると、既存の付箋ファイルも移行するか確認します。\nバックアップ・配置・認証情報は %LOCALAPPDATA%\\StickyNotes に保存します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         panel.Children.Add(save);
-        Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        var layout = new Grid();
+        layout.ColumnDefinitions.Add(new ColumnDefinition());
+        layout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1) });
+        layout.ColumnDefinitions.Add(new ColumnDefinition());
+        var generalPane = new ScrollViewer { Name = "GeneralSettingsPane", Content = panel,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
+        var googlePane = new ScrollViewer { Name = "GoogleSettingsPane", Content = googlePanel,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
+        // Preserve readable controls on small screens; each pane scrolls independently.
+        panel.Width = googlePanel.Width = 440;
+        void FitPane(ScrollViewer pane, StackPanel content) => content.Width = Math.Max(440,
+            pane.ActualWidth - content.Margin.Left - content.Margin.Right - SystemParameters.VerticalScrollBarWidth);
+        generalPane.SizeChanged += (_, _) => FitPane(generalPane, panel);
+        googlePane.SizeChanged += (_, _) => FitPane(googlePane, googlePanel);
+        var divider = new Border { Background = Brushes.LightGray };
+        Grid.SetColumn(divider, 1); Grid.SetColumn(googlePane, 2);
+        layout.Children.Add(generalPane); layout.Children.Add(divider); layout.Children.Add(googlePane);
+        Content = layout;
         FillEmptyRegex();
     }
 

@@ -215,7 +215,7 @@ updated: 2026-10-05T09:00:00+09:00
 
 ### 初次授权
 
-打开设置中的 `Google Calendar 接続ガイド（任意）`。以下适用于使用个人 Google 账号为自己配置，已于 2026-10-06 与官方文档核对。按钮打开系统浏览器，Google 注册和授权在浏览器中完成。界面名称随显示语言而异。
+打开设置窗口右侧 `Google Calendar` 窗格中的连接指南。左侧窗格包含便签和每日笔记设置，左右可独立滚动。以下适用于使用个人 Google 账号为自己配置，已于 2026-10-06 与官方文档核对。按钮打开系统浏览器，Google 注册和授权在浏览器中完成。界面名称随显示语言而异。
 
 1. **1-1：启用 API。** 打开 [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com)，从顶部项目选择器选择现有项目，或通过“新建项目（New project）”输入名称（例如 `StickyNotes Personal`）并创建、选中。点击“启用（Enable）”；显示“管理（Manage）”则表示已启用。后续步骤始终选择**同一项目**。
 2. **1-2：初次注册。** [品牌信息（Branding）](https://console.cloud.google.com/auth/branding)尚未配置时，点击“开始（Get started）”。输入应用名（例如 `StickyNotes Personal`）和可接收邮件的用户支持邮箱，点击“下一步”。个人账号选择“外部（External）”，点击“下一步”。输入联系邮箱，再点击“下一步”。阅读政策，同意时勾选并点击“继续”→“创建”。已配置时检查内容后继续。“内部（Internal）”适用于仅限 Google Cloud 组织成员使用的情况。

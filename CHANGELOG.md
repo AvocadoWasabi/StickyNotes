@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Split Settings into two columns: move the Google Calendar guide, JSON management, authentication and connection checks into the right pane. Keep note and daily-note settings on the left, with independent scrolling in each pane.
+
 - Add adjacent buttons to import OAuth JSON into the app-data directory and delete the managed copy. Preserve the original, save only the credential path immediately, and restore the copy if settings cannot be saved. Deletion retains tokens and Google-side authorization.
 
 - Check the Google setup guide against official documentation and specify registration fields, External/Internal selection, test users, scope saving and when to download JSON. Add direct settings links, a selectable scope URL, the seven-day External/Testing token lifetime and troubleshooting by error stage.
