@@ -25,7 +25,7 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## ダウンロードとインストール
 
-1. [v0.0.5の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+1. [v0.0.6の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
 3. 通知領域アイコンの「設定」で付箋の保存先を選びます。
 
@@ -74,6 +74,8 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 ```text
 @calendar 2026-10-06T09:00
 ```
+
+**Google Tasksの予定時刻はAPIの仕様上取得できません。** Google側で時刻を設定していても、APIから取得できるのは日付のみのため、このアプリでは「時刻なし」と表示します。
 
 Google Tasksも読み取り専用で表示します。`@calendar today` では当日の日付が付いた未完了タスクを取得します。既存ユーザーはTasks APIの有効化とTasks読み取りを許可する再認証が必要です。[Tasksの設定手順](docs/GOOGLE-CALENDAR.md#tasks)を参照してください。
 

@@ -34,6 +34,8 @@ Click an event to edit its title and description. Changes are sent to Google **o
 
 ## Google Tasks
 
+**Scheduled times cannot be retrieved through the Google Tasks API.** Even when a time is set in Google, the API provides only the date, so this app displays “no time”.
+
 `@calendar` also retrieves dated, incomplete Google Tasks from all lists of the signed-in account, including assigned tasks. Calendar ID only selects the calendar, not a task list. `today` selects the PC's current date; an explicit date selects that date and later dates, ignoring its time and offset for Tasks. Undated, completed, hidden and deleted tasks are excluded.
 
 Tasks appear separately below events with their list name, date and a “no time” label; hover to read notes. They are read-only: editing, completion, creation and Markdown synchronization are unsupported. A keyword matches the full entered phrase in the title or notes, ignoring case. Google exposes the scheduled date but not the scheduled time through the [Tasks API](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks).

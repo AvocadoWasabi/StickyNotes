@@ -25,7 +25,7 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 
 ## Download and install
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.5 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) and extract it.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.6 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) and extract it.
 2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
 3. Open `Settings` from the notification-area icon and choose a notes folder.
 
@@ -74,6 +74,8 @@ First authenticate using the [connection guide](docs/GOOGLE-CALENDAR.en.md#setup
 ```text
 @calendar 2026-10-06T09:00
 ```
+
+**Scheduled times cannot be retrieved through the Google Tasks API.** Even when a time is set in Google, the API provides only the date, so this app displays “no time”.
 
 Google Tasks is also displayed as read-only. `@calendar today` includes today's dated, incomplete tasks. Existing users must enable the Tasks API and sign in again with Tasks read access; see the [Tasks setup guide](docs/GOOGLE-CALENDAR.en.md#tasks).
 

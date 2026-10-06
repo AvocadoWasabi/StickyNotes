@@ -57,7 +57,7 @@
     <value>@calendar 日期时间或today [关键词]
 时区可省略（Windows 本地时间）。
 关键词可省略。约每60秒更新指定时间以后的日程；使用 today 则显示电脑当天的日程。
-也以只读方式显示 Google Tasks（无时间）。</value>
+Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获取计划时间。即使已在 Google 中设置时间，本应用仍显示“无时间”。</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  搜索 Google Calendar</value>
@@ -621,7 +621,7 @@ created: {1:o}
     <value>在独立段落开头输入 @ 可显示补全与示例（前面有正文时请先留空行）。
 示例：@calendar 2026-10-06T09:00
 时区可省略（Windows 本地时间），无需关键词也能搜索。
-也以只读方式显示 Google Tasks（无时间）。</value>
+Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获取计划时间。即使已在 Google 中设置时间，本应用仍显示“无时间”。</value>
   </data>
   <data name="SettingsWindow.Text29" xml:space="preserve">
     <value>步骤1：Google 端准备（2026-10-06 已核对官方文档）
@@ -669,7 +669,7 @@ created: {1:o}
   </data>
   <data name="SettingsWindow.Text41" xml:space="preserve">
     <value>后续：选择 JSON → 导入应用 → 主日历的 Calendar ID 填 primary → 步骤3登录。在浏览器中选择1-3添加的账号，检查应用名称并允许访问 Calendar 和读取 Tasks。应用自动接收结果，关闭标签页后在设置中确认“连接检查完成”。
-也以只读方式显示 Google Tasks（无时间）。</value>
+Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获取计划时间。即使已在 Google 中设置时间，本应用仍显示“无时间”。</value>
   </data>
   <data name="SettingsWindow.Text42" xml:space="preserve">
     <value>故障排查
@@ -809,7 +809,8 @@ created: {1:o}
     <value>1-1：启用 Google Tasks API</value>
   </data>
   <data name="GoogleTasks.Setup" xml:space="preserve">
-    <value>在与 Calendar 相同的 Cloud 项目中同时启用 Google Tasks API，并添加 calendar.events 和 tasks.readonly。已授权的用户也需通过步骤3重新登录，允许读取 Tasks，无需重新创建 JSON。以只读方式显示所有列表中有日期的未完成任务。Calendar ID 不用于选择任务列表。</value>
+    <value>在与 Calendar 相同的 Cloud 项目中同时启用 Google Tasks API，并添加 calendar.events 和 tasks.readonly。已授权的用户也需通过步骤3重新登录，允许读取 Tasks，无需重新创建 JSON。以只读方式显示所有列表中有日期的未完成任务。Calendar ID 不用于选择任务列表。
+Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获取计划时间。即使已在 Google 中设置时间，本应用仍显示“无时间”。</value>
   </data>
   <data name="GoogleTasks.Loading" xml:space="preserve">
     <value>正在获取 Google Tasks…</value>

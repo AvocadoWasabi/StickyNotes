@@ -57,7 +57,7 @@
     <value>@calendar 日時またはtoday [検索キーワード]
 タイムゾーンは省略できます（Windowsのローカル時刻）。
 キーワードなしでも検索できます。指定日時以降の予定、todayならPCの当日の予定を約60秒ごとに更新します。
-Google Tasksも読み取り専用で表示します（時刻なし）。</value>
+Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得できるのは日付のみで、予定時刻は取得できません。Google側で時刻を設定していても、このアプリでは「時刻なし」と表示します。</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  Google Calendarの予定を検索</value>
@@ -621,7 +621,7 @@ Obsidianで今日の分を作成すると、自動でここに表示されます
     <value>付箋の編集で独立した段落の先頭に @ を入力すると候補と入力例を表示します（前に本文がある場合は空行を入れてください）。
 例: @calendar 2026-10-06T09:00
 タイムゾーンは省略可（Windowsのローカル時刻）。キーワードなしでも検索できます。
-Google Tasksも読み取り専用で表示します（時刻なし）。</value>
+Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得できるのは日付のみで、予定時刻は取得できません。Google側で時刻を設定していても、このアプリでは「時刻なし」と表示します。</value>
   </data>
   <data name="SettingsWindow.Text29" xml:space="preserve">
     <value>手順1: Google側の準備（2026-10-06に公式資料と照合）
@@ -669,7 +669,7 @@ Google Tasksも読み取り専用で表示します（時刻なし）。</value>
   </data>
   <data name="SettingsWindow.Text41" xml:space="preserve">
     <value>手順2以降: JSONを選択 → アプリに取り込む → Calendar IDは自分のメインカレンダーなら primary → 手順3でログインします。ブラウザでは1-3で追加したアカウントを選び、アプリ名を確認してCalendarへのアクセスとTasksの読み取りを許可してください。認証結果は自動で受信します。タブを閉じて設定画面の「接続確認が完了しました」を確認してください。
-Google Tasksも読み取り専用で表示します（時刻なし）。</value>
+Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得できるのは日付のみで、予定時刻は取得できません。Google側で時刻を設定していても、このアプリでは「時刻なし」と表示します。</value>
   </data>
   <data name="SettingsWindow.Text42" xml:space="preserve">
     <value>うまくいかない場合
@@ -809,7 +809,8 @@ Google Tasksも読み取り専用で表示します（時刻なし）。</value>
     <value>1-1: Google Tasks APIを有効にする</value>
   </data>
   <data name="GoogleTasks.Setup" xml:space="preserve">
-    <value>Calendarと同じCloudプロジェクトでGoogle Tasks APIも有効にし、calendar.eventsとtasks.readonlyの両方を追加してください。既に認証済みでも、手順3で再認証し、Tasksの読み取りを許可してください。JSONの再作成は不要です。Tasksは全リストの未完了・日付付きタスクを読み取り専用で表示します。Calendar IDはTasksのリスト選択には使いません。</value>
+    <value>Calendarと同じCloudプロジェクトでGoogle Tasks APIも有効にし、calendar.eventsとtasks.readonlyの両方を追加してください。既に認証済みでも、手順3で再認証し、Tasksの読み取りを許可してください。JSONの再作成は不要です。Tasksは全リストの未完了・日付付きタスクを読み取り専用で表示します。Calendar IDはTasksのリスト選択には使いません。
+Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得できるのは日付のみで、予定時刻は取得できません。Google側で時刻を設定していても、このアプリでは「時刻なし」と表示します。</value>
   </data>
   <data name="GoogleTasks.Loading" xml:space="preserve">
     <value>Google Tasksを取得中…</value>

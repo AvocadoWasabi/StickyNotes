@@ -57,7 +57,7 @@
     <value>@calendar date-time-or-today [keyword]
 Time zone is optional (Windows local time).
 Keywords are optional. Refresh events from the specified time, or the PC's current day with today, about every 60 seconds.
-Google Tasks are also displayed as read-only, without times.</value>
+Google Tasks is read-only. The Google Tasks API provides dates only; it cannot return scheduled times. Even when a time is set in Google, this app displays “no time”.</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  Search Google Calendar</value>
@@ -621,7 +621,7 @@ No: Keep the existing expression.</value>
     <value>Type @ at the start of a separate paragraph to see completion and examples (leave a blank line after preceding text).
 Example: @calendar 2026-10-06T09:00
 Time zone is optional (Windows local time). Keywords are optional too.
-Google Tasks are also displayed as read-only, without times.</value>
+Google Tasks is read-only. The Google Tasks API provides dates only; it cannot return scheduled times. Even when a time is set in Google, this app displays “no time”.</value>
   </data>
   <data name="SettingsWindow.Text29" xml:space="preserve">
     <value>Step 1: Prepare Google (checked against official documentation on 2026-10-06)
@@ -669,7 +669,7 @@ Select the downloaded JSON in Step 2, then Import into app to copy it to app dat
   </data>
   <data name="SettingsWindow.Text41" xml:space="preserve">
     <value>Next: Select JSON → Import into app → Calendar ID: primary for your main calendar → Step 3 to sign in. In the browser, choose the account from 1-3, verify the app name, and allow Calendar access and Tasks read access. The app receives the result automatically. Close the tab and check for Connection verified in Settings.
-Google Tasks are also displayed as read-only, without times.</value>
+Google Tasks is read-only. The Google Tasks API provides dates only; it cannot return scheduled times. Even when a time is set in Google, this app displays “no time”.</value>
   </data>
   <data name="SettingsWindow.Text42" xml:space="preserve">
     <value>Troubleshooting
@@ -809,7 +809,8 @@ Backups, layout, and credentials are stored in %LOCALAPPDATA%\StickyNotes.</valu
     <value>1-1: Enable Google Tasks API</value>
   </data>
   <data name="GoogleTasks.Setup" xml:space="preserve">
-    <value>Also enable Google Tasks API in the same Cloud project as Calendar and add both calendar.events and tasks.readonly. Existing users must sign in again with Step 3 and allow Tasks read access. No new JSON is needed. Tasks displays dated, incomplete tasks from all lists as read-only. Calendar ID does not select task lists.</value>
+    <value>Also enable Google Tasks API in the same Cloud project as Calendar and add both calendar.events and tasks.readonly. Existing users must sign in again with Step 3 and allow Tasks read access. No new JSON is needed. Tasks displays dated, incomplete tasks from all lists as read-only. Calendar ID does not select task lists.
+Google Tasks is read-only. The Google Tasks API provides dates only; it cannot return scheduled times. Even when a time is set in Google, this app displays “no time”.</value>
   </data>
   <data name="GoogleTasks.Loading" xml:space="preserve">
     <value>Loading Google Tasks…</value>

@@ -25,7 +25,7 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 下载与安装
 
-1. 从 [v0.0.5 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) 下载 `StickyNotes-win-x64.zip` 并解压。
+1. 从 [v0.0.6 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
 3. 在通知区域图标的 `设置` 中选择便签文件夹。
 
@@ -74,6 +74,8 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 ```text
 @calendar 2026-10-06T09:00
 ```
+
+**由于 Google Tasks API 的规格限制，无法获取计划时间。** 即使已在 Google 中设置时间，API 也只提供日期，因此本应用显示“无时间”。
 
 也以只读方式显示 Google Tasks。`@calendar today` 获取当天有日期的未完成任务。现有用户需启用 Tasks API 并重新授权 Tasks 读取权限，详见[Tasks 设置指南](docs/GOOGLE-CALENDAR.zh-CN.md#tasks)。
 

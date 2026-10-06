@@ -34,6 +34,8 @@
 
 ## Google Tasks
 
+**由于 Google Tasks API 的规格限制，无法获取计划时间。** 即使已在 Google 中设置时间，API 也只提供日期，因此本应用显示“无时间”。
+
 `@calendar` 还会从登录账号的所有列表获取有日期的未完成 Google Tasks，包括分配给自己的任务。Calendar ID 仅选择日历，不选择任务列表。`today` 使用电脑当天日期；明确指定日期时包含该日及之后的任务，Tasks 忽略时间与时区偏移，只处理日期。不包含无日期、已完成、隐藏或已删除的任务。
 
 任务与日程分开显示在下方，标注列表名、日期和“无时间”；悬停可查看说明。任务为只读，不支持编辑、完成、创建或与 Markdown 同步。关键词按输入的完整字符串匹配标题或说明，不区分大小写。[Tasks API](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks)提供计划日期，但无法获取计划时间。
