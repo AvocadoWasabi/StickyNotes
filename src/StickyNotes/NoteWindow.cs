@@ -13,7 +13,7 @@ public sealed class NoteWindow : Window
     internal StackPanel NoteControls { get; } = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(4, 0, 4, 3) };
     internal Grid NoteHeader { get; } = new() { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)), Focusable = true };
     private readonly Border controlsHost = new();
-    private readonly TextBlock dragHandle = new() { Text = "⠿", Width = 24, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Stretch, Padding = new Thickness(0, 5, 0, 0), Cursor = Cursors.SizeAll, ToolTip = "ドラッグして付箋を移動", Background = Brushes.Transparent };
+    private readonly TextBlock dragHandle = new() { Text = "⠿", Width = 24, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Stretch, Padding = new Thickness(0, 5, 0, 0), Cursor = Cursors.SizeAll, ToolTip = L10n.Text("NoteWindow.Text01"), Background = Brushes.Transparent };
     private readonly Dictionary<Button, double> controlWidths = new();
     private bool toolbarMenuOpen, headerHovered;
     private readonly App app = App.Current;
@@ -45,7 +45,7 @@ public sealed class NoteWindow : Window
     private DateTime renderedToday;
     private DailyNoteRetention renderedRetention;
     private readonly TextBlock dailyNotice = new() { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(12, 8, 12, 8), Visibility = Visibility.Collapsed };
-    internal const string DailyWaitingMessage = "今日のデイリーノートはまだ作成されていません。\nObsidianで今日の分を作成すると、自動でここに表示されます。\n\n設定から、1. 今日の分が作成されるまで、または 2. 付箋の「再読込」を行うまで、昨日の分を表示したままにすることもできます。";
+    internal static string DailyWaitingMessage => L10n.Text("NoteWindow.Text02");
 
     public NoteWindow(NotePlacement placement) : this(placement, null, null) { }
 
@@ -82,14 +82,14 @@ public sealed class NoteWindow : Window
             controlWidths[button] = width;
             return button;
         }
-        Control("編集", BeginEdit, 40, "#DFEAF7", "Markdown本文を編集（Ctrl+E）");
-        Control("保存", () => Save(), 40, "#DCEEDC", "保存（Ctrl+S）");
-        Control("再読込", ReloadAsked, 58, "#FFF0CC");
-        Control("…", Menu, 30, "#E9E0F2", "その他の操作");
-        Control("＋", app.NewNote, 28, "#F3F1EB", "新しい付箋");
-        var pin = Control(placement.Pinned ? "●" : "○", () => { Placement.Pinned = !Placement.Pinned; EndTemporaryFront(); app.SaveConfig(); }, 28, "#F3F1EB", "最前面を切り替え");
+        Control(L10n.Text("NoteWindow.Text03"), BeginEdit, 40, "#DFEAF7", L10n.Text("NoteWindow.Text04"));
+        Control(L10n.Text("NoteWindow.Text05"), () => Save(), 40, "#DCEEDC", L10n.Text("NoteWindow.Text06"));
+        Control(L10n.Text("NoteWindow.Text07"), ReloadAsked, 58, "#FFF0CC");
+        Control("…", Menu, 30, "#E9E0F2", L10n.Text("NoteWindow.Text08"));
+        Control("＋", app.NewNote, 28, "#F3F1EB", L10n.Text("NoteWindow.Text09"));
+        var pin = Control(placement.Pinned ? "●" : "○", () => { Placement.Pinned = !Placement.Pinned; EndTemporaryFront(); app.SaveConfig(); }, 28, "#F3F1EB", L10n.Text("NoteWindow.Text10"));
         pin.Click += (_, _) => pin.Content = Placement.Pinned ? "●" : "○";
-        Control("×", Close, 28, "#F3F1EB", "この付箋を閉じる（ファイルは残ります）");
+        Control("×", Close, 28, "#F3F1EB", L10n.Text("NoteWindow.Text11"));
         var controlsRow = new DockPanel();
         DockPanel.SetDock(dragHandle, Dock.Left); controlsRow.Children.Add(dragHandle); controlsRow.Children.Add(NoteControls);
         controlsHost.Child = controlsRow; header.Children.Add(controlsHost);
@@ -121,7 +121,7 @@ public sealed class NoteWindow : Window
             if (!IsBodyEditTarget(e.OriginalSource as DependencyObject)) return;
             BeginEdit(); e.Handled = true;
         };
-        editor.TextChanged += (_, _) => { if (!loading) { dirty = editor.Text != content; status.Text = "編集中 • Ctrl+S で保存"; } };
+        editor.TextChanged += (_, _) => { if (!loading) { dirty = editor.Text != content; status.Text = L10n.Text("NoteWindow.Text12"); } };
         editor.IsKeyboardFocusWithinChanged += (_, _) => { if (editor.IsKeyboardFocusWithin) focusLossTimer.Stop(); else ScheduleFocusLoss(); };
         Deactivated += (_, _) => ScheduleFocusLoss();
         editor.ContextMenuOpening += (_, _) => { editorContextMenuOpen = true; focusLossTimer.Stop(); };
@@ -250,16 +250,16 @@ public sealed class NoteWindow : Window
 
     internal MenuItem ContentScaleMenu()
     {
-        var menu = new MenuItem { Header = $"表示スケール（{Placement.ContentScale}%）" };
+        var menu = new MenuItem { Header = L10n.Format("NoteWindow.Text13", Placement.ContentScale) };
         void Add(string label, int value, bool enabled = true, bool checkable = false)
         {
             var item = new MenuItem { Header = label, IsEnabled = enabled, IsCheckable = checkable, IsChecked = checkable && Placement.ContentScale == value };
             item.Click += (_, _) => app.Safe(() => SetContentScale(value));
             menu.Items.Add(item);
         }
-        Add("拡大（Ctrl＋＋ / Ctrl＋ホイール上）", Placement.ContentScale + 10, Placement.ContentScale < NotePlacement.MaxContentScale);
-        Add("縮小（Ctrl＋－ / Ctrl＋ホイール下）", Placement.ContentScale - 10, Placement.ContentScale > NotePlacement.MinContentScale);
-        Add("標準に戻す（Ctrl＋0）", 100);
+        Add(L10n.Text("NoteWindow.Text14"), Placement.ContentScale + 10, Placement.ContentScale < NotePlacement.MaxContentScale);
+        Add(L10n.Text("NoteWindow.Text15"), Placement.ContentScale - 10, Placement.ContentScale > NotePlacement.MinContentScale);
+        Add(L10n.Text("NoteWindow.Text16"), 100);
         menu.Items.Add(new Separator());
         foreach (var value in new[] { 50, 75, 100, 125, 150, 175, 200 }) Add($"{value}%", value, checkable: true);
         return menu;
@@ -293,7 +293,7 @@ public sealed class NoteWindow : Window
             var nextContent = Placement.Heading.Length > 0 ? SectionEditor.Find(fresh.Text, Placement.Heading).Content : NoteStore.Split(fresh.Text).Body;
             snapshot = fresh; content = nextContent; dirty = false; SetEditing(false);
             displayedDate = dailyDisplay.TargetDate;
-            Render(); status.Text = Placement.Daily ? "デイリーノートと連動 • " + Path.GetFileName(fresh.Path) : "保存済み • " + Path.GetFileName(fresh.Path);
+            Render(); status.Text = Placement.Daily ? L10n.Text("NoteWindow.Text17") + Path.GetFileName(fresh.Path) : L10n.Text("NoteWindow.Text18") + Path.GetFileName(fresh.Path);
         }
         catch (Exception ex) { ShowReadError(ex); }
     }
@@ -306,7 +306,7 @@ public sealed class NoteWindow : Window
         dailyNotice.Text = Placement.Daily && error is DailyNoteMissingException ? DailyWaitingMessage : "";
         dailyNotice.Visibility = dailyNotice.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
         eventsPanel.Children.Clear(); tags.Text = "";
-        title.Text = Placement.Daily ? "今日のノートを待機中" : "元ノートを読み込めません";
+        title.Text = Placement.Daily ? L10n.Text("NoteWindow.Text19") : L10n.Text("NoteWindow.Text20");
         status.Text = error.Message;
     }
 
@@ -315,13 +315,13 @@ public sealed class NoteWindow : Window
         if (snapshot is null) return;
         renderedToday = today().Date; renderedRetention = app.Config.DailyRetention;
         var yesterday = Placement.Daily && displayedDate < today().Date;
-        dailyNotice.Text = yesterday ? $"昨日のノート（{displayedDate:yyyy-MM-dd}）を表示中。編集はこの日のファイルに保存されます。\n" +
-            (app.Config.DailyRetention == DailyNoteRetention.UntilRefresh ? "今日の分に切り替えるには「再読込」を押してください。" : "Obsidianで今日の分を作成すると自動で切り替わります。") : "";
+        dailyNotice.Text = yesterday ? L10n.Format("NoteWindow.Text21", displayedDate) +
+            (app.Config.DailyRetention == DailyNoteRetention.UntilRefresh ? L10n.Text("NoteWindow.Text22") : L10n.Text("NoteWindow.Text23")) : "";
         dailyNotice.Visibility = yesterday ? Visibility.Visible : Visibility.Collapsed;
         var metadata = NoteStore.Metadata(snapshot.Text);
         if (Placement.Heading.Length == 0) Placement.Color = metadata.Color;
         Background = Ui.Color(Placement.Color);
-        title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? "昨日 / " : "今日 / ") : "連動 / ") + Placement.Heading : metadata.Title;
+        title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? L10n.Text("NoteWindow.Text24") : L10n.Text("NoteWindow.Text25")) : L10n.Text("NoteWindow.Text26")) + Placement.Heading : metadata.Title;
         Title = title.Text;
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
         preview.Document = MarkdownView.Render(content, ToggleTask);
@@ -344,7 +344,7 @@ public sealed class NoteWindow : Window
         {
             if (!closed && editing && IsActive) Keyboard.Focus(editor);
         }));
-        status.Text = "Markdownを編集 • Ctrl+S で保存 • @で補完（タイムゾーン・キーワードは省略可）";
+        status.Text = L10n.Text("NoteWindow.Text27");
     }
 
     private void SetEditing(bool value)
@@ -371,13 +371,13 @@ public sealed class NoteWindow : Window
         try
         {
             SaveContent(editor.Text); dirty = false; SetEditing(false);
-            Render(); status.Text = "保存しました"; return true;
+            Render(); status.Text = L10n.Text("NoteWindow.Text28"); return true;
         }
         catch (Exception ex)
         {
             status.Text = ex.Message;
             if (reportSaveError is not null) reportSaveError(ex);
-            else MessageBox.Show(this, ex.Message, "保存できません", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else MessageBox.Show(this, ex.Message, L10n.Text("NoteWindow.Text29"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
     }
@@ -408,8 +408,8 @@ public sealed class NoteWindow : Window
         {
             if (!dirty) { SetEditing(false); return; }
             var answer = app.Config.AutoSaveOnFocusLoss ? MessageBoxResult.Yes : confirmFocusSave?.Invoke() ?? MessageBox.Show(this,
-                "変更を保存しますか？\n\nはい: 保存して閲覧表示に戻ります。\nいいえ: 変更を破棄して再読込します。\nキャンセル: 入力を保持して編集を続けます。",
-                "編集内容の保存", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+                L10n.Text("NoteWindow.Text30"),
+                L10n.Text("NoteWindow.Text31"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
             if (answer == MessageBoxResult.Yes) { if (!Save() && IsActive) editor.Focus(); }
             else if (answer == MessageBoxResult.No) Reload();
             else if (IsActive) editor.Focus();
@@ -419,7 +419,7 @@ public sealed class NoteWindow : Window
 
     private void SaveContent(string next)
     {
-        if (snapshot is null) throw new InvalidOperationException("元ファイルを読み込めません。");
+        if (snapshot is null) throw new InvalidOperationException(L10n.Text("NoteWindow.Text32"));
         string updated;
         if (Placement.Heading.Length > 0) updated = SectionEditor.Replace(snapshot.Text, Placement.Heading, next);
         else
@@ -439,8 +439,8 @@ public sealed class NoteWindow : Window
     {
         try
         {
-            if (editing) throw new InvalidOperationException("先に編集中の内容を保存してください。");
-            SaveContent(SectionEditor.ToggleTaskAtLine(content, line, value)); Render(); status.Text = "タスクを保存しました";
+            if (editing) throw new InvalidOperationException(L10n.Text("NoteWindow.Text33"));
+            SaveContent(SectionEditor.ToggleTaskAtLine(content, line, value)); Render(); status.Text = L10n.Text("NoteWindow.Text34");
         }
         catch (Exception ex) { status.Text = ex.Message; Render(); }
     }
@@ -451,7 +451,7 @@ public sealed class NoteWindow : Window
         decisionInProgress = true;
         try
         {
-            if (dirty && MessageBox.Show(this, "未保存の編集を破棄して再読込しますか？", "再読込", MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
+            if (dirty && MessageBox.Show(this, L10n.Text("NoteWindow.Text35"), L10n.Text("NoteWindow.Text36"), MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
             dailyDisplay.Refresh(today());
             Reload();
         }
@@ -470,7 +470,7 @@ public sealed class NoteWindow : Window
                     (Placement.Daily && (renderedToday != today().Date || renderedRetention != app.Config.DailyRetention))) Reload();
             }
             else if (snapshot is not null && (snapshot.Path != path || NoteStore.Read(snapshot.Path).Hash != snapshot.Hash))
-                status.Text = "元ノートの変更または日付切替を検出。編集を保存・退避してから再読込してください。";
+                status.Text = L10n.Text("NoteWindow.Text37");
             if (!editing && snapshot is not null && (DateTime.Now - lastCalendarCheck).TotalSeconds >= 60) await RefreshCalendar();
         }
         catch (Exception ex)
@@ -491,16 +491,16 @@ public sealed class NoteWindow : Window
             var items = await app.Calendar.SearchAsync(calendarId, CalendarQuery.Parse(command));
             if (closed || activeCommand != command) return;
             eventsPanel.Children.Clear();
-            eventsPanel.Children.Add(new TextBlock { Text = $"GOOGLE CALENDAR · {items.Count}件（最大100件）", FontSize = 11, FontWeight = FontWeights.Bold });
+            eventsPanel.Children.Add(new TextBlock { Text = L10n.Format("NoteWindow.Text38", items.Count), FontSize = 11, FontWeight = FontWeights.Bold });
             foreach (var item in items)
             {
                 var captured = item;
-                var button = new Button { HorizontalContentAlignment = HorizontalAlignment.Left, Content = new TextBlock { Text = $"{item.Start}\n{item.Summary}", TextWrapping = TextWrapping.Wrap }, ToolTip = "クリックして件名・説明を編集" };
+                var button = new Button { HorizontalContentAlignment = HorizontalAlignment.Left, Content = new TextBlock { Text = $"{item.Start}\n{item.Summary}", TextWrapping = TextWrapping.Wrap }, ToolTip = L10n.Text("NoteWindow.Text39") };
                 button.Click += async (_, _) => await EditEvent(calendarId, captured);
                 eventsPanel.Children.Add(button);
             }
-            if (items.Count == 0) eventsPanel.Children.Add(new TextBlock { Text = "該当する予定はありません。" });
-            status.Text = "予定を取得しました • " + DateTime.Now.ToString("HH:mm");
+            if (items.Count == 0) eventsPanel.Children.Add(new TextBlock { Text = L10n.Text("NoteWindow.Text40") });
+            status.Text = L10n.Text("NoteWindow.Text41") + DateTime.Now.ToString("HH:mm");
         }
         catch (Exception ex) { status.Text = "Calendar: " + ex.Message; }
         finally { busy = false; }
@@ -508,12 +508,12 @@ public sealed class NoteWindow : Window
 
     private async Task EditEvent(string calendarId, CalendarEvent item)
     {
-        var values = Ui.Prompt("予定を編集", [new("summary", "件名", item.Summary), new("description", "説明（Googleの元データ）", item.Description, true)], this);
+        var values = Ui.Prompt(L10n.Text("NoteWindow.Text42"), [new("summary", L10n.Text("NoteWindow.Text43"), item.Summary), new("description", L10n.Text("NoteWindow.Text44"), item.Description, true)], this);
         if (values is null || (values["summary"] == item.Summary && values["description"] == item.Description)) return;
-        var confirm = $"次の内容をGoogle Calendarへ送信します。\n参加者がいる場合は変更通知が送信されます。\n\n日時: {item.Start}\n\n件名（変更前）: {item.Summary}\n件名（変更後）: {values["summary"]}\n\n説明（変更前）:\n{item.Description}\n\n説明（変更後）:\n{values["description"]}";
-        if (MessageBox.Show(this, confirm, "Google Calendarを更新しますか？", MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK) return;
-        try { await app.Calendar.UpdateAsync(calendarId, item, values["summary"], values["description"]); status.Text = "Google Calendarを更新しました"; await RefreshCalendar(); }
-        catch (Exception ex) { MessageBox.Show(this, ex.Message, "更新できません", MessageBoxButton.OK, MessageBoxImage.Warning); }
+        var confirm = L10n.Format("NoteWindow.Text45", item.Start, item.Summary, values["summary"], item.Description, values["description"]);
+        if (MessageBox.Show(this, confirm, L10n.Text("NoteWindow.Text46"), MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK) return;
+        try { await app.Calendar.UpdateAsync(calendarId, item, values["summary"], values["description"]); status.Text = L10n.Text("NoteWindow.Text47"); await RefreshCalendar(); }
+        catch (Exception ex) { MessageBox.Show(this, ex.Message, L10n.Text("NoteWindow.Text48"), MessageBoxButton.OK, MessageBoxImage.Warning); }
     }
 
     private void Menu()
@@ -522,28 +522,28 @@ public sealed class NoteWindow : Window
         toolbarMenuOpen = true; UpdateButtonOverlay();
         menu.Closed += (_, _) => { toolbarMenuOpen = false; UpdateButtonOverlay(); };
         void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
-        Add("タグ・タイトル・状態・色", EditMetadata);
+        Add(L10n.Text("NoteWindow.Text49"), EditMetadata);
         menu.Items.Add(ContentScaleMenu());
-        Add("一時的に付箋を最前面に表示する（10秒間）", app.BringNotesToFrontTemporarily);
-        Add("予定を今すぐ取得", () => { _ = RefreshCalendar(); });
-        Add("元ファイルを既定アプリで開く", () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
-        Add("Markdownを開く…", app.OpenNote);
-        Add("ノートの一部分を付箋にする…", app.LinkSection);
-        Add("デイリーノートを表示…", app.LinkDaily);
-        Add("設定…", () => new SettingsWindow().ShowDialog());
-        Add("アプリを終了（配置を保存）", app.Quit);
+        Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
+        Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); });
+        Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
+        Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
+        Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
+        Add(L10n.Text("NoteWindow.Text55"), app.LinkDaily);
+        Add(L10n.Text("NoteWindow.Text56"), () => new SettingsWindow().ShowDialog());
+        Add(L10n.Text("NoteWindow.Text57"), app.Quit);
         menu.IsOpen = true;
     }
 
     private void EditMetadata()
     {
-        if (Placement.Heading.Length > 0) { MessageBox.Show(this, "連動付箋は元ノートのタグを表示します。タグは元ノート側で編集してください。"); return; }
+        if (Placement.Heading.Length > 0) { MessageBox.Show(this, L10n.Text("NoteWindow.Text58")); return; }
         if (snapshot is null || !Save()) return;
         var original = NoteStore.Metadata(snapshot.Text);
-        var values = Ui.Prompt("付箋のプロパティ", [new("title", "タイトル", original.Title), new("tags", "タグ（空白またはカンマ区切り。階層は project/name）", string.Join(" ", original.Tags)), new("status", "状態（例: active / done / archived）", original.Status), new("color", "色: yellow / green / blue / pink / gray", original.Color)], this);
+        var values = Ui.Prompt(L10n.Text("NoteWindow.Text59"), [new("title", L10n.Text("NoteWindow.Text60"), original.Title), new("tags", L10n.Text("NoteWindow.Text61"), string.Join(" ", original.Tags)), new("status", L10n.Text("NoteWindow.Text62"), original.Status), new("color", L10n.Text("NoteWindow.Text63"), original.Color)], this);
         if (values is null) return;
         var list = values["tags"].Split([' ', ',', '、', '\n', '\r'], StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimStart('#')).Distinct().ToArray();
-        if (list.Any(t => !Regex.IsMatch(t, @"^[\p{L}\p{N}_/-]+$") || t.All(char.IsDigit))) throw new InvalidOperationException("タグには文字・数字・_・-・/を使用できます。数字のみは使えません。");
+        if (list.Any(t => !Regex.IsMatch(t, @"^[\p{L}\p{N}_/-]+$") || t.All(char.IsDigit))) throw new InvalidOperationException(L10n.Text("NoteWindow.Text64"));
         snapshot = NoteStore.Save(snapshot, NoteStore.WithMetadata(snapshot.Text, new(values["title"], list, values["status"], values["color"])), Path.Combine(App.DataDirectory, "backups"));
         Reload(); app.SaveConfig();
     }
@@ -556,7 +556,7 @@ public sealed class NoteWindow : Window
         try
         {
             if (!dirty) return true;
-            return MessageBox.Show(this, "変更を保存しますか？", title.Text, MessageBoxButton.YesNoCancel) switch
+            return MessageBox.Show(this, L10n.Text("NoteWindow.Text65"), title.Text, MessageBoxButton.YesNoCancel) switch
             {
                 MessageBoxResult.Yes => Save(), MessageBoxResult.No => true, _ => false
             };

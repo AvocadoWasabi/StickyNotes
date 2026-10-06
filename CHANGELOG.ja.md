@@ -8,6 +8,8 @@
 
 ## 未リリース / Unreleased
 
+- アプリUIを日本語・英語・簡体字中国語に対応。既定はWindowsの表示言語に合わせ、設定で選んだ言語は次回起動時に反映。メニュー・ダイアログ・Google設定ガイド・エラー・新規ノート雛形を翻訳し、既存ノートや予定の内容は保持。翻訳リソースを配布物に同梱。
+
 ## [0.0.4](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) — 2026-10-06
 
 - READMEを導入・基本操作に絞り、詳細を[操作・設定の補足](docs/USAGE.md)と[Google Calendarガイド](docs/GOOGLE-CALENDAR.md)へ分離。導入ガイドの重複説明を整理し、3言語の構成を統一。

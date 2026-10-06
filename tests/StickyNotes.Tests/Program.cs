@@ -9,7 +9,7 @@ using System.Windows.Documents;
 using StickyNotes;
 using StickyNotes.Core;
 
-internal static class Program
+internal static partial class Program
 {
     private sealed class TestApp : App
     {
@@ -118,6 +118,7 @@ internal static class Program
             checkbox.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             Check(toggledLine == 2, "rendered task callback maps to source line, excluding fenced example");
             Check(MarkdownView.FindCalendarCommand("```text\n@calendar 2026-10-05 example\n```\n\n@calendar 2026-10-06 real") == "@calendar 2026-10-06 real", "calendar examples in fenced code are not executed");
+            LocalizationTests(root);
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
@@ -701,7 +702,7 @@ internal static class Program
         var pattern = panel.Children.OfType<TextBox>().ElementAt(2);
         var insert = panel.Children.OfType<Button>().Single(x => (string)x.Content == "日時タグ付きの既定例を挿入");
         void ClickInsert() => insert.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
-        var matchStatus = panel.Children.OfType<StackPanel>().Single().Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
+        var matchStatus = panel.Children.OfType<StackPanel>().SelectMany(p => p.Children.OfType<TextBlock>()).Single(x => x.Name == "DailyPreviewStatus");
         Check(panel.Children.OfType<CheckBox>().All(x => x.Name is "AutoSaveOnFocusLoss" or "TitleButtonOverlay" or "ShowInTaskbar"), "settings offer only tagged regex without a mode checkbox");
         Check(confirmations == 0 && pattern.Text == custom, "opening settings preserves custom regex without prompting");
         ClickInsert();
@@ -756,7 +757,7 @@ internal static class Program
         var window = new SettingsWindow(() => false);
         var panel = SettingsPanel(window);
         var inputs = panel.Children.OfType<TextBox>().ToArray();
-        var previewPanel = panel.Children.OfType<StackPanel>().Single();
+        var previewPanel = panel.Children.OfType<StackPanel>().Single(p => p.Children.OfType<TextBlock>().Any(x => x.Name == "DailyPreviewStatus"));
         var status = previewPanel.Children.OfType<TextBlock>().Single(x => x.Name == "DailyPreviewStatus");
         Check(!previewPanel.Children.OfType<TextBox>().Any(), "settings no longer contain the note content preview");
         inputs[1].Text = folder; inputs[2].Text = DailyNoteResolver.RegexExample;

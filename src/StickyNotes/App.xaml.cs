@@ -38,6 +38,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        L10n.Initialize(null);
         var command = AppCommands.Parse(e.Args);
         if (e.Args.Length == 2 && e.Args[0] == "--data-dir")
         {
@@ -47,7 +48,7 @@ public partial class App : Application
         }
         else if (e.Args.Length > 0 && command is null)
         {
-            MessageBox.Show("起動引数が正しくありません。"); Shutdown(); return;
+            MessageBox.Show(L10n.Text("App.xaml.Text01")); Shutdown(); return;
         }
         mutex = new Mutex(true, "Local\\StickyNotes.Desktop", out ownsMutex);
         if (!ownsMutex)
@@ -55,9 +56,9 @@ public partial class App : Application
             if (command is not null)
             {
                 try { AppCommandPipe.Send(CommandPipeName, command).GetAwaiter().GetResult(); }
-                catch (Exception ex) { MessageBox.Show("起動中のアプリに操作を渡せませんでした。通知領域から操作するか、アプリを再起動してください。\n" + ex.Message); }
+                catch (Exception ex) { MessageBox.Show(L10n.Text("App.xaml.Text02") + ex.Message); }
             }
-            else MessageBox.Show("付箋アプリは起動済みです。通知領域またはタスクバーのメニューから操作できます。");
+            else MessageBox.Show(L10n.Text("App.xaml.Text03"));
             Shutdown(); return;
         }
         if (command?.Id == "exit") { Shutdown(); return; }
@@ -65,8 +66,9 @@ public partial class App : Application
         if (File.Exists(ConfigPath))
         {
             try { Config = JsonSerializer.Deserialize<Settings>(File.ReadAllText(ConfigPath)) ?? new(); }
-            catch (Exception ex) { MessageBox.Show("設定を読み込めません。元ファイルを保護するため終了します。\n" + ex.Message); Shutdown(); return; }
+            catch (Exception ex) { MessageBox.Show(L10n.Text("App.xaml.Text04") + ex.Message); Shutdown(); return; }
         }
+        L10n.Initialize(Config.Language);
         Calendar = new CalendarService(
             () => File.Exists(TokenPath) ? Encoding.UTF8.GetString(ProtectedData.Unprotect(File.ReadAllBytes(TokenPath), null, DataProtectionScope.CurrentUser)) : null,
             value => File.WriteAllBytes(TokenPath, ProtectedData.Protect(Encoding.UTF8.GetBytes(value), null, DataProtectionScope.CurrentUser)));

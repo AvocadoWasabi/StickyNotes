@@ -101,7 +101,7 @@ public static class MarkdownView
                 case LinkInline link:
                     if (link.IsImage)
                     {
-                        output.Add(new Run("[画像: ")); AddInlines(output, link, toggle, line); output.Add(new Run("]")); break;
+                        output.Add(new Run(L10n.Text("MarkdownView.Text01"))); AddInlines(output, link, toggle, line); output.Add(new Run("]")); break;
                     }
                     var hyperlink = new Hyperlink(); AddInlines(hyperlink.Inlines, link, toggle, line);
                     if (Uri.TryCreate(link.Url, UriKind.Absolute, out var uri) && uri.Scheme is "https" or "http" or "mailto" or "obsidian")

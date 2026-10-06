@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add Japanese, English, and Simplified Chinese UI with a Windows-language default and a Settings selector applied after restart. Translate menus, dialogs, Google setup guidance, errors, and new-note templates; preserve existing note and event content. Include translation resources in the app package.
+
 ## [0.0.4](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) — 2026-10-06
 
 - Shorten the README to setup and basic usage. Move details into the [usage reference](docs/USAGE.en.md) and [Google Calendar guide](docs/GOOGLE-CALENDAR.en.md), remove duplicated installation-guide instructions, and align all three languages.

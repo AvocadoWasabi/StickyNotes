@@ -61,3 +61,7 @@ Keep custom local test packages under `artifacts` and do not commit or upload th
 ## Icon
 
 The source image is `docs/images/StickyNotes.png`, with the ICO under `src/StickyNotes/Assets`. Run `./scripts/Convert-AppIcon.ps1` to regenerate the multi-size Windows ICO. See [icon provenance](ICON.en.md).
+
+## Display language
+
+UI strings live in `src/StickyNotes.Core/Strings.resx` (Japanese), `Strings.en.resx`, and `Strings.zh-CN.resx`. Keep keys and format placeholders aligned, and retrieve strings through `L10n`. Initialize the language at startup; saving Settings defers the change until restart. Do not translate persisted note data or protocol keys. Build tests cover resource completeness, language persistence, menus, and data preservation. Distributions must include `en/StickyNotes.Core.resources.dll` and `zh-CN/StickyNotes.Core.resources.dll`.

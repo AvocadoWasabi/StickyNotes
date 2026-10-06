@@ -61,3 +61,7 @@
 ## 图标
 
 原图为 `docs/images/StickyNotes.png`，ICO 位于 `src/StickyNotes/Assets`。运行 `./scripts/Convert-AppIcon.ps1` 可重新生成 Windows 多尺寸 ICO。生成记录见[图标说明](ICON.zh-CN.md)。
+
+## 显示语言
+
+UI 文本存放于 `src/StickyNotes.Core/Strings.resx`（日语）、`Strings.en.resx` 和 `Strings.zh-CN.resx`。保持键名和格式占位符一致，通过 `L10n` 读取。启动时初始化语言，保存设置后到下次启动才应用。不要翻译已保存笔记的数据或协议键名。测试检查资源完整性、语言设置持久化、菜单及数据保留。分发包必须包含 `en/StickyNotes.Core.resources.dll` 和 `zh-CN/StickyNotes.Core.resources.dll`。

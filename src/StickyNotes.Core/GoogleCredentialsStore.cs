@@ -33,7 +33,7 @@ public sealed class GoogleCredentialsStore(string directory)
     {
         foreach (var path in new[] { Path.GetDirectoryName(FilePath)!, FilePath })
             if (Path.Exists(path) && (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
-                throw new IOException("認証JSONの保存先にリンクは使用できません。");
+                throw new IOException(L10n.Text("GoogleCredentialsStore.Text01"));
     }
 
     private void Change(Action changeFile, Action saveSettings)
@@ -54,7 +54,7 @@ public sealed class GoogleCredentialsStore(string directory)
                     File.Move(recovery, FilePath, true);
                 }
                 catch (Exception ex)
-                { throw new IOException($"設定保存と認証JSONの復元に失敗しました。復元用ファイルを確認してください: {recovery}", ex); }
+                { throw new IOException(L10n.Format("GoogleCredentialsStore.Text02", recovery), ex); }
             }
             throw;
         }

@@ -6,6 +6,7 @@ public static class Ui
     public static Button Button(string label, Action action, string? tooltip = null)
     {
         var button = new Button { Content = label, ToolTip = tooltip ?? label };
+        button.SetResourceReference(ContentControl.ContentTemplateProperty, "WrappingButtonContent");
         button.Click += (_, _) => App.Current.Safe(action);
         return button;
     }
@@ -26,7 +27,7 @@ public static class Ui
             panel.Children.Add(input);
         }
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
-        buttons.Children.Add(Button("キャンセル", () => window.DialogResult = false));
+        buttons.Children.Add(Button(L10n.Text("Ui.Text01"), () => window.DialogResult = false));
         buttons.Children.Add(Button("OK", () => window.DialogResult = true));
         panel.Children.Add(buttons);
         window.Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };

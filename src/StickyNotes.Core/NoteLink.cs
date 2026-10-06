@@ -8,7 +8,7 @@ public static class NoteLink
         var updated = SectionEditor.EnsureHeading(source.Text, heading);
         if (updated != source.Text) NoteStore.Save(source, updated, backupDirectory);
         else if (NoteStore.Read(source.Path).Hash != source.Hash)
-            throw new ConflictException("元ノートが変更されています。再読込してから表示してください。");
+            throw new ConflictException(L10n.Text("NoteLink.Text01"));
         return new NotePlacement { Path = daily ? "" : source.Path, Heading = heading, Daily = daily, Color = "green" };
     }
 }

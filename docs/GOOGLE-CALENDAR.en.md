@@ -1,5 +1,7 @@
 [English](GOOGLE-CALENDAR.en.md) | [日本語](GOOGLE-CALENDAR.md) | [简体中文](GOOGLE-CALENDAR.zh-CN.md)
 
+[Display language](USAGE.en.md#language) (unreleased)
+
 # Google Calendar usage and setup
 
 [Back to basic usage](../README.md)
@@ -20,7 +22,7 @@ Enter a command on its own line in a note and save:
 
 While editing, type `@` at the start of a separate paragraph (leave a blank line after preceding text) to show the `@calendar` suggestion and floating usage examples. Press Tab or Enter, or click the suggestion, to insert today's date at `00:00` without an offset or keyword. The date and time are selected so you can replace them, then save the note. The inserted date stays fixed; it does not advance automatically. Esc closes the suggestion. Completion does not save the note itself and does not appear inside email addresses or code blocks.
 
-Events refresh about every 60 seconds, or when you choose `… → 予定を今すぐ取得` (Fetch events now). Only the first command in each note is used. Leave blank lines around the command. Examples inside fenced code blocks are not executed.
+Events refresh about every 60 seconds, or when you choose `… → Fetch events now` (Fetch events now). Only the first command in each note is used. Leave blank lines around the command. Examples inside fenced code blocks are not executed.
 
 Click an event to edit its title and description. Changes are sent to Google **only after you select OK** in the confirmation dialog, which shows the changes and attendee notification behavior. Times, attendees, and recurrence rules are not changed. Editing a recurring event affects the retrieved occurrence. If the event has changed on Google since it was loaded, an ETag check prevents overwriting it and asks you to refresh.
 
@@ -52,11 +54,11 @@ Open [Clients](https://console.cloud.google.com/auth/clients) → **Create clien
 
 ### App Step 2: Select and import the JSON
 
-Select the downloaded file with `認証JSONを選択して確認`, then click the adjacent `アプリに取り込む` (Import into app). The app validates the format, copies it to `%LOCALAPPDATA%\StickyNotes\credentials-google.json`, and immediately saves this path. Importing again replaces the managed copy. The source remains unchanged and may be moved or deleted after successful import. If you skip importing and use the original path, keep that file in place. Renaming is unnecessary. Use `primary` for your own main calendar.
+Select the downloaded file with `Select and check JSON`, then click the adjacent `Import into app`. The app validates the format, copies it to `%LOCALAPPDATA%\StickyNotes\credentials-google.json`, and immediately saves this path. Importing again replaces the managed copy. The source remains unchanged and may be moved or deleted after successful import. If you skip importing and use the original path, keep that file in place. Renaming is unnecessary. Use `primary` for your own main calendar.
 
 ### App Step 3: Sign in
 
-Click `設定を保存してGoogleにログイン`. Within three minutes, select the account added in 1-3, verify the app name and allow calendar access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `接続確認が完了しました`. The app saves the token and verifies read access to the selected calendar without modifying events.
+Click `Step 3: Save settings and sign in to Google`. Within three minutes, select the account added in 1-3, verify the app name and allow calendar access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `Connection verified`. The app saves the token and verifies read access to the selected calendar without modifying events.
 
 ### App Step 4: Recheck the connection
 
@@ -72,7 +74,7 @@ You can cancel a login/check; closing Settings also cancels it. Close the browse
 
 ## Delete imported JSON
 
-The adjacent `取り込み済みJSONを削除` (Delete imported JSON) asks for confirmation and deletes only the app's managed copy, clearing the saved path if it points to that copy. It leaves the original file, external files and authentication tokens intact and does not revoke access at Google. Import and deletion take effect immediately without saving unsaved entries in other settings fields. A settings-save failure restores the previous copy. These buttons are unavailable during authentication/connection checks. Storage is in the current Windows user's application-data directory, not beside the executable.
+The adjacent `Delete imported JSON` (Delete imported JSON) asks for confirmation and deletes only the app's managed copy, clearing the saved path if it points to that copy. It leaves the original file, external files and authentication tokens intact and does not revoke access at Google. Import and deletion take effect immediately without saving unsaved entries in other settings fields. A settings-save failure restores the previous copy. These buttons are unavailable during authentication/connection checks. Storage is in the current Windows user's application-data directory, not beside the executable.
 
 <a id="troubleshooting"></a>
 

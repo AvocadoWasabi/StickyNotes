@@ -8,6 +8,8 @@
 
 ## 未发布 / Unreleased
 
+- UI 支持日语、英语和简体中文，默认跟随 Windows 显示语言；设置中选择的语言在下次启动时应用。翻译菜单、对话框、Google 配置指南、错误提示和新便签模板，保留已有笔记及日程内容。分发包包含翻译资源。
+
 ## [0.0.4](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) — 2026-10-06
 
 - README 精简为安装与基本操作；详细说明移至[操作补充](docs/USAGE.zh-CN.md)和[Google Calendar 指南](docs/GOOGLE-CALENDAR.zh-CN.md)。删除安装指南中的重复说明，统一三种语言的结构。

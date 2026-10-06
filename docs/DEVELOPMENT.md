@@ -61,3 +61,7 @@ pushだけでReleaseは作成・公開されません。ZIPはGit履歴には含
 ## アイコン
 
 元画像は `docs/images/StickyNotes.png`、ICOは `src/StickyNotes/Assets` にあります。Windows用の複数サイズICOを再生成するには `./scripts/Convert-AppIcon.ps1` を実行します。生成履歴は [ICON.md](ICON.md) を参照してください。
+
+## 表示言語
+
+UI文言は `src/StickyNotes.Core/Strings.resx`（日本語）、`Strings.en.resx`、`Strings.zh-CN.resx` で管理します。キーと書式の引数を揃え、`L10n` から取得してください。言語は起動時に初期化し、設定保存時の変更は次回起動まで保留します。保存済みノートや通信のキーは翻訳しません。テストではリソースの不足、言語設定の永続化、メニュー、データ保持を確認します。配布には `en/StickyNotes.Core.resources.dll` と `zh-CN/StickyNotes.Core.resources.dll` が必要です。

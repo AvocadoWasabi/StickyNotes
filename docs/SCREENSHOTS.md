@@ -4,7 +4,7 @@
 
 2026-10-05に、バージョン0.0.2のWPFコントロールでサンプルMarkdownを描画して更新しました。付箋の内容領域を画像化しており、デスクトップのキャプチャではありません。個人のノート・設定・認証情報は使用していません。
 
-Updated on 2026-10-05 by rendering fictional Markdown samples with version 0.0.2's WPF controls. These images show each note's content area, rather than a desktop capture. No personal notes, settings, or credentials are included. English images use English note content with the app's current Japanese controls.
+Updated on 2026-10-05 by rendering fictional Markdown samples with version 0.0.2's WPF controls. These images show each note's content area, rather than a desktop capture. No personal notes, settings, or credentials are included. English images use English note content with that version's Japanese controls.
 
 | 内容 / Content | 日本語 / Japanese | English |
 | --- | --- | --- |

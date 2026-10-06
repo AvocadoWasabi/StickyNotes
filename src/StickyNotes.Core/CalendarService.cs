@@ -17,7 +17,7 @@ public sealed record CalendarQuery(DateTimeOffset From, string Search)
     {
         var m = Regex.Match(command.Trim(), @"^@calendar\s+(\S+)(?:\s+(.*))?$", RegexOptions.IgnoreCase);
         if (!m.Success || !DateTimeOffset.TryParse(m.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date))
-            throw new FormatException("例: @calendar 2026-10-05T09:00 会議（検索語は省略可、時差省略時はPCのローカル時間）");
+            throw new FormatException(L10n.Text("CalendarService.Text01"));
         return new(date, m.Groups[2].Value.Trim());
     }
 }
@@ -42,7 +42,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
     public void Configure(string credentialsPath)
     {
         var (nextId, nextSecret) = ReadCredentials(credentialsPath);
-        if (!gate.Wait(0)) throw new InvalidOperationException("Googleとの通信中です。完了後にもう一度お試しください。");
+        if (!gate.Wait(0)) throw new InvalidOperationException(L10n.Text("CalendarService.Text02"));
         try
         {
             if (clientId != nextId)
@@ -67,7 +67,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
 
     private static (string Id, string Secret) ReadCredentials(string path)
     {
-        if (string.IsNullOrWhiteSpace(path)) throw new InvalidOperationException("手順2で認証JSONを選択してください。");
+        if (string.IsNullOrWhiteSpace(path)) throw new InvalidOperationException(L10n.Text("CalendarService.Text03"));
         try
         {
             using var json = JsonDocument.Parse(File.ReadAllText(path));
@@ -79,7 +79,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
         }
         catch (Exception ex) when (ex is JsonException or KeyNotFoundException or InvalidOperationException or FormatException)
         {
-            throw new FormatException("種類「デスクトップアプリ」のOAuth JSONを選択してください。client_idが必要です。");
+            throw new FormatException(L10n.Text("CalendarService.Text04"));
         }
     }
 
@@ -88,7 +88,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
 
     public async Task SignInAsync(CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(clientId)) throw new InvalidOperationException("先にGoogle OAuth JSONを設定してください。");
+        if (string.IsNullOrWhiteSpace(clientId)) throw new InvalidOperationException(L10n.Text("CalendarService.Text05"));
         using var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(3));
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeout.Token);
         var ct = linked.Token;
@@ -127,13 +127,13 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
                 if (string.IsNullOrWhiteSpace(code) || error is not null) code = null;
                 context.Response.StatusCode = validState ? 200 : 400;
                 context.Response.ContentType = "text/plain; charset=utf-8";
-                var bytes = Encoding.UTF8.GetBytes(code is null ? "認証できませんでした。付箋アプリに戻ってください。" : "認証を受け取りました。このタブを閉じて付箋に戻ってください。");
+                var bytes = Encoding.UTF8.GetBytes(code is null ? L10n.Text("CalendarService.Text06") : L10n.Text("CalendarService.Text07"));
                 context.Response.ContentLength64 = bytes.Length;
                 context.Response.KeepAlive = false;
                 context.Response.Headers["Cache-Control"] = "no-store";
                 try { await context.Response.OutputStream.WriteAsync(bytes, ct); }
                 finally { context.Response.Close(); }
-                if (validState && error is not null) throw new InvalidOperationException("Googleで認証が許可されませんでした。再試行し、カレンダーへのアクセスを許可してください。");
+                if (validState && error is not null) throw new InvalidOperationException(L10n.Text("CalendarService.Text08"));
             }
             var nextTokens = await Exchange(new() { ["code"] = code, ["redirect_uri"] = redirect, ["grant_type"] = "authorization_code", ["code_verifier"] = verifier }, ct);
             ct.ThrowIfCancellationRequested();
@@ -141,7 +141,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
             tokens = nextTokens;
         }
         catch (OperationCanceledException) when (timeout.IsCancellationRequested && !cancellationToken.IsCancellationRequested)
-        { throw new TimeoutException("認証の待ち時間（3分）を過ぎました。「Googleにログイン」からやり直してください。"); }
+        { throw new TimeoutException(L10n.Text("CalendarService.Text09")); }
         finally { gate.Release(); }
     }
 
@@ -150,10 +150,10 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
         form["client_id"] = clientId;
         if (clientSecret.Length > 0) form["client_secret"] = clientSecret;
         using var response = await http.PostAsync("https://oauth2.googleapis.com/token", new FormUrlEncodedContent(form), cancellationToken);
-        if (!response.IsSuccessStatusCode) throw new InvalidOperationException($"Google認証に失敗しました ({(int)response.StatusCode})。設定から再認証してください。");
+        if (!response.IsSuccessStatusCode) throw new InvalidOperationException(L10n.Format("CalendarService.Text10", (int)response.StatusCode));
         var result = JsonSerializer.Deserialize<OAuthTokens>(await response.Content.ReadAsStringAsync(cancellationToken));
         if (result is null || string.IsNullOrWhiteSpace(result.AccessToken) || result.ExpiresIn <= 0)
-            throw new InvalidOperationException("Googleの認証応答を確認できませんでした。再度ログインしてください。");
+            throw new InvalidOperationException(L10n.Text("CalendarService.Text11"));
         result.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(result.ExpiresIn - 60);
         return result;
     }
@@ -163,10 +163,10 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
         await gate.WaitAsync(cancellationToken);
         try
         {
-            if (tokens is null) throw new InvalidOperationException("設定からGoogleにログインしてください。");
+            if (tokens is null) throw new InvalidOperationException(L10n.Text("CalendarService.Text12"));
             if (tokens.ExpiresAt <= DateTimeOffset.UtcNow)
             {
-                if (tokens.RefreshToken.Length == 0) throw new InvalidOperationException("Googleへの再ログインが必要です。");
+                if (tokens.RefreshToken.Length == 0) throw new InvalidOperationException(L10n.Text("CalendarService.Text13"));
                 var refreshed = await Exchange(new() { ["grant_type"] = "refresh_token", ["refresh_token"] = tokens.RefreshToken }, cancellationToken);
                 refreshed.RefreshToken = tokens.RefreshToken;
                 tokens = refreshed;
@@ -185,18 +185,18 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
         if (payload is not null) request.Content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
         using var response = await http.SendAsync(request, cancellationToken);
         if (response.StatusCode == HttpStatusCode.PreconditionFailed)
-            throw new ConflictException("Google側で予定が変更されています。予定を再取得してから編集してください。");
-        if (!response.IsSuccessStatusCode) throw new InvalidOperationException($"Calendar APIエラー ({(int)response.StatusCode})。接続、認証、カレンダーの編集権限を確認してください。");
+            throw new ConflictException(L10n.Text("CalendarService.Text14"));
+        if (!response.IsSuccessStatusCode) throw new InvalidOperationException(L10n.Format("CalendarService.Text15", (int)response.StatusCode));
         return JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
     }
 
     public async Task VerifyConnectionAsync(string calendarId, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(calendarId)) throw new InvalidOperationException("Calendar IDを指定してください。");
+        if (string.IsNullOrWhiteSpace(calendarId)) throw new InvalidOperationException(L10n.Text("CalendarService.Text16"));
         using var response = await Send(HttpMethod.Get, $"calendars/{Escape(calendarId)}/events?maxResults=1",
             cancellationToken: cancellationToken);
         if (!response.RootElement.TryGetProperty("items", out var items) || items.ValueKind != JsonValueKind.Array)
-            throw new InvalidOperationException("カレンダーの応答を確認できませんでした。");
+            throw new InvalidOperationException(L10n.Text("CalendarService.Text17"));
     }
 
     private static string Escape(string s) => Uri.EscapeDataString(s);
@@ -219,7 +219,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
 
     public async Task<CalendarEvent> UpdateAsync(string calendarId, CalendarEvent original, string summary, string description)
     {
-        if (string.IsNullOrEmpty(original.ETag)) throw new InvalidOperationException("予定のバージョンを取得できません。再検索してください。");
+        if (string.IsNullOrEmpty(original.ETag)) throw new InvalidOperationException(L10n.Text("CalendarService.Text18"));
         using var json = await Send(HttpMethod.Patch, $"calendars/{Escape(calendarId)}/events/{Escape(original.Id)}?sendUpdates=all",
             new { summary, description }, original.ETag);
         return ReadEvent(json.RootElement);

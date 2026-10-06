@@ -1,5 +1,7 @@
 [English](GOOGLE-CALENDAR.en.md) | [日本語](GOOGLE-CALENDAR.md) | [简体中文](GOOGLE-CALENDAR.zh-CN.md)
 
+[表示言語の設定](USAGE.md#language)（未リリース）
+
 # Google Calendarの使い方と設定
 
 [基本操作に戻る](../README.ja.md)

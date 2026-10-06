@@ -8,7 +8,7 @@ public sealed class NoteLinkPreview : StackPanel
     public NoteLinkPreview()
     {
         Margin = new Thickness(0, 12, 0, 0);
-        Children.Add(new TextBlock { Text = "内容プレビュー（Markdown・読み取り専用）", FontWeight = FontWeights.SemiBold });
+        Children.Add(new TextBlock { Text = L10n.Text("NoteLinkPreview.Text01"), FontWeight = FontWeights.SemiBold });
         Children.Add(Status); Children.Add(Body);
         Update(null, "");
     }
@@ -16,7 +16,7 @@ public sealed class NoteLinkPreview : StackPanel
     public void Update(FileSnapshot? source, string heading)
     {
         Body.Text = ""; Body.Visibility = Visibility.Collapsed; Status.Foreground = Brushes.DimGray;
-        if (source is null) { Status.Text = "ノートを読み込むと表示します。"; return; }
+        if (source is null) { Status.Text = L10n.Text("NoteLinkPreview.Text02"); return; }
         try
         {
             var candidate = SectionEditor.EnsureHeading(source.Text, heading);
@@ -25,9 +25,9 @@ public sealed class NoteLinkPreview : StackPanel
             var length = Math.Min(text.Length, DailyNotePreview.CharacterLimit);
             if (length < text.Length && length > 0 && char.IsHighSurrogate(text[length - 1])) length--;
             Body.Text = text[..length]; Body.Visibility = Visibility.Visible;
-            Status.Text = Path.GetFileName(source.Path) + (added ? " — 新しい見出しを末尾に追加予定（未保存）" : heading.Length == 0 ? " — 本文全体" : " — " + heading) +
-                (length < text.Length ? " — 先頭4000文字まで" : "");
+            Status.Text = Path.GetFileName(source.Path) + (added ? L10n.Text("NoteLinkPreview.Text03") : heading.Length == 0 ? L10n.Text("NoteLinkPreview.Text04") : " — " + heading) +
+                (length < text.Length ? L10n.Text("NoteLinkPreview.Text05") : "");
         }
-        catch (Exception ex) { Status.Text = "確認できません: " + ex.Message; Status.Foreground = Brushes.DarkRed; }
+        catch (Exception ex) { Status.Text = L10n.Text("NoteLinkPreview.Text06") + ex.Message; Status.Foreground = Brushes.DarkRed; }
     }
 }

@@ -22,7 +22,7 @@ public static class NoteStore
         file.CopyTo(memory);
         var previous = memory.ToArray();
         if (Convert.ToHexString(SHA256.HashData(previous)) != expected.Hash)
-            throw new ConflictException("ファイルが外部で変更されています。編集内容をコピーしてから再読込してください。");
+            throw new ConflictException(L10n.Text("NoteStore.Text01"));
         var backups = backupDirectory ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StickyNotes", "backups");
         Directory.CreateDirectory(backups);
         File.WriteAllBytes(Path.Combine(backups, $"{DateTime.UtcNow:yyyyMMddHHmmssfff}-{Guid.NewGuid():N}.md"), previous);
@@ -57,7 +57,7 @@ public static class NoteStore
         if (string.IsNullOrWhiteSpace(yaml)) return new();
         var stream = new YamlStream();
         stream.Load(new StringReader(yaml));
-        return stream.Documents[0].RootNode as YamlMappingNode ?? throw new FormatException("YAMLプロパティはマッピング形式にしてください。");
+        return stream.Documents[0].RootNode as YamlMappingNode ?? throw new FormatException(L10n.Text("NoteStore.Text02"));
     }
 
     public static NoteMetadata Metadata(string text)
@@ -67,7 +67,7 @@ public static class NoteStore
         var tags = root.Children.TryGetValue(new YamlScalarNode("tags"), out var t)
             ? t is YamlSequenceNode seq ? seq.Children.Select(x => x.ToString()).ToArray() : t.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries)
             : [];
-        return new(Get("title", "付箋"), tags, Get("status", "active"), Get("color", "yellow"));
+        return new(Get("title", L10n.Text("NoteStore.Text03")), tags, Get("status", "active"), Get("color", "yellow"));
     }
 
     public static string WithMetadata(string text, NoteMetadata metadata)
@@ -89,9 +89,9 @@ public static class NoteStore
     public static string Create(string directory)
     {
         Directory.CreateDirectory(directory);
-        var path = Path.Combine(directory, $"付箋-{DateTime.Now:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N")[..6]}.md");
-        var text = $"---\ntype: sticky\nid: {Guid.NewGuid()}\ncreated: {DateTimeOffset.Now:o}\n---\n# 新しい付箋\n\n- [ ] タスクを書く\n\n**Markdown** でメモできます。\n";
-        File.WriteAllText(path, WithMetadata(text, new("新しい付箋", ["sticky"], "active", "yellow")), new UTF8Encoding(false));
+        var path = Path.Combine(directory, L10n.Format("NoteStore.Text04", DateTime.Now, Guid.NewGuid().ToString("N")[..6]));
+        var text = L10n.Format("NoteStore.Text05", Guid.NewGuid(), DateTimeOffset.Now);
+        File.WriteAllText(path, WithMetadata(text, new(L10n.Text("NoteStore.Text06"), ["sticky"], "active", "yellow")), new UTF8Encoding(false));
         return path;
     }
 }

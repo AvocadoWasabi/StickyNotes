@@ -36,13 +36,13 @@ public static class SectionEditor
     public static string EnsureHeading(string text, string heading)
     {
         if (string.IsNullOrWhiteSpace(heading)) return text;
-        if (heading.Any(char.IsControl)) throw new InvalidOperationException("見出し名は改行を含まない1行で入力してください。");
+        if (heading.Any(char.IsControl)) throw new InvalidOperationException(L10n.Text("SectionEditor.Text01"));
         if (Headings(text).Contains(heading)) { _ = Find(text, heading); return text; }
         var newline = text.Contains("\r\n") ? "\r\n" : "\n";
         var candidate = text + (text.Length == 0 ? "" : text.EndsWith(newline) ? newline : newline + newline) + "## " + heading + newline;
         // Do not write into an unclosed code fence, or accept a title altered by Markdown syntax.
         try { _ = Find(candidate, heading); }
-        catch (InvalidOperationException ex) { throw new InvalidOperationException("見出しを末尾に追加できません。見出し名や元ノートの閉じていないコードフェンスを確認してください。", ex); }
+        catch (InvalidOperationException ex) { throw new InvalidOperationException(L10n.Text("SectionEditor.Text02"), ex); }
         return candidate;
     }
 
@@ -52,8 +52,8 @@ public static class SectionEditor
         var matches = Scan(text);
         var selected = matches.Where(x => x.Title == heading).ToArray();
         if (selected.Length != 1) throw new InvalidOperationException(selected.Length == 0
-            ? $"見出し「{heading}」が見つかりません。元ノートに作成してください。"
-            : $"見出し「{heading}」が複数あります。一意の名前にしてください。");
+            ? L10n.Format("SectionEditor.Text03", heading)
+            : L10n.Format("SectionEditor.Text04", heading));
         var target = selected[0];
         var end = matches.Where(x => x.Start >= target.End && x.Level <= target.Level).Select(x => x.Start).DefaultIfEmpty(text.Length).First();
         return new(target.End, end - target.End, text[target.End..end]);
@@ -68,7 +68,7 @@ public static class SectionEditor
         // A new peer heading would escape the linked region and make subsequent edits ambiguous.
         var candidate = text[..span.Start] + content + text[(span.Start + span.Length)..];
         var check = Find(candidate, heading);
-        if (check.Length != content.Length) throw new InvalidOperationException("この範囲には、対象見出しと同じか上位の見出しを追加できません。");
+        if (check.Length != content.Length) throw new InvalidOperationException(L10n.Text("SectionEditor.Text05"));
         return candidate;
     }
 
@@ -77,7 +77,7 @@ public static class SectionEditor
         var lines = content.Split('\n');
         if (line < 0 || line >= lines.Length) throw new ArgumentOutOfRangeException(nameof(line));
         var match = Regex.Match(lines[line], @"^(\s*(?:[-+*]|\d+[.)])\s+\[)[ xX](\])");
-        if (!match.Success) throw new InvalidOperationException("指定行はタスクではありません。");
+        if (!match.Success) throw new InvalidOperationException(L10n.Text("SectionEditor.Text06"));
         var position = match.Groups[1].Length;
         lines[line] = lines[line][..position] + (value ? "x" : " ") + lines[line][(position + 1)..];
         return string.Join("\n", lines);

@@ -1,0 +1,792 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="App.xaml.Text01" xml:space="preserve">
+    <value>启动参数无效。</value>
+  </data>
+  <data name="App.xaml.Text02" xml:space="preserve">
+    <value>无法向正在运行的应用发送操作，请使用通知区域菜单或重新启动应用。
+</value>
+  </data>
+  <data name="App.xaml.Text03" xml:space="preserve">
+    <value>便签应用已在运行，请使用通知区域或任务栏菜单。</value>
+  </data>
+  <data name="App.xaml.Text04" xml:space="preserve">
+    <value>无法加载设置，为保护原文件将退出。
+</value>
+  </data>
+  <data name="AppCommandPipe.Text01" xml:space="preserve">
+    <value>无法向正在运行的应用发送操作。</value>
+  </data>
+  <data name="AppCommands.Text01" xml:space="preserve">
+    <value>新便签</value>
+  </data>
+  <data name="AppCommands.Text02" xml:space="preserve">
+    <value>打开 Markdown…</value>
+  </data>
+  <data name="AppCommands.Text03" xml:space="preserve">
+    <value>显示笔记的一部分…</value>
+  </data>
+  <data name="AppCommands.Text04" xml:space="preserve">
+    <value>显示每日笔记…</value>
+  </data>
+  <data name="AppCommands.Text05" xml:space="preserve">
+    <value>显示全部</value>
+  </data>
+  <data name="AppCommands.Text06" xml:space="preserve">
+    <value>将全部便签置顶（10秒）</value>
+  </data>
+  <data name="AppCommands.Text07" xml:space="preserve">
+    <value>设置…</value>
+  </data>
+  <data name="AppCommands.Text08" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="CalendarCompletion.Text01" xml:space="preserve">
+    <value>@calendar 日期时间 [关键词]
+时区可省略（Windows 本地时间）。
+不输入关键词也能搜索指定时间以后的日程。</value>
+  </data>
+  <data name="CalendarCompletion.Text02" xml:space="preserve">
+    <value>@calendar  —  搜索 Google Calendar</value>
+  </data>
+  <data name="CalendarCompletion.Text03" xml:space="preserve">
+    <value>Tab／Enter／点击插入 · Esc 关闭
+修改选中的日期时间后保存。</value>
+  </data>
+  <data name="CalendarCompletion.Text04" xml:space="preserve">
+    <value>无关键词：@calendar {0}
+筛选：@calendar {1} 会议</value>
+  </data>
+  <data name="CalendarService.Text01" xml:space="preserve">
+    <value>示例：@calendar 2026-10-05T09:00 会议（关键词可省略；省略时区时使用 Windows 本地时间）</value>
+  </data>
+  <data name="CalendarService.Text02" xml:space="preserve">
+    <value>正在与 Google 通信，请在完成后重试。</value>
+  </data>
+  <data name="CalendarService.Text03" xml:space="preserve">
+    <value>请在步骤2选择凭据 JSON。</value>
+  </data>
+  <data name="CalendarService.Text04" xml:space="preserve">
+    <value>请选择“桌面应用”的 OAuth JSON，必须包含 client_id。</value>
+  </data>
+  <data name="CalendarService.Text05" xml:space="preserve">
+    <value>请先设置 Google OAuth JSON。</value>
+  </data>
+  <data name="CalendarService.Text06" xml:space="preserve">
+    <value>授权失败，请返回便签应用。</value>
+  </data>
+  <data name="CalendarService.Text07" xml:space="preserve">
+    <value>已收到授权。请关闭此标签页并返回便签应用。</value>
+  </data>
+  <data name="CalendarService.Text08" xml:space="preserve">
+    <value>未获得 Google 授权。请重试并允许访问日历。</value>
+  </data>
+  <data name="CalendarService.Text09" xml:space="preserve">
+    <value>登录等待已超过3分钟，请点击“登录 Google”重试。</value>
+  </data>
+  <data name="CalendarService.Text10" xml:space="preserve">
+    <value>Google 授权失败（{0}）。请在设置中重新登录。</value>
+  </data>
+  <data name="CalendarService.Text11" xml:space="preserve">
+    <value>无法验证 Google 授权响应，请重新登录。</value>
+  </data>
+  <data name="CalendarService.Text12" xml:space="preserve">
+    <value>请在设置中登录 Google。</value>
+  </data>
+  <data name="CalendarService.Text13" xml:space="preserve">
+    <value>请重新登录 Google。</value>
+  </data>
+  <data name="CalendarService.Text14" xml:space="preserve">
+    <value>Google 上的日程已更改，请重新获取后再编辑。</value>
+  </data>
+  <data name="CalendarService.Text15" xml:space="preserve">
+    <value>Calendar API 错误（{0}）。请检查连接、授权和日历编辑权限。</value>
+  </data>
+  <data name="CalendarService.Text16" xml:space="preserve">
+    <value>请输入 Calendar ID。</value>
+  </data>
+  <data name="CalendarService.Text17" xml:space="preserve">
+    <value>无法验证日历响应。</value>
+  </data>
+  <data name="CalendarService.Text18" xml:space="preserve">
+    <value>无法获取日程版本，请重新搜索。</value>
+  </data>
+  <data name="DailyNoteResolver.Text01" xml:space="preserve">
+    <value>请输入每日笔记的正则表达式。</value>
+  </data>
+  <data name="DailyNoteResolver.Text02" xml:space="preserve">
+    <value>正则表达式不能超过4096个字符。</value>
+  </data>
+  <data name="DailyNoteResolver.Text03" xml:space="preserve">
+    <value>每日笔记正则表达式无效：</value>
+  </data>
+  <data name="DailyNoteResolver.Text04" xml:space="preserve">
+    <value>请使用命名组 year、month、day 识别今日日期。示例：</value>
+  </data>
+  <data name="DailyNoteResolver.Text05" xml:space="preserve">
+    <value>请在设置中选择每日笔记文件夹。</value>
+  </data>
+  <data name="DailyNoteResolver.Text06" xml:space="preserve">
+    <value>正则表达式搜索不支持包含符号链接或目录联接的文件夹。</value>
+  </data>
+  <data name="DailyNoteResolver.Text07" xml:space="preserve">
+    <value>每日笔记搜索范围过大。请选择更小的文件夹（上限10000项／1秒）。</value>
+  </data>
+  <data name="DailyNoteResolver.Text08" xml:space="preserve">
+    <value>正则表达式匹配超时，请简化表达式。</value>
+  </data>
+  <data name="DailyNoteResolver.Text09" xml:space="preserve">
+    <value>多个每日笔记匹配今日日期，请缩小正则表达式范围。
+</value>
+  </data>
+  <data name="DailyNoteResolver.Text10" xml:space="preserve">
+    <value>没有匹配今日日期的每日笔记。</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text01" xml:space="preserve">
+    <value>凭据 JSON 保存位置不能使用链接。</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text02" xml:space="preserve">
+    <value>保存设置和恢复凭据 JSON 均失败，请检查恢复文件：{0}</value>
+  </data>
+  <data name="HeadingPicker.Text01" xml:space="preserve">
+    <value>要显示的标题</value>
+  </data>
+  <data name="HeadingPicker.Text02" xml:space="preserve">
+    <value>选择已有标题或输入新名称（不带 #）。留空显示整个正文。点击“显示”会将新标题追加到原文件末尾。</value>
+  </data>
+  <data name="Language.Automatic" xml:space="preserve">
+    <value>跟随 Windows</value>
+  </data>
+  <data name="Language.Label" xml:space="preserve">
+    <value>显示语言</value>
+  </data>
+  <data name="Language.Restart" xml:space="preserve">
+    <value>保存后在下次启动时生效，不修改笔记正文、标题和标签。</value>
+  </data>
+  <data name="MarkdownView.Text01" xml:space="preserve">
+    <value>[图片：</value>
+  </data>
+  <data name="NoteFolderMigration.Text01" xml:space="preserve">
+    <value>请使用绝对路径指定便签文件夹。</value>
+  </data>
+  <data name="NoteFolderMigration.Text02" xml:space="preserve">
+    <value>无法迁移包含链接或目录联接的路径：</value>
+  </data>
+  <data name="NoteFolderMigration.Text03" xml:space="preserve">
+    <value>源文件夹与目标文件夹不能互为父子目录。</value>
+  </data>
+  <data name="NoteFolderMigration.Text04" xml:space="preserve">
+    <value>源路径不是文件夹：</value>
+  </data>
+  <data name="NoteFolderMigration.Text05" xml:space="preserve">
+    <value>目标位置存在同名文件或文件夹，不会覆盖：</value>
+  </data>
+  <data name="NoteFolderMigration.Text06" xml:space="preserve">
+    <value>迁移失败，部分文件无法恢复。请检查以下目标位置和原始文件夹。没有覆盖文件。
+</value>
+  </data>
+  <data name="NoteFolderMigration.Text07" xml:space="preserve">
+    <value>
+原因：</value>
+  </data>
+  <data name="NoteLink.Text01" xml:space="preserve">
+    <value>原笔记已更改，请重新加载后再显示。</value>
+  </data>
+  <data name="NoteLinkPreview.Text01" xml:space="preserve">
+    <value>内容预览（Markdown，只读）</value>
+  </data>
+  <data name="NoteLinkPreview.Text02" xml:space="preserve">
+    <value>加载笔记后显示预览。</value>
+  </data>
+  <data name="NoteLinkPreview.Text03" xml:space="preserve">
+    <value> — 将追加新标题（未保存）</value>
+  </data>
+  <data name="NoteLinkPreview.Text04" xml:space="preserve">
+    <value> — 整个正文</value>
+  </data>
+  <data name="NoteLinkPreview.Text05" xml:space="preserve">
+    <value> — 前4000个字符</value>
+  </data>
+  <data name="NoteLinkPreview.Text06" xml:space="preserve">
+    <value>无法预览：</value>
+  </data>
+  <data name="NoteLinkWindow.Text01" xml:space="preserve">
+    <value>请选择 Markdown 文件。</value>
+  </data>
+  <data name="NoteLinkWindow.Text02" xml:space="preserve">
+    <value>显示每日笔记</value>
+  </data>
+  <data name="NoteLinkWindow.Text03" xml:space="preserve">
+    <value>显示笔记的一部分</value>
+  </data>
+  <data name="NoteLinkWindow.Text04" xml:space="preserve">
+    <value>按设置中的文件夹和正则表达式查找今日笔记，并在日期变化时自动切换。</value>
+  </data>
+  <data name="NoteLinkWindow.Text05" xml:space="preserve">
+    <value>选择文件夹…</value>
+  </data>
+  <data name="NoteLinkWindow.Text06" xml:space="preserve">
+    <value>选择 Markdown 文件…</value>
+  </data>
+  <data name="NoteLinkWindow.Text07" xml:space="preserve">
+    <value>重新加载</value>
+  </data>
+  <data name="NoteLinkWindow.Text08" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="NoteLinkWindow.Text09" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="NoteLinkWindow.Text10" xml:space="preserve">
+    <value>无法加载原笔记。</value>
+  </data>
+  <data name="NoteLinkWindow.Text11" xml:space="preserve">
+    <value>请选择已有的 Markdown 文件。</value>
+  </data>
+  <data name="NoteLinkWindow.Text12" xml:space="preserve">
+    <value>今日笔记：</value>
+  </data>
+  <data name="NoteLinkWindow.Text13" xml:space="preserve">
+    <value>所选笔记：</value>
+  </data>
+  <data name="NoteLinkWindow.Text14" xml:space="preserve">
+    <value>请先加载 Markdown 文件。</value>
+  </data>
+  <data name="NoteLinkWindow.Text15" xml:space="preserve">
+    <value>今日笔记已更改，请重新加载并选择标题。</value>
+  </data>
+  <data name="NoteStore.Text01" xml:space="preserve">
+    <value>文件已被外部修改，请复制未保存内容后再重新加载。</value>
+  </data>
+  <data name="NoteStore.Text02" xml:space="preserve">
+    <value>YAML 属性必须为映射格式。</value>
+  </data>
+  <data name="NoteStore.Text03" xml:space="preserve">
+    <value>便签</value>
+  </data>
+  <data name="NoteStore.Text04" xml:space="preserve">
+    <value>便签-{0:yyyyMMdd-HHmmss}-{1}.md</value>
+  </data>
+  <data name="NoteStore.Text05" xml:space="preserve">
+    <value>---
+type: sticky
+id: {0}
+created: {1:o}
+---
+# 新便签
+
+- [ ] 写下任务
+
+使用 **Markdown** 记笔记。
+</value>
+  </data>
+  <data name="NoteStore.Text06" xml:space="preserve">
+    <value>新便签</value>
+  </data>
+  <data name="NoteWindow.Text01" xml:space="preserve">
+    <value>拖动以移动便签</value>
+  </data>
+  <data name="NoteWindow.Text02" xml:space="preserve">
+    <value>今日笔记尚未创建。
+在 Obsidian 中创建后会自动显示在此处。
+
+可在设置中保留昨天的笔记，直到 1. 今日笔记创建，或 2. 点击“重新加载”。</value>
+  </data>
+  <data name="NoteWindow.Text03" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="NoteWindow.Text04" xml:space="preserve">
+    <value>编辑 Markdown（Ctrl+E）</value>
+  </data>
+  <data name="NoteWindow.Text05" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="NoteWindow.Text06" xml:space="preserve">
+    <value>保存（Ctrl+S）</value>
+  </data>
+  <data name="NoteWindow.Text07" xml:space="preserve">
+    <value>重新加载</value>
+  </data>
+  <data name="NoteWindow.Text08" xml:space="preserve">
+    <value>更多操作</value>
+  </data>
+  <data name="NoteWindow.Text09" xml:space="preserve">
+    <value>新便签</value>
+  </data>
+  <data name="NoteWindow.Text10" xml:space="preserve">
+    <value>切换置顶</value>
+  </data>
+  <data name="NoteWindow.Text11" xml:space="preserve">
+    <value>关闭此便签（保留文件）</value>
+  </data>
+  <data name="NoteWindow.Text12" xml:space="preserve">
+    <value>编辑中 • Ctrl+S 保存</value>
+  </data>
+  <data name="NoteWindow.Text13" xml:space="preserve">
+    <value>显示缩放（{0}%）</value>
+  </data>
+  <data name="NoteWindow.Text14" xml:space="preserve">
+    <value>放大（Ctrl++／Ctrl+滚轮向上）</value>
+  </data>
+  <data name="NoteWindow.Text15" xml:space="preserve">
+    <value>缩小（Ctrl+-／Ctrl+滚轮向下）</value>
+  </data>
+  <data name="NoteWindow.Text16" xml:space="preserve">
+    <value>恢复默认（Ctrl+0）</value>
+  </data>
+  <data name="NoteWindow.Text17" xml:space="preserve">
+    <value>每日笔记 • </value>
+  </data>
+  <data name="NoteWindow.Text18" xml:space="preserve">
+    <value>已保存 • </value>
+  </data>
+  <data name="NoteWindow.Text19" xml:space="preserve">
+    <value>等待今日笔记</value>
+  </data>
+  <data name="NoteWindow.Text20" xml:space="preserve">
+    <value>无法加载原笔记</value>
+  </data>
+  <data name="NoteWindow.Text21" xml:space="preserve">
+    <value>正在显示昨天的笔记（{0:yyyy-MM-dd}）。修改将保存到该日期的文件。
+</value>
+  </data>
+  <data name="NoteWindow.Text22" xml:space="preserve">
+    <value>点击“重新加载”切换到今日笔记。</value>
+  </data>
+  <data name="NoteWindow.Text23" xml:space="preserve">
+    <value>在 Obsidian 中创建今日笔记后会自动切换。</value>
+  </data>
+  <data name="NoteWindow.Text24" xml:space="preserve">
+    <value>昨天 / </value>
+  </data>
+  <data name="NoteWindow.Text25" xml:space="preserve">
+    <value>今天 / </value>
+  </data>
+  <data name="NoteWindow.Text26" xml:space="preserve">
+    <value>关联 / </value>
+  </data>
+  <data name="NoteWindow.Text27" xml:space="preserve">
+    <value>编辑 Markdown • Ctrl+S 保存 • @ 补全（时区和关键词可省略）</value>
+  </data>
+  <data name="NoteWindow.Text28" xml:space="preserve">
+    <value>已保存</value>
+  </data>
+  <data name="NoteWindow.Text29" xml:space="preserve">
+    <value>无法保存</value>
+  </data>
+  <data name="NoteWindow.Text30" xml:space="preserve">
+    <value>是否保存修改？
+
+是：保存并返回阅读模式。
+否：放弃修改并重新加载。
+取消：保留输入并继续编辑。</value>
+  </data>
+  <data name="NoteWindow.Text31" xml:space="preserve">
+    <value>保存修改</value>
+  </data>
+  <data name="NoteWindow.Text32" xml:space="preserve">
+    <value>无法读取原文件。</value>
+  </data>
+  <data name="NoteWindow.Text33" xml:space="preserve">
+    <value>请先保存正在编辑的内容。</value>
+  </data>
+  <data name="NoteWindow.Text34" xml:space="preserve">
+    <value>任务已保存</value>
+  </data>
+  <data name="NoteWindow.Text35" xml:space="preserve">
+    <value>是否放弃未保存的修改并重新加载？</value>
+  </data>
+  <data name="NoteWindow.Text36" xml:space="preserve">
+    <value>重新加载</value>
+  </data>
+  <data name="NoteWindow.Text37" xml:space="preserve">
+    <value>原笔记或日期已变化，请保存或复制输入后再重新加载。</value>
+  </data>
+  <data name="NoteWindow.Text38" xml:space="preserve">
+    <value>GOOGLE CALENDAR · {0}条日程（最多100条）</value>
+  </data>
+  <data name="NoteWindow.Text39" xml:space="preserve">
+    <value>点击编辑标题和说明</value>
+  </data>
+  <data name="NoteWindow.Text40" xml:space="preserve">
+    <value>没有匹配的日程。</value>
+  </data>
+  <data name="NoteWindow.Text41" xml:space="preserve">
+    <value>日程已刷新 • </value>
+  </data>
+  <data name="NoteWindow.Text42" xml:space="preserve">
+    <value>编辑日程</value>
+  </data>
+  <data name="NoteWindow.Text43" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="NoteWindow.Text44" xml:space="preserve">
+    <value>说明（Google 原始数据）</value>
+  </data>
+  <data name="NoteWindow.Text45" xml:space="preserve">
+    <value>将以下修改发送到 Google Calendar。
+如有参与者，将发送变更通知。
+
+时间：{0}
+
+标题（修改前）：{1}
+标题（修改后）：{2}
+
+说明（修改前）：
+{3}
+
+说明（修改后）：
+{4}</value>
+  </data>
+  <data name="NoteWindow.Text46" xml:space="preserve">
+    <value>是否更新 Google Calendar？</value>
+  </data>
+  <data name="NoteWindow.Text47" xml:space="preserve">
+    <value>Google Calendar 已更新</value>
+  </data>
+  <data name="NoteWindow.Text48" xml:space="preserve">
+    <value>无法更新</value>
+  </data>
+  <data name="NoteWindow.Text49" xml:space="preserve">
+    <value>标签、标题、状态和颜色</value>
+  </data>
+  <data name="NoteWindow.Text50" xml:space="preserve">
+    <value>将全部便签置顶（10秒）</value>
+  </data>
+  <data name="NoteWindow.Text51" xml:space="preserve">
+    <value>立即获取日程</value>
+  </data>
+  <data name="NoteWindow.Text52" xml:space="preserve">
+    <value>用默认应用打开原文件</value>
+  </data>
+  <data name="NoteWindow.Text53" xml:space="preserve">
+    <value>打开 Markdown…</value>
+  </data>
+  <data name="NoteWindow.Text54" xml:space="preserve">
+    <value>显示笔记的一部分…</value>
+  </data>
+  <data name="NoteWindow.Text55" xml:space="preserve">
+    <value>显示每日笔记…</value>
+  </data>
+  <data name="NoteWindow.Text56" xml:space="preserve">
+    <value>设置…</value>
+  </data>
+  <data name="NoteWindow.Text57" xml:space="preserve">
+    <value>退出应用（保存布局）</value>
+  </data>
+  <data name="NoteWindow.Text58" xml:space="preserve">
+    <value>关联便签显示原笔记的标签，请在原笔记中修改。</value>
+  </data>
+  <data name="NoteWindow.Text59" xml:space="preserve">
+    <value>便签属性</value>
+  </data>
+  <data name="NoteWindow.Text60" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="NoteWindow.Text61" xml:space="preserve">
+    <value>标签（空格或逗号分隔；层级：project/name）</value>
+  </data>
+  <data name="NoteWindow.Text62" xml:space="preserve">
+    <value>状态（例如 active / done / archived）</value>
+  </data>
+  <data name="NoteWindow.Text63" xml:space="preserve">
+    <value>颜色：yellow / green / blue / pink / gray</value>
+  </data>
+  <data name="NoteWindow.Text64" xml:space="preserve">
+    <value>标签可包含文字、数字、_、-、/，但不能只有数字。</value>
+  </data>
+  <data name="NoteWindow.Text65" xml:space="preserve">
+    <value>是否保存修改？</value>
+  </data>
+  <data name="SectionEditor.Text01" xml:space="preserve">
+    <value>标题必须为单行，不能包含换行符。</value>
+  </data>
+  <data name="SectionEditor.Text02" xml:space="preserve">
+    <value>无法追加标题，请检查标题名称和原笔记中未闭合的代码围栏。</value>
+  </data>
+  <data name="SectionEditor.Text03" xml:space="preserve">
+    <value>未找到标题“{0}”，请在原笔记中创建。</value>
+  </data>
+  <data name="SectionEditor.Text04" xml:space="preserve">
+    <value>存在多个名为“{0}”的标题，请使用唯一名称。</value>
+  </data>
+  <data name="SectionEditor.Text05" xml:space="preserve">
+    <value>此范围不能添加与目标标题同级或更高级的标题。</value>
+  </data>
+  <data name="SectionEditor.Text06" xml:space="preserve">
+    <value>指定行不是任务。</value>
+  </data>
+  <data name="SettingsWindow.Text01" xml:space="preserve">
+    <value>Sticky Notes 设置</value>
+  </data>
+  <data name="SettingsWindow.Text02" xml:space="preserve">
+    <value>编辑器失去焦点时自动保存</value>
+  </data>
+  <data name="SettingsWindow.Text03" xml:space="preserve">
+    <value>关闭时会询问是否保存修改。保存失败时保留输入。</value>
+  </data>
+  <data name="SettingsWindow.Text04" xml:space="preserve">
+    <value>在任务栏显示便签图标</value>
+  </data>
+  <data name="SettingsWindow.Text05" xml:space="preserve">
+    <value>保存后应用到所有已打开的便签，通知区域图标仍可使用。</value>
+  </data>
+  <data name="SettingsWindow.Text06" xml:space="preserve">
+    <value>鼠标悬停在标题上时显示按钮</value>
+  </data>
+  <data name="SettingsWindow.Text07" xml:space="preserve">
+    <value>开启：悬停标题或按 F6 时叠加显示按钮，用左端手柄移动便签。关闭：始终在标题下方显示（默认）。保存后应用到所有已打开的便签。</value>
+  </data>
+  <data name="SettingsWindow.Text08" xml:space="preserve">
+    <value>便签文件夹（例如仓库中的 Sticky Notes）</value>
+  </data>
+  <data name="SettingsWindow.Text09" xml:space="preserve">
+    <value>选择便签文件夹</value>
+  </data>
+  <data name="SettingsWindow.Text10" xml:space="preserve">
+    <value>每日笔记文件夹</value>
+  </data>
+  <data name="SettingsWindow.Text11" xml:space="preserve">
+    <value>选择每日笔记文件夹</value>
+  </data>
+  <data name="SettingsWindow.Text12" xml:space="preserve">
+    <value>每日笔记格式（日期标签 + 正则表达式）</value>
+  </data>
+  <data name="SettingsWindow.Text13" xml:space="preserve">
+    <value>使用 year、month、day 命名组识别今日日期。匹配含 .md 的完整相对路径，文件夹分隔符使用 /。
+示例：</value>
+  </data>
+  <data name="SettingsWindow.Text14" xml:space="preserve">
+    <value>保存设置后，打开“更多 → 显示每日笔记”，在底部查看预览。固定笔记使用“显示笔记的一部分”。</value>
+  </data>
+  <data name="SettingsWindow.Text15" xml:space="preserve">
+    <value>今日笔记尚未创建时</value>
+  </data>
+  <data name="SettingsWindow.Text16" xml:space="preserve">
+    <value>显示等待提示（默认）</value>
+  </data>
+  <data name="SettingsWindow.Text17" xml:space="preserve">
+    <value>1. 保留昨天，直到今日笔记创建</value>
+  </data>
+  <data name="SettingsWindow.Text18" xml:space="preserve">
+    <value>2. 保留昨天，直到重新加载</value>
+  </data>
+  <data name="SettingsWindow.Text19" xml:space="preserve">
+    <value>在 Obsidian 中创建今日笔记后自动显示。选项1保留昨天直到今日笔记出现；选项2保留到点击“重新加载”。重新加载时若今日文件不存在则等待；昨天也不存在时同样等待。</value>
+  </data>
+  <data name="SettingsWindow.Text20" xml:space="preserve">
+    <value>正在查找今日笔记…</value>
+  </data>
+  <data name="SettingsWindow.Text21" xml:space="preserve">
+    <value>已找到今日笔记：</value>
+  </data>
+  <data name="SettingsWindow.Text22" xml:space="preserve">
+    <value>无法检查：</value>
+  </data>
+  <data name="SettingsWindow.Text23" xml:space="preserve">
+    <value>插入带日期标签的默认示例</value>
+  </data>
+  <data name="SettingsWindow.Text24" xml:space="preserve">
+    <value>是否插入包含 year、month、day 命名组的正则表达式？
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text25" xml:space="preserve">
+    <value>
+
+是：用默认示例替换整个输入。
+否：保留已有表达式。</value>
+  </data>
+  <data name="SettingsWindow.Text26" xml:space="preserve">
+    <value>插入带日期标签的正则表达式</value>
+  </data>
+  <data name="SettingsWindow.Text27" xml:space="preserve">
+    <value>连接指南与授权设置（可选）</value>
+  </data>
+  <data name="SettingsWindow.Text28" xml:space="preserve">
+    <value>在独立段落开头输入 @ 可显示补全与示例（前面有正文时请先留空行）。
+示例：@calendar 2026-10-06T09:00
+时区可省略（Windows 本地时间），无需关键词也能搜索。</value>
+  </data>
+  <data name="SettingsWindow.Text29" xml:space="preserve">
+    <value>步骤1：Google 端准备（2026-10-06 已核对官方文档）
+适用于个人 Google 账号自用。按钮打开默认浏览器。步骤1-1至1-5始终选择同一项目，Google 页面名称随显示语言而异。</value>
+  </data>
+  <data name="SettingsWindow.Text30" xml:space="preserve">
+    <value>1-1. 打开 Google Calendar API</value>
+  </data>
+  <data name="SettingsWindow.Text31" xml:space="preserve">
+    <value>在顶部选择已有项目，或通过“新建项目（New project）”创建并选中（例如 StickyNotes Personal）。在 Google Calendar API 页面点击“启用（Enable）”；显示“管理（Manage）”表示已启用。</value>
+  </data>
+  <data name="SettingsWindow.Text32" xml:space="preserve">
+    <value>1-2. 打开品牌信息（Branding）</value>
+  </data>
+  <data name="SettingsWindow.Text33" xml:space="preserve">
+    <value>尚未配置时点击“开始（Get started）”。
+• 应用名：例如 StickyNotes Personal
+• 用户支持邮箱：可接收邮件的地址 → 下一步
+• 受众（Audience）：个人账号选择外部（External）→ 下一步
+• 联系信息：可接收邮件的地址 → 下一步
+• 阅读用户数据政策，同意后勾选 → 继续 → 创建
+已配置时检查内容后进入1-3。“内部（Internal）”仅限 Google Cloud 组织成员。</value>
+  </data>
+  <data name="SettingsWindow.Text34" xml:space="preserve">
+    <value>1-3. 打开受众（Audience）</value>
+  </data>
+  <data name="SettingsWindow.Text35" xml:space="preserve">
+    <value>“外部”且“测试中（Testing）”时，进入“测试用户（Test users）→ 添加用户（Add users）”，输入将登录日历的 Google 账号并保存。若与 Cloud 管理账号不同，请添加日历账号。此流程无需发布应用。</value>
+  </data>
+  <data name="SettingsWindow.Text36" xml:space="preserve">
+    <value>1-4. 打开数据访问（Data Access）</value>
+  </data>
+  <data name="SettingsWindow.Text37" xml:space="preserve">
+    <value>外部应用请选择“添加或移除范围（Add or Remove Scopes）”并选中以下权限。找不到时，将完整 URL 输入“手动添加范围（Manually add scopes）”并添加。点击“更新（Update）”后“保存（Save）”。</value>
+  </data>
+  <data name="SettingsWindow.Text38" xml:space="preserve">
+    <value>可选中并复制上方 URL。该权限允许查看和编辑日程，与 calendar.events.readonly 不同。Calendar ID 设置不会将 OAuth 授权限制为仅该日历。</value>
+  </data>
+  <data name="SettingsWindow.Text39" xml:space="preserve">
+    <value>1-5. 打开客户端（Clients）</value>
+  </data>
+  <data name="SettingsWindow.Text40" xml:space="preserve">
+    <value>选择“创建客户端（Create client）→ 应用类型：桌面应用（Desktop app）→ 名称（例如 StickyNotes Desktop）→ 创建”。在结果页面关闭前点击“下载 JSON（Download JSON）”，之后可能无法再次获取密钥。无需配置 Web 应用重定向 URI 或 JavaScript 来源。
+步骤2选择已下载 JSON，再点击“导入应用”复制到应用数据目录。无需重命名，不支持 API 密钥或服务账号 JSON。</value>
+  </data>
+  <data name="SettingsWindow.Text41" xml:space="preserve">
+    <value>后续：选择 JSON → 导入应用 → 主日历的 Calendar ID 填 primary → 步骤3登录。在浏览器中选择1-3添加的账号，检查应用名称并允许访问日历。应用自动接收结果，关闭标签页后在设置中确认“连接检查完成”。</value>
+  </data>
+  <data name="SettingsWindow.Text42" xml:space="preserve">
+    <value>故障排查
+• access_denied：检查测试用户和登录账号；组织政策阻止时请联系管理员。
+• 未验证应用：确认是自己创建的客户端名称与账号，不确定时停止。
+• 登录后连接错误：检查 Calendar ID、同一项目的 API 启用情况和权限。步骤3重新授权，步骤4仅检查连接。
+• 外部／测试中应用的此权限刷新令牌7天后过期，请用步骤3重新登录。
+• 步骤3和4会保存所有设置字段，包括 Google 以外的设置。</value>
+  </data>
+  <data name="SettingsWindow.Text43" xml:space="preserve">
+    <value>Google 官方：配置同意屏幕</value>
+  </data>
+  <data name="SettingsWindow.Text44" xml:space="preserve">
+    <value>Google 官方：管理 OAuth 客户端</value>
+  </data>
+  <data name="SettingsWindow.Text45" xml:space="preserve">
+    <value>步骤1：打开初次配置指南</value>
+  </data>
+  <data name="SettingsWindow.Text46" xml:space="preserve">
+    <value>步骤2：Google OAuth 桌面应用 JSON</value>
+  </data>
+  <data name="SettingsWindow.Text47" xml:space="preserve">
+    <value>登录或检查连接时将验证 JSON。</value>
+  </data>
+  <data name="SettingsWindow.Text48" xml:space="preserve">
+    <value>选择并检查 JSON</value>
+  </data>
+  <data name="SettingsWindow.Text49" xml:space="preserve">
+    <value>已验证桌面应用 JSON。请点击“导入应用”后继续步骤3。</value>
+  </data>
+  <data name="SettingsWindow.Text50" xml:space="preserve">
+    <value>导入应用</value>
+  </data>
+  <data name="SettingsWindow.Text51" xml:space="preserve">
+    <value>已保存设置，继续使用导入的 JSON。</value>
+  </data>
+  <data name="SettingsWindow.Text52" xml:space="preserve">
+    <value>已复制到应用数据目录并保存路径，现在可移动或删除原始 JSON。</value>
+  </data>
+  <data name="SettingsWindow.Text53" xml:space="preserve">
+    <value>删除导入的 JSON</value>
+  </data>
+  <data name="SettingsWindow.Text54" xml:space="preserve">
+    <value>是否删除导入的 JSON 副本？
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text55" xml:space="preserve">
+    <value>
+
+保留原始 JSON，不删除令牌或撤销 Google 端授权。</value>
+  </data>
+  <data name="SettingsWindow.Text56" xml:space="preserve">
+    <value>删除导入的 JSON</value>
+  </data>
+  <data name="SettingsWindow.Text57" xml:space="preserve">
+    <value>已删除导入的 JSON，保留原文件与令牌。</value>
+  </data>
+  <data name="SettingsWindow.Text58" xml:space="preserve">
+    <value>导入位置：%LOCALAPPDATA%\StickyNotes\credentials-google.json
+导入和删除立即生效，不保存其他字段。仅删除应用管理的副本。</value>
+  </data>
+  <data name="SettingsWindow.Text59" xml:space="preserve">
+    <value>Calendar ID（主日历填 primary）</value>
+  </data>
+  <data name="SettingsWindow.Text60" xml:space="preserve">
+    <value>请使用绝对路径指定便签文件夹。</value>
+  </data>
+  <data name="SettingsWindow.Text61" xml:space="preserve">
+    <value>请使用绝对路径指定每日笔记文件夹。</value>
+  </data>
+  <data name="SettingsWindow.Text62" xml:space="preserve">
+    <value>请输入 Calendar ID。</value>
+  </data>
+  <data name="SettingsWindow.Text63" xml:space="preserve">
+    <value>是否迁移所有已保存的便签文件？
+
+源位置：{0}
+目标位置：{1}
+
+是：移动旧文件夹内所有 .md，包括子文件夹和已关闭的便签，不覆盖同名文件。
+每日笔记文件夹设置不会自动变更，如这些文件也被移动，请单独修改设置。
+否：仅更改新便签的保存位置，保留已有文件。
+取消：不保存设置。</value>
+  </data>
+  <data name="SettingsWindow.Text64" xml:space="preserve">
+    <value>迁移便签文件</value>
+  </data>
+  <data name="SettingsWindow.Text65" xml:space="preserve">
+    <value>步骤3：保存设置并登录 Google</value>
+  </data>
+  <data name="SettingsWindow.Text66" xml:space="preserve">
+    <value>步骤4：保存并检查连接（已登录）</value>
+  </data>
+  <data name="SettingsWindow.Text67" xml:space="preserve">
+    <value>取消授权／连接检查</value>
+  </data>
+  <data name="SettingsWindow.Text68" xml:space="preserve">
+    <value>保存并关闭</value>
+  </data>
+  <data name="SettingsWindow.Text69" xml:space="preserve">
+    <value>请在3分钟内于浏览器登录 Google 并允许访问日历，随后自动检查连接。</value>
+  </data>
+  <data name="SettingsWindow.Text70" xml:space="preserve">
+    <value>正在检查日历连接…</value>
+  </data>
+  <data name="SettingsWindow.Text71" xml:space="preserve">
+    <value>连接检查完成。可在便签中输入 @calendar 2026-10-06T09:00。没有修改日程。</value>
+  </data>
+  <data name="SettingsWindow.Text72" xml:space="preserve">
+    <value>已取消，请关闭浏览器登录标签页。已完成的授权会保留。</value>
+  </data>
+  <data name="SettingsWindow.Text73" xml:space="preserve">
+    <value>登录信息已保存，但连接检查失败。请检查 Calendar ID、API 启用情况和权限后重试步骤4。
+</value>
+  </data>
+  <data name="SettingsWindow.Text74" xml:space="preserve">
+    <value>更改便签文件夹时会询问是否迁移已有文件。
+备份、布局和凭据保存在 %LOCALAPPDATA%\StickyNotes。</value>
+  </data>
+  <data name="Ui.Text01" xml:space="preserve">
+    <value>取消</value>
+  </data>
+</root>

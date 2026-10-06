@@ -4,6 +4,7 @@ namespace StickyNotes.Core;
 
 public sealed class Settings : IJsonOnDeserialized
 {
+    public string Language { get; set; } = "";
     public string NotesFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StickyNotesData");
     public string DailyFolder { get; set; } = "";
     public string DailyPattern { get; set; } = DailyNoteResolver.RegexExample;

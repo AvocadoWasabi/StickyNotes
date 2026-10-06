@@ -7,16 +7,16 @@ internal sealed record AppCommand(byte Code, string Id, string Title, bool Separ
 
 internal static class AppCommands
 {
-    internal static IReadOnlyList<AppCommand> All { get; } = Array.AsReadOnly(new[]
+    internal static IReadOnlyList<AppCommand> All => Array.AsReadOnly(new[]
     {
-        new AppCommand(1, "new", "新しい付箋"),
-        new AppCommand(2, "open", "Markdownを開く…"),
-        new AppCommand(3, "link-section", "ノートの一部分を付箋にする…"),
-        new AppCommand(4, "link-daily", "デイリーノートを表示…"),
-        new AppCommand(5, "show-all", "すべて表示"),
-        new AppCommand(6, "temporary-front", "一時的に付箋を最前面に表示する（10秒間）"),
-        new AppCommand(7, "settings", "設定…"),
-        new AppCommand(8, "exit", "終了", true)
+        new AppCommand(1, "new", L10n.Text("AppCommands.Text01")),
+        new AppCommand(2, "open", L10n.Text("AppCommands.Text02")),
+        new AppCommand(3, "link-section", L10n.Text("AppCommands.Text03")),
+        new AppCommand(4, "link-daily", L10n.Text("AppCommands.Text04")),
+        new AppCommand(5, "show-all", L10n.Text("AppCommands.Text05")),
+        new AppCommand(6, "temporary-front", L10n.Text("AppCommands.Text06")),
+        new AppCommand(7, "settings", L10n.Text("AppCommands.Text07")),
+        new AppCommand(8, "exit", L10n.Text("AppCommands.Text08"), true)
     });
 
     internal static AppCommand? Parse(string[] args) => args.Length == 2 && args[0] == "--command"

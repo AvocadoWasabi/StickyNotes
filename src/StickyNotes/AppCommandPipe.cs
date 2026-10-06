@@ -65,7 +65,7 @@ internal sealed class AppCommandPipe : IDisposable
         var buffer = new[] { command.Code };
         await client.WriteAsync(buffer, timeout.Token).ConfigureAwait(false);
         if (await client.ReadAsync(buffer, timeout.Token).ConfigureAwait(false) != 1 || buffer[0] != command.Code)
-            throw new IOException("起動中のアプリに操作を渡せませんでした。");
+            throw new IOException(L10n.Text("AppCommandPipe.Text01"));
     }
 
     public void Dispose()

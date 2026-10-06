@@ -9,7 +9,7 @@ namespace StickyNotes;
 
 internal sealed class CalendarCompletion
 {
-    internal const string Usage = "@calendar 日時 [検索キーワード]\nタイムゾーンは省略できます（Windowsのローカル時刻）。\nキーワードなしでも検索できます。指定日時以降の予定を検索します。";
+    internal static string Usage => L10n.Text("CalendarCompletion.Text01");
     private readonly TextBox editor;
     private readonly Window owner;
     private readonly Func<DateTime> today;
@@ -24,7 +24,7 @@ internal sealed class CalendarCompletion
     {
         this.owner = owner; this.editor = editor; this.today = today ?? (() => DateTime.Today);
         var panel = new StackPanel { Margin = new Thickness(12), Width = 310 };
-        var choose = new Button { Content = "@calendar  —  Google Calendarの予定を検索", Focusable = false,
+        var choose = new Button { Content = L10n.Text("CalendarCompletion.Text02"), Focusable = false,
             HorizontalContentAlignment = HorizontalAlignment.Left, Padding = new Thickness(6) };
         // Keep keyboard focus in the editor so clicking a suggestion cannot trigger blur-save.
         choose.PreviewMouseLeftButtonDown += (_, e) => { e.Handled = true; Complete(); };
@@ -32,7 +32,7 @@ internal sealed class CalendarCompletion
         panel.Children.Add(new TextBlock { Text = Usage, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 8) });
         examples = new TextBlock { TextWrapping = TextWrapping.Wrap, FontFamily = new FontFamily("Consolas") };
         panel.Children.Add(examples);
-        panel.Children.Add(new TextBlock { Text = "Tab / Enter / クリックで挿入 · Escで閉じる\n挿入後、選択された日時を変更して保存してください。", TextWrapping = TextWrapping.Wrap,
+        panel.Children.Add(new TextBlock { Text = L10n.Text("CalendarCompletion.Text03"), TextWrapping = TextWrapping.Wrap,
             Foreground = Brushes.DimGray, Margin = new Thickness(0, 8, 0, 0) });
         popup = new Popup { PlacementTarget = editor, Placement = PlacementMode.Relative, StaysOpen = true,
             AllowsTransparency = true, Focusable = false,
@@ -77,7 +77,7 @@ internal sealed class CalendarCompletion
         { Close(); return; }
         var caret = editor.GetRectFromCharacterIndex(editor.CaretIndex);
         if (caret.IsEmpty) { Close(); return; }
-        examples.Text = $"キーワードなし: @calendar {DateExample}\n絞り込む場合: @calendar {DateExample} 会議";
+        examples.Text = L10n.Format("CalendarCompletion.Text04", DateExample, DateExample);
         popup.HorizontalOffset = caret.Left;
         popup.VerticalOffset = caret.Bottom + 4;
         popup.IsOpen = true;

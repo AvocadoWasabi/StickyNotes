@@ -7,7 +7,7 @@ public sealed class NoteLinkWindow : Window
     private FileSnapshot? source;
     private string? selectedPath;
     private string selectedFolder;
-    private readonly TextBlock sourceLabel = new() { Text = "Markdownファイルを選択してください。", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 12) };
+    private readonly TextBlock sourceLabel = new() { Text = L10n.Text("NoteLinkWindow.Text01"), TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 12) };
     private readonly TextBlock status = new() { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DarkRed, Margin = new Thickness(0, 10, 0, 10) };
     internal HeadingPicker Headings { get; } = new();
     internal NoteLinkPreview Preview { get; } = new();
@@ -19,28 +19,28 @@ public sealed class NoteLinkWindow : Window
     {
         this.daily = daily; this.resolveDaily = resolveDaily;
         selectedFolder = App.Current.Config.NotesFolder;
-        Title = daily ? "デイリーノートを付箋にする" : "ノートの一部分を付箋にする";
+        Title = daily ? L10n.Text("NoteLinkWindow.Text02") : L10n.Text("NoteLinkWindow.Text03");
         Width = 600; SizeToContent = SizeToContent.Height; MaxHeight = SystemParameters.WorkArea.Height;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         var panel = new StackPanel { Margin = new Thickness(22) };
         if (daily)
-            panel.Children.Add(new TextBlock { Text = "設定のフォルダと正規表現から今日のノートを選び、日付が変わると自動で切り替えます。", TextWrapping = TextWrapping.Wrap });
+            panel.Children.Add(new TextBlock { Text = L10n.Text("NoteLinkWindow.Text04"), TextWrapping = TextWrapping.Wrap });
         else
         {
-            panel.Children.Add(Ui.Button("フォルダを選択…", () =>
+            panel.Children.Add(Ui.Button(L10n.Text("NoteLinkWindow.Text05"), () =>
             {
                 var picker = new Microsoft.Win32.OpenFolderDialog();
                 if (Directory.Exists(selectedFolder)) picker.InitialDirectory = selectedFolder;
                 if (picker.ShowDialog(this) == true) { selectedFolder = picker.FolderName; PickFile(); }
             }));
-            panel.Children.Add(Ui.Button("Markdownファイルを選択…", PickFile));
+            panel.Children.Add(Ui.Button(L10n.Text("NoteLinkWindow.Text06"), PickFile));
         }
         panel.Children.Add(sourceLabel);
-        panel.Children.Add(Ui.Button("再読込", () => TryLoad(daily ? null : selectedPath)));
+        panel.Children.Add(Ui.Button(L10n.Text("NoteLinkWindow.Text07"), () => TryLoad(daily ? null : selectedPath)));
         panel.Children.Add(Headings); panel.Children.Add(status);
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
-        buttons.Children.Add(Ui.Button("キャンセル", () => DialogResult = false));
-        buttons.Children.Add(Ui.Button("表示", () =>
+        buttons.Children.Add(Ui.Button(L10n.Text("NoteLinkWindow.Text08"), () => DialogResult = false));
+        buttons.Children.Add(Ui.Button(L10n.Text("NoteLinkWindow.Text09"), () =>
         {
             try { Result = Prepare(); DialogResult = true; }
             catch (Exception ex) { status.Text = ex.Message; }
@@ -68,24 +68,24 @@ public sealed class NoteLinkWindow : Window
 
     internal void LoadSource(string? path = null)
     {
-        source = null; Headings.Load(null); Preview.Update(null, ""); sourceLabel.Text = "元ノートを読み込めません。";
+        source = null; Headings.Load(null); Preview.Update(null, ""); sourceLabel.Text = L10n.Text("NoteLinkWindow.Text10");
         path = daily ? resolveDaily() : path;
         if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path) || !Path.GetExtension(path).Equals(".md", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("既存のMarkdownファイルを選択してください。");
+            throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text11"));
         selectedPath = path;
         var snapshot = NoteStore.Read(Path.GetFullPath(path));
         Headings.Load(snapshot.Text);
         source = snapshot;
         Preview.Update(source, Headings.Heading);
         selectedFolder = Path.GetDirectoryName(snapshot.Path)!;
-        sourceLabel.Text = (daily ? "今日のノート: " : "選択したノート: ") + snapshot.Path;
+        sourceLabel.Text = (daily ? L10n.Text("NoteLinkWindow.Text12") : L10n.Text("NoteLinkWindow.Text13")) + snapshot.Path;
     }
 
     internal NotePlacement Prepare()
     {
-        if (source is null) throw new InvalidOperationException("先にMarkdownファイルを読み込んでください。");
+        if (source is null) throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text14"));
         if (daily && !string.Equals(Path.GetFullPath(resolveDaily()), source.Path, StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("今日のノートが変わりました。再読込して見出しを選択してください。");
+            throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text15"));
         return NoteLink.Prepare(source, Headings.Heading, daily, Path.Combine(App.DataDirectory, "backups"));
     }
 }

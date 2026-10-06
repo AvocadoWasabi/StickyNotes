@@ -8,9 +8,9 @@ public sealed class HeadingPicker : StackPanel
 
     public HeadingPicker()
     {
-        Children.Add(new TextBlock { Text = "表示する見出し名", TextWrapping = TextWrapping.Wrap });
+        Children.Add(new TextBlock { Text = L10n.Text("HeadingPicker.Text01"), TextWrapping = TextWrapping.Wrap });
         Children.Add(Input);
-        Children.Add(new TextBlock { Text = "既存の見出しを選択、または新しい名前を入力してください（# は不要）。空欄なら本文を全表示します。新しい見出しは「表示」を押すと元ファイルの末尾に追加します。", TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        Children.Add(new TextBlock { Text = L10n.Text("HeadingPicker.Text02"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
     }
 
     public void Load(string? markdown)

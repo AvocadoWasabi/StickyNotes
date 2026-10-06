@@ -4,7 +4,7 @@ public static class NoteFolderMigration
 {
     public static string Normalize(string path)
     {
-        if (!Path.IsPathFullyQualified(path)) throw new InvalidOperationException("保存フォルダは絶対パスで指定してください。");
+        if (!Path.IsPathFullyQualified(path)) throw new InvalidOperationException(L10n.Text("NoteFolderMigration.Text01"));
         return Path.TrimEndingDirectorySeparator(Path.GetFullPath(path));
     }
 
@@ -25,7 +25,7 @@ public static class NoteFolderMigration
         {
             if ((File.Exists(current) || Directory.Exists(current)) &&
                 (File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0)
-                throw new IOException("リンク・ジャンクションを含むパスは移行できません: " + current);
+                throw new IOException(L10n.Text("NoteFolderMigration.Text02") + current);
         }
     }
 
@@ -35,9 +35,9 @@ public static class NoteFolderMigration
         var paths = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         if (SameFolder(source, destination)) { saveSettings(paths); return; }
         if (Contains(source, destination) || Contains(destination, source))
-            throw new IOException("移行元と移行先には、互いに親子関係にないフォルダを指定してください。");
+            throw new IOException(L10n.Text("NoteFolderMigration.Text03"));
         CheckPath(source); CheckPath(destination);
-        if (File.Exists(source)) throw new IOException("移行元はフォルダではありません: " + source);
+        if (File.Exists(source)) throw new IOException(L10n.Text("NoteFolderMigration.Text04") + source);
         if (Directory.Exists(source)) Collect(source);
 
         void Collect(string folder)
@@ -48,7 +48,7 @@ public static class NoteFolderMigration
                 CheckPath(file);
                 var target = Path.Combine(destination, Path.GetRelativePath(source, file));
                 CheckPath(target);
-                if (File.Exists(target) || Directory.Exists(target)) throw new IOException("移行先に同名のファイルまたはフォルダがあります。上書きしません: " + target);
+                if (File.Exists(target) || Directory.Exists(target)) throw new IOException(L10n.Text("NoteFolderMigration.Text05") + target);
                 paths.Add(file, target);
             }
             foreach (var child in Directory.EnumerateDirectories(folder).Order(StringComparer.OrdinalIgnoreCase))
@@ -80,7 +80,7 @@ public static class NoteFolderMigration
                 catch (Exception rollbackError) { remaining.Add($"{pair.Value} → {pair.Key}: {rollbackError.Message}"); }
             }
             if (remaining.Count > 0)
-                throw new IOException("移行に失敗し、一部のファイルを元に戻せませんでした。次の移行先と元の保存先を確認してください。ファイルは上書きしていません。\n" + string.Join("\n", remaining) + "\n原因: " + error.Message, error);
+                throw new IOException(L10n.Text("NoteFolderMigration.Text06") + string.Join("\n", remaining) + L10n.Text("NoteFolderMigration.Text07") + error.Message, error);
             throw;
         }
     }

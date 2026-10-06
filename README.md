@@ -6,14 +6,14 @@
 
 A Markdown sticky-note app for Windows. Edit Obsidian notes and daily notes directly, and display Google Calendar events alongside them. Obsidian is optional.
 
-**Windows 10 / 11 (x64).** The UI is Japanese; documentation is available in English, Japanese, and Simplified Chinese. Google integration is optional and requires your own OAuth setup.
+**Windows 10 / 11 (x64).** The current source supports English, Japanese, and Simplified Chinese UI and documentation. UI language selection is unreleased; v0.0.4 still has Japanese controls. [Display language](docs/USAGE.en.md#language) Google integration is optional and requires your own OAuth setup.
 
 [Download](#download-and-install) · [Basic usage](#basic-usage) · [Google Calendar](#google-calendar) · [Further reading](#further-reading)
 
 <details>
 <summary>Screenshots (expand to view)</summary>
 
-Version 0.0.2 note views rendered with the app's WPF controls and English sample notes. The app's controls are currently in Japanese. Click an image to view it at full size.
+Version 0.0.2 note views rendered with the app's WPF controls and English sample notes. The controls in these older images are Japanese. Click an image to view it at full size.
 
 | Checklists at hand | Markdown notes | Linked daily notes |
 | :---: | :---: | :---: |

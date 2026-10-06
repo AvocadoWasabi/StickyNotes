@@ -19,6 +19,8 @@ For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whol
 
 ## First-time setup
 
+Source builds: choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language). v0.0.4 remains Japanese-only.
+
 Open `設定` (Settings) from the notification-area icon and choose a notes folder. For Obsidian, choose a folder in your vault. The daily-note folder is configured separately.
 
 - [Basic usage](../README.md#basic-usage)
