@@ -125,13 +125,24 @@ public sealed class SettingsWindow : Window
         void Explain(string text) => guide.Children.Add(new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 4, 0, 4) });
         void Link(string label, string url) => guide.Children.Add(Ui.Button(label,
             () => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true })));
-        Explain("1. Google側の準備\n以下のボタンで標準ブラウザを開きます。同じGoogle Cloudプロジェクトで順番に設定してください。登録とGoogleへのログイン・同意はブラウザで行います。");
-        Link("① プロジェクトを選択・作成し、Calendar APIを有効にする", "https://console.cloud.google.com/apis/library/calendar-json.googleapis.com");
-        Explain("Google Auth Platformのブランディング（アプリ名・連絡先）、対象（Audience）を設定します。外部向け・テスト中の場合は、使用するGoogleアカウントをテストユーザーに追加してください。");
-        Link("② OAuth同意画面・テストユーザーを設定する", "https://console.cloud.google.com/auth/overview");
-        Explain("データアクセスで calendar.events（予定の表示・編集）を設定します。このアプリもログイン時にこの権限を要求します。クライアントの種類は「デスクトップアプリ」を選び、作成後にJSONをダウンロードしてください。");
-        Link("③ デスクトップ用OAuthクライアントを作成する", "https://console.cloud.google.com/auth/clients");
-        Explain("テスト公開中は再認証が必要になることがあります。403の場合はAPIの有効化、テストユーザー、アクセス許可を確認してください。個人のJSONはリポジトリや共有Vaultに置かず、移動・削除せず保管してください。");
+        Explain("手順1: Google側の準備（2026-10-06に公式資料と照合）\n個人のGoogleアカウントで、自分用に設定する場合の手順です。各ボタンは標準ブラウザを開きます。画面上部のプロジェクトが1-1から1-5まで同じであることを確認してください。表示名は言語により異なるため英語名も併記します。");
+        Link("1-1. Google Calendar APIを開く", "https://console.cloud.google.com/apis/library/calendar-json.googleapis.com");
+        Explain("上部のプロジェクト選択から既存のプロジェクトを選ぶか、「新しいプロジェクト」で名前（例: StickyNotes Personal）を入力して作成・選択します。Google Calendar APIの画面で「有効にする（Enable）」を押します。「管理（Manage）」が表示されていれば有効です。");
+        Link("1-2. ブランディング（Branding）を開く", "https://console.cloud.google.com/auth/branding");
+        Explain("未設定なら「開始（Get started）」を押します。\n・アプリ名: 例 StickyNotes Personal\n・ユーザーサポートメール: 自分が受信できるアドレスを選択 →「次へ」\n・対象（Audience）: 個人のGoogleアカウントは「外部（External）」→「次へ」\n・連絡先情報: 自分が受信できるメールアドレス →「次へ」\n・ユーザーデータポリシーを確認し、同意する場合はチェック →「続行」→「作成」\n既に設定済みなら作成し直さず、内容を確認して1-3へ進みます。「内部（Internal）」はGoogle Cloud組織内の利用者に限定する場合の選択肢です。");
+        Link("1-3. 対象（Audience）を開く", "https://console.cloud.google.com/auth/audience");
+        Explain("ユーザーの種類が「外部」、公開ステータスが「テスト中（Testing）」の場合、「テストユーザー（Test users）」→「ユーザーを追加（Add users）」で、この後カレンダーにログインするGoogleアカウントのメールアドレスを追加し、「保存（Save）」します。Cloudの管理用アカウントと異なる場合は、カレンダー側のアカウントを追加してください。この手順で「アプリを公開」を押す必要はありません。");
+        Link("1-4. データアクセス（Data Access）を開く", "https://console.cloud.google.com/auth/scopes");
+        Explain("外部向けの設定では「スコープを追加または削除（Add or Remove Scopes）」を開き、下記のスコープを選択します。見つからなければ「スコープを手動で追加（Manually add scopes）」にURL全体を入力し、追加操作を行います。「更新（Update）」で戻り、「保存（Save）」します。");
+        var scope = new TextBox { Text = "https://www.googleapis.com/auth/calendar.events", IsReadOnly = true, TextWrapping = TextWrapping.Wrap };
+        guide.Children.Add(scope);
+        Explain("上のURLは選択してコピーできます。これはカレンダーの予定の閲覧・編集を許可する権限です。calendar.events.readonlyとは異なります。設定のCalendar IDだけにOAuthの許可範囲を限定するものではありません。");
+        Link("1-5. クライアント（Clients）を開く", "https://console.cloud.google.com/auth/clients");
+        Explain("「クライアントを作成（Create client）」→「アプリケーションの種類: デスクトップアプリ（Desktop app）」→名前（例: StickyNotes Desktop）→「作成（Create）」と進みます。作成結果の「JSONをダウンロード（Download JSON）」で、画面を閉じる前に保存してください。後からシークレットを再取得できない場合があります。Webアプリ用のリダイレクトURIやJavaScript生成元は設定しません。\nJSONは共有しない固定の場所へ移してから、下の手順2で選択します。名前の変更は不要です。APIキーやサービスアカウントのJSONは使用しません。");
+        Explain("手順2以降: JSONを選択 → Calendar IDは自分のメインカレンダーなら primary → 手順3でログインします。ブラウザでは1-3で追加したアカウントを選び、アプリ名を確認してカレンダーへのアクセスを許可してください。認証結果は自動で受信します。タブを閉じて設定画面の「接続確認が完了しました」を確認してください。");
+        Explain("うまくいかない場合\n・ログイン画面の access_denied: テストユーザーとログイン先を確認。組織によりブロックされている場合は管理者へ確認。\n・未確認アプリの警告: 自分が作成したクライアントのアプリ名とアカウントか確認。不明な場合は進まず中止。\n・ログイン後の接続エラー: Calendar ID、同じプロジェクトのAPI有効化、許可した権限を確認。権限を許可し直す場合は手順3、接続だけ再確認する場合は手順4を使います。\n・外部／テスト中では、この権限の更新トークンは7日で期限切れになります。期限切れ後は手順3から再ログインしてください。\n・手順3・4ではGoogle関連以外も含め、設定画面の入力内容を保存します。");
+        Link("Google公式: 同意画面の設定手順", "https://developers.google.com/workspace/guides/configure-oauth-consent");
+        Link("Google公式: OAuthクライアントの管理", "https://support.google.com/cloud/answer/15549257");
         panel.Children.Add(new Expander { Name = "GoogleSetupGuide", Header = "手順1: 初回準備のガイドを開く",
             IsExpanded = string.IsNullOrWhiteSpace(app.Config.GoogleCredentialsFile), Content = guide });
         var credentials = Add("手順2: Google OAuth デスクトップアプリのJSON", app.Config.GoogleCredentialsFile);

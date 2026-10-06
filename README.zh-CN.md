@@ -215,13 +215,27 @@ updated: 2026-10-05T09:00:00+09:00
 
 ### 初次授权
 
-1. 打开设置中的 `Google Calendar 接続ガイド（任意）`。步骤1的按钮在系统浏览器中打开相应的 Google Cloud 页面。在同一项目中启用 Calendar API，配置品牌信息和受众（Audience）；外部应用处于测试模式时，将自己的账号添加为测试用户，并在数据访问中配置 `calendar.events` 权限。
-2. 通过第三个按钮创建类型为 **Desktop app** 的 OAuth 客户端并下载 JSON。Google 注册和授权仍需浏览器操作，应用会提供步骤指引。
-3. 在步骤2中选择 JSON，应用验证格式后才更新输入框。应用使用所选文件路径，请将文件保存在非共享的固定位置，不要移动或删除。主日历 ID 通常为 `primary`。
-4. 点击步骤3的 `設定を保存してGoogleにログイン`，在三分钟内通过浏览器登录并允许日历访问。应用自动接收结果、保存令牌，并检查指定日历的连接，不修改日程。
-5. 已登录时，可用步骤4保存设置并重新检查连接，无需打开登录页面。若登录成功但检查失败，令牌会保留；请检查日历 ID、API 启用状态和访问权限，再重试步骤4。
+打开设置中的 `Google Calendar 接続ガイド（任意）`。以下适用于使用个人 Google 账号为自己配置，已于 2026-10-06 与官方文档核对。按钮打开系统浏览器，Google 注册和授权在浏览器中完成。界面名称随显示语言而异。
 
-等待登录或连接检查时可以取消；关闭设置也会取消操作。取消后请关闭浏览器中的授权标签页，已完成的授权会保留。超时后会提示重试。403 错误可能需要启用 API、添加测试用户或授予权限；测试模式可能需要定期重新授权。连接检查仅验证读取权限，不验证日程编辑权限。
+1. **1-1：启用 API。** 打开 [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com)，从顶部项目选择器选择现有项目，或通过“新建项目（New project）”输入名称（例如 `StickyNotes Personal`）并创建、选中。点击“启用（Enable）”；显示“管理（Manage）”则表示已启用。后续步骤始终选择**同一项目**。
+2. **1-2：初次注册。** [品牌信息（Branding）](https://console.cloud.google.com/auth/branding)尚未配置时，点击“开始（Get started）”。输入应用名（例如 `StickyNotes Personal`）和可接收邮件的用户支持邮箱，点击“下一步”。个人账号选择“外部（External）”，点击“下一步”。输入联系邮箱，再点击“下一步”。阅读政策，同意时勾选并点击“继续”→“创建”。已配置时检查内容后继续。“内部（Internal）”适用于仅限 Google Cloud 组织成员使用的情况。
+3. **1-3：添加要登录的账号。** 在[受众（Audience）](https://console.cloud.google.com/auth/audience)中，若为“外部”且发布状态为“测试中（Testing）”，进入“测试用户（Test users）”→“添加用户（Add users）”，输入**将要访问日历的账号**邮箱并“保存（Save）”。该账号可能与 Cloud 管理账号不同。此流程无需发布应用。
+4. **1-4：保存权限范围。** 对于外部应用，进入[数据访问（Data Access）](https://console.cloud.google.com/auth/scopes)→“添加或移除范围（Add or Remove Scopes）”，选择 `https://www.googleapis.com/auth/calendar.events`。找不到时，在“手动添加范围（Manually add scopes）”中输入完整 URL 并添加。点击“更新（Update）”返回，再“保存（Save）”。这是日程查看和编辑权限，与 `calendar.events.readonly` 不同；应用中的 Calendar ID 不会将 OAuth 授权限制为仅该日历。
+5. **1-5：获取桌面客户端 JSON。** 进入[客户端（Clients）](https://console.cloud.google.com/auth/clients)→“创建客户端（Create client）”，应用类型选择“桌面应用（Desktop app）”，输入名称（例如 `StickyNotes Desktop`）并“创建（Create）”。在创建结果中点击“下载 JSON（Download JSON）”，**关闭窗口前保存**；之后可能无法再次获取密钥。无需配置 Web 应用的重定向 URI 或 JavaScript 来源。不使用 API 密钥或服务账号 JSON。
+6. **应用步骤2：选择 JSON。** 将文件移到非共享的固定位置，再点击 `認証JSONを選択して確認` 选择它。无需重命名。应用验证格式并记录路径，不复制文件；之后请勿移动或删除。自己的主日历使用 `primary`。
+7. **应用步骤3：登录。** 点击 `設定を保存してGoogleにログイン`，在三分钟内于浏览器中选择1-3添加的账号，检查应用名称并允许日历访问。应用自动接收结果。关闭浏览器标签页、返回设置，确认出现 `接続確認が完了しました`。应用保存令牌后检查指定日历的读取权限，不修改日程。
+8. **应用步骤4：仅重新检查连接。** 已登录时无需打开登录页面即可检查。步骤3和4会保存设置窗口中的所有输入，包括 Google 以外的设置。连接检查成功不保证拥有日程编辑权限。
+
+等待登录或连接检查时可以取消；关闭设置也会取消操作。取消后请关闭浏览器中的授权标签页，已完成的授权会保留。授权超时后从步骤3重试。
+
+| 情况 | 检查或操作 |
+| --- | --- |
+| Google 登录页出现 `access_denied` | 检查1-3的测试用户和登录账号；组织政策阻止时请联系管理员 |
+| 未验证应用警告 | 确认应用名称和账号属于自己创建的客户端；不确定时停止 |
+| 登录成功后连接检查失败 | 检查 Calendar ID、同一项目的 API 启用情况和授权。令牌保留。步骤4重新检查，步骤3重新授权 |
+| 外部／测试中应用数天后要求重新登录 | 此权限的刷新令牌在七天后过期；用步骤3重新登录 |
+
+配置依据：[同意屏幕配置](https://developers.google.com/workspace/guides/configure-oauth-consent)、[受众和测试用户](https://support.google.com/cloud/answer/15549945)、[Calendar 权限范围](https://developers.google.com/workspace/calendar/api/auth)、[客户端创建和 JSON 保管](https://support.google.com/cloud/answer/15549257)、[刷新令牌期限](https://developers.google.com/identity/protocols/oauth2#expiration)。
 
 授权使用系统浏览器、回环重定向和 PKCE。令牌经 Windows DPAPI 按当前用户加密，保存在 `google-token.bin`。不要把 OAuth JSON 放入代码仓库或共享的笔记目录。
 
