@@ -1,36 +1,17 @@
 [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md)
 
-# Markdown Sticky Notes — Obsidian and Google Calendar on your Windows desktop
+# Markdown Sticky Notes
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
 
-A Windows Markdown sticky notes app for keeping **Obsidian notes and Google Calendar events together on your desktop**. Open a daily-note task list beside a note showing calendar events, or display notes and events in the same sticky note.
+A Markdown sticky-note app for Windows. Edit Obsidian notes and daily notes directly, and display Google Calendar events alongside them. Obsidian is optional.
 
-Edit the original Markdown files in your Obsidian vault, check off tasks, and review appointments without leaving the sticky notes. Calendar event titles and descriptions can be edited after confirmation. Google Calendar is optional and requires your own OAuth setup; Markdown notes also work on their own, without Obsidian.
+**Windows 10 / 11 (x64).** The UI is Japanese; documentation is available in English, Japanese, and Simplified Chinese. Google integration is optional and requires your own OAuth setup.
 
-## Use Obsidian notes and Google Calendar together
+[Download](#download-and-install) · [Basic usage](#basic-usage) · [Google Calendar](#google-calendar) · [Further reading](#further-reading)
 
-| Workflow | How it works |
-| --- | --- |
-| Keep tasks and appointments side by side | Link the Tasks heading in today's daily note, then open another sticky note with a Calendar query |
-| Put meeting notes beside the event details | Add an `@calendar` command to the Markdown body shown in a sticky note; matching events appear below the rendered note |
-| Update information at its source | Task checks and Markdown edits are saved to the original `.md`; confirmed event title/description edits are sent to Google Calendar |
-
-For example, after [setting up Google Calendar](#initial-authentication), save this in a note. Replace the example date, time, time zone, and search word with your own:
-
-```markdown
-## Meeting preparation
-- [ ] Review the agenda in Obsidian
-- [ ] Write down questions
-
-@calendar 2026-10-05T09:00+09:00 meeting
-```
-
-The command searches events from the specified time; it does not automatically mean “today.” Calendar events refresh about every 60 seconds or on request. When linking only a heading, place the command within the displayed section. **Markdown tasks and calendar events remain separate data:** the app does not convert tasks into events, copy events into Markdown, or synchronize them automatically. Event times and attendees cannot be changed here.
-
-[Download for Windows](#download-and-install) · [Display an Obsidian daily note](#display-and-edit-a-daily-note-section) · [Google Calendar setup](#initial-authentication)
-
-## Screenshots
+<details>
+<summary>Screenshots (expand to view)</summary>
 
 Version 0.0.2 note views rendered with the app's WPF controls and English sample notes. The app's controls are currently in Japanese. Click an image to view it at full size.
 
@@ -40,241 +21,79 @@ Version 0.0.2 note views rendered with the app's WPF controls and English sample
 
 The screenshots use fictional sample content. [Sample files and capture instructions](docs/SCREENSHOTS.md) are included for reproduction.
 
-## Features
-
-| Feature | What it does |
-| --- | --- |
-| Desktop sticky notes | Open multiple notes, move and resize them, keep them on top, and restore their layout |
-| Markdown viewing and editing | Display headings, lists, checkboxes, tables, and code, and edit the Markdown source |
-| Obsidian integration | Read and write `.md` files in your vault; store titles, tags, status, and colors in YAML properties |
-| Linked sections | Display and edit a specific heading's section while preserving the rest of the source note |
-| Daily notes | Match today's file using a tagged regex and check off tasks from the sticky note |
-| Google Calendar (optional) | Search and display events; edit titles and descriptions after confirmation |
-| Data protection | Detect external changes, prevent conflicting overwrites, and back up files before writing |
-
-The app's interface and menus are currently in Japanese. Documentation is available in English, Japanese, and Simplified Chinese.
+</details>
 
 ## Download and install
 
-Requires **Windows 10 / 11 (x64)**. No administrator privileges, separate .NET installation, Obsidian CLI, or Obsidian plugins are required.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.3 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) and extract it.
+2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
+3. Open `設定` (Settings) from the notification-area icon and choose a notes folder.
 
-1. Open [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases).
-2. Download `StickyNotes-win-x64.zip`. The `Source code` downloads are for developers.
-3. Right-click the ZIP and choose **Extract All**.
-4. Double-click `Install.cmd` in the extracted folder.
-5. Launch **Markdown Sticky Notes** from the Start menu.
+No administrator privileges or separate .NET installation are required. The app is unsigned, so Windows may ask for confirmation. See the [installation guide](docs/INSTALL.en.md) for updates, removal, and portable use.
 
-The installer places the app in `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`. It does not enable automatic startup. [Download v0.0.3](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3).
+<a id="using-the-app"></a>
 
-For portable use, run `StickyNotes.exe` directly from the extracted folder. Keep all accompanying files in either case. The app is unsigned; if Windows displays a warning, check the download source and file before proceeding.
+## Basic usage
 
-### First-time setup
-
-Right-click the notification-area icon and select `設定` (Settings), then choose a folder for your notes. Select a folder inside your vault to use the notes with Obsidian. To use daily notes, also set their folder and tagged regular expression. Google authentication is only needed if you use Google Calendar.
-
-### Update and uninstall
-
-To update, select `終了` (Exit) from the notification-area menu, extract the new ZIP to a separate folder, and run `Install.cmd`. Your notes and settings are retained.
-
-**Updating from 0.0.1:** daily-note matching now uses named date tags and regular expressions. Documented date formats are converted automatically; check the matching filename in Settings and correct other custom formats manually. The notes folder and daily-note folder are now saved independently, so check both if they were previously mixed up. Saving on focus loss without confirmation is optional and off by default. See the [0.0.2 changelog](CHANGELOG.md) for all changes.
-
-To uninstall, exit the app, delete `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`, and remove its Start menu shortcut. You can locate the shortcut using **Open file location** from its context menu. Settings, credentials, and backups remain in `%LOCALAPPDATA%\StickyNotes`; Markdown files remain in the folder you selected, or `Documents/StickyNotesData` by default. Review any data you want to keep before deleting it separately.
-
-## Documentation and examples
-
-- [Changelog / version history](CHANGELOG.md)
-- [日本語 / Japanese README](README.ja.md) / [简体中文 / Simplified Chinese README](README.zh-CN.md)
-- [Installation, updates, and removal](docs/INSTALL.en.md)
-- [Development, branch workflow, and releases](docs/DEVELOPMENT.en.md)
-- [Third-party licenses](THIRD-PARTY-NOTICES.txt)
-- [Obsidian Bases example](examples/StickyNotes.base) / [Daily note example](examples/Daily.md)
-
-## Using the app
-
-Launch the installed app from the Start menu, or run `StickyNotes.exe` from the extracted ZIP. When building from source, the published executable is `artifacts/app/StickyNotes.exe`.
-
-Drag the top of a note to move it, or drag an edge or the bottom-right corner to resize it. Use `○ / ●` to toggle always-on-top mode. Notes have no standard title bar and normally stay out of the taskbar; the app runs in the notification area.
-
-To also show note icons in the taskbar, enable `タスクバーにも付箋のアイコンを表示する` in Settings and save. This applies to all open notes and new notes, persists after restarting, and can be disabled again. The notification-area icon remains available. Existing settings default to off.
-
-Right-click the taskbar icon to access the same eight operations as the notification-area menu: New note, Open Markdown, Link a section, Display a daily note, Show all, Temporarily bring notes to the top, Settings, and Exit. Windows displays these as Jump List tasks alongside its own pin/close commands. Show all also restores minimized notes. Operations are forwarded to the running app, retaining the usual save confirmation on exit. If the app is stopped, selecting a task starts it and performs that operation; Exit alone does not start a new session. Restart the updated app once to register the menu. The isolated `--data-dir` test mode does not register or replace the taskbar menu.
-
-Choose `一時的に付箋を最前面に表示する（10秒間）` from the notification-area menu or a note's `…` menu to bring all open notes to the top for **10 seconds**, including restoring minimized notes. Choosing it again restarts the interval. Afterward, each note returns to its permanent pin setting; this does not restore the previous window stacking order. Temporary display is not saved as pinning. Using `○ / ●` during the interval cancels temporary display for that note and immediately applies the new permanent setting. Closing a note still closes it normally.
-
-By default, Edit, Save, Reload, More, New, Pin, and Close are always visible in one row below the title. Edit has a blue background, Save green, Reload yellow, and More purple.
-
-In Settings, enable `タイトルにマウスカーソルを重ねるとボタンを表示する` (Show buttons when hovering the mouse cursor over the title) and save to show buttons over the title when you hover there. This removes the second header row; revealing or hiding buttons does not shift the body. Drag the handle at the left edge to move the note. Press `F6` to focus the title, then `Tab` to select buttons for keyboard operation. Buttons also remain visible while keyboard focus is within the title area or the More menu is open. The setting applies immediately to all open notes and persists after restarting. Disable it and save to restore the always-visible row.
-
-| Control | Action |
+| Action | Control |
 | --- | --- |
-| `＋` | Create a note |
-| `編集` / `Ctrl+E` | Edit the Markdown source |
-| `保存` / `Ctrl+S` | Save the file and return to reading mode |
-| `再読込` | Reload the source file, with confirmation if edits are unsaved |
-| `…` | Open properties, fetch events, open existing files, link a section, access settings, or exit |
-| `×` | Close this note without deleting its Markdown file |
-| `… → アプリを終了`, or notification-area `終了` | Exit the app |
+| Create a note | `＋`, or `新しい付箋` in the notification-area menu |
+| Edit and save | Click the body / `Ctrl+E` → edit → `Ctrl+S` |
+| Complete a task | Click its checkbox to update the source Markdown |
+| Move or resize | Drag the top / an edge or the bottom-right corner |
+| Keep on top | `○ / ●`; the `…` menu can bring all notes to the top for 10 seconds |
+| Scale content | `… → 表示スケール` (50–200%) |
+| Close or exit | `×` closes a note; notification-area `終了` exits the app |
 
-Use `… → 表示スケール` (Display scale) to resize a note's rendered content from **50–200%** (default 100%). Select a percentage or adjust by ten percentage points. In reading mode, use `Ctrl+mouse wheel` over the body, or `Ctrl++` / `Ctrl+-`; `Ctrl+0` resets to 100%. Headings, body text, tables, code, and checkboxes keep their proportions; Calendar results and daily-note guidance use the same scale. Buttons, title, tags, status, and the Markdown editor keep their normal sizes. Each note saves its own scale across reloads and restarts. Scaling does not modify the source Markdown or unsaved input.
+Leaving the editor prompts to save changed text. Settings can enable saving without confirmation. Closing a note does not delete its Markdown file.
 
-The app saves note positions, sizes, and always-on-top settings as notes move and when you exit, then restores them on the next launch. It supports multiple monitors, negative screen coordinates, and PerMonitorV2 DPI. Notes on a disconnected display are moved back onto an available screen. Unsaved changes trigger a confirmation before exit.
-
-Click body text or blank space in the body area to enter the Markdown editor. `編集` (Edit) and `Ctrl+E` also work. Checkboxes, links, and scrollbars keep their own actions without entering editing. Select `保存` (Save) or press `Ctrl+S` to save and return to reading. Selecting Edit again preserves your draft.
-
-When focus leaves the editor for another control or application, changed text triggers a save dialog: **Yes** saves, **No** discards and reloads, and **Cancel** keeps the draft for continued editing. Unchanged text does not prompt. To save without confirmation, enable `編集欄からフォーカスが外れたら、確認せず自動保存する` in Settings and save the setting; it defaults to off. Automatic saves still create backups and check for external changes. A failed save reports the error and retains your input. The editor's context menu does not trigger this confirmation. Closing a note or exiting the app keeps the existing unsaved-change confirmation.
+See the [usage reference](docs/USAGE.en.md#editing) for taskbar icons, button visibility, and shortcuts.
 
 ## Storage and Obsidian
 
-New notes are saved in `Documents/StickyNotesData` by default. Open `… → 設定` (Settings) to select a folder in your Obsidian vault, such as `Vault/Sticky Notes`. When you save a folder change, the app asks whether to migrate existing note files. Choose **Yes** to move every `.md` file in the old folder, including subfolders and closed notes; **No** changes only the folder for new notes; **Cancel** leaves settings unchanged. Open notes keep their placement and unsaved edits. The notes folder and daily-note folder are independent settings: changing or migrating the notes folder never rewrites the daily-note folder value. If the old notes folder also contains daily Markdown files, those files are included in the move; explicitly update the daily-note folder if you want it to follow them. Files outside the old folder and non-Markdown files stay in place.
+New notes default to `Documents/StickyNotesData`. Choose a folder in your vault to edit the same `.md` files as Obsidian. No CLI or plugin is needed.
 
-Migration never overwrites an existing file. Name collisions stop the move; other move or settings-save failures trigger a rollback. If a file cannot be restored, the error lists its location for manual recovery. Parent/child folder pairs and paths containing links or junctions cannot be migrated. Relative links to files left behind may need updating. Back up your notes before a large move: interruption or power loss can leave files in both folders, so check both before retrying.
-
-Notes are regular UTF-8 `.md` files with properties such as:
-
-```yaml
----
-type: sticky
-id: unique-note-id
-title: Shopping
-tags:
-  - sticky
-  - personal/shopping
-status: active
-color: yellow
-created: 2026-10-05T09:00:00+09:00
-updated: 2026-10-05T09:00:00+09:00
----
-```
-
-Use `… → タグ・タイトル・状態・色` (Tags, title, status, and color) to edit properties. Available colors are `yellow / green / blue / pink / gray`. The `status` field accepts values such as `active / done / archived`; it is for organization and does not automatically hide or delete notes.
-
-Copy `examples/StickyNotes.base` into your vault to list notes with `type: sticky`. To exclude sticky notes from other Bases, use a condition such as `type != "sticky"`, or exclude their folder with `!file.inFolder("Sticky Notes")`.
-
-App layout and authentication data are kept outside the vault in `%LOCALAPPDATA%/StickyNotes`. The app checks for external file changes about every two seconds. When you are editing a note, it reports a conflict instead of replacing your edits automatically.
-
-References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases syntax](https://obsidian.md/help/bases/syntax).
+Changing the folder can also migrate existing Markdown. Check the [migration scope and restrictions](docs/USAGE.en.md#storage) before moving files.
 
 ## Display and edit a daily note section
 
-The app reads and writes the original Markdown file directly. No Obsidian CLI or plugin is needed.
+1. In Settings, choose the daily-note folder and tagged regular expression. Check the matching filename and save.
+2. Use `… → デイリーノートを表示…`, choose a heading, and select `表示` (Display). A blank heading shows the whole body.
+3. Edit text or check tasks in the sticky note to update the source note.
 
-1. In Settings, configure your daily notes folder and tagged regular expression, check the matching filename, then select `保存して閉じる` (Save and close).
-2. Select `… → デイリーノートを表示…` (Display a daily note). The app loads today's file from Settings; no absolute-path input or daily-mode switch is needed.
-3. In the shared heading selector, choose an existing heading or type a new name without `#`. Leave it blank to display the entire body.
-4. Select `表示` (Display). A new name creates a `## Heading` at the end of the original file after making a backup. Typing or cancelling does not write anything. Clicking a task checkbox updates the corresponding source line.
+The first addition requires today's file. Later, missing daily notes can show a waiting message or retain yesterday according to Settings. See [filename examples and switching options](docs/USAGE.en.md#daily).
 
-Daily-note filenames use **date tags + a regular expression** only. There is no date-format mode or mode checkbox. The tags are the named groups `year`, `month`, and `day`. For names such as `2026-10-05(月).md`, choose the folder containing the notes and use:
-
-```regex
-(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(?:\([^)]+\))?\.md
-```
-
-A blank or whitespace-only field is filled with this default. The `日時タグ付きの既定例を挿入` (Insert default with date tags) button asks before replacing the entire input; **No** retains the existing expression. Opening Settings does not ask for confirmation. Changes update filename matching and are persisted when you save.
-
-Each required tag must capture one numeric date part. Only files matching the target local date (normally today, or yesterday with retention enabled) are selected. Matching is case-insensitive and covers the **entire relative path, including `.md`**; the extension is not appended automatically. Use `/` for subfolders; for example, prefix the expression with `Diary/` when selecting the parent folder. This example excludes other dates and prefix variants such as `WeeklyTasksLog-…`.
-
-Existing regex settings are preserved. When loading older settings, `yyyy-MM-dd` and `yyyy/MM/yyyy-MM-dd`, including versions ending in `(ddd)` or `(dddd)`, are converted to tagged regex. Other custom date formats are kept as text for manual correction in Settings; they are no longer evaluated as date formats. Files and folders are not moved by this conversion.
-
-The search includes subfolders but skips symbolic links and junctions; the selected root must not contain these in its path. A missing daily note follows the waiting/retention behavior below; multiple matches produce an error. No files are created or chosen arbitrarily. Unsaved edits are retained on search errors. Invalid expressions are rejected when saving settings. Expressions are limited to 4,096 characters and 100 ms per match; each search checks a limit of 10,000 entries and one second between entries. Filesystem access itself can take longer. Select the daily-note folder directly to keep searches small.
-
-The Settings screen checks the unsaved folder and expression about 300 ms after you stop typing, displaying today's matching filename or an inline error. Changing the folder also refreshes matching. Searches run in the background, and outdated results are discarded.
-
-The read-only content preview is the final item in both the daily-note and fixed-note linking dialogs. Loading or reloading a file, selecting a heading, or typing a heading updates the Markdown preview of the chosen range, up to 4,000 characters. A blank heading previews the entire body; a new heading shows a pending append. Previewing never writes to the source file.
-
-For a fixed note, use the separate `… → ノートの一部分を付箋にする…` (Link part of a note) menu. Select `フォルダを選択…` (Choose folder) to browse a folder and then select its Markdown file, or use `Markdownファイルを選択…` (Choose Markdown file) directly. There is no manual absolute-path field or daily-mode control. Both dialogs share the same heading selector: select an existing heading, enter a new one, or leave it blank for the whole body. Both menus are also available from the notification-area icon. Use `再読込` (Reload) to refresh the heading list.
-
-If the source changes externally before Display, the app asks you to reload without overwriting it. The same applies when the daily-note target changes, including at midnight. Appending preserves the original content, newlines, and UTF-8 BOM. Ambiguous duplicate headings and appends hidden inside an unclosed code fence are rejected.
-
-A section starts immediately after the selected heading and ends before the next heading at the same or a higher level. Subheadings are included. Other sections and YAML front matter are preserved. Duplicate matching headings prevent editing to avoid ambiguity. Headings inside fenced code are ignored. Use `#`-style (ATX) headings.
-
-When the date changes, the app switches to today's file. If it has not been created, existing daily sticky notes show guidance in the body area: creating today's note in Obsidian will display it automatically, and Settings can keep yesterday's note visible. The app checks about every two seconds.
-
-Settings offers three choices under `今日のデイリーノートが未作成のとき` (When today's daily note is missing):
-
-- **Show waiting message (default)**: display guidance while today's note is missing.
-- **1. Keep yesterday until today is created**: automatically switch when today's file appears.
-- **2. Keep yesterday until Reload**: once yesterday is displayed because today is missing, keep it even after today's file appears, until you select `再読込` (Reload).
-
-If yesterday is also missing, show the waiting message; never go back further. Reload checks today in either retention mode; if missing, wait without returning to yesterday for the rest of that day. Retention state lasts while the sticky note is open; restarting shows today if it already exists. The setting itself is saved. A retained note displays its date and guidance; edits and task checks are saved to that dated source file. Automatic switching pauses during editing and preserves unsaved input. Folder/regex errors, multiple matches, and missing headings remain errors. Files are not created automatically; new headings are added only when entered in the selection dialog and confirmed with Display. Adding a daily sticky note for the first time requires today's file.
+For a fixed note, use `… → ノートの一部分を付箋にする…`. See [heading selection](docs/USAGE.en.md#headings).
 
 ## Google Calendar
 
-Enter a command on its own line in a note and save:
+<a id="initial-authentication"></a>
+
+First authenticate using the [connection guide](docs/GOOGLE-CALENDAR.en.md#setup) in the right pane of Settings. Then save this line in a separate paragraph:
 
 ```text
 @calendar 2026-10-06T09:00
 ```
 
-**You can search without a keyword or time zone offset**, as in the example above. Without an offset, the app uses Windows local time. To filter events, append a keyword, for example `@calendar 2026-10-06T09:00 meeting`. Explicit offsets such as `2026-10-06T09:00+09:00` are also accepted. It retrieves up to 100 events, ordered by start time. Google's `timeMin` filters by event end time, so events already in progress at the specified time may also appear. Recurring events are expanded into individual occurrences.
+**Keywords and time zone offsets are optional.** Without an offset, the app uses Windows local time. Append a keyword such as `meeting` to filter results.
 
-While editing, type `@` at the start of a separate paragraph (leave a blank line after preceding text) to show the `@calendar` suggestion and floating usage examples. Press Tab or Enter, or click the suggestion, to insert today's date at `00:00` without an offset or keyword. The date and time are selected so you can replace them, then save the note. The inserted date stays fixed; it does not advance automatically. Esc closes the suggestion. Completion does not save the note itself and does not appear inside email addresses or code blocks.
+While editing, type `@` in a separate paragraph to show a suggestion and examples. Tab, Enter, or a click inserts today's date at `00:00` and selects the date and time for editing. The inserted date stays fixed.
 
-Events refresh about every 60 seconds, or when you choose `… → 予定を今すぐ取得` (Fetch events now). Only the first command in each note is used. Leave blank lines around the command. Examples inside fenced code blocks are not executed.
-
-Click an event to edit its title and description. Changes are sent to Google **only after you select OK** in the confirmation dialog, which shows the changes and attendee notification behavior. Times, attendees, and recurrence rules are not changed. Editing a recurring event affects the retrieved occurrence. If the event has changed on Google since it was loaded, an ETag check prevents overwriting it and asks you to refresh.
-
-### Initial authentication
-
-Open the connection guide in the right-hand `Google Calendar` pane of Settings. The left pane contains note and daily-note settings; each pane scrolls independently. These instructions cover personal use with your own Google account and were checked against official documentation on 2026-10-06. Buttons open your system browser, where you complete Google registration and consent. Labels vary with the display language.
-
-1. **1-1: Enable the API.** Open [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com). Use the project selector at the top to select a project, or create and select one with **New project**, using a name such as `StickyNotes Personal`. Click **Enable**; **Manage** indicates it is already enabled. Keep **the same project** selected throughout the remaining steps.
-2. **1-2: Register the app.** In [Branding](https://console.cloud.google.com/auth/branding), click **Get started** if not configured. Enter an app name such as `StickyNotes Personal` and a support email you can receive, then **Next**. For a personal account choose **External**, then **Next**. Enter your contact email, then **Next**. Review the policy and, if you agree, check the agreement and choose **Continue → Create**. If already configured, review it and continue. **Internal** is for limiting access to members of a Google Cloud organization.
-3. **1-3: Register the account that will sign in.** In [Audience](https://console.cloud.google.com/auth/audience), when the user type is **External** and status is **Testing**, use **Test users → Add users**, enter the email of the account whose calendar you will access, and **Save**. This can differ from your Cloud administration account. You do not need to publish the app for this procedure.
-4. **1-4: Save the scope.** For an external app, open [Data Access](https://console.cloud.google.com/auth/scopes) → **Add or Remove Scopes** and select `https://www.googleapis.com/auth/calendar.events`. If absent, enter the full URL under **Manually add scopes** and add it. Choose **Update**, then **Save**. This permits viewing and editing events; it differs from `calendar.events.readonly`. The app's Calendar ID does not restrict the OAuth grant to that single calendar.
-5. **1-5: Obtain desktop credentials.** Open [Clients](https://console.cloud.google.com/auth/clients) → **Create client**, set **Application type** to **Desktop app**, enter a name such as `StickyNotes Desktop`, and choose **Create**. Use **Download JSON** in the creation result **before closing it**; the secret may not be retrievable later. Do not configure web-app redirect URIs or JavaScript origins. An API key or service-account JSON is not suitable.
-6. **App Step 2: Select and import the JSON.** Select the downloaded file with `認証JSONを選択して確認`, then click the adjacent `アプリに取り込む` (Import into app). The app validates the format, copies it to `%LOCALAPPDATA%\StickyNotes\credentials-google.json`, and immediately saves this path. Importing again replaces the managed copy. The source remains unchanged and may be moved or deleted after successful import. If you skip importing and use the original path, keep that file in place. Renaming is unnecessary. Use `primary` for your own main calendar.
-7. **App Step 3: Sign in.** Click `設定を保存してGoogleにログイン`. Within three minutes, select the account added in 1-3, verify the app name and allow calendar access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `接続確認が完了しました`. The app saves the token and verifies read access to the selected calendar without modifying events.
-8. **App Step 4: Recheck the connection.** When signed in, this checks access without opening the login screen. Steps 3 and 4 save all entered settings, including those unrelated to Google. Successful verification does not guarantee permission to edit events.
-
-You can cancel a login/check; closing Settings also cancels it. Close the browser's login tab after cancellation. Completed authentication remains saved. After an authentication timeout, restart from Step 3.
-
-The adjacent `取り込み済みJSONを削除` (Delete imported JSON) asks for confirmation and deletes only the app's managed copy, clearing the saved path if it points to that copy. It leaves the original file, external files and authentication tokens intact and does not revoke access at Google. Import and deletion take effect immediately without saving unsaved entries in other settings fields. A settings-save failure restores the previous copy. These buttons are unavailable during authentication/connection checks. Storage is in the current Windows user's application-data directory, not beside the executable.
-
-| Situation | What to check or do |
-| --- | --- |
-| `access_denied` on Google's login page | Check the test user from 1-3 and the account signing in. Contact your administrator for organization policy blocks |
-| Unverified-app warning | Verify it is your own client's app name and account; stop if unsure |
-| Connection check fails after login | Check Calendar ID, API enablement in the same project and granted access. Tokens are retained. Use Step 4 to recheck, or Step 3 to grant access again |
-| External/Testing app asks for login again after several days | Refresh tokens for this scope expire after seven days; sign in again with Step 3 |
-
-Setup references: [Consent configuration](https://developers.google.com/workspace/guides/configure-oauth-consent), [audience and test users](https://support.google.com/cloud/answer/15549945), [Calendar scopes](https://developers.google.com/workspace/calendar/api/auth), [client creation and JSON storage](https://support.google.com/cloud/answer/15549257), [refresh-token expiration](https://developers.google.com/identity/protocols/oauth2#expiration).
-
-Authentication uses the system browser, a loopback redirect, and PKCE. Tokens are encrypted with Windows DPAPI for the current user and stored in `google-token.bin`. Keep the OAuth JSON out of repositories and shared vault folders.
-
-A real account connection and update check requires your own OAuth configuration. Automated tests cover loopback callbacks, state/path rejection, PKCE, denial, cancellation, invalid token responses, storage failure, read-only connection checks, searches, updates and ETag conflicts using simulated Google responses.
-
-References: [Google Desktop OAuth](https://developers.google.com/identity/protocols/oauth2/native-app), [Calendar resource versions](https://developers.google.com/calendar/api/guides/version-resources).
+Click an event to edit its title or description, then confirm to send changes to Google. Creating events and automatically syncing Markdown tasks are unsupported. See [search rules, JSON management, and troubleshooting](docs/GOOGLE-CALENDAR.en.md).
 
 ## Markdown support and data protection
 
-- Renders headings, bold, italic, strikethrough, ordered and unordered lists, checklists, quotes, code, tables, and links.
-- Displays HTML as text rather than executing it. Images currently appear as their alternative text.
-- Obsidian `[[wikilinks]]`, embeds, Dataview, math rendering, and dedicated callout styling are not supported; their text is preserved.
-- Reads UTF-8 with or without a BOM and preserves that choice. Body edits follow the file's existing line endings.
-- Editing properties reserializes YAML, so comments or formatting may change. Unknown property values and the note body are retained.
-- Checks the whole file's hash before writing. External changes block stale writes; you can copy or save your edits elsewhere before reloading.
-- Backs up pre-write contents in `%LOCALAPPDATA%/StickyNotes/backups`. Files include a date and GUID and can be restored manually. Backups are not automatically deleted.
-- Uses exclusive file access while writing and attempts to restore content if a write fails. Keep your normal vault backups as well, including protection against power loss.
+Headings, lists, tasks, tables, code, and links are supported. Images display as alternative text; some Obsidian-specific syntax is unsupported.
 
-## Development and verification
+Conflicting external changes block overwrites. Pre-write backups are saved under `%LOCALAPPDATA%/StickyNotes/backups`. See [supported syntax and recovery details](docs/USAGE.en.md#data).
 
-Requires Windows and the .NET 8 SDK.
+## Further reading
 
-```powershell
-.\build.ps1
-.\build.ps1 -Publish
-```
-
-The build uses `.tools/dotnet` when a local SDK is present. Tests use temporary files and simulated APIs, without accessing real vaults or external services. Every normal build generates a self-contained app, installer scripts, documentation, licenses, and READMEs/changelogs in all three languages under `artifacts/app`. On completion, exit any running Sticky Notes from the notification area, then run `artifacts/app/Install.cmd` to install locally. The build prints this path; installation is not automatic.
-
-`-Publish` additionally creates or updates `artifacts/StickyNotes-win-x64.zip` and its SHA256 checksum. Normal builds leave existing ZIPs unchanged. Builds from this source include all three documentation languages; previously published ZIPs retain their original documentation.
-
-To launch with a separate data directory for testing (notes also appear in the taskbar in this mode):
-
-```powershell
-.\artifacts\app\StickyNotes.exe --data-dir C:\Temp\StickyNotes-test
-```
-
-Project layout: `StickyNotes.Core` handles Markdown storage, section editing, and Calendar REST/OAuth; `StickyNotes` contains the WPF notes, rendering, notification-area integration, and monitor layout; `StickyNotes.Tests` contains executable data protection, rendering, and API tests.
-
-Work takes place on separate branches, with verification, code review, and security review before completion, and is committed locally. Unresolved critical or high-severity findings block merging and pushing. The normal workflow does not include creating a pull request. Merging into `main`, pushing any branch to GitHub, and publishing releases require an explicit instruction from the repository owner. Keep the English, Japanese, and Simplified Chinese documentation in sync. See the [development guide](docs/DEVELOPMENT.en.md) for the release workflow.
+| Topic | Guide |
+| --- | --- |
+| Install, update, or remove | [Installation](docs/INSTALL.en.md) |
+| Controls, storage, and daily notes | [Usage reference](docs/USAGE.en.md) |
+| Google authentication and events | [Google Calendar](docs/GOOGLE-CALENDAR.en.md) |
+| Changes by version | [Changelog](CHANGELOG.md) |
+| Build, test, and release | [Development](docs/DEVELOPMENT.en.md) |
+| Examples and licenses | [Daily note](examples/Daily.md) · [Obsidian Bases](examples/StickyNotes.base) · [Licenses](THIRD-PARTY-NOTICES.txt) |

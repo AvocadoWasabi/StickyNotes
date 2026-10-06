@@ -27,6 +27,16 @@ Both commands restore, build Release, run tests, and generate a self-contained a
 
 `src/StickyNotes.Core` handles storage, section editing, and Calendar integration; `src/StickyNotes` contains the WPF UI; `tests` covers data protection, rendering, and APIs.
 
+### Testing with isolated data
+
+Tests use temporary files and simulated APIs, without connecting to a real vault or Google. Real-account connection and update checks require your own OAuth setup.
+
+Launch with a separate data directory using the following command. This mode shows notes in the taskbar without registering or replacing Jump Lists.
+
+```powershell
+.\artifacts\app\StickyNotes.exe --data-dir C:\Temp\StickyNotes-test
+```
+
 ## Documentation languages
 
 Update English, Japanese, and Simplified Chinese (zh-CN) together for READMEs, changelogs, installation/development guides, related documentation, and release descriptions. Match features, limitations, examples, versions, and links. A single file with all language sections is acceptable. Include language navigation and check packaging. Documentation translation does not imply translated UI or sample data. Do not replace published tags or ZIPs without an instruction.

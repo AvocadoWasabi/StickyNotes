@@ -8,6 +8,8 @@
 
 ## 未发布 / Unreleased
 
+- README 精简为安装与基本操作；详细说明移至[操作补充](docs/USAGE.zh-CN.md)和[Google Calendar 指南](docs/GOOGLE-CALENDAR.zh-CN.md)。删除安装指南中的重复说明，统一三种语言的结构。
+
 - 在独立段落输入 `@` 时浮动显示 `@calendar` 补全候选和示例。支持 Tab、Enter 或点击插入今天的日期，无需时区或关键词，并选中日期时间供修改；Esc 关闭候选。在应用和文档中明确无需关键词也能搜索、省略时区时使用 Windows 本地时间，并统一不同区域设置下的日期解析。
 
 - 将设置窗口分为两列，Google Calendar 指南、JSON 管理、授权和连接检查移至右侧窗格；便签和每日笔记设置保留在左侧，左右可独立滚动。

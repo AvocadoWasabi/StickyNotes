@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Shorten the README to setup and basic usage. Move details into the [usage reference](docs/USAGE.en.md) and [Google Calendar guide](docs/GOOGLE-CALENDAR.en.md), remove duplicated installation-guide instructions, and align all three languages.
+
 - Add `@calendar` completion when typing `@` in a separate paragraph, with floating examples, Tab/Enter/click insertion, and Esc dismissal. Insert today's date without a time zone or keyword and select the date for editing. Clarify keyword-free searches and Windows local-time defaults in the app and documentation; parse dates consistently across regional settings.
 
 - Split Settings into two columns: move the Google Calendar guide, JSON management, authentication and connection checks into the right pane. Keep note and daily-note settings on the left, with independent scrolling in each pane.

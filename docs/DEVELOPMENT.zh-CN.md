@@ -27,6 +27,16 @@
 
 `src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
 
+### 使用独立数据验证
+
+测试使用临时文件和模拟 API，不连接真实仓库或 Google。真实账号的连接和更新验证需要自行配置 OAuth。
+
+以下命令使用独立数据目录启动。该模式在任务栏显示便签，但不注册或替换跳转列表。
+
+```powershell
+.\artifacts\app\StickyNotes.exe --data-dir C:\Temp\StickyNotes-test
+```
+
 ## 文档语言
 
 修改 README、更新日志、安装／开发指南、相关资料和发布说明时，同步英语、日语和简体中文（zh-CN）。功能、限制、示例、版本和链接须对应；允许在同一文件中分语言列出。提供语言导航并检查构建时是否附带。文档翻译不代表界面或示例数据也已翻译。未经指示，不替换已发布的标签或 ZIP。

@@ -19,19 +19,13 @@ For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whol
 
 ## First-time setup
 
-Right-click the notification-area icon, open `設定` (Settings), and select the notes and daily-note folders. Choose a folder in your vault for Obsidian integration. Authentication is unnecessary unless you use Google integration. The two folders are saved independently. Saving a folder change asks whether to migrate existing Markdown: Yes includes subfolders, No changes only the location for new notes, and Cancel aborts saving settings. See the [README](../README.md#storage-and-obsidian) for scope and restrictions.
+Open `設定` (Settings) from the notification-area icon and choose a notes folder. For Obsidian, choose a folder in your vault. The daily-note folder is configured separately.
 
-See the [README](../README.md) for full usage and Google Calendar setup. The `examples` directory contains daily-note and Obsidian Bases examples.
+- [Basic usage](../README.md#basic-usage)
+- [Folder migration and daily-note settings](USAGE.en.md#storage)
+- [Optional Google Calendar setup](GOOGLE-CALENDAR.en.md#setup)
 
-Daily notes use regular expressions with year/month/day date tags. Blank input receives the default; the template button asks before replacement. Settings show today's matching filename while typing, and content previews appear at the end of the fixed/daily-note selection dialogs. After saving settings, use `… → デイリーノートを表示…` to choose an existing heading. A new name is appended on `表示` (Display); a blank field shows the whole body. Fixed notes use `… → ノートの一部分を付箋にする…` with folder/Markdown file selection and the same heading field. See [daily notes](../README.md#display-and-edit-a-daily-note-section) for weekday-suffix examples.
-
-If today's file is missing, existing daily sticky notes explain automatic display after creation and the available settings. Besides the default waiting message, Settings can keep yesterday until today is created or until Reload. Reload without today's file enters waiting mode. Missing yesterday also means waiting; active edits are preserved. Adding a daily sticky note for the first time requires today's file. See the README for details.
-
-Click the body or `編集` (Ctrl+E) to edit, and `保存` (Ctrl+S) to save. Changed text prompts to save, discard, or continue when focus leaves. Enable `編集欄からフォーカスが外れたら、確認せず自動保存する` in Settings to save without confirmation; it defaults to off. Failed saves retain input. Checkboxes, links, and scrollbars work directly in reading mode.
-
-Adjust rendered content to 50–200% with `… → 表示スケール` (Display scale). In reading mode, use Ctrl+wheel over the body, Ctrl++ / Ctrl+-, or Ctrl+0 to reset. Each note saves its own scale without changing the source. See the [README](../README.md) for details.
-
-In Settings, `タイトルにマウスカーソルを重ねるとボタンを表示する` switches between always-visible buttons (default) and an overlay on title hover. Save to apply it to all notes and retain it after restarting. The overlay includes a left-edge drag handle and supports F6/Tab keyboard access.
+Authentication is unnecessary unless you use Google integration.
 
 ## Updates
 
