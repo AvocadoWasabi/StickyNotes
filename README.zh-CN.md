@@ -215,15 +215,17 @@ updated: 2026-10-05T09:00:00+09:00
 
 ### 初次授权
 
-1. 在 [Google Cloud Console](https://console.cloud.google.com/) 选择项目并启用 Google Calendar API。
-2. 配置 OAuth 同意屏幕；若处于测试模式，将你的 Google 账号添加为测试用户。
-3. 创建类型为 **Desktop app** 的 OAuth 客户端并下载 JSON。
-4. 在应用设置中选择该 JSON。主日历 ID 通常为 `primary`。
-5. 点击 `設定を保存してGoogleにログイン`（保存设置并登录 Google），在浏览器中授权。
+1. 打开设置中的 `Google Calendar 接続ガイド（任意）`。步骤1的按钮在系统浏览器中打开相应的 Google Cloud 页面。在同一项目中启用 Calendar API，配置品牌信息和受众（Audience）；外部应用处于测试模式时，将自己的账号添加为测试用户，并在数据访问中配置 `calendar.events` 权限。
+2. 通过第三个按钮创建类型为 **Desktop app** 的 OAuth 客户端并下载 JSON。Google 注册和授权仍需浏览器操作，应用会提供步骤指引。
+3. 在步骤2中选择 JSON，应用验证格式后才更新输入框。应用使用所选文件路径，请将文件保存在非共享的固定位置，不要移动或删除。主日历 ID 通常为 `primary`。
+4. 点击步骤3的 `設定を保存してGoogleにログイン`，在三分钟内通过浏览器登录并允许日历访问。应用自动接收结果、保存令牌，并检查指定日历的连接，不修改日程。
+5. 已登录时，可用步骤4保存设置并重新检查连接，无需打开登录页面。若登录成功但检查失败，令牌会保留；请检查日历 ID、API 启用状态和访问权限，再重试步骤4。
+
+等待登录或连接检查时可以取消；关闭设置也会取消操作。取消后请关闭浏览器中的授权标签页，已完成的授权会保留。超时后会提示重试。403 错误可能需要启用 API、添加测试用户或授予权限；测试模式可能需要定期重新授权。连接检查仅验证读取权限，不验证日程编辑权限。
 
 授权使用系统浏览器、回环重定向和 PKCE。令牌经 Windows DPAPI 按当前用户加密，保存在 `google-token.bin`。不要把 OAuth JSON 放入代码仓库或共享的笔记目录。
 
-真实账号的连接和更新验证需要自己的 OAuth 配置。自动测试使用模拟 HTTP 响应验证查询、更新和 ETag 冲突。
+真实账号的连接和更新验证需要自己的 OAuth 配置。自动测试使用模拟 Google 响应，验证回环回调、拒绝错误 state 和路径、PKCE、授权拒绝、取消、无效令牌响应、保存失败、只读连接检查、查询、更新和 ETag 冲突。
 
 参考：[Google 桌面 OAuth](https://developers.google.com/identity/protocols/oauth2/native-app)、[Calendar 资源版本](https://developers.google.com/calendar/api/guides/version-resources)。
 

@@ -213,15 +213,17 @@ Click an event to edit its title and description. Changes are sent to Google **o
 
 ### Initial authentication
 
-1. Select a project in [Google Cloud Console](https://console.cloud.google.com/) and enable the Google Calendar API.
-2. Configure the OAuth consent screen. If the app is in testing, add your Google account as a test user.
-3. Create an OAuth client of type **Desktop app** and download its JSON file.
-4. Select that JSON file in the app's Settings. The Calendar ID for your main calendar is usually `primary`.
-5. Select `設定を保存してGoogleにログイン` (Save settings and sign in to Google), then authenticate in your browser.
+1. Open Settings → `Google Calendar 接続ガイド（任意）`. Step 1 provides buttons that open the appropriate Google Cloud pages in your system browser. In the same project, enable the Calendar API, configure branding and audience, and add your account as a test user when testing an external app. Configure the `calendar.events` scope under Data Access.
+2. Use the third button to create an OAuth client of type **Desktop app** and download its JSON file. Cloud registration and Google consent still require browser interaction; the app guides you through them.
+3. In Step 2, select the JSON. The app validates its format before accepting the selection. Keep the file in a private, permanent location; the app uses the selected path. The Calendar ID for your main calendar is usually `primary`.
+4. Select Step 3 (`設定を保存してGoogleにログイン`), then sign in and allow calendar access in the browser within three minutes. The app automatically receives the result, saves the token, and checks access to the selected calendar without modifying events.
+5. When already signed in, Step 4 saves settings and checks the connection again without opening the login screen. If login succeeds but the check fails, the token is retained; check the Calendar ID, API enablement and access permissions, then retry Step 4.
+
+You can cancel a pending login/check; closing Settings also cancels it. Close the browser's login tab after cancellation. Completed authentication remains saved. A timeout displays a retry message. A 403 error can require API enablement, adding a test user, or granting access; testing mode may require periodic reauthentication. Connection checks verify read access, not permission to edit events.
 
 Authentication uses the system browser, a loopback redirect, and PKCE. Tokens are encrypted with Windows DPAPI for the current user and stored in `google-token.bin`. Keep the OAuth JSON out of repositories and shared vault folders.
 
-A real account connection and update check requires your own OAuth configuration. Automated tests use simulated HTTP responses to verify searches, updates, and ETag conflicts.
+A real account connection and update check requires your own OAuth configuration. Automated tests cover loopback callbacks, state/path rejection, PKCE, denial, cancellation, invalid token responses, storage failure, read-only connection checks, searches, updates and ETag conflicts using simulated Google responses.
 
 References: [Google Desktop OAuth](https://developers.google.com/identity/protocols/oauth2/native-app), [Calendar resource versions](https://developers.google.com/calendar/api/guides/version-resources).
 

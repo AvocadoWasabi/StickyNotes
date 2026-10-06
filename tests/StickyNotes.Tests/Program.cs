@@ -89,6 +89,8 @@ internal static class Program
             Throws<FormatException>(() => CalendarQuery.Parse("@calendar invalid"), "invalid date rejected");
             Check(CalendarQuery.Parse("@calendar 2026-10-05").Search == "", "calendar search is optional");
             CalendarTests(root).GetAwaiter().GetResult();
+            Task.Run(() => OAuthFlowTests(root)).GetAwaiter().GetResult();
+            GoogleSetupUiTests(root);
 
             var toggledLine = -1;
             var doc = MarkdownView.Render("# Title\n\n- [ ] task\n\n```md\n- [ ] example\n```\n\n| A | B |\n|---|---|\n| x | y |", (line, _) => toggledLine = line);
@@ -1108,6 +1110,9 @@ internal static class Program
         var events = await service.SearchAsync("primary", CalendarQuery.Parse("@calendar 2026-10-05T09:00+09:00 会議"));
         Check(events.Count == 1 && events[0].Summary == "Meeting", "calendar response decoded");
         Check(handler.Uri!.Contains("singleEvents=true") && handler.Uri.Contains("timeMin=") && handler.Uri.Contains("q="), "calendar search bounded, ordered and filtered");
+        await service.VerifyConnectionAsync("primary");
+        Check(handler.Method == HttpMethod.Get && handler.Uri!.EndsWith("events?maxResults=1") && handler.Body is null,
+            "connection verification reads at most one event without modifying calendar");
         await service.UpdateAsync("primary", events[0], "Changed", "Description");
         Check(handler.Method == HttpMethod.Patch && handler.ETag == "\"v1\"", "calendar update uses PATCH and If-Match");
         using var body = JsonDocument.Parse(handler.Body!);
@@ -1115,6 +1120,108 @@ internal static class Program
         handler.Conflict = true;
         try { await service.UpdateAsync("primary", events[0], "Changed", ""); throw new Exception("Expected conflict"); }
         catch (ConflictException) { Check(true, "Google etag conflict becomes safe user-facing error"); }
+    }
+
+    private static void GoogleSetupUiTests(string root)
+    {
+        var path = Path.Combine(root, "invalid-setup.json");
+        File.WriteAllText(path, "{\"web\":{\"client_id\":\"not-a-desktop-client\"}}");
+        var settingsPath = Path.Combine(App.DataDirectory, "settings.json");
+        var before = File.ReadAllBytes(settingsPath);
+        var previousPath = App.Current.Config.GoogleCredentialsFile;
+        var settings = new SettingsWindow();
+        var panel = (StackPanel)((ScrollViewer)settings.Content).Content;
+        Check(panel.Children.OfType<Expander>().Single(x => x.Name == "GoogleSetupGuide").IsExpanded,
+            "first-time Google setup displays the guide");
+        panel.Children.OfType<TextBox>().Single(x => x.Name == "GoogleCredentialsFile").Text = path;
+        foreach (var name in new[] { "GoogleLogin", "GoogleVerify" })
+        {
+            var button = panel.Children.OfType<Button>().Single(x => x.Name == name);
+            button.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            Check(button.IsEnabled && !panel.Children.OfType<Button>().Single(x => x.Name == "GoogleCancel").IsEnabled,
+                "invalid credentials restore setup controls: " + name);
+            Check(App.Current.Config.GoogleCredentialsFile == previousPath && File.ReadAllBytes(settingsPath).SequenceEqual(before),
+                "invalid credentials cannot overwrite existing settings: " + name);
+        }
+        settings.Close();
+    }
+
+    private static async Task OAuthFlowTests(string root)
+    {
+        var credentials = Path.Combine(root, "flow-oauth.json");
+        foreach (var invalid in new[] { "{}", "{\"web\":{\"client_id\":\"web-client\"}}", "{\"installed\":{\"client_id\":\" \"}}", "{\"installed\":[]}", "not json" })
+        {
+            File.WriteAllText(credentials, invalid);
+            Throws<FormatException>(() => CalendarService.ValidateCredentials(credentials), "invalid or non-desktop credentials rejected without exposing JSON");
+        }
+        File.WriteAllText(credentials, "{\"installed\":{\"client_id\":\"test-client\"}}");
+        using var browser = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+        foreach (var scenario in new[] { "success", "denied", "cancel", "bad-token", "save-failed" })
+        {
+            var opened = new TaskCompletionSource<Uri>(TaskCreationOptions.RunContinuationsAsynchronously);
+            string? stored = null;
+            var transport = new OAuthHandler { InvalidToken = scenario == "bad-token" };
+            using var service = new CalendarService(() => stored, value =>
+            {
+                if (scenario == "save-failed") throw new IOException("Simulated storage failure");
+                stored = value;
+            }, transport, uri => opened.TrySetResult(uri));
+            service.Configure(credentials);
+            using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            var signIn = service.SignInAsync(cancellation.Token);
+            var url = await opened.Task.WaitAsync(cancellation.Token);
+            var query = System.Web.HttpUtility.ParseQueryString(url.Query);
+            Check(url.Host == "accounts.google.com" && url.Scheme == "https" && query["code_challenge_method"] == "S256" &&
+                query["scope"] == "https://www.googleapis.com/auth/calendar.events", "OAuth uses Google, PKCE and calendar event scope");
+            var redirect = query["redirect_uri"]!;
+            Check(new Uri(redirect).Host == "127.0.0.1", "OAuth callback binds only to IPv4 loopback");
+            Throws<InvalidOperationException>(() => service.Configure(credentials), "credentials cannot change during authentication");
+            if (scenario == "cancel") cancellation.Cancel();
+            else
+            {
+                using var wrongState = await browser.GetAsync(redirect + "?state=wrong&code=untrusted");
+                Check(wrongState.StatusCode == HttpStatusCode.BadRequest && transport.Requests == 0, "invalid state never exchanges tokens");
+                using var wrongPath = await browser.GetAsync(redirect + "other?state=" + query["state"] + "&code=untrusted");
+                Check(wrongPath.StatusCode == HttpStatusCode.BadRequest && transport.Requests == 0, "wrong callback path never exchanges tokens");
+                using var response = await browser.GetAsync(redirect + "?state=" + query["state"] +
+                    (scenario == "denied" ? "&error=access_denied&code=ignored" : "&code=test-code"));
+            }
+            Exception? failure = null;
+            try { await signIn; } catch (Exception ex) { failure = ex; }
+            if (scenario == "success")
+            {
+                Check(failure is null && stored?.Contains("test-access") == true, "OAuth success persists token before completing");
+                var form = System.Web.HttpUtility.ParseQueryString(transport.Form!);
+                var challenge = Convert.ToBase64String(System.Security.Cryptography.SHA256.HashData(Encoding.ASCII.GetBytes(form["code_verifier"]!)))
+                    .TrimEnd('=').Replace('+', '-').Replace('/', '_');
+                Check(challenge == query["code_challenge"] && form["redirect_uri"] == redirect && form["code"] == "test-code", "token exchange is bound to PKCE verifier and original redirect");
+            }
+            else
+            {
+                Check(failure is not null && stored is null, "failed or cancelled OAuth does not persist tokens: " + scenario);
+                if (scenario == "cancel") Check(failure is OperationCanceledException, "cancellation remains distinguishable from authentication failure");
+                if (scenario is "denied" or "cancel") Check(transport.Requests == 0, "denial and cancellation do not exchange a token");
+                try { await service.VerifyConnectionAsync("primary"); throw new Exception("Expected missing token"); }
+                catch (InvalidOperationException) { Check(true, "failed sign-in leaves no active token"); }
+            }
+            service.Configure(credentials);
+            Check(true, "authentication releases configuration lock after " + scenario);
+        }
+    }
+
+    private sealed class OAuthHandler : HttpMessageHandler
+    {
+        public int Requests;
+        public string? Form;
+        public bool InvalidToken;
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Requests++;
+            Check(request.Method == HttpMethod.Post && request.RequestUri!.AbsoluteUri == "https://oauth2.googleapis.com/token", "tokens sent only to fixed Google HTTPS endpoint");
+            Form = await request.Content!.ReadAsStringAsync(cancellationToken);
+            return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(InvalidToken ? "{}" :
+                "{\"access_token\":\"test-access\",\"refresh_token\":\"test-refresh\",\"expires_in\":3600}") };
+        }
     }
 
     private sealed class FakeHandler : HttpMessageHandler

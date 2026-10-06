@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add an in-app Google Calendar setup guide with Cloud Console links, desktop OAuth JSON validation, browser sign-in, and automatic read-only connection verification. Support retrying checks, cancelling pending authentication/checks, and clear timeout messages; keep tokens from completed sign-ins when verification fails.
+
 - Add the same eight notification-area operations to the taskbar right-click Jump List. Route selections to the running app through a bounded, current-user command channel, and restore minimized notes with Show all. Keep the normal unsaved-edit confirmation on Exit.
 
 - Add an opt-in setting to show note icons in the taskbar alongside the notification-area icon, applying immediately to open notes and persisting across restarts.
