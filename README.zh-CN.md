@@ -25,7 +25,7 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 下载与安装
 
-1. 从 [v0.0.3 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) 下载 `StickyNotes-win-x64.zip` 并解压。
+1. 从 [v0.0.4 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
 3. 在通知区域图标的 `設定`（设置）中选择便签文件夹。
 

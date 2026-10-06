@@ -25,7 +25,7 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 
 ## Download and install
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.3 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3) and extract it.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.4 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) and extract it.
 2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
 3. Open `設定` (Settings) from the notification-area icon and choose a notes folder.
 

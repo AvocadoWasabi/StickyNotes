@@ -1,81 +1,60 @@
 [English](#english) | [日本語](#日本語) | [简体中文](#简体中文)
 
-# Markdown Sticky Notes v0.0.3
+# Markdown Sticky Notes v0.0.4
 
 ## 日本語
 
-Windows 10 / 11（x64）向け。デイリーノートの待機表示、付箋の表示スケール、タイトル上の操作ボタンを追加しました。
+Windows 10 / 11（x64）向け。Google Calendarの初期設定と入力補完、タスクバー操作を改善しました。
 
-### 主な変更
-
-- 今日のデイリーノートが未作成の場合、Obsidianで作成すると自動表示される案内を付箋内に表示します。設定で「今日の分が作成されるまで」または「再読込するまで」昨日のノートを表示できます。昨日の表示には対象日と保存先の案内が付き、未保存の編集を保護します。
-- 付箋ごとに表示スケールを50～200%で保存できます。「…」の表示スケール、閲覧中のCtrl＋ホイール／Ctrl＋＋／Ctrl＋－で変更し、Ctrl＋0で100%に戻します。Markdown本文・予定・待機案内が拡大縮小されます。
-- 設定「タイトルにマウスカーソルを重ねるとボタンを表示する」で、操作ボタンをタイトルに重ねて表示できます。ドラッグ用の持ち手とF6／Tabによるキーボード操作にも対応します。
-- 通常のビルドでも `artifacts/app/Install.cmd` を生成し、すぐにローカルインストールできます。`-Publish` はZIPとSHA256も生成します。
-- 英語・日本語・簡体字中国語の資料を同梱し、ObsidianとGoogle Calendarの併用例を追加しました。アプリの画面・操作ボタンは日本語です。
+- **Google連携ガイド**：設定の右ペインに準備手順・ブラウザ認証・接続確認を集約。OAuth JSONの取り込み・コピーの削除、認証のキャンセルに対応しました。
+- **`@` で補完**：独立した段落で入力すると候補と例を表示。Tab・Enter・クリックで今日の日時を挿入できます。タイムゾーン・検索キーワードは省略できます。
+- **タスクバー操作**：付箋アイコンの表示を選択でき、右クリックから通知領域と同じ8項目を操作できます。全付箋を10秒間最前面に表示する機能も追加しました。
+- **資料を整理**：READMEを短くし、詳しい操作とGoogle設定を別ガイドへ分離。3言語を揃えました。
 
 ### インストール・更新
 
-1. 更新の場合は通知領域の「終了」でアプリを終了します。
-2. Assetsの **StickyNotes-win-x64.zip** をダウンロードし、別のフォルダへ「すべて展開」します。
-3. **Install.cmd** を実行し、スタートメニューの **Markdown Sticky Notes** から起動します。
+アプリを終了し、Assetsの **StickyNotes-win-x64.zip** を別フォルダへ展開して **Install.cmd** を実行してください。ノート・設定・バックアップは保持されます。直接 `StickyNotes.exe` を起動する場合も、同梱ファイル全体を保持してください。
 
-管理者権限や.NETの追加インストールは不要です。展開先の `StickyNotes.exe` から直接起動することもできます。EXE以外の同梱ファイルも保持してください。既存のノート・設定・バックアップは保持されます。
+管理者権限や.NETの追加インストールは不要です。アプリは未署名です。SHA256は同梱の `.zip.sha256` で確認できます。画面は日本語です。
 
-新しい設定の初期値は「今日の分を待機」「表示スケール100%」「操作ボタンを常時表示」です。デイリーノートを新しく連携する際は、今日の一致ファイルが必要です。「再読込まで」の保持状態は付箋を開いている間だけ有効です。0.0.1から更新する場合は、使い方のフォルダ・日付形式の移行案内も確認してください。
+Google連携は任意で、利用者自身のOAuth設定が必要です。JSONの削除は取り込み済みコピーだけが対象で、トークンやGoogle側の許可は削除しません。実Googleアカウントでの接続・更新は自動テストの対象外です。
 
-アプリは未署名です。Google Calendarは任意で、利用者自身のOAuth設定が必要です。SHA256は `StickyNotes-win-x64.zip.sha256` に記載しています。
-
-[使い方](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.3/README.ja.md) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.3/CHANGELOG.ja.md)
+[使い方](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/README.ja.md) · [Google設定](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/docs/GOOGLE-CALENDAR.md) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/CHANGELOG.ja.md)
 
 ## English
 
-For **Windows 10 / 11 (x64)**. This release adds daily-note waiting guidance, note display scaling, and title-hover controls.
+For Windows 10 / 11 (x64). This release improves Google Calendar setup, command completion, and taskbar controls.
 
-### Changes
-
-- When today's daily note is missing, show guidance explaining that creating it in Obsidian displays it automatically. Settings can retain yesterday's note until today's is created or until Reload. Retained notes show their date and save destination, and unsaved edits are protected.
-- Save a display scale of 50–200% for each note. Use Display scale under More, Ctrl+wheel / Ctrl++ / Ctrl+- while reading, or Ctrl+0 to reset to 100%. Markdown, events, and waiting guidance scale together.
-- Enable `タイトルにマウスカーソルを重ねるとボタンを表示する` (Show buttons when hovering the mouse cursor over the title) to overlay controls on the title. A drag handle and F6/Tab keyboard access are available.
-- Normal builds generate `artifacts/app/Install.cmd` for immediate local installation. `-Publish` additionally creates the ZIP and SHA256 checksum.
-- Bundle English, Japanese, and Simplified Chinese documentation, including examples of using Obsidian and Google Calendar together. The app controls remain in Japanese.
+- **Google setup guide:** A dedicated right pane covers preparation, browser sign-in, and connection checks. Import or delete the managed OAuth JSON copy and cancel authentication when needed.
+- **Complete with `@`:** Type it in a separate paragraph to see a suggestion and examples. Tab, Enter, or a click inserts today's date and time. Time zone offsets and search keywords are optional.
+- **Taskbar controls:** Optionally show note icons and access the same eight actions as the notification-area menu. Bring all notes to the top for 10 seconds.
+- **Shorter documentation:** Keep basic usage in the README and move detailed controls and Google setup into separate guides, in all three languages.
 
 ### Installation and updates
 
-1. If updating, exit the app using `終了` (Exit) in its notification-area menu.
-2. Download **StickyNotes-win-x64.zip** under Assets and extract the entire ZIP to a separate folder.
-3. Run **Install.cmd**, then open **Markdown Sticky Notes** from the Start menu.
+Exit the app, extract **StickyNotes-win-x64.zip** from Assets into a separate folder, and run **Install.cmd**. Notes, settings, and backups are retained. For portable use, run `StickyNotes.exe` and keep all accompanying files.
 
-No administrator privileges or separate .NET installation are required. For portable use, run `StickyNotes.exe` from the extracted folder and keep all accompanying files. Existing notes, settings, and backups are retained.
+No administrator privileges or separate .NET installation are required. The app is unsigned. Verify the SHA256 using the accompanying `.zip.sha256` file. The UI is Japanese.
 
-New settings default to waiting for today's note, 100% display scale, and always-visible controls. Linking a new daily sticky note requires today's matching file. Retention until Reload lasts only while the note stays open. When updating from 0.0.1, also check the user guide for folder and date-format migration instructions.
+Google integration is optional and requires your own OAuth setup. Deleting JSON removes only the imported copy, not tokens or Google-side authorization. Automated tests do not connect to or update a real Google account.
 
-The app is unsigned. Google Calendar is optional and requires your own OAuth configuration. The SHA256 checksum is provided in `StickyNotes-win-x64.zip.sha256`.
-
-[User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.3/README.md) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.3/CHANGELOG.md)
+[User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/README.md) · [Google setup](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/docs/GOOGLE-CALENDAR.en.md) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/CHANGELOG.md)
 
 ## 简体中文
 
-面向 **Windows 10 / 11（x64）**。本版本添加每日笔记等待提示、便签显示缩放和标题悬停操作按钮。
+支持 Windows 10 / 11（x64）。本版本改进 Google Calendar 初始配置、命令补全和任务栏操作。
 
-### 主要变化
-
-- 今天的每日笔记尚未创建时，在便签内提示：在 Obsidian 创建后会自动显示。可在设置中保留昨天的笔记，直到今天的文件创建或点击重新加载。保留的笔记会标明日期和保存目标，并保护未保存的编辑。
-- 每张便签可保存50～200%的显示比例。通过更多菜单中的显示缩放、阅读时的 Ctrl＋滚轮／Ctrl＋＋／Ctrl＋－调整，Ctrl＋0恢复100%。Markdown 正文、日程和等待提示一起缩放。
-- 启用 `タイトルにマウスカーソルを重ねるとボタンを表示する`（鼠标悬停在标题上时显示按钮），即可将按钮叠加显示在标题上。支持拖动手柄和 F6／Tab 键盘操作。
-- 普通构建也生成 `artifacts/app/Install.cmd`，可立即本地安装。`-Publish` 还生成 ZIP 和 SHA256 校验文件。
-- 随附英语、日语和简体中文文档，添加 Obsidian 与 Google Calendar 的组合使用示例。应用界面控件仍为日语。
+- **Google 配置指南**：右侧独立窗格集中显示准备步骤、浏览器登录和连接检查。支持导入或删除 OAuth JSON 的托管副本，以及取消授权。
+- **输入 `@` 补全**：在独立段落输入即可显示候选和示例。Tab、Enter 或点击可插入今天的日期时间；时区偏移和搜索关键词均可省略。
+- **任务栏操作**：可选择显示便签图标，右键使用与通知区域相同的八项操作。新增将全部便签临时置顶10秒的功能。
+- **精简文档**：README 保留基本操作，详细用法和 Google 配置移至独立指南，三种语言同步更新。
 
 ### 安装与更新
 
-1. 更新前，从通知区域菜单选择 `終了`（退出）。
-2. 下载 Assets 中的 **StickyNotes-win-x64.zip**，完整解压到另一个文件夹。
-3. 运行 **Install.cmd**，从开始菜单启动 **Markdown Sticky Notes**。
+退出应用，将 Assets 中的 **StickyNotes-win-x64.zip** 解压到另一文件夹，运行 **Install.cmd**。笔记、设置和备份会保留。免安装使用时运行 `StickyNotes.exe`，并保留全部附带文件。
 
-无需管理员权限或单独安装 .NET。免安装使用可直接运行解压目录中的 `StickyNotes.exe`，但须保留所有附带文件。已有笔记、设置和备份会保留。
+无需管理员权限或另装 .NET。应用未签名，可使用附带的 `.zip.sha256` 文件验证 SHA256。界面为日语。
 
-新设置默认等待今天的笔记、显示比例100%、始终显示操作按钮。新建每日便签关联时，需要今天的匹配文件。“保留至重新加载”的状态仅在便签保持打开期间有效。从0.0.1更新时，还请查看使用指南中的文件夹和日期格式迁移说明。
+Google 集成为可选功能，需要自行配置 OAuth。删除 JSON 仅删除导入副本，不删除令牌或 Google 端授权。自动测试不连接或修改真实 Google 账号。
 
-应用未签名。Google Calendar 为可选功能，需要用户自行配置 OAuth。SHA256 位于 `StickyNotes-win-x64.zip.sha256`。
-
-[使用指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.3/README.zh-CN.md) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.3/CHANGELOG.zh-CN.md)
+[使用指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/README.zh-CN.md) · [Google 配置](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/docs/GOOGLE-CALENDAR.zh-CN.md) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.4/CHANGELOG.zh-CN.md)

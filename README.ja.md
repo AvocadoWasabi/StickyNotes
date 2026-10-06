@@ -25,7 +25,7 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## ダウンロードとインストール
 
-1. [v0.0.3の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.3)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+1. [v0.0.4の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
 3. 通知領域アイコンの「設定」で付箋の保存先を選びます。
 

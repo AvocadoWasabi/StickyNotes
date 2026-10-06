@@ -8,6 +8,8 @@
 
 ## 未リリース / Unreleased
 
+## [0.0.4](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) — 2026-10-06
+
 - READMEを導入・基本操作に絞り、詳細を[操作・設定の補足](docs/USAGE.md)と[Google Calendarガイド](docs/GOOGLE-CALENDAR.md)へ分離。導入ガイドの重複説明を整理し、3言語の構成を統一。
 
 - 独立した段落で `@` を入力すると、`@calendar` の補完候補と入力例をフロート表示。Tab・Enter・クリックで今日の日付をタイムゾーン・キーワードなしで挿入し、日時を選択して編集可能に。Escで候補を閉じます。キーワードなしの検索とWindowsのローカル時刻の使用をアプリ・資料に明記し、地域設定によらず日時を解析するように変更。
