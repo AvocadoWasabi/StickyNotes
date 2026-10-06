@@ -8,6 +8,8 @@
 
 ## 未リリース / Unreleased
 
+## [0.0.5](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) — 2026-10-06
+
 - アプリUIを日本語・英語・簡体字中国語に対応。既定はWindowsの表示言語に合わせ、設定で選んだ言語は次回起動時に反映。メニュー・ダイアログ・Google設定ガイド・エラー・新規ノート雛形を翻訳し、既存ノートや予定の内容は保持。翻訳リソースを配布物に同梱。
 
 ## [0.0.4](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) — 2026-10-06

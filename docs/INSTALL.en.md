@@ -19,9 +19,9 @@ For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whol
 
 ## First-time setup
 
-Source builds: choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language). v0.0.4 remains Japanese-only.
+Choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language).
 
-Open `設定` (Settings) from the notification-area icon and choose a notes folder. For Obsidian, choose a folder in your vault. The daily-note folder is configured separately.
+Open `Settings` from the notification-area icon and choose a notes folder. For Obsidian, choose a folder in your vault. The daily-note folder is configured separately.
 
 - [Basic usage](../README.md#basic-usage)
 - [Folder migration and daily-note settings](USAGE.en.md#storage)
@@ -31,13 +31,13 @@ Authentication is unnecessary unless you use Google integration.
 
 ## Updates
 
-Exit through `終了` in the notification-area menu, extract the new ZIP to a separate directory, and run `Install.cmd` to replace the app files. Notes, settings, and backups are stored separately from the installation.
+Exit through `Exit` in the notification-area menu, extract the new ZIP to a separate directory, and run `Install.cmd` to replace the app files. Notes, settings, and backups are stored separately from the installation.
 
 After upgrading from 0.0.1, check both folder settings and today's matching filename. Documented legacy date formats convert automatically to tagged regular expressions; custom formats need manual correction. Saving without confirmation defaults to off. See the [changelog](../CHANGELOG.md).
 
 ## Removal
 
-1. Exit through `終了` in the notification-area menu.
+1. Exit through `Exit` in the notification-area menu.
 2. Delete `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`.
 3. Right-click Markdown Sticky Notes in the Start menu, open its file location, and delete the shortcut.
 

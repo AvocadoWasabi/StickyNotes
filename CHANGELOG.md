@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+## [0.0.5](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) — 2026-10-06
+
 - Add Japanese, English, and Simplified Chinese UI with a Windows-language default and a Settings selector applied after restart. Translate menus, dialogs, Google setup guidance, errors, and new-note templates; preserve existing note and event content. Include translation resources in the app package.
 
 ## [0.0.4](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) — 2026-10-06

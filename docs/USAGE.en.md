@@ -16,7 +16,7 @@ In Settings, choose **Display language → Use Windows language / 日本語 / En
 
 Menus, settings, guidance, app error messages, and new-note templates are translated. Existing note text, titles, headings, tags, and Google event content stay unchanged. Windows dialog buttons, external pages, and system/library errors may use another language.
 
-This feature is in the current source build and is not included in v0.0.4. Control names below follow the English UI.
+Available from v0.0.5. Control names below follow the English UI.
 
 <a id="editing"></a>
 

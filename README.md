@@ -6,7 +6,7 @@
 
 A Markdown sticky-note app for Windows. Edit Obsidian notes and daily notes directly, and display Google Calendar events alongside them. Obsidian is optional.
 
-**Windows 10 / 11 (x64).** The current source supports English, Japanese, and Simplified Chinese UI and documentation. UI language selection is unreleased; v0.0.4 still has Japanese controls. [Display language](docs/USAGE.en.md#language) Google integration is optional and requires your own OAuth setup.
+**Windows 10 / 11 (x64).** The UI and documentation support English, Japanese, and Simplified Chinese. [Display language](docs/USAGE.en.md#language).  Google integration is optional and requires your own OAuth setup.
 
 [Download](#download-and-install) · [Basic usage](#basic-usage) · [Google Calendar](#google-calendar) · [Further reading](#further-reading)
 
@@ -25,9 +25,9 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 
 ## Download and install
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.4 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) and extract it.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.5 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) and extract it.
 2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
-3. Open `設定` (Settings) from the notification-area icon and choose a notes folder.
+3. Open `Settings` from the notification-area icon and choose a notes folder.
 
 No administrator privileges or separate .NET installation are required. The app is unsigned, so Windows may ask for confirmation. See the [installation guide](docs/INSTALL.en.md) for updates, removal, and portable use.
 
@@ -37,13 +37,13 @@ No administrator privileges or separate .NET installation are required. The app 
 
 | Action | Control |
 | --- | --- |
-| Create a note | `＋`, or `新しい付箋` in the notification-area menu |
+| Create a note | `＋`, or `New note` in the notification-area menu |
 | Edit and save | Click the body / `Ctrl+E` → edit → `Ctrl+S` |
 | Complete a task | Click its checkbox to update the source Markdown |
 | Move or resize | Drag the top / an edge or the bottom-right corner |
 | Keep on top | `○ / ●`; the `…` menu can bring all notes to the top for 10 seconds |
-| Scale content | `… → 表示スケール` (50–200%) |
-| Close or exit | `×` closes a note; notification-area `終了` exits the app |
+| Scale content | `… → Display scale` (50–200%) |
+| Close or exit | `×` closes a note; notification-area `Exit` exits the app |
 
 Leaving the editor prompts to save changed text. Settings can enable saving without confirmation. Closing a note does not delete its Markdown file.
 
@@ -58,12 +58,12 @@ Changing the folder can also migrate existing Markdown. Check the [migration sco
 ## Display and edit a daily note section
 
 1. In Settings, choose the daily-note folder and tagged regular expression. Check the matching filename and save.
-2. Use `… → デイリーノートを表示…`, choose a heading, and select `表示` (Display). A blank heading shows the whole body.
+2. Use `… → Display a daily note…`, choose a heading, and select `Display`. A blank heading shows the whole body.
 3. Edit text or check tasks in the sticky note to update the source note.
 
 The first addition requires today's file. Later, missing daily notes can show a waiting message or retain yesterday according to Settings. See [filename examples and switching options](docs/USAGE.en.md#daily).
 
-For a fixed note, use `… → ノートの一部分を付箋にする…`. See [heading selection](docs/USAGE.en.md#headings).
+For a fixed note, use `… → Link part of a note…`. See [heading selection](docs/USAGE.en.md#headings).
 
 ## Google Calendar
 

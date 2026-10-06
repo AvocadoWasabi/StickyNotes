@@ -1,6 +1,6 @@
 [English](GOOGLE-CALENDAR.en.md) | [日本語](GOOGLE-CALENDAR.md) | [简体中文](GOOGLE-CALENDAR.zh-CN.md)
 
-[Display language](USAGE.en.md#language) (unreleased)
+[Display language](USAGE.en.md#language)
 
 # Google Calendar usage and setup
 

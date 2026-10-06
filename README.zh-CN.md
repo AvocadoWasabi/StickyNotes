@@ -6,7 +6,7 @@
 
 Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔记，并在旁边显示 Google Calendar 日程。也可不使用 Obsidian。
 
-**支持 Windows 10 / 11（x64）。** 当前源码的界面和文档支持英语、日语和简体中文。界面语言切换尚未发布，已发布的 v0.0.4 仍为日语界面。 [显示语言](docs/USAGE.zh-CN.md#language)Google 集成为可选功能，需要自行配置 OAuth。
+**支持 Windows 10 / 11（x64）。** 界面和文档支持英语、日语和简体中文。 [显示语言](docs/USAGE.zh-CN.md#language)。Google 集成为可选功能，需要自行配置 OAuth。
 
 [下载](#下载与安装) · [基本操作](#基本操作) · [Google Calendar](#google-calendar) · [补充资料](#补充资料)
 
@@ -25,9 +25,9 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 下载与安装
 
-1. 从 [v0.0.4 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4) 下载 `StickyNotes-win-x64.zip` 并解压。
+1. 从 [v0.0.5 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
-3. 在通知区域图标的 `設定`（设置）中选择便签文件夹。
+3. 在通知区域图标的 `设置` 中选择便签文件夹。
 
 无需管理员权限或另外安装 .NET。应用未签名，Windows 可能要求确认。更新、卸载和免安装使用见[安装指南](docs/INSTALL.zh-CN.md)。
 
@@ -37,13 +37,13 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 | 操作 | 方法 |
 | --- | --- |
-| 新建便签 | `＋`，或通知区域菜单的 `新しい付箋` |
+| 新建便签 | `＋`，或通知区域菜单的 `新便签` |
 | 编辑与保存 | 点击正文／`Ctrl+E` → 编辑 → `Ctrl+S` |
 | 完成任务 | 点击复选框，保存到原始 Markdown |
 | 移动与调整大小 | 拖动顶部／边缘或右下角 |
 | 置顶 | `○ / ●`；`…` 菜单可将所有便签临时置顶 10 秒 |
-| 显示缩放 | `… → 表示スケール`（50～200%） |
-| 关闭与退出 | `×` 仅关闭便签；通知区域的 `終了` 退出应用 |
+| 显示缩放 | `… → 显示缩放`（50～200%） |
+| 关闭与退出 | `×` 仅关闭便签；通知区域的 `退出` 退出应用 |
 
 编辑器失去焦点且内容有变化时，会询问是否保存。可在设置中启用免确认保存。关闭便签不会删除 Markdown 文件。
 
@@ -58,12 +58,12 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 ## 显示和编辑每日笔记的指定部分
 
 1. 在设置中选择每日笔记文件夹及带日期标签的正则表达式，确认匹配文件名并保存。
-2. 从 `… → デイリーノートを表示…` 选择标题，点击 `表示`（显示）。留空则显示整个正文。
+2. 从 `… → 显示每日笔记…` 选择标题，点击 `显示`。留空则显示整个正文。
 3. 在便签中编辑正文或勾选任务，修改会保存到原笔记。
 
 首次添加需要今日文件。之后若今日笔记尚未创建，可按设置显示等待提示或保留昨天。详见[文件名示例与切换选项](docs/USAGE.zh-CN.md#daily)。
 
-固定笔记使用 `… → ノートの一部分を付箋にする…`。详见[标题选择](docs/USAGE.zh-CN.md#headings)。
+固定笔记使用 `… → 显示笔记的一部分…`。详见[标题选择](docs/USAGE.zh-CN.md#headings)。
 
 ## Google Calendar
 

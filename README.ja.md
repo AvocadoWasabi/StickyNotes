@@ -6,7 +6,7 @@
 
 Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリーノートを直接編集し、Google Calendarの予定を並べて表示できます。Obsidianなしでも使えます。
 
-**Windows 10 / 11（x64）対応。** 現在のソースは画面・資料ともに英語・日本語・簡体字中国語に対応しています。表示言語の切り替えは未リリースで、公開済みv0.0.4の画面は日本語です。 [表示言語](docs/USAGE.md#language)Google連携は任意で、利用者自身のOAuth設定が必要です。
+**Windows 10 / 11（x64）対応。** 画面・資料ともに英語・日本語・簡体字中国語に対応しています。 [表示言語](docs/USAGE.md#language)。Google連携は任意で、利用者自身のOAuth設定が必要です。
 
 [ダウンロード](#ダウンロードとインストール) · [基本操作](#基本操作) · [Google Calendar](#google-calendar) · [補足資料](#補足資料)
 
@@ -25,7 +25,7 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## ダウンロードとインストール
 
-1. [v0.0.4の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.4)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+1. [v0.0.5の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
 3. 通知領域アイコンの「設定」で付箋の保存先を選びます。
 

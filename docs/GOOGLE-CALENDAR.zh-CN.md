@@ -1,6 +1,6 @@
 [English](GOOGLE-CALENDAR.en.md) | [日本語](GOOGLE-CALENDAR.md) | [简体中文](GOOGLE-CALENDAR.zh-CN.md)
 
-[显示语言设置](USAGE.zh-CN.md#language)（尚未发布）
+[显示语言设置](USAGE.zh-CN.md#language)
 
 # Google Calendar 使用与配置
 
