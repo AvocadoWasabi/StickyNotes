@@ -54,9 +54,9 @@
     <value>退出</value>
   </data>
   <data name="CalendarCompletion.Text01" xml:space="preserve">
-    <value>@calendar 日期时间 [关键词]
+    <value>@calendar 日期时间或today [关键词]
 时区可省略（Windows 本地时间）。
-不输入关键词也能搜索指定时间以后的日程。</value>
+关键词可省略。约每60秒更新指定时间以后的日程；使用 today 则显示电脑当天的日程。</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  搜索 Google Calendar</value>
@@ -67,10 +67,11 @@
   </data>
   <data name="CalendarCompletion.Text04" xml:space="preserve">
     <value>无关键词：@calendar {0}
-筛选：@calendar {1} 会议</value>
+筛选：@calendar {1} 会议
+自动跟随当天：@calendar today</value>
   </data>
   <data name="CalendarService.Text01" xml:space="preserve">
-    <value>示例：@calendar 2026-10-05T09:00 会议（关键词可省略；省略时区时使用 Windows 本地时间）</value>
+    <value>示例：@calendar today 或 @calendar 2026-10-05T09:00 会议（关键词可省略；省略时区时使用 Windows 本地时间）</value>
   </data>
   <data name="CalendarService.Text02" xml:space="preserve">
     <value>正在与 Google 通信，请在完成后重试。</value>

@@ -104,6 +104,7 @@ internal static partial class Program
             }
             finally { System.Globalization.CultureInfo.CurrentCulture = culture; }
             CalendarTests(root).GetAwaiter().GetResult();
+            CalendarTodayTests(root);
             Task.Run(() => OAuthFlowTests(root)).GetAwaiter().GetResult();
             GoogleSetupUiTests(root);
             GoogleCredentialsStoreTests(root);
@@ -1129,6 +1130,12 @@ internal static partial class Program
         Check(handler.Uri!.Contains("singleEvents=true") && handler.Uri.Contains("timeMin=") && handler.Uri.Contains("q="), "calendar search bounded, ordered and filtered");
         await service.SearchAsync("primary", CalendarQuery.Parse("@calendar 2026-10-06T09:00"));
         Check(handler.Uri!.Contains("timeMin=") && !handler.Uri.Contains("q="), "keyword-free local-time search omits the keyword filter");
+        Check(!handler.Uri.Contains("timeMax="), "explicit date keeps an unbounded future search");
+        var todayQuery = CalendarQuery.Parse("@calendar today 会議 &timeMax=bad", new DateTime(2026, 12, 31, 17, 45, 0));
+        await service.SearchAsync("primary", todayQuery);
+        var parameters = System.Web.HttpUtility.ParseQueryString(new Uri(handler.Uri!).Query);
+        Check(parameters["timeMin"] == todayQuery.From.ToString("o") && parameters["timeMax"] == todayQuery.Until!.Value.ToString("o") &&
+            parameters["q"] == "会議 &timeMax=bad", "today sends both local day bounds and safely escapes keywords");
         await service.VerifyConnectionAsync("primary");
         Check(handler.Method == HttpMethod.Get && handler.Uri!.EndsWith("events?maxResults=1") && handler.Body is null,
             "connection verification reads at most one event without modifying calendar");
@@ -1404,8 +1411,12 @@ internal static partial class Program
         public string? Uri, ETag, Body;
         public HttpMethod? Method;
         public bool Conflict;
+        public int Requests;
+        public Action? OnRequest;
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            Requests++;
+            OnRequest?.Invoke();
             Uri = request.RequestUri!.OriginalString; Method = request.Method;
             ETag = request.Headers.TryGetValues("If-Match", out var values) ? values.Single() : null;
             Body = request.Content is null ? null : await request.Content.ReadAsStringAsync(cancellationToken);

@@ -54,9 +54,9 @@
     <value>Exit</value>
   </data>
   <data name="CalendarCompletion.Text01" xml:space="preserve">
-    <value>@calendar date-time [keyword]
+    <value>@calendar date-time-or-today [keyword]
 Time zone is optional (Windows local time).
-Search without a keyword for events from the specified time.</value>
+Keywords are optional. Refresh events from the specified time, or the PC's current day with today, about every 60 seconds.</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  Search Google Calendar</value>
@@ -67,10 +67,11 @@ Edit the selected date and time, then save.</value>
   </data>
   <data name="CalendarCompletion.Text04" xml:space="preserve">
     <value>No keyword: @calendar {0}
-Filter: @calendar {1} meeting</value>
+Filter: @calendar {1} meeting
+Follow the current day: @calendar today</value>
   </data>
   <data name="CalendarService.Text01" xml:space="preserve">
-    <value>Example: @calendar 2026-10-05T09:00 meeting (keyword optional; omitted time zone uses Windows local time)</value>
+    <value>Example: @calendar today or @calendar 2026-10-05T09:00 meeting (keyword optional; omitted time zone uses Windows local time)</value>
   </data>
   <data name="CalendarService.Text02" xml:space="preserve">
     <value>A Google request is in progress. Try again after it finishes.</value>

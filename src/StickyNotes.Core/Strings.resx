@@ -54,9 +54,9 @@
     <value>終了</value>
   </data>
   <data name="CalendarCompletion.Text01" xml:space="preserve">
-    <value>@calendar 日時 [検索キーワード]
+    <value>@calendar 日時またはtoday [検索キーワード]
 タイムゾーンは省略できます（Windowsのローカル時刻）。
-キーワードなしでも検索できます。指定日時以降の予定を検索します。</value>
+キーワードなしでも検索できます。指定日時以降の予定、todayならPCの当日の予定を約60秒ごとに更新します。</value>
   </data>
   <data name="CalendarCompletion.Text02" xml:space="preserve">
     <value>@calendar  —  Google Calendarの予定を検索</value>
@@ -67,10 +67,11 @@
   </data>
   <data name="CalendarCompletion.Text04" xml:space="preserve">
     <value>キーワードなし: @calendar {0}
-絞り込む場合: @calendar {1} 会議</value>
+絞り込む場合: @calendar {1} 会議
+当日に自動追従: @calendar today</value>
   </data>
   <data name="CalendarService.Text01" xml:space="preserve">
-    <value>例: @calendar 2026-10-05T09:00 会議（検索語は省略可、時差省略時はPCのローカル時間）</value>
+    <value>例: @calendar today または @calendar 2026-10-05T09:00 会議（検索語は省略可、時差省略時はPCのローカル時間）</value>
   </data>
   <data name="CalendarService.Text02" xml:space="preserve">
     <value>Googleとの通信中です。完了後にもう一度お試しください。</value>

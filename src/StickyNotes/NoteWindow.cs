@@ -37,7 +37,8 @@ public sealed class NoteWindow : Window
     private FileSnapshot? snapshot;
     private string content = "";
     private bool editing, dirty, loading, initialized, busy, closed;
-    private DateTime lastCalendarCheck = DateTime.MinValue;
+    private long? lastCalendarCheck;
+    private CalendarQuery? displayedCalendarQuery;
     private string? activeCommand;
     private readonly DailyNoteDisplay dailyDisplay = new();
     private readonly Func<DateTime> today;
@@ -326,7 +327,7 @@ public sealed class NoteWindow : Window
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
         preview.Document = MarkdownView.Render(content, ToggleTask);
         var command = MarkdownView.FindCalendarCommand(content);
-        if (activeCommand != command) { activeCommand = command; eventsPanel.Children.Clear(); lastCalendarCheck = DateTime.MinValue; }
+        if (activeCommand != command) { activeCommand = command; eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null; }
     }
 
     private void BeginEdit()
@@ -471,7 +472,9 @@ public sealed class NoteWindow : Window
             }
             else if (snapshot is not null && (snapshot.Path != path || NoteStore.Read(snapshot.Path).Hash != snapshot.Hash))
                 status.Text = L10n.Text("NoteWindow.Text37");
-            if (!editing && snapshot is not null && (DateTime.Now - lastCalendarCheck).TotalSeconds >= 60) await RefreshCalendar();
+            // A monotonic interval keeps refreshing even when the PC clock is moved backwards.
+            if (!editing && snapshot is not null &&
+                (lastCalendarCheck is null || Environment.TickCount64 - lastCalendarCheck.Value >= 60_000)) await RefreshCalendar();
         }
         catch (Exception ex)
         {
@@ -482,15 +485,24 @@ public sealed class NoteWindow : Window
 
     private async Task RefreshCalendar()
     {
-        if (busy || string.IsNullOrWhiteSpace(activeCommand)) return;
-        busy = true; lastCalendarCheck = DateTime.Now;
+        if (closed || busy || string.IsNullOrWhiteSpace(activeCommand)) return;
+        busy = true; lastCalendarCheck = Environment.TickCount64;
         var command = activeCommand; var calendarId = app.Config.CalendarId;
         try
         {
+            var query = CalendarQuery.Parse(command, today());
+            // Do not retain yesterday's events if today's request fails or is still loading.
+            if (displayedCalendarQuery != query) { eventsPanel.Children.Clear(); displayedCalendarQuery = null; }
             app.Calendar.Configure(app.Config.GoogleCredentialsFile);
-            var items = await app.Calendar.SearchAsync(calendarId, CalendarQuery.Parse(command));
+            var items = await app.Calendar.SearchAsync(calendarId, query);
             if (closed || activeCommand != command) return;
+            if (query.Until is not null && query != CalendarQuery.Parse(command, today()))
+            {
+                eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null;
+                return;
+            }
             eventsPanel.Children.Clear();
+            displayedCalendarQuery = query;
             eventsPanel.Children.Add(new TextBlock { Text = L10n.Format("NoteWindow.Text38", items.Count), FontSize = 11, FontWeight = FontWeights.Bold });
             foreach (var item in items)
             {

@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add `@calendar today [keyword]` for the PC's current local day. Reuse the approximately 60-second refresh cycle to follow date changes and resume after sleep, use an interval unaffected by clock corrections, and discard results from the previous day. Add translated usage examples; explicit dates remain fixed.
+
 ## [0.0.5](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.5) — 2026-10-06
 
 - Add Japanese, English, and Simplified Chinese UI with a Windows-language default and a Settings selector applied after restart. Translate menus, dialogs, Google setup guidance, errors, and new-note templates; preserve existing note and event content. Include translation resources in the app package.

@@ -18,6 +18,10 @@ Enter a command on its own line in a note and save:
 @calendar 2026-10-06T09:00
 ```
 
+Use `@calendar today` to follow the PC's current day automatically (local midnight to the next midnight). `@calendar today meeting` filters by keyword. The date is checked and events are refreshed about every 60 seconds while viewing the note, including after waking from sleep; automatic refresh pauses while editing.
+
+`today` includes events overlapping the current day, including all-day and multi-day events, up to 100 results. Each refresh resolves the PC's date again without changing the saved command. Explicit dates remain fixed and have no upper date limit. If a new day's retrieval fails, the previous day's results are cleared and retrieval is retried at the normal interval. The existing refresh timer is reused; changing the PC clock backwards does not pause the refresh interval.
+
 **You can search without a keyword or time zone offset**, as in the example above. Without an offset, the app uses Windows local time. To filter events, append a keyword, for example `@calendar 2026-10-06T09:00 meeting`. Explicit offsets such as `2026-10-06T09:00+09:00` are also accepted. It retrieves up to 100 events, ordered by start time. Google's `timeMin` filters by event end time, so events already in progress at the specified time may also appear. Recurring events are expanded into individual occurrences.
 
 While editing, type `@` at the start of a separate paragraph (leave a blank line after preceding text) to show the `@calendar` suggestion and floating usage examples. Press Tab or Enter, or click the suggestion, to insert today's date at `00:00` without an offset or keyword. The date and time are selected so you can replace them, then save the note. The inserted date stays fixed; it does not advance automatically. Esc closes the suggestion. Completion does not save the note itself and does not appear inside email addresses or code blocks.

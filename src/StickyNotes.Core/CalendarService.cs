@@ -13,9 +13,17 @@ namespace StickyNotes.Core;
 
 public sealed record CalendarQuery(DateTimeOffset From, string Search)
 {
-    public static CalendarQuery Parse(string command)
+    public DateTimeOffset? Until { get; init; }
+
+    public static CalendarQuery Parse(string command, DateTime? localToday = null)
     {
         var m = Regex.Match(command.Trim(), @"^@calendar\s+(\S+)(?:\s+(.*))?$", RegexOptions.IgnoreCase);
+        if (m.Success && m.Groups[1].Value.Equals("today", StringComparison.OrdinalIgnoreCase))
+        {
+            var day = DateTime.SpecifyKind((localToday ?? DateTime.Today).Date, DateTimeKind.Local);
+            // Resolve each local midnight separately so DST days need not be 24 hours long.
+            return new(new DateTimeOffset(day), m.Groups[2].Value.Trim()) { Until = new DateTimeOffset(day.AddDays(1)) };
+        }
         if (!m.Success || !DateTimeOffset.TryParse(m.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date))
             throw new FormatException(L10n.Text("CalendarService.Text01"));
         return new(date, m.Groups[2].Value.Trim());
@@ -212,6 +220,7 @@ public sealed class CalendarService(Func<string?> loadToken, Action<string> save
     public async Task<List<CalendarEvent>> SearchAsync(string calendarId, CalendarQuery query)
     {
         var path = $"calendars/{Escape(calendarId)}/events?singleEvents=true&orderBy=startTime&maxResults=100&timeMin={Escape(query.From.ToString("o"))}";
+        if (query.Until is { } until) path += "&timeMax=" + Escape(until.ToString("o"));
         if (!string.IsNullOrWhiteSpace(query.Search)) path += "&q=" + Escape(query.Search);
         using var json = await Send(HttpMethod.Get, path);
         return json.RootElement.GetProperty("items").EnumerateArray().Select(ReadEvent).ToList();
