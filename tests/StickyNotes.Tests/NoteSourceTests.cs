@@ -90,6 +90,7 @@ internal static partial class Program
 
     private static void NoteSourceTests(string root)
     {
+        NoteCommandTests(root);
         var folder = Path.Combine(root, "source-parity"); Directory.CreateDirectory(folder);
         var settings = new Settings { ObsidianVaultFolder = folder };
         var local = new NoteSource(settings, false, (_, _, _) => throw new Exception("CLI called in local mode"));

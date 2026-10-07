@@ -38,7 +38,8 @@ internal sealed partial class NoteSource
     }
     private async Task<JsonDocument> Request(object request, CancellationToken token)
     {
-        var output = await execute(settings, ObsidianTasksClient.BuildRequestCode(request, notes: true), token).ConfigureAwait(false);
+        using var command = ObsidianTasksClient.PrepareNoteCommand(settings, request);
+        var output = await execute(settings, command.Code, token).ConfigureAwait(false);
         return ObsidianTasksClient.ParseEnvelope(output);
     }
 

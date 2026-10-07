@@ -7,7 +7,12 @@ async function stickyTasksPreview(request) {
         fail('The selected Obsidian vault does not match the configured vault folder.');
     const fingerprint = text => 'cli:' + require('crypto').createHash('sha256').update(text, 'utf8').digest('hex');
     const snapshot = text => ({ text, hash: fingerprint(text) });
+    const checkSize = text => {
+        if (Buffer.byteLength(text, 'utf8') > 2000000) fail('Source note exceeds the preview size limit (2 MB).');
+        return text;
+    };
     if (request.mode === 'create') {
+        checkSize(request.text);
         if (request.name) {
             if (/[\\/]/.test(request.name) || !request.name.endsWith('.md')) fail('Invalid note name.');
             const parent = request.folder == null ? app.fileManager.getNewFileParent('') :
@@ -31,12 +36,13 @@ async function stickyTasksPreview(request) {
     if (request.mode === 'save') {
         const text = await app.vault.process(file, current => {
             if (fingerprint(current) !== request.hash) fail('STICKY_CONFLICT');
+            const updated = checkSize((current.startsWith('\uFEFF') ? '\uFEFF' : '') + request.text.replace(/^\uFEFF+/, ''));
             // Back up the exact string provided by Obsidian before applying the edit.
             const fs = require('fs');
             const path = require('path');
             fs.mkdirSync(request.backup, { recursive: true });
             fs.writeFileSync(path.join(request.backup, Date.now() + '-' + require('crypto').randomUUID() + '.md'), current, { encoding: 'utf8', flag: 'wx' });
-            return (current.startsWith('\uFEFF') ? '\uFEFF' : '') + request.text.replace(/^\uFEFF+/, '');
+            return updated;
         });
         return snapshot(text);
     }

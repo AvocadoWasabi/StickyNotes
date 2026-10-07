@@ -898,7 +898,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>CLI 笔记获取失败（不会回退到本地读取）：</value>
   </data>
   <data name="CliNote.CommandLimit" xml:space="preserve">
-    <value>超出 CLI 命令长度限制。请在 Obsidian 中保存较长的正文。</value>
+    <value>超出 CLI 命令长度限制。请检查仓库名称、路径或查询的长度。</value>
   </data>
   <data name="CliDaily.Detect" xml:space="preserve">
     <value>从 Obsidian 获取当前仓库</value>

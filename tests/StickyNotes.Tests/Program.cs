@@ -32,6 +32,11 @@ internal static partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--note-transport-smoke")
+        {
+            NoteTransportSmoke().GetAwaiter().GetResult();
+            return;
+        }
         if (args.Length == 1 && args[0] is "--tasks-cli-smoke" or "--folders-cli-smoke")
         {
             TasksCliSmoke(args[0] == "--folders-cli-smoke").GetAwaiter().GetResult();

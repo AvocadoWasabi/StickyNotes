@@ -6,6 +6,10 @@
 
 使い方は [日本語README](README.ja.md)、公開後の配布ファイルは [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) を参照してください。
 
+## 未リリース
+
+- 付箋編集後の保存でCLIコマンド長の上限エラーが出る問題を修正。長いノート要求を現在のユーザーだけが読める一時ファイルで渡し、実行前に検証して処理終了時に削除。保存は引き続きObsidian経由でバックアップ・競合検出を行い、Unicode・BOM・改行を保持。既存のノート上限2 MBを超える保存は書き込み前に拒否。公開済みv0.0.7の配布物は変更しません。
+
 ## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 
 - 新規設定ではObsidian CLIを既定とし、開いているVaultとコアDaily notesのフォルダ・日付書式・テンプレートをObsidianから取得。既存の明示的なCLI無効指定と非表示のローカル設定は保持。Vault全件検索を除き、本家のパスで今日・昨日を解決し、未作成時の前日保持処理を両方式で共用。

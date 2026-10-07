@@ -898,7 +898,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>CLI本文取得に失敗しました（ローカル取得には切り替えません）: </value>
   </data>
   <data name="CliNote.CommandLimit" xml:space="preserve">
-    <value>CLIコマンドの長さ上限を超えました。長い本文の保存はObsidian側で行ってください。</value>
+    <value>CLIコマンドの長さ上限を超えました。Vault名・パスやクエリの長さを確認してください。</value>
   </data>
   <data name="CliDaily.Detect" xml:space="preserve">
     <value>開いているVaultをObsidianから取得</value>

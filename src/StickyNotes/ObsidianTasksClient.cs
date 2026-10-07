@@ -3,6 +3,9 @@ using System.Text;
 using System.Text.Json;
 using System.IO.Compression;
 using System.Threading;
+using System.Security.AccessControl;
+using System.Security.Cryptography;
+using System.Security.Principal;
 
 namespace StickyNotes;
 
@@ -58,7 +61,7 @@ internal static class ObsidianTasksClient
     internal static string BuildDailyCode(object request) => BuildRequestCode(request, DailyScript);
     internal static string BuildFoldersCode(object request) => BuildRequestCode(request, FoldersScript);
 
-    private static string BuildRequestCode(object request, string script)
+    private static string BuildRequestCode(object request, string script, bool enforceLimit = true)
     {
         var payload = Compress(JsonSerializer.Serialize(request));
         // Only the shipped adapter is evaluated as code. Note text stays compressed JSON data.
@@ -66,16 +69,67 @@ internal static class ObsidianTasksClient
             "','base64')).toString('utf8'));const run=eval(require('zlib').inflateSync(Buffer.from('" + script +
             "','base64')).toString('utf8')+';stickyTasksPreview');return '" + Marker + "'+JSON.stringify(await run(request));}" +
             "catch(e){return '" + Marker + "'+JSON.stringify({error:String(e.message||e)});}})()";
-        if (code.Length > 3500) throw new InvalidOperationException(L10n.Text("CliNote.CommandLimit"));
+        if (enforceLimit && code.Length > 3500) throw new InvalidOperationException(L10n.Text("CliNote.CommandLimit"));
         return code;
     }
+
+    internal sealed class NoteCommand(string code, FileStream? transfer = null, string? temporaryPath = null) : IDisposable
+    {
+        internal string Code { get; } = code;
+        internal string? TemporaryPath { get; } = temporaryPath;
+        public void Dispose() => transfer?.Dispose();
+    }
+
+    internal static NoteCommand PrepareNoteCommand(Settings settings, object request)
+    {
+        var vault = VaultName(settings);
+        var inline = BuildRequestCode(request, NotesScript, enforceLimit: false);
+        if (inline.Length <= 3500 && CommandFits(vault, inline)) return new(inline);
+
+        // Only this user's Obsidian can read the transfer. CreateNew prevents replacement,
+        // read-only sharing prevents modification, and DeleteOnClose also covers process exit.
+        var security = new FileSecurity();
+        security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
+        using var identity = WindowsIdentity.GetCurrent();
+        security.AddAccessRule(new FileSystemAccessRule(identity.User!, FileSystemRights.FullControl, AccessControlType.Allow));
+        var path = Path.Combine(Path.GetTempPath(), "StickyNotes-CLI-" + Guid.NewGuid().ToString("N") + ".tmp");
+        var transfer = new FileInfo(path).Create(FileMode.CreateNew, FileSystemRights.FullControl,
+            FileShare.Read, 4096, FileOptions.DeleteOnClose, security);
+        try
+        {
+            // The request remains JSON data. Only the bundled bridge is evaluated, after
+            // verifying the exact bytes produced here; no note content enters the CLI arguments.
+            var bytes = Convert.FromBase64String(Compress(JsonSerializer.Serialize(new { request, script = NotesScript })));
+            transfer.Write(bytes);
+            transfer.Flush();
+            var location = Convert.ToBase64String(Encoding.UTF8.GetBytes(path));
+            var hash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+            var code = "(async()=>{try{const bytes=require('fs').readFileSync(Buffer.from('" + location +
+                "','base64').toString('utf8'));if(require('crypto').createHash('sha256').update(bytes).digest('hex')!=='" + hash +
+                "')throw Error('Invalid note transfer');const data=JSON.parse(require('zlib').inflateSync(bytes).toString('utf8'));" +
+                "const run=eval(require('zlib').inflateSync(Buffer.from(data.script,'base64')).toString('utf8')+';stickyTasksPreview');" +
+                "return '" + Marker + "'+JSON.stringify(await run(data.request));}catch(e){return '" + Marker +
+                "'+JSON.stringify({error:String(e.message||e)});}})()";
+            ValidateCommand(vault, code);
+            return new(code, transfer, path);
+        }
+        catch { transfer.Dispose(); throw; }
+    }
+
+    private static string VaultName(Settings settings)
+    {
+        var root = string.IsNullOrWhiteSpace(settings.ObsidianVaultFolder) ? "" : Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
+        return string.IsNullOrWhiteSpace(settings.ObsidianVaultId) ? (root.Length == 0 ? "" : new DirectoryInfo(root).Name) : settings.ObsidianVaultId.Trim();
+    }
+
+    private static bool CommandFits(string vault, string code)
+        => Encoding.UTF8.GetByteCount(JsonSerializer.Serialize(new[] { "vault=" + vault, "eval", "code=" + code })) + 512 <= 4000;
 
     internal static void ValidateCommand(string vault, string code)
     {
         // Obsidian 1.14.4 can parse partial pipe data as a complete JSON message.
         // Budget the serialized arguments plus framing below 4 KiB; reject before launching CLI.
-        var args = JsonSerializer.Serialize(new[] { "vault=" + vault, "eval", "code=" + code });
-        if (Encoding.UTF8.GetByteCount(args) + 512 > 4000)
+        if (!CommandFits(vault, code))
             throw new InvalidOperationException(L10n.Text("CliNote.CommandLimit"));
     }
 
@@ -117,9 +171,8 @@ internal static class ObsidianTasksClient
 
     internal static async Task<string> ExecuteAsync(Settings settings, string code, CancellationToken token)
     {
-        var root = string.IsNullOrWhiteSpace(settings.ObsidianVaultFolder) ? "" : Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
         var cli = settings.ObsidianCli.Trim();
-        var vault = string.IsNullOrWhiteSpace(settings.ObsidianVaultId) ? (root.Length == 0 ? "" : new DirectoryInfo(root).Name) : settings.ObsidianVaultId.Trim();
+        var vault = VaultName(settings);
         ValidateCommand(vault, code);
         if (!Path.IsPathFullyQualified(cli) || !File.Exists(cli) ||
             !Path.GetFileName(cli).Equals("Obsidian.com", StringComparison.OrdinalIgnoreCase))

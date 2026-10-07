@@ -6,6 +6,10 @@ User-facing changes are recorded here, newest releases first. Development commit
 
 See the [README](README.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
+## Unreleased
+
+- Fix the CLI command-length error when saving edited sticky notes. Oversized note requests use a current-user-only temporary transfer, verified before execution and deleted when the operation ends; note writes still use Obsidian with backups and conflict checks. Preserve Unicode, BOM and newlines. Reject saves exceeding the existing 2 MB note limit before writing. Published v0.0.7 packages are unchanged.
+
 ## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 
 - Default new settings to Obsidian CLI. Detect the open vault and obtain core Daily notes folder, format and template from Obsidian. Preserve existing explicit CLI opt-outs and hidden local settings. Resolve today/yesterday through native paths without searching the whole vault, with shared missing-note retention behavior.

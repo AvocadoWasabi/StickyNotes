@@ -898,7 +898,7 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>CLI note read failed (no local fallback): </value>
   </data>
   <data name="CliNote.CommandLimit" xml:space="preserve">
-    <value>CLI command length limit exceeded. Save long note text in Obsidian.</value>
+    <value>CLI command length limit exceeded. Check the length of the vault name, paths or queries.</value>
   </data>
   <data name="CliDaily.Detect" xml:space="preserve">
     <value>Get open vault from Obsidian</value>

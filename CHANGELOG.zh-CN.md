@@ -6,6 +6,10 @@
 
 使用方法见 [README](README.zh-CN.md)，发布包见 [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases)。
 
+## 未发布
+
+- 修复编辑便签后保存时出现 CLI 命令长度超限的问题。较长的笔记请求通过仅当前用户可读的临时文件传递，执行前校验，操作结束时删除；仍由 Obsidian 保存，并保留备份及冲突检查。保留 Unicode、BOM 和换行。超过已有 2 MB 笔记限制的保存会在写入前被拒绝。已发布的 v0.0.7 包保持不变。
+
 ## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 
 - 新配置默认使用 Obsidian CLI，获取已打开的仓库以及核心 Daily notes 的文件夹、日期格式和模板。保留已有明确禁用 CLI 的选择及隐藏的本地设置。使用原生路径解析今天、昨天，不扫描整个仓库，两种方式共用缺失日记保留逻辑。

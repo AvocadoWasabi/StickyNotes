@@ -28,7 +28,7 @@ Tasks runs the installed plugin's native search and Markdown export; results are
 
 UTF-8 is decoded strictly, preserving newline/whitespace behavior and the original reader's BOM policy. Saves verify a hash inside `vault.process` and back up the original text before writing. They rely on Obsidian's queue and do not lock independent external editors. Live tests have occasionally reported transient snapshot/hash mismatches or save conflicts; retries passed, but the cause remains unisolated (low impact: overwrite was rejected). Keep any draft text and reload before retrying.
 
-CLI calls are serialized with a 25-second timeout including queue wait. Source notes are limited to 2 MB; queries to 20 blocks / 8,000 characters, export to 200,000 characters per block, and total output is bounded. Compressed arguments plus framing reserve must fit 4,000 bytes, mitigating Obsidian 1.14.4's observed long-request JSON parsing error. Large edits may need saving in Obsidian. Synchronous save/link confirmation can wait for the timeout; after a timeout, reload before retrying because executing JavaScript is not cancelled.
+CLI calls are serialized with a 25-second timeout including queue wait. Source and saved notes are limited to 2 MB (UTF-8 bytes including BOM); queries to 20 blocks / 8,000 characters, export to 200,000 characters per block, and total output is bounded. Arguments plus framing reserve must fit 4,000 bytes, mitigating Obsidian 1.14.4's observed long-request JSON parsing error. Current source builds pass oversized note requests through a temporary file restricted to the current Windows user, verify its SHA-256 before executing the bundled adapter, and delete it on success, failure or cancellation. Note I/O still uses Obsidian APIs with backups and conflict checks; there is no local note-write fallback. Published v0.0.7 packages still have the old long-edit restriction. Synchronous save/link confirmation can wait for the timeout; after a timeout, reload before retrying because executing JavaScript is not cancelled.
 
 Daily settings/path resolution and Tasks use internal APIs with runtime checks. Unsupported/disabled plugins report errors. This daily integration targets the core Daily notes plugin; it does not infer settings from Periodic Notes or other daily-note plugins. Obsidian must remain running; closing it during a CLI call can race with the CLI's auto-launch behavior.
 
@@ -36,7 +36,7 @@ Daily settings/path resolution and Tasks use internal APIs with runtime checks. 
 
 `DailyBridge.js` obtains native settings and two date paths without creating files. `NoteSource` supplies the shared retention, heading and rendering logic. `NotesBridge.js` uses Vault APIs for note I/O; `TasksBridge.js` exports native query results. Encoded JSON stays data; only bundled adapters are evaluated as code. No clipboard access or third-party plugin binaries.
 
-Tests cover native paths, missing dates, retention, settings changes, vault boundaries, hidden legacy-field preservation, CLI failures, obsolete responses and rendering parity. Optional desktop smoke: `dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`. It reads native settings and an existing note, creates a uniquely named synthetic fixture for encoding/save/backup/conflict checks, then deletes that fixture. Only assertions/version are printed.
+Tests cover native paths, missing dates, retention, settings changes, vault boundaries, hidden legacy-field preservation, CLI failures, obsolete responses and rendering parity. The normal build also checks temporary-transfer permissions, text preservation and cleanup on failure. With Node.js installed, `dotnet run --project tests/StickyNotes.Tests -c Release -- --note-transport-smoke` executes the generated transfer loader and bundled bridge against synthetic files and mocked Vault APIs, including 2 MB saves, BOM, backups and conflict/failure preservation; it does not require Obsidian. Optional desktop smoke: `dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`. It reads native settings and an existing note, creates a uniquely named synthetic fixture for encoding/save/backup/conflict checks, then deletes that fixture. Only assertions/version are printed.
 
 References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts).
 
@@ -66,7 +66,7 @@ Tasksはインストール済み本家の検索とMarkdown出力を使います�
 
 UTF-8を厳密に復号し、改行・空白と従来のBOM処理を維持します。保存は`vault.process`内でハッシュを照合し、元の文字列をバックアップしてから書き込みます。Obsidianのキュー処理に依存し、独立した外部エディターをロックするものではありません。実機テストでは一時的なスナップショット／ハッシュ不一致や保存競合がまれに発生しています。再試行は通過しましたが、原因は未特定です（影響度・低：上書きは拒否）。下書きを控え、再読込後に再試行してください。
 
-CLIは同時1要求、待機込み25秒のタイムアウトです。元ノート2 MB、クエリ20ブロック／合計8,000文字、各結果200,000文字までで、総出力にも上限があります。圧縮引数と通信形式の予備領域を4,000バイト以内に抑え、Obsidian 1.14.4で観測した長い要求のJSON解析エラーを回避します。長い編集はObsidianでの保存が必要な場合があります。保存・連携確定はタイムアウトまで画面を待たせる場合があり、実行済みJavaScriptはキャンセルされないため、タイムアウト後は再読込してから再試行してください。
+CLIは同時1要求、待機込み25秒のタイムアウトです。元ノート・保存後のノートは2 MB（BOMを含むUTF-8バイト数）、クエリ20ブロック／合計8,000文字、各結果200,000文字までで、総出力にも上限があります。引数と通信形式の予備領域を4,000バイト以内に抑え、Obsidian 1.14.4で観測した長い要求のJSON解析エラーを回避します。現在のソースビルドは長いノート要求を現在のWindowsユーザーだけが読める一時ファイルで渡し、SHA-256照合後に同梱アダプターを実行し、成功・失敗・キャンセル時に削除します。本文の読み書きはObsidian APIを使い、バックアップ・競合検出を維持し、ローカル書き込みへフォールバックしません。公開済みv0.0.7の配布物には従来の長文編集制限が残ります。保存・連携確定はタイムアウトまで画面を待たせる場合があり、実行済みJavaScriptはキャンセルされないため、タイムアウト後は再読込してから再試行してください。
 
 デイリー設定・パス解決とTasksは内部APIに依存し、実行時に確認します。未対応・無効なプラグインはエラーを表示します。デイリー連携はコアのデイリーノートが対象で、Periodic Notesなど他プラグインの設定を推測しません。Obsidianの常時起動が必要で、CLI実行と同時の終了はCLI側の自動起動と競合する可能性があります。
 
@@ -74,7 +74,7 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 
 `DailyBridge.js`がファイルを作成せずに本家設定と2日分のパスを取得し、`NoteSource`から共通の前日保持・見出し・描画処理へ渡します。`NotesBridge.js`はVault APIで本文を扱い、`TasksBridge.js`は本家の検索結果を出力します。JSONはデータとして扱い、コード評価は同梱アダプターのみです。クリップボード操作や本家プラグインのバイナリ同梱はありません。
 
-テストはネイティブパス、未作成、前日保持、設定変更、Vault境界、隠れた旧設定の保全、CLI失敗、古い応答、描画一致を検証します。任意の実機テストは`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`です。本家設定と既存ノートを読み、一意な名前の合成ノートで文字コード・保存・バックアップ・競合を確認後、その合成ノートを削除します。出力は検証結果・バージョンのみです。
+テストはネイティブパス、未作成、前日保持、設定変更、Vault境界、隠れた旧設定の保全、CLI失敗、古い応答、描画一致を検証します。通常ビルドでは一時ファイルの権限・本文保持・失敗時の削除も確認します。Node.js導入済みなら`dotnet run --project tests/StickyNotes.Tests -c Release -- --note-transport-smoke`で、生成した受け渡しコードと同梱アダプターを合成ファイル・模擬Vault APIに対して実行し、2 MB保存・BOM・バックアップ・競合／失敗時の保全を検証できます。Obsidianは不要です。任意の実機テストは`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`です。本家設定と既存ノートを読み、一意な名前の合成ノートで文字コード・保存・バックアップ・競合を確認後、その合成ノートを削除します。出力は検証結果・バージョンのみです。
 
 参照：[公式CLI](https://obsidian.md/help/cli)、[Tasksのクエリ描画器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts)。
 
@@ -104,7 +104,7 @@ Tasks 使用已安装原插件的查询及 Markdown 导出。结果只读，不�
 
 严格解码 UTF-8，保留换行、空白及原有 BOM 处理。保存时在`vault.process`内核对哈希，先备份原文本再写入。依赖 Obsidian 队列，不锁定独立外部编辑器。实机测试偶尔出现临时快照／哈希不一致或保存冲突；重试通过，但原因仍未确定（影响较低：覆盖被拒绝）。请保留草稿，重新加载后重试。
 
-CLI 串行执行，含排队25秒超时。源笔记限2 MB，查询20块／共8,000字符，每块结果200,000字符，总输出也有限制。压缩参数及通信格式预留空间须在4,000字节内，以规避 Obsidian 1.14.4 已观察到的长请求 JSON 解析错误。长编辑可能需要在 Obsidian 保存。同步保存／关联确认可能阻塞至超时；已执行的 JavaScript 不会取消，超时后应重新加载再重试。
+CLI 串行执行，含排队25秒超时。源笔记及保存后的笔记限2 MB（含 BOM 的 UTF-8 字节数），查询20块／共8,000字符，每块结果200,000字符，总输出也有限制。参数及通信格式预留空间须在4,000字节内，以规避 Obsidian 1.14.4 已观察到的长请求 JSON 解析错误。当前源码构建通过仅当前 Windows 用户可读的临时文件传递较长的笔记请求，校验 SHA-256 后执行随附适配器，在成功、失败或取消时删除。笔记读写仍使用 Obsidian API，保留备份及冲突检查，不回退到本地写入。已发布的 v0.0.7 包仍有旧的长文本编辑限制。同步保存／关联确认可能阻塞至超时；已执行的 JavaScript 不会取消，超时后应重新加载再重试。
 
 日记设置／路径解析及 Tasks 依赖内部 API，并在运行时检查。未支持或禁用的插件显示错误。日记仅针对核心日记插件，不推断 Periodic Notes 等其他插件的设置。Obsidian 必须保持运行；CLI 调用时同时关闭本体可能与 CLI 自动启动竞争。
 
@@ -112,6 +112,6 @@ CLI 串行执行，含排队25秒超时。源笔记限2 MB，查询20块／共8,
 
 `DailyBridge.js`读取原生设置及两天路径，不创建文件；`NoteSource`连接共用的日期保留、标题和渲染逻辑。`NotesBridge.js`使用 Vault API 处理正文，`TasksBridge.js`导出原生查询结果。JSON 保持为数据，仅对随附适配器求值；不操作剪贴板或分发原插件二进制。
 
-测试覆盖原生路径、缺失日期、昨日保留、设置变动、仓库边界、隐藏旧设置保留、CLI 失败、过时响应及渲染一致性。可选实机测试：`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`。读取原生设置及已有笔记，创建唯一名称的合成笔记验证编码／保存／备份／冲突后删除，仅输出验证结果／版本。
+测试覆盖原生路径、缺失日期、昨日保留、设置变动、仓库边界、隐藏旧设置保留、CLI 失败、过时响应及渲染一致性。普通构建还检查临时文件权限、正文保留及失败清理。安装 Node.js 后，可用`dotnet run --project tests/StickyNotes.Tests -c Release -- --note-transport-smoke`在合成文件及模拟 Vault API 上执行生成的传输代码与随附适配器，验证2 MB 保存、BOM、备份及冲突／失败时的数据保护，无需 Obsidian。可选实机测试：`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`。读取原生设置及已有笔记，创建唯一名称的合成笔记验证编码／保存／备份／冲突后删除，仅输出验证结果／版本。
 
 参考：[官方 CLI](https://obsidian.md/help/cli)、[Tasks 查询渲染器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts)。
