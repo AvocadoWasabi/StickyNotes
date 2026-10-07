@@ -1027,4 +1027,10 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="NoteBrowser.Refresh" xml:space="preserve"><value>刷新列表</value></data>
   <data name="NoteBrowser.Count" xml:space="preserve"><value>{0} 篇 Markdown 笔记</value></data>
   <data name="NoteBrowser.Truncated" xml:space="preserve"><value>（显示前 50,000 字符）</value></data>
+  <data name="TaskEditing.Keys" xml:space="preserve"><value>↑↓ 选择 · Enter/Tab 插入 · Esc 关闭</value></data>
+  <data name="TaskEditing.Label" xml:space="preserve"><value>任务输入补全</value></data>
+  <data name="TaskEditing.Automatic" xml:space="preserve"><value>自动（仅在 Obsidian 已启用 Tasks 时）</value></data>
+  <data name="TaskEditing.On" xml:space="preserve"><value>ON（没有 Tasks 也提供补全）</value></data>
+  <data name="TaskEditing.Off" xml:space="preserve"><value>OFF（不提供补全）</value></data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>默认为自动。Tasks 未安装、禁用、无法连接或使用本地模式时，在手动选择 ON 前不显示候选。Enter 继续检查列表及复选框操作仍可独立使用。</value></data>
 </root>

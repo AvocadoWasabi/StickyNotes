@@ -14,6 +14,7 @@
     <EmbeddedResource Include="DataviewBridge.js" />
     <EmbeddedResource Include="QueryTaskTargets.js" />
     <EmbeddedResource Include="NotesBridge.js" />
+    <EmbeddedResource Include="TaskEditing/TaskCheckboxBridge.js" LogicalName="StickyNotes.TaskCheckboxBridge.js" />
     <EmbeddedResource Include="DailyBridge.js" />
     <EmbeddedResource Include="FoldersBridge.js" />
     <InternalsVisibleTo Include="StickyNotes.Tests" />

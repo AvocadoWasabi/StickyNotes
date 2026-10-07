@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+現在のソースビルドは、タスクのキーワード・日付補完とEnterでのチェックリスト継続に対応し、通常のCLIチェック操作にもTasks本家の完了処理を利用します。[タスク入力と制約](docs/TASK-EDITING.md#日本語)を参照してください。
+
 閉じた付箋は **… → 付箋フォルダから開く…**・常駐メニュー・タスクバーメニューから、本文／YAMLを確認して開き直せます。[チェック操作と付箋一覧](docs/QUERY-EDITING-AND-BROWSER.md#日本語)。
 
 現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](docs/DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。

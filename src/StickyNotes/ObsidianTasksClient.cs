@@ -21,6 +21,7 @@ internal static class ObsidianTasksClient
     private static readonly string Script = Compress(ReadScript("QueryTaskTargets") + " " + ReadScript("TasksBridge"));
     private static readonly string DataviewScript = Compress(ReadScript("QueryTaskTargets") + " " + ReadScript("DataviewBridge"));
     private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
+    private static readonly string TaskCheckboxScript = Compress(ReadScript("TaskCheckboxBridge"));
     private static readonly string DailyScript = Compress(ReadScript("DailyBridge"));
     private static readonly string FoldersScript = Compress(ReadScript("FoldersBridge"));
     private static string Compress(string value)
@@ -117,6 +118,9 @@ internal static class ObsidianTasksClient
 
     internal static NoteCommand PrepareNoteCommand(Settings settings, object request)
         => PrepareCommand(settings, request, NotesScript);
+
+    internal static NoteCommand PrepareTaskCheckboxCommand(Settings settings, object request)
+        => PrepareCommand(settings, request, TaskCheckboxScript);
 
     internal static NoteCommand PrepareQueryCommand(Settings settings, string root, string path, string[] queries, bool dataview)
     {

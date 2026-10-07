@@ -69,6 +69,31 @@ async function main() {
     check(result.results[0].tasks.every(t=>t.line!==4), 'Stale plugin index disables unsafe source mapping');
     result = await run(q.invalidToggle);
     check(!!result.error && fs.readFileSync(filePath,'utf8')===q.text, 'Invalid provider never writes');
+    let nativeCalls = 0;
+    result = await run(q.availabilityCode); check(result.available === true, 'Automatic completion detects loaded Tasks without a source note');
+    plugin.apiV1 = {executeToggleTaskDoneCommand: (line, source) => {
+        nativeCalls++; assert.equal(source, 'target.md');
+        assert.equal(line, '- [ ] Recurring `literal` ${notCode} 日本語');
+        return '- [x] Completed ✅ 2026-10-08\n- [ ] Next 📅 2026-10-09';
+    }};
+    result = await run(q.transform);
+    check(nativeCalls === 1 && result.text.includes('\n- [ ] Next'), 'Ordinary checkbox delegates to public Tasks API and accepts recurrence output');
+    check(fs.readFileSync(filePath,'utf8') === q.text, 'Transform does not write; existing save pipeline retains conflict and backup authority');
+    result = await run(q.transformNoop);
+    check(nativeCalls === 1 && result.text === '- [x] Done', 'Redundant checkbox operation does not cycle native status');
+    result = await run(q.transformInvalid);
+    check(!!result.error && nativeCalls === 1, 'Multiline input rejected before calling native API');
+    result = await run(q.transformWrongVault);
+    check(!!result.error && nativeCalls === 1, 'Wrong vault rejected before native task transformation');
+    plugin.apiV1.executeToggleTaskDoneCommand = () => '';
+    result = await run(q.transform); check(result.text === '', 'Native on-completion deletion is a valid transformation');
+    plugin.apiV1.executeToggleTaskDoneCommand = () => { throw new Error('Synthetic Tasks failure'); };
+    result = await run(q.transform); check(result.error === 'Synthetic Tasks failure', 'Plugin error is surfaced without plain-checkbox fallback');
+    delete plugin.apiV1;
+    result = await run(q.transform); check(!!result.error, 'Installed plugin with unsupported API fails safely');
+    delete app.plugins.plugins['obsidian-tasks-plugin'];
+    result = await run(q.availabilityCode); check(result.available === false, 'Missing/disabled Tasks leaves automatic completion off');
+    result = await run(q.transformDone); check(result.text === '- [ ] Done', 'Missing Tasks plugin keeps ordinary Markdown checkbox support');
     console.log(`${count} query task checks passed.`);
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

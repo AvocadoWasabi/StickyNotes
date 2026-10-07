@@ -8,6 +8,10 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Default task completion to Automatic: enable only when Tasks is detected in Obsidian. Missing/disabled/unreachable Tasks and local mode stay off until manual ON; add persistent Automatic / ON / OFF settings.
+
+- Group task editing in one module: local keyword/date/recurrence suggestions, IME-aware keyboard handling, one-step undo and Enter checklist continuation. Ordinary CLI checkboxes use the Tasks public toggle API, retaining backups, linked sections and conflict checks. See [behavior and limits](docs/TASK-EDITING.md#english).
+
 - Enable source-verified checkboxes in Tasks and Dataview TASK results, with backups and whole-note conflict checks. Preserve Tasks status/recurrence behavior; Dataview updates the selected checkbox only. Add **Browse sticky-note folder…** to note, tray and taskbar menus, with filename filtering, rendered body/YAML previews, and reopening of closed notes. See [behavior and limits](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
 - Add read-only Dataview LIST/TABLE/TASK previews through Obsidian CLI, with source-note context, independent Tasks/Dataview refresh and errors, and stale-response protection. Preserve query source. DataviewJS, inline expressions and CALENDAR are unsupported; see the [Dataview guide](docs/DATAVIEW.md#english). Published v0.0.7 packages are unchanged.

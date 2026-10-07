@@ -99,6 +99,7 @@ internal static partial class Program
             FocusEditingTests(root);
             EditInteractionTests(root);
             CalendarCompletionTests(root);
+            TaskEditingTests(root);
             LinkPreviewTests(root);
             ContentScaleTests(root);
             TitleButtonOverlayTests(root);

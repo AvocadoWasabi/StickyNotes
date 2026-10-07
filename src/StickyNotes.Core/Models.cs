@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 
 namespace StickyNotes.Core;
 
+public enum TaskCompletionMode { Automatic = 0, On = 1, Off = 2 }
+
 public sealed class Settings : IJsonOnDeserialized
 {
     public string Language { get; set; } = "";
@@ -14,6 +16,7 @@ public sealed class Settings : IJsonOnDeserialized
     public DailyNoteRetention DailyRetention { get; set; }
     public bool AutoSaveOnFocusLoss { get; set; }
     public bool DoubleClickToEdit { get; set; }
+    public TaskCompletionMode TaskCompletion { get; set; } = TaskCompletionMode.Automatic;
     public bool TitleButtonOverlay { get; set; }
     public bool ShowInTaskbar { get; set; }
     public string GoogleCredentialsFile { get; set; } = "";

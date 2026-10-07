@@ -20,6 +20,7 @@ public sealed partial class NoteWindow : Window
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
     private readonly CalendarCompletion calendarCompletion;
+    private readonly TaskEditorBehavior taskEditor;
     private readonly FlowDocumentScrollViewer preview = new() { IsToolBarVisible = false, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Background = Brushes.Transparent };
     private static readonly DependencyPropertyDescriptor PreviewZoom = DependencyPropertyDescriptor.FromProperty(FlowDocumentScrollViewer.ZoomProperty, typeof(FlowDocumentScrollViewer));
     private bool applyingScale;
@@ -114,6 +115,8 @@ public sealed partial class NoteWindow : Window
         DockPanel.SetDock(eventScroll, Dock.Bottom); reading.Children.Add(eventScroll); reading.Children.Add(preview);
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
         calendarCompletion = new CalendarCompletion(this, editor, this.today);
+        taskEditor = new TaskEditorBehavior(this, editor, this.today,
+            token => TaskCompletionPolicy.IsEnabledAsync(app.Config, app.NoteSources, token));
         preview.MinZoom = NotePlacement.MinContentScale; preview.MaxZoom = NotePlacement.MaxContentScale; preview.ZoomIncrement = 10;
         ApplyContentScale();
         PreviewZoom.AddValueChanged(preview, OnPreviewZoomChanged);
@@ -384,7 +387,9 @@ public sealed partial class NoteWindow : Window
     internal bool HandleEditingKey(Key key, ModifierKeys modifiers)
     {
         if (!editing || decisionInProgress || editorContextMenuOpen) return false;
+        if (taskEditor.IsComposing) return false;
         if (editor.IsKeyboardFocusWithin && calendarCompletion.HandleKey(key, modifiers)) return true;
+        if (editor.IsKeyboardFocusWithin && taskEditor.HandleKey(key, modifiers)) return true;
         // IME-owned keys arrive as ImeProcessed, so only a plain Escape saves.
         if (key != Key.Escape || modifiers != ModifierKeys.None) return false;
         if (!Save() && IsActive) editor.Focus();
@@ -486,7 +491,9 @@ public sealed partial class NoteWindow : Window
         try
         {
             if (editing) throw new InvalidOperationException(L10n.Text("NoteWindow.Text33"));
-            SaveContent(SectionEditor.ToggleTaskAtLine(content, line, value)); Render(); status.Text = L10n.Text("NoteWindow.Text34");
+            if (snapshot is null) return;
+            SaveContent(app.NoteSources(app.Config).ToggleTaskContent(snapshot, content, line, value));
+            Render(); status.Text = L10n.Text("NoteWindow.Text34");
         }
         catch (Exception ex) { status.Text = ex.Message; Render(); }
     }

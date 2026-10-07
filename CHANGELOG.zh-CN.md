@@ -8,6 +8,10 @@
 
 ## 未发布
 
+- 任务补全默认自动，仅在Obsidian检测到Tasks时启用；未安装、禁用、无法确认及本地模式下，手动ON前保持关闭，并保存自动／ON／OFF选择。
+
+- 将任务编辑集中到专用模块，新增本地关键字／日期／重复规则补全、输入法按键保护、单步Undo及Enter继续检查列表。普通CLI复选框使用Tasks公开切换API，保留备份、标题片段关联及冲突检查。参见[行为及限制](docs/TASK-EDITING.md#简体中文)。
+
 - 支持修改 Tasks 和 Dataview TASK 结果中已验证原任务的复选框，保留备份和整篇笔记冲突检查。Tasks 使用状态循环／重复任务逻辑，Dataview 仅修改选中复选框。便签、通知区域和任务栏菜单新增 **从便签文件夹打开…**，支持文件名筛选、正文渲染／YAML 预览并重新打开已关闭便签。参见 [行为及限制](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
 - 新增通过 Obsidian CLI 显示 Dataview LIST／TABLE／TASK，传入原笔记上下文，独立刷新和报告 Tasks／Dataview 错误，并丢弃过期响应。结果只读，保留查询原文。不支持 DataviewJS、内联表达式或 CALENDAR，参见 [Dataview 指南](docs/DATAVIEW.md#简体中文)。已发布的 v0.0.7 包保持不变。

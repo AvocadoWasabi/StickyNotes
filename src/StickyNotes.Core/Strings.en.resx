@@ -1027,4 +1027,10 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="NoteBrowser.Refresh" xml:space="preserve"><value>Refresh list</value></data>
   <data name="NoteBrowser.Count" xml:space="preserve"><value>{0} Markdown notes</value></data>
   <data name="NoteBrowser.Truncated" xml:space="preserve"><value> (first 50,000 characters)</value></data>
+  <data name="TaskEditing.Keys" xml:space="preserve"><value>↑↓ Select · Enter/Tab Insert · Esc Dismiss</value></data>
+  <data name="TaskEditing.Label" xml:space="preserve"><value>Task input completion</value></data>
+  <data name="TaskEditing.Automatic" xml:space="preserve"><value>Automatic (only with Tasks enabled in Obsidian)</value></data>
+  <data name="TaskEditing.On" xml:space="preserve"><value>ON (suggest even without Tasks)</value></data>
+  <data name="TaskEditing.Off" xml:space="preserve"><value>OFF (no suggestions)</value></data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>Automatic is the default. If Tasks is missing, disabled or unreachable, or you use local mode, suggestions stay off until you select ON manually. Enter checklist continuation and checkbox operations remain available separately.</value></data>
 </root>

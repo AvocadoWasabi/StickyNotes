@@ -30,10 +30,19 @@ internal static partial class Program
                 var command = ObsidianTasksClient.PrepareNoteCommand(settings, new { mode = "toggle-query-task", root, path = "target.md", hash, provider, line, @checked = true, backup = destination });
                 commands.Add(command); ObsidianTasksClient.ValidateCommand(settings.ObsidianVaultId, command.Code); return command.Code;
             }
-            var payload = new { root, text, backup, denied, tasksCode = Query(false), dataviewCode = Query(true),
+            string Transform(string line, bool value = true, string? vaultRoot = null)
+            {
+                var command = ObsidianTasksClient.PrepareTaskCheckboxCommand(settings, new { root = vaultRoot ?? root, path = "target.md", line, @checked = value });
+                commands.Add(command); ObsidianTasksClient.ValidateCommand(settings.ObsidianVaultId, command.Code); return command.Code;
+            }
+            var availability = ObsidianTasksClient.PrepareTaskCheckboxCommand(settings, new { root, mode = "availability" }); commands.Add(availability);
+            var payload = new { root, text, backup, denied, availabilityCode = availability.Code, tasksCode = Query(false), dataviewCode = Query(true),
                 folderCode = ObsidianTasksClient.BuildFoldersCode(new { mode = "browse", root, path = "." }),
                 dataviewToggle = Toggle("dataview", 4, backup), tasksToggle = Toggle("tasks", 5, backup),
-                deniedToggle = Toggle("dataview", 4, denied), invalidToggle = Toggle("invalid", 4, backup) };
+                deniedToggle = Toggle("dataview", 4, denied), invalidToggle = Toggle("invalid", 4, backup),
+                transform = Transform("- [ ] Recurring `literal` ${notCode} 日本語"), transformDone = Transform("- [x] Done", false),
+                transformNoop = Transform("- [x] Done"), transformInvalid = Transform("- [ ] one\n- [ ] two"),
+                transformWrongVault = Transform("- [ ] Task", vaultRoot: root + "-other") };
             ObsidianTasksClient.ValidateCommand(settings.ObsidianVaultId, payload.folderCode);
             var start = new System.Diagnostics.ProcessStartInfo("node") { UseShellExecute = false, CreateNoWindow = true,
                 RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true, StandardInputEncoding = new UTF8Encoding(false) };

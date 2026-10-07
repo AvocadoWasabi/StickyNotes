@@ -1027,4 +1027,10 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="NoteBrowser.Refresh" xml:space="preserve"><value>一覧を更新</value></data>
   <data name="NoteBrowser.Count" xml:space="preserve"><value>{0}件のMarkdownノート</value></data>
   <data name="NoteBrowser.Truncated" xml:space="preserve"><value>（先頭50,000文字を表示）</value></data>
+  <data name="TaskEditing.Keys" xml:space="preserve"><value>↑↓ 選択 · Enter/Tab 確定 · Esc 閉じる</value></data>
+  <data name="TaskEditing.Label" xml:space="preserve"><value>タスク入力補完</value></data>
+  <data name="TaskEditing.Automatic" xml:space="preserve"><value>自動（ObsidianのTasksが有効な場合のみ）</value></data>
+  <data name="TaskEditing.On" xml:space="preserve"><value>ON（Tasksがなくても補完する）</value></data>
+  <data name="TaskEditing.Off" xml:space="preserve"><value>OFF（補完しない）</value></data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>既定は自動です。Tasks未導入・無効・接続確認失敗・ローカル方式では、手動でONにするまで候補を表示しません。Enterでのチェックリスト継続とチェック操作は別に利用できます。</value></data>
 </root>

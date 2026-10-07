@@ -2,6 +2,8 @@
 
 # 開発と公開
 
+タスク入力規則・候補UI／IME・Tasks公開チェックAPI連携は`src/StickyNotes/TaskEditing/`に集約します。ウィンドウから委譲し、既存のCLI転送と競合検出付き保存を共用します。[設計と検証](TASK-EDITING.md#日本語)を参照してください。
+
 ## ブランチ運用
 
 1. 新しい変更の実装前に専用ブランチを作成します（例: `git switch -c feat/example`）。

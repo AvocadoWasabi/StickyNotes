@@ -35,6 +35,13 @@ public sealed class SettingsWindow : Window
             L10n.Text("Editing.SingleClick"), L10n.Text("Editing.DoubleClick") },
             SelectedIndex = app.Config.DoubleClickToEdit ? 1 : 0, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(editGesture);
+        panel.Children.Add(new TextBlock { Text = L10n.Text("TaskEditing.Label") });
+        var taskCompletion = new ComboBox { Name = "TaskCompletion", ItemsSource = new[] {
+            L10n.Text("TaskEditing.Automatic"), L10n.Text("TaskEditing.On"), L10n.Text("TaskEditing.Off") },
+            SelectedIndex = Enum.IsDefined(app.Config.TaskCompletion) ? (int)app.Config.TaskCompletion : 0,
+            Margin = new Thickness(0, 0, 0, 8) };
+        panel.Children.Add(taskCompletion);
+        panel.Children.Add(new TextBlock { Text = L10n.Text("TaskEditing.PolicyHelp"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = L10n.Text("SettingsWindow.Text02"), IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(autoSave);
         panel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text03"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
@@ -331,6 +338,7 @@ public sealed class SettingsWindow : Window
                 DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 DoubleClickToEdit = editGesture.SelectedIndex == 1,
+                TaskCompletion = (TaskCompletionMode)Math.Max(0, taskCompletion.SelectedIndex),
                 TitleButtonOverlay = overlay.IsChecked == true,
                 ShowInTaskbar = taskbar.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text,

@@ -84,13 +84,20 @@ internal static partial class Program
             var panel = SettingsPanel(settings);
             var choice = panel.Children.OfType<ComboBox>().Single(c => c.Name == "EditGesture");
             choice.SelectedIndex = 1;
+            var taskCompletionChoice = panel.Children.OfType<ComboBox>().Single(c => c.Name == "TaskCompletion");
+            Check(taskCompletionChoice.SelectedIndex == 0, "Task completion settings: default selection is automatic");
+            taskCompletionChoice.SelectedIndex = 1;
             Check(!app.Config.DoubleClickToEdit, "Edit gesture: setting is applied only after saving");
             panel.Children.OfType<Button>().Single(b => (string)b.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             Check(app.Config.DoubleClickToEdit && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.DoubleClickToEdit,
                 "Edit gesture: double click preference persists");
+            Check(app.Config.TaskCompletion == TaskCompletionMode.On && JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.TaskCompletion == TaskCompletionMode.On,
+                "Task completion settings: manual ON is saved");
             settings = new SettingsWindow();
             Check(SettingsPanel(settings).Children.OfType<ComboBox>().Single(c => c.Name == "EditGesture").SelectedIndex == 1,
                 "Edit gesture: reopened settings retain double click preference");
+            Check(SettingsPanel(settings).Children.OfType<ComboBox>().Single(c => c.Name == "TaskCompletion").SelectedIndex == 1,
+                "Task completion settings: reopened settings retain manual ON");
             settings.Close();
             position = ClickPosition();
             Check(!window.HandleBodyClick(1, preview, position) && !editor.IsVisible,

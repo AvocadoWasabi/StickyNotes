@@ -2,6 +2,8 @@
 
 # 开发与发布
 
+任务输入规则、候选界面／输入法和Tasks公开复选框API适配集中在`src/StickyNotes/TaskEditing/`，窗口委托该模块，复用已有CLI传输及冲突保护保存。参见[设计和验证](TASK-EDITING.md#简体中文)。
+
 ## 分支流程
 
 1. 修改前创建专用分支，例如 `git switch -c feat/example`。

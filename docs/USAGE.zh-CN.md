@@ -2,6 +2,8 @@
 
 # 操作与设置补充
 
+任务关键字／日期补全、Enter继续检查列表及Tasks原生复选框行为，请参见[任务输入指南](TASK-EDITING.md#简体中文)。
+
 通过 **…**、通知区域或任务栏菜单的 **从便签文件夹打开…**，查看正文／YAML 并重新打开已关闭便签。参见 [查询复选框与文件夹列表](QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
 当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。

@@ -2,6 +2,8 @@
 
 # Development and releases
 
+Task input rules, popup/IME behavior and the public Tasks checkbox adapter are grouped in `src/StickyNotes/TaskEditing/`. The window delegates to this module, sharing existing CLI transport and conflict-safe saves. See [architecture and validation](TASK-EDITING.md#english).
+
 ## Branch workflow
 
 1. Create a dedicated branch before implementing a change, for example `git switch -c feat/example`.

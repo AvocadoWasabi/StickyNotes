@@ -2,6 +2,8 @@
 
 # 操作・設定の補足
 
+タスクのキーワード・日付補完、Enterでのチェックリスト継続、本家Tasksのチェック動作は[タスク入力ガイド](TASK-EDITING.md#日本語)を参照してください。
+
 **…**・常駐・タスクバーの **付箋フォルダから開く…** で、閉じた付箋の本文／YAMLを確認して開き直せます。[検索結果のチェック操作とフォルダ一覧](QUERY-EDITING-AND-BROWSER.md#日本語)。
 
 現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
