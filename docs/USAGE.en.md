@@ -26,13 +26,15 @@ Available from v0.0.5. Control names below follow the English UI.
 | --- | --- |
 | `＋` | Create a note |
 | `Edit` / `Ctrl+E` | Edit the Markdown source |
-| `Save` / `Ctrl+S` | Save the file and return to reading mode |
+| `Save` / `Ctrl+S` / `Esc` | Save the file and return to reading mode |
 | `Reload` | Reload the source file, with confirmation if edits are unsaved |
 | `…` | Open properties, fetch events, open existing files, link a section, access settings, or exit |
 | `×` | Close this note without deleting its Markdown file |
 | `… → Exit app (save layout)`, or notification-area `Exit` | Exit the app |
 
-Clicking body text or blank space also starts editing. Checkboxes, links, and scrollbars keep their usual actions. Selecting Edit again keeps your draft; saving returns to reading mode.
+In Settings, **Start editing body text with → Single click / Double click** selects the gesture for body text or blank space. The default remains single click, including existing settings; saving the setting applies it to open notes immediately. The editor places its caret at the corresponding Markdown source position and scrolls that line into view. Generated Tasks results lead to their source query. Checkboxes, links, and scrollbars keep their usual actions. Selecting Edit again keeps your draft; saving returns to reading mode.
+
+`Esc` saves and finishes editing without a confirmation, independently of the focus-loss setting. An unchanged note simply returns to reading; a save failure or conflict keeps the draft open. When a completion suggestion is open, the first `Esc` dismisses it and the next saves and finishes editing. IME composition and the editor context menu retain their own Escape handling.
 
 Leaving the editor prompts only when text has changed.
 

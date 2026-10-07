@@ -10,7 +10,7 @@ namespace StickyNotes;
 
 public static class MarkdownView
 {
-    internal static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+    internal static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UsePreciseSourceLocation().Build();
 
     public static string FindCalendarCommand(string markdown)
     {
@@ -27,38 +27,44 @@ public static class MarkdownView
     {
         var result = new FlowDocument { FontFamily = new FontFamily("Yu Gothic UI"), FontSize = 14,
             PagePadding = new Thickness(5), Background = Brushes.Transparent, Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(52, 48, 35)) };
-        foreach (var block in Markdown.Parse(markdown, Pipeline)) AddBlock(result.Blocks, block, toggle, tasksPreview, readOnly);
+        foreach (var block in Markdown.Parse(markdown, Pipeline)) AddBlock(result.Blocks, block, markdown, toggle, tasksPreview, readOnly);
         return result;
     }
 
-    private static void AddBlock(BlockCollection output, Markdig.Syntax.Block block, Action<int, bool> toggle,
+    private static void AddBlock(BlockCollection output, Markdig.Syntax.Block block, string source, Action<int, bool> toggle,
         Func<FencedCodeBlock, Section>? tasksPreview = null, bool readOnly = false)
     {
+        var previous = output.LastBlock;
         switch (block)
         {
             case HeadingBlock heading:
                 var title = new Paragraph { FontSize = heading.Level switch { 1 => 25, 2 => 21, _ => 17 }, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 12, 0, 7) };
-                AddInlines(title.Inlines, heading.Inline, toggle, heading.Line, readOnly); output.Add(title); break;
+                AddInlines(title.Inlines, heading.Inline, source, toggle, heading.Line, readOnly); output.Add(title); break;
             case ParagraphBlock paragraph:
                 var p = new Paragraph { Margin = new Thickness(0, 3, 0, 9), LineHeight = 23 };
-                AddInlines(p.Inlines, paragraph.Inline, toggle, paragraph.Line, readOnly); output.Add(p); break;
+                AddInlines(p.Inlines, paragraph.Inline, source, toggle, paragraph.Line, readOnly); output.Add(p); break;
             case ListBlock list:
                 var rendered = new System.Windows.Documents.List { MarkerStyle = list.IsOrdered ? TextMarkerStyle.Decimal : TextMarkerStyle.Disc, Padding = new Thickness(22, 0, 0, 0), Margin = new Thickness(0, 2, 0, 8) };
                 foreach (ListItemBlock item in list)
                 {
                     var li = new ListItem();
-                    foreach (var child in item) AddBlock(li.Blocks, child, toggle, tasksPreview, readOnly);
+                    foreach (var child in item) AddBlock(li.Blocks, child, source, toggle, tasksPreview, readOnly);
                     rendered.ListItems.Add(li);
                 }
                 output.Add(rendered); break;
             case QuoteBlock quote:
                 var section = new Section { BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(177, 161, 107)), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(12, 0, 0, 0), Margin = new Thickness(0, 6, 0, 10) };
-                foreach (var child in quote) AddBlock(section.Blocks, child, toggle, tasksPreview, readOnly);
+                foreach (var child in quote) AddBlock(section.Blocks, child, source, toggle, tasksPreview, readOnly);
                 output.Add(section); break;
             case FencedCodeBlock tasks when tasks.Info == "tasks" && tasksPreview is not null:
-                output.Add(tasksPreview(tasks)); break;
+                var results = tasksPreview(tasks);
+                MarkdownSourceMap.Track(results, tasks.Span.Start, tasks.Span.End, anchor: true);
+                output.Add(results); break;
             case CodeBlock code:
-                output.Add(new Paragraph(new Run(code.Lines.ToString())) { FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 12, Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 0, 0, 0)), Padding = new Thickness(10), Margin = new Thickness(0, 5, 0, 10) }); break;
+                var codeText = new Run(code.Lines.ToString());
+                var codeStart = code is FencedCodeBlock ? source.IndexOf('\n', code.Span.Start) + 1 : code.Span.Start;
+                MarkdownSourceMap.Track(codeText, source, codeStart, code.Span.End);
+                output.Add(new Paragraph(codeText) { FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 12, Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 0, 0, 0)), Padding = new Thickness(10), Margin = new Thickness(0, 5, 0, 10) }); break;
             case ThematicBreakBlock:
                 output.Add(new Paragraph { BorderBrush = Brushes.DarkGray, BorderThickness = new Thickness(0, 0, 0, 1), Margin = new Thickness(0, 10, 0, 10) }); break;
             case Markdig.Extensions.Tables.Table table:
@@ -70,26 +76,30 @@ public static class MarkdownView
                     foreach (Markdig.Extensions.Tables.TableCell cell in row)
                     {
                         var tc = new System.Windows.Documents.TableCell { Padding = new Thickness(5), BorderThickness = new Thickness(0.5), BorderBrush = Brushes.DarkGray, FontWeight = row.IsHeader ? FontWeights.Bold : FontWeights.Normal };
-                        foreach (var child in cell) AddBlock(tc.Blocks, child, toggle, tasksPreview, readOnly);
+                        foreach (var child in cell) AddBlock(tc.Blocks, child, source, toggle, tasksPreview, readOnly);
                         tr.Cells.Add(tc);
                     }
                     group.Rows.Add(tr);
                 }
                 output.Add(grid); break;
             case HtmlBlock html:
-                output.Add(new Paragraph(new Run(html.Lines.ToString())) { FontFamily = new FontFamily("Consolas"), FontSize = 12 }); break;
+                var htmlText = new Run(html.Lines.ToString());
+                MarkdownSourceMap.Track(htmlText, source, html.Span.Start, html.Span.End);
+                output.Add(new Paragraph(htmlText) { FontFamily = new FontFamily("Consolas"), FontSize = 12 }); break;
             case ContainerBlock container:
-                foreach (var child in container) AddBlock(output, child, toggle, tasksPreview, readOnly); break;
+                foreach (var child in container) AddBlock(output, child, source, toggle, tasksPreview, readOnly); break;
             case LeafBlock leaf:
-                var fallback = new Paragraph(); AddInlines(fallback.Inlines, leaf.Inline, toggle, leaf.Line, readOnly); output.Add(fallback); break;
+                var fallback = new Paragraph(); AddInlines(fallback.Inlines, leaf.Inline, source, toggle, leaf.Line, readOnly); output.Add(fallback); break;
         }
+        if (output.LastBlock is { } added && added != previous) MarkdownSourceMap.Track(added, block.Span.Start, block.Span.End);
     }
 
-    private static void AddInlines(InlineCollection output, ContainerInline? container, Action<int, bool> toggle, int line, bool readOnly = false)
+    private static void AddInlines(InlineCollection output, ContainerInline? container, string source, Action<int, bool> toggle, int line, bool readOnly = false)
     {
         if (container is null) return;
         foreach (var inline in container)
         {
+            var previous = output.LastInline;
             switch (inline)
             {
                 case LiteralInline literal: output.Add(new Run(literal.Content.ToString())); break;
@@ -101,13 +111,13 @@ public static class MarkdownView
                     output.Add(new InlineUIContainer(checkbox) { BaselineAlignment = BaselineAlignment.Center }); break;
                 case EmphasisInline emphasis:
                     Span span = emphasis.DelimiterChar == '~' ? new Span { TextDecorations = TextDecorations.Strikethrough } : emphasis.DelimiterCount >= 2 ? new Bold() : new Italic();
-                    AddInlines(span.Inlines, emphasis, toggle, line, readOnly); output.Add(span); break;
+                    AddInlines(span.Inlines, emphasis, source, toggle, line, readOnly); output.Add(span); break;
                 case LinkInline link:
                     if (link.IsImage)
                     {
-                        output.Add(new Run(L10n.Text("MarkdownView.Text01"))); AddInlines(output, link, toggle, line, readOnly); output.Add(new Run("]")); break;
+                        output.Add(new Run(L10n.Text("MarkdownView.Text01"))); AddInlines(output, link, source, toggle, line, readOnly); output.Add(new Run("]")); break;
                     }
-                    var hyperlink = new Hyperlink(); AddInlines(hyperlink.Inlines, link, toggle, line, readOnly);
+                    var hyperlink = new Hyperlink(); AddInlines(hyperlink.Inlines, link, source, toggle, line, readOnly);
                     if (Uri.TryCreate(link.Url, UriKind.Absolute, out var uri) && uri.Scheme is "https" or "http" or "mailto" or "obsidian")
                     {
                         hyperlink.NavigateUri = uri;
@@ -125,7 +135,16 @@ public static class MarkdownView
                     else output.Add(new Run(auto.Url));
                     break;
                 case HtmlInline html: output.Add(new Run(html.Tag)); break;
-                case ContainerInline nested: AddInlines(output, nested, toggle, line, readOnly); break;
+                case ContainerInline nested: AddInlines(output, nested, source, toggle, line, readOnly); break;
+            }
+            if (output.LastInline is { } added && added != previous)
+            {
+                if (added is Run run)
+                {
+                    var delimiter = inline is CodeInline codeInline ? codeInline.DelimiterCount : 0;
+                    MarkdownSourceMap.Track(run, source, inline.Span.Start + delimiter, inline.Span.End - delimiter);
+                }
+                else MarkdownSourceMap.Track(added, inline.Span.Start, inline.Span.End);
             }
         }
     }

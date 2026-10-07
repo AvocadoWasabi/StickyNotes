@@ -38,6 +38,8 @@ public sealed partial class NoteWindow : Window
     private FileSnapshot? snapshot;
     private string content = "";
     private bool editing, dirty, loading, initialized, busy, closed;
+    private int? firstClickCaret;
+    private System.Windows.Documents.FlowDocument? firstClickDocument;
     private long? lastCalendarCheck;
     private CalendarQuery? displayedCalendarQuery;
     private CancellationTokenSource? calendarRefreshCancellation;
@@ -119,11 +121,13 @@ public sealed partial class NoteWindow : Window
         {
             if (HandleScaleWheel(e.Delta, Keyboard.Modifiers)) e.Handled = true;
         };
-        preview.PreviewMouseLeftButtonDown += (_, e) =>
+        // WPF first places its text selection at the hit-tested character, including zoom
+        // and scrolling. Observe the bubbling event even when text selection handled it.
+        preview.AddHandler(Mouse.MouseDownEvent, new MouseButtonEventHandler((_, e) =>
         {
-            if (!IsBodyEditTarget(e.OriginalSource as DependencyObject)) return;
-            BeginEdit(); e.Handled = true;
-        };
+            if (e.ChangedButton == MouseButton.Left && HandleBodyClick(e.ClickCount, e.OriginalSource as DependencyObject, preview.Selection?.Start))
+                e.Handled = true;
+        }), handledEventsToo: true);
         editor.TextChanged += (_, _) => { if (!loading) { dirty = editor.Text != content; status.Text = L10n.Text("NoteWindow.Text12"); } };
         editor.IsKeyboardFocusWithinChanged += (_, _) => { if (editor.IsKeyboardFocusWithin) focusLossTimer.Stop(); else ScheduleFocusLoss(); };
         Deactivated += (_, _) => ScheduleFocusLoss();
@@ -139,7 +143,7 @@ public sealed partial class NoteWindow : Window
         };
         PreviewKeyDown += (_, e) =>
         {
-            if (editor.IsKeyboardFocusWithin && calendarCompletion.HandleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
+            if (HandleEditingKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (e.Key == Key.F6 && Keyboard.Modifiers == ModifierKeys.None) { NoteHeader.Focus(); e.Handled = true; return; }
             if (HandleScaleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; }
@@ -357,10 +361,41 @@ public sealed partial class NoteWindow : Window
         status.Text = L10n.Text("NoteWindow.Text27");
     }
 
+    internal bool HandleBodyClick(int clickCount, DependencyObject? target, System.Windows.Documents.TextPointer? position)
+    {
+        if (closed || editing || app.IsChangingFolder || !IsBodyEditTarget(target)) return false;
+        var caret = MarkdownSourceMap.Position(position);
+        if (clickCount <= 1) { firstClickCaret = caret; firstClickDocument = preview.Document; }
+        if (app.Config.DoubleClickToEdit)
+        {
+            if (clickCount != 2) return false;
+            // The second native click selects a whole word. Keep the first click's exact caret.
+            if (ReferenceEquals(firstClickDocument, preview.Document)) caret = firstClickCaret ?? caret;
+        }
+        BeginEdit();
+        if (!editing) return false;
+        editor.Select(Math.Clamp(caret ?? content.Length, 0, editor.Text.Length), 0);
+        editor.UpdateLayout();
+        var line = editor.GetLineIndexFromCharacterIndex(editor.CaretIndex);
+        if (line >= 0) editor.ScrollToLine(line);
+        return true;
+    }
+
+    internal bool HandleEditingKey(Key key, ModifierKeys modifiers)
+    {
+        if (!editing || decisionInProgress || editorContextMenuOpen) return false;
+        if (editor.IsKeyboardFocusWithin && calendarCompletion.HandleKey(key, modifiers)) return true;
+        // IME-owned keys arrive as ImeProcessed, so only a plain Escape saves.
+        if (key != Key.Escape || modifiers != ModifierKeys.None) return false;
+        if (!Save() && IsActive) editor.Focus();
+        return true;
+    }
+
     private void SetEditing(bool value)
     {
         focusLossTimer.Stop();
         editing = value;
+        firstClickDocument = null; firstClickCaret = null;
         reading.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
         editor.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
     }

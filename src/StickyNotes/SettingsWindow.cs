@@ -30,6 +30,11 @@ public sealed class SettingsWindow : Window
         languagePanel.Children.Add(language);
         languagePanel.Children.Add(new TextBlock { Text = L10n.Text("Language.Restart"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         panel.Children.Add(languagePanel);
+        panel.Children.Add(new TextBlock { Text = L10n.Text("Editing.Activation"), TextWrapping = TextWrapping.Wrap });
+        var editGesture = new ComboBox { Name = "EditGesture", ItemsSource = new[] {
+            L10n.Text("Editing.SingleClick"), L10n.Text("Editing.DoubleClick") },
+            SelectedIndex = app.Config.DoubleClickToEdit ? 1 : 0, Margin = new Thickness(0, 0, 0, 8) };
+        panel.Children.Add(editGesture);
         var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = L10n.Text("SettingsWindow.Text02"), IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(autoSave);
         panel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text03"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
@@ -325,6 +330,7 @@ public sealed class SettingsWindow : Window
                 DailyFolder = cli ? app.Config.DailyFolder : daily.Text, DailyPattern = cli ? app.Config.DailyPattern : pattern.Text,
                 DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
+                DoubleClickToEdit = editGesture.SelectedIndex == 1,
                 TitleButtonOverlay = overlay.IsChecked == true,
                 ShowInTaskbar = taskbar.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text,

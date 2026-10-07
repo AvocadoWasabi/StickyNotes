@@ -316,7 +316,7 @@ Obsidianで今日の分を作成すると、自動でここに表示されます
     <value>保存</value>
   </data>
   <data name="NoteWindow.Text06" xml:space="preserve">
-    <value>保存（Ctrl+S）</value>
+    <value>保存して編集終了（Ctrl+S / Esc）</value>
   </data>
   <data name="NoteWindow.Text07" xml:space="preserve">
     <value>再読込</value>
@@ -380,7 +380,7 @@ Obsidianで今日の分を作成すると、自動でここに表示されます
     <value>連動 / </value>
   </data>
   <data name="NoteWindow.Text27" xml:space="preserve">
-    <value>Markdownを編集 • Ctrl+S で保存 • @で補完（タイムゾーン・キーワードは省略可）</value>
+    <value>Markdownを編集 • Ctrl+S / Esc で保存して終了 • @で補完（タイムゾーン・キーワードは省略可）</value>
   </data>
   <data name="NoteWindow.Text28" xml:space="preserve">
     <value>保存しました</value>
@@ -976,4 +976,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="StickyFolder.Recovery" xml:space="preserve">
     <value>一部の移動を元に戻せませんでした。復旧記録を保持し、再試行前に両方のパスを確認してください：</value>
   </data>
+  <data name="Editing.Activation" xml:space="preserve"><value>本文の編集を始める操作</value></data>
+  <data name="Editing.SingleClick" xml:space="preserve"><value>シングルクリック</value></data>
+  <data name="Editing.DoubleClick" xml:space="preserve"><value>ダブルクリック</value></data>
 </root>

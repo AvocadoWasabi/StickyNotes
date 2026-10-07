@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add a Settings choice between single-click and double-click editing, retaining single click by default. Place the caret at the clicked Markdown source position and scroll it into view. Esc saves and finishes editing, preserving drafts on failure; dismiss completion suggestions before saving. Keep checkbox, link, scrollbar and IME behavior.
+
 - Fix the CLI command-length error when saving edited sticky notes. Oversized note requests use a current-user-only temporary transfer, verified before execution and deleted when the operation ends; note writes still use Obsidian with backups and conflict checks. Preserve Unicode, BOM and newlines. Reject saves exceeding the existing 2 MB note limit before writing. Published v0.0.7 packages are unchanged.
 
 ## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07

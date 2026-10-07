@@ -316,7 +316,7 @@ Settings can keep yesterday's note until 1. today's note is created, or 2. you s
     <value>Save</value>
   </data>
   <data name="NoteWindow.Text06" xml:space="preserve">
-    <value>Save (Ctrl+S)</value>
+    <value>Save and finish editing (Ctrl+S / Esc)</value>
   </data>
   <data name="NoteWindow.Text07" xml:space="preserve">
     <value>Reload</value>
@@ -380,7 +380,7 @@ Settings can keep yesterday's note until 1. today's note is created, or 2. you s
     <value>Linked / </value>
   </data>
   <data name="NoteWindow.Text27" xml:space="preserve">
-    <value>Edit Markdown • Ctrl+S to save • @ to complete (zone and keyword optional)</value>
+    <value>Edit Markdown • Ctrl+S / Esc to save and finish • @ to complete (zone and keyword optional)</value>
   </data>
   <data name="NoteWindow.Text28" xml:space="preserve">
     <value>Saved</value>
@@ -976,4 +976,7 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="StickyFolder.Recovery" xml:space="preserve">
     <value>Some moves could not be rolled back. Keep this recovery log and check both paths before retrying:</value>
   </data>
+  <data name="Editing.Activation" xml:space="preserve"><value>Start editing body text with</value></data>
+  <data name="Editing.SingleClick" xml:space="preserve"><value>Single click</value></data>
+  <data name="Editing.DoubleClick" xml:space="preserve"><value>Double click</value></data>
 </root>

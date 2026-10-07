@@ -316,7 +316,7 @@ created: {1:o}
     <value>保存</value>
   </data>
   <data name="NoteWindow.Text06" xml:space="preserve">
-    <value>保存（Ctrl+S）</value>
+    <value>保存并结束编辑（Ctrl+S / Esc）</value>
   </data>
   <data name="NoteWindow.Text07" xml:space="preserve">
     <value>重新加载</value>
@@ -380,7 +380,7 @@ created: {1:o}
     <value>关联 / </value>
   </data>
   <data name="NoteWindow.Text27" xml:space="preserve">
-    <value>编辑 Markdown • Ctrl+S 保存 • @ 补全（时区和关键词可省略）</value>
+    <value>编辑 Markdown • Ctrl+S / Esc 保存并结束 • @ 补全（时区和关键词可省略）</value>
   </data>
   <data name="NoteWindow.Text28" xml:space="preserve">
     <value>已保存</value>
@@ -976,4 +976,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="StickyFolder.Recovery" xml:space="preserve">
     <value>部分移动无法回滚。请保留此恢复记录，并在重试前检查两处路径：</value>
   </data>
+  <data name="Editing.Activation" xml:space="preserve"><value>开始编辑正文的操作</value></data>
+  <data name="Editing.SingleClick" xml:space="preserve"><value>单击</value></data>
+  <data name="Editing.DoubleClick" xml:space="preserve"><value>双击</value></data>
 </root>

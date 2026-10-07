@@ -87,6 +87,7 @@ internal static partial class Program
             NoteLinkTests(root);
             MarkdownEditingTests(root);
             FocusEditingTests(root);
+            EditInteractionTests(root);
             CalendarCompletionTests(root);
             LinkPreviewTests(root);
             ContentScaleTests(root);
@@ -501,7 +502,7 @@ internal static partial class Program
         var editor = body.Children.OfType<TextBox>().Single();
         var reading = body.Children.OfType<DockPanel>().Single();
         var preview = reading.Children.OfType<FlowDocumentScrollViewer>().Single();
-        void ClickBody() => preview.RaiseEvent(new System.Windows.Input.MouseButtonEventArgs(System.Windows.Input.Mouse.PrimaryDevice, Environment.TickCount, System.Windows.Input.MouseButton.Left) { RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent });
+        void ClickBody() => preview.RaiseEvent(new System.Windows.Input.MouseButtonEventArgs(System.Windows.Input.Mouse.PrimaryDevice, Environment.TickCount, System.Windows.Input.MouseButton.Left) { RoutedEvent = System.Windows.Input.Mouse.MouseDownEvent });
         var checkbox = (CheckBox)preview.Document.Blocks.OfType<System.Windows.Documents.List>().Single().ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single().Inlines.OfType<InlineUIContainer>().Single().Child;
         Check(!NoteWindow.IsBodyEditTarget(checkbox), "click editing excludes task checkboxes");
         var link = preview.Document.Blocks.OfType<Paragraph>().SelectMany(p => p.Inlines.OfType<Hyperlink>()).Single();
@@ -951,7 +952,7 @@ internal static partial class Program
             panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             Check(JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!.DailyRetention == DailyNoteRetention.UntilRefresh, "settings persist retention mode for restart");
             settings = new SettingsWindow();
-            Check((SettingsPanel(settings)).Children.OfType<ComboBox>().Single().SelectedIndex == 2, "reopened settings show saved retention mode");
+            Check((SettingsPanel(settings)).Children.OfType<ComboBox>().Single(x => x.Name == "DailyRetention").SelectedIndex == 2, "reopened settings show saved retention mode");
             settings.Close();
             Check(JsonSerializer.Deserialize<Settings>("{}")!.DailyRetention == DailyNoteRetention.ShowWaitingMessage, "older settings default to waiting message");
         }
