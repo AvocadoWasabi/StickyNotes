@@ -835,7 +835,7 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>Enable Tasks queries (experimental, read-only)</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>Start Obsidian and Tasks in the target vault first. Fetches native Markdown results every 30 seconds; no extra plugin. Use trusted queries only: query JavaScript and global settings run inside Obsidian.</value>
+    <value>Start Obsidian and Tasks in the target vault first. When enabled, text, headings and daily-note discovery use CLI; text and query results refresh about every 30 seconds, without local-read fallback. Disabling restores the original method. Use trusted queries only: JavaScript and global settings run inside Obsidian.</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Absolute path to Obsidian.com</value>
@@ -884,5 +884,20 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
   </data>
   <data name="TasksPreview.Timeout" xml:space="preserve">
     <value>Tasks request timed out. Work inside Obsidian may still be running.</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>The note source changed. Keep a copy of your draft and reload before saving.</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>Reading the note through Obsidian CLI…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>Note checked through Obsidian CLI.</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>CLI note read failed (no local fallback): </value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>CLI command length limit exceeded. Save long note text in Obsidian.</value>
   </data>
 </root>

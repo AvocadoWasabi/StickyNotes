@@ -11,8 +11,9 @@ public sealed class DailyNoteDisplay
 
     public void Refresh(DateTime today) { refreshedOn = today.Date; heldOn = null; }
 
-    public string Resolve(string folder, string pattern, DateTime today, DailyNoteRetention mode)
+    public string Resolve(string folder, string pattern, DateTime today, DailyNoteRetention mode, Func<DateTime, string>? resolve = null)
     {
+        resolve ??= date => DailyNoteResolver.Resolve(folder, pattern, date);
         today = today.Date;
         var next = (folder, pattern, mode);
         if (configuration.HasValue && configuration != next) { heldOn = null; refreshedOn = null; }
@@ -23,16 +24,16 @@ public sealed class DailyNoteDisplay
         {
             try
             {
-                var path = DailyNoteResolver.Resolve(folder, pattern, today.AddDays(-1));
+                var path = resolve(today.AddDays(-1));
                 TargetDate = today.AddDays(-1);
                 return path;
             }
             catch (DailyNoteMissingException) { heldOn = null; }
         }
-        try { return DailyNoteResolver.Resolve(folder, pattern, today); }
+        try { return resolve(today); }
         catch (DailyNoteMissingException) when (retain)
         {
-            var path = DailyNoteResolver.Resolve(folder, pattern, today.AddDays(-1));
+            var path = resolve(today.AddDays(-1));
             TargetDate = today.AddDays(-1); heldOn = today;
             return path;
         }

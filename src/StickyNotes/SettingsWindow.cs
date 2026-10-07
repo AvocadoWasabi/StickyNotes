@@ -107,7 +107,12 @@ public sealed class SettingsWindow : Window
             {
                 await previewGate.WaitAsync(cancellation.Token);
                 string path;
-                try { path = await Task.Run(() => DailyNoteResolver.Resolve(folder, expression, today, cancellation.Token)); }
+                try
+                {
+                    var selected = new Settings { ObsidianTasksEnabled = tasksEnabled.IsChecked == true, ObsidianCli = tasksCli.Text.Trim(),
+                        ObsidianVaultFolder = tasksVault.Text.Trim(), ObsidianVaultId = tasksId.Text.Trim() };
+                    path = await Task.Run(() => app.NoteSources(selected).ResolveDailyAsync(folder, expression, today, cancellation.Token));
+                }
                 finally { previewGate.Release(); }
                 if (previewClosed || version != previewVersion) return;
                 previewStatus.Foreground = Brushes.DarkGreen;
@@ -126,6 +131,11 @@ public sealed class SettingsWindow : Window
             }
         };
         daily.TextChanged += (_, _) => SchedulePreview();
+        tasksEnabled.Checked += (_, _) => SchedulePreview();
+        tasksEnabled.Unchecked += (_, _) => SchedulePreview();
+        tasksCli.TextChanged += (_, _) => SchedulePreview();
+        tasksVault.TextChanged += (_, _) => SchedulePreview();
+        tasksId.TextChanged += (_, _) => SchedulePreview();
         pattern.TextChanged += (_, _) => { if (!FillEmptyRegex()) SchedulePreview(); };
         var insertTags = Ui.Button(L10n.Text("SettingsWindow.Text23"), () =>
         {

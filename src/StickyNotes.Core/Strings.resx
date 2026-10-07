@@ -835,7 +835,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>Tasksクエリ連携を有効にする（試験・読み取り専用）</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>Obsidianと対象VaultのTasksを先に起動してください。30秒ごとに本家のMarkdown出力を取得します。追加プラグインは不要です。信頼できるクエリのみ使用してください。JavaScriptを含むクエリやグローバル設定はObsidian内で実行されます。</value>
+    <value>Obsidianと対象VaultのTasksを先に起動してください。有効時は本文・見出し・デイリー検索もCLI経由となり、本文と検索結果を約30秒ごとに取得します。失敗時にローカル読込へ切り替えません。無効時は従来方式です。信頼できるクエリのみ使用してください。JavaScriptとグローバル設定はObsidian内で実行されます。</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Obsidian.com の絶対パス</value>
@@ -884,5 +884,20 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   </data>
   <data name="TasksPreview.Timeout" xml:space="preserve">
     <value>Tasks取得がタイムアウトしました。Obsidian内での処理終了は保証されません。</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>取得方法が切り替わりました。下書きを控え、再読込してから保存してください。</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>Obsidian CLIからノートを取得中…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>Obsidian CLIで本文を確認しました。</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>CLI本文取得に失敗しました（ローカル取得には切り替えません）: </value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>CLIコマンドの長さ上限を超えました。長い本文の保存はObsidian側で行ってください。</value>
   </data>
 </root>

@@ -10,6 +10,32 @@ public static class DailyNoteResolver
 
     public static void Validate(string pattern) => _ = CreateRegex(pattern);
 
+    public static string ResolveFromPaths(string folder, string pattern, DateTime today, IEnumerable<string> paths, CancellationToken token = default)
+    {
+        if (!Path.IsPathFullyQualified(folder)) throw new InvalidOperationException(L10n.Text("DailyNoteResolver.Text05"));
+        var root = Path.GetFullPath(folder);
+        var regex = CreateRegex(pattern);
+        string? found = null;
+        var timer = Stopwatch.StartNew();
+        var count = 0;
+        foreach (var path in paths)
+        {
+            token.ThrowIfCancellationRequested();
+            if (++count > 10000 || timer.Elapsed > TimeSpan.FromSeconds(1)) throw new IOException(L10n.Text("DailyNoteResolver.Text07"));
+            var relative = Path.GetRelativePath(root, path).Replace('\\', '/');
+            if (Path.IsPathRooted(relative) || relative == ".." || relative.StartsWith("../")) continue;
+            Match match;
+            try { match = regex.Match(relative); }
+            catch (RegexMatchTimeoutException ex) { throw new IOException(L10n.Text("DailyNoteResolver.Text08"), ex); }
+            bool DatePart(string name, int value) => match.Groups[name].Captures.Count == 1 &&
+                int.TryParse(match.Groups[name].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var actual) && actual == value;
+            if (!match.Success || !DatePart("year", today.Year) || !DatePart("month", today.Month) || !DatePart("day", today.Day)) continue;
+            if (found is not null) throw new IOException(L10n.Text("DailyNoteResolver.Text09") + found + "\n" + path);
+            found = path;
+        }
+        return found ?? throw new DailyNoteMissingException();
+    }
+
     private static Regex CreateRegex(string pattern)
     {
         if (string.IsNullOrWhiteSpace(pattern)) throw new InvalidOperationException(L10n.Text("DailyNoteResolver.Text01"));

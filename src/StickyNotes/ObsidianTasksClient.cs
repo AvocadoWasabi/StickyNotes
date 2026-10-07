@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using System.IO.Compression;
 using System.Threading;
 
 namespace StickyNotes;
@@ -13,11 +14,19 @@ internal static class ObsidianTasksClient
     private static readonly SemaphoreSlim Gate = new(1, 1);
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
     private const string Marker = "STICKY_TASKS_PREVIEW:";
-    private static readonly string Script = ReadScript();
-
-    private static string ReadScript()
+    private static readonly string Script = Compress(ReadScript("TasksBridge"));
+    private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
+    private static string Compress(string value)
     {
-        using var stream = typeof(ObsidianTasksClient).Assembly.GetManifestResourceStream("StickyNotes.TasksBridge.js")!;
+        using var output = new MemoryStream();
+        using (var zip = new ZLibStream(output, CompressionLevel.SmallestSize, leaveOpen: true))
+            zip.Write(Encoding.UTF8.GetBytes(value));
+        return Convert.ToBase64String(output.ToArray());
+    }
+
+    private static string ReadScript(string name)
+    {
+        using var stream = typeof(ObsidianTasksClient).Assembly.GetManifestResourceStream("StickyNotes." + name + ".js")!;
         using var reader = new StreamReader(stream);
         // The bridge deliberately uses no inline comments, so whole-line comments can be removed.
         return string.Join(" ", reader.ReadToEnd().Split('\n').Select(s => s.Trim()).Where(s => !s.StartsWith("//")));
@@ -38,27 +47,54 @@ internal static class ObsidianTasksClient
     {
         if (queries.Length > 20 || queries.Sum(q => q.Length) > 8000)
             throw new InvalidOperationException(L10n.Text("TasksPreview.QueryLimit"));
-        var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { root, path, queries })));
-        var code = "(async()=>{" + Script + ";try{const request=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob('" + payload +
-            "'),c=>c.charCodeAt(0))));return '" + Marker + "'+JSON.stringify(await stickyTasksPreview(request));}" +
+        return BuildRequestCode(new { root, path, queries });
+    }
+
+    internal static string BuildRequestCode(object request, bool notes = false)
+    {
+        var payload = Compress(JsonSerializer.Serialize(request));
+        // Only the shipped adapter is evaluated as code. Note text stays compressed JSON data.
+        var code = "(async()=>{try{const request=JSON.parse(require('zlib').inflateSync(Buffer.from('" + payload +
+            "','base64')).toString('utf8'));const run=eval(require('zlib').inflateSync(Buffer.from('" + (notes ? NotesScript : Script) +
+            "','base64')).toString('utf8')+';stickyTasksPreview');return '" + Marker + "'+JSON.stringify(await run(request));}" +
             "catch(e){return '" + Marker + "'+JSON.stringify({error:String(e.message||e)});}})()";
-        if (code.Length > 26000) throw new InvalidOperationException(L10n.Text("TasksPreview.QueryLimit"));
+        if (code.Length > 3500) throw new InvalidOperationException(L10n.Text("CliNote.CommandLimit"));
         return code;
     }
 
+    internal static void ValidateCommand(string vault, string code)
+    {
+        // Obsidian 1.14.4 can parse partial pipe data as a complete JSON message.
+        // Budget the serialized arguments plus framing below 4 KiB; reject before launching CLI.
+        var args = JsonSerializer.Serialize(new[] { "vault=" + vault, "eval", "code=" + code });
+        if (Encoding.UTF8.GetByteCount(args) + 512 > 4000)
+            throw new InvalidOperationException(L10n.Text("CliNote.CommandLimit"));
+    }
+
     internal static TasksResponse ParseResponse(string output, int count)
+    {
+        using var doc = ParseEnvelope(output);
+        var response = doc.RootElement.Deserialize<TasksResponse>(Json);
+        if (response is null || string.IsNullOrWhiteSpace(response.Version) || response.Results is null || response.Results.Length != count ||
+            response.Results.Any(r => r is null || (r.Markdown is null && r.Error is null)))
+            throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
+        return response;
+    }
+
+    internal static JsonDocument ParseEnvelope(string output)
     {
         // Obsidian may write startup diagnostics before its single-line eval result.
         var line = output.Split('\n').LastOrDefault(l => l.StartsWith("=> " + Marker, StringComparison.Ordinal) || l.StartsWith(Marker, StringComparison.Ordinal));
         if (line is null) throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
         var json = line[(line.IndexOf(Marker, StringComparison.Ordinal) + Marker.Length)..].Trim();
-        using var doc = JsonDocument.Parse(json);
-        if (doc.RootElement.TryGetProperty("error", out var error)) throw new InvalidOperationException(error.GetString());
-        var response = JsonSerializer.Deserialize<TasksResponse>(json, Json);
-        if (response is null || string.IsNullOrWhiteSpace(response.Version) || response.Results is null || response.Results.Length != count ||
-            response.Results.Any(r => r is null || (r.Markdown is null && r.Error is null)))
-            throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
-        return response;
+        var doc = JsonDocument.Parse(json);
+        if (doc.RootElement.TryGetProperty("error", out var error))
+        {
+            var message = error.GetString(); doc.Dispose();
+            if (message == "STICKY_CONFLICT") throw new ConflictException(L10n.Text("NoteStore.Text01"));
+            throw new InvalidOperationException(message);
+        }
+        return doc;
     }
 
     public static async Task<TasksResponse> QueryAsync(Settings settings, string note, string[] queries, CancellationToken token)
@@ -66,13 +102,21 @@ internal static class ObsidianTasksClient
         var relative = RelativeNotePath(settings.ObsidianVaultFolder, note);
         var root = Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
         var code = BuildCode(root, relative, queries);
+        return ParseResponse(await ExecuteAsync(settings, code, token).ConfigureAwait(false), queries.Length);
+    }
+
+    internal static async Task<string> ExecuteAsync(Settings settings, string code, CancellationToken token)
+    {
+        var root = Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
         var cli = settings.ObsidianCli.Trim();
+        var vault = string.IsNullOrWhiteSpace(settings.ObsidianVaultId) ? new DirectoryInfo(root).Name : settings.ObsidianVaultId.Trim();
+        ValidateCommand(vault, code);
         if (!Path.IsPathFullyQualified(cli) || !File.Exists(cli) ||
             !Path.GetFileName(cli).Equals("Obsidian.com", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException(L10n.Text("TasksPreview.CliRequired"));
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(token);
         timeout.CancelAfter(TimeSpan.FromSeconds(25));
-        await Gate.WaitAsync(timeout.Token);
+        await Gate.WaitAsync(timeout.Token).ConfigureAwait(false);
         try
         {
             // CLI can launch Obsidian itself. This preview requires an already running app.
@@ -82,7 +126,7 @@ internal static class ObsidianTasksClient
             var start = new ProcessStartInfo(cli) { UseShellExecute = false, CreateNoWindow = true,
                 RedirectStandardOutput = true, RedirectStandardError = true,
                 StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8 };
-            start.ArgumentList.Add("vault=" + (string.IsNullOrWhiteSpace(settings.ObsidianVaultId) ? new DirectoryInfo(root).Name : settings.ObsidianVaultId.Trim()));
+            start.ArgumentList.Add("vault=" + vault);
             start.ArgumentList.Add("eval");
             start.ArgumentList.Add("code=" + code);
             using var child = Process.Start(start) ?? throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
@@ -91,10 +135,10 @@ internal static class ObsidianTasksClient
             var stderr = ReadBounded(child.StandardError, timeout.Token);
             try
             {
-                await Task.WhenAll(stdout, stderr).WaitAsync(timeout.Token);
-                await child.WaitForExitAsync(timeout.Token);
+                await Task.WhenAll(stdout, stderr).WaitAsync(timeout.Token).ConfigureAwait(false);
+                await child.WaitForExitAsync(timeout.Token).ConfigureAwait(false);
                 if (child.ExitCode != 0) throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse") + "\n" + (await stderr)[..Math.Min((await stderr).Length, 2000)]);
-                return ParseResponse(await stdout, queries.Length);
+                return await stdout.ConfigureAwait(false);
             }
             finally
             {

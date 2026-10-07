@@ -17,6 +17,8 @@ public partial class App : Application
     public List<NoteWindow> Notes { get; } = [];
     public bool Exiting { get; private set; }
     public bool TestMode { get; private set; }
+    internal Func<Settings, NoteSource> NoteSources { get; set; } = NoteSource.Create;
+    internal Func<Settings, string, string[], CancellationToken, Task<TasksResponse>> TasksQueries { get; set; } = ObsidianTasksClient.QueryAsync;
     private Forms.NotifyIcon? tray;
     private System.Drawing.Icon? trayIcon;
     private Mutex? mutex;
@@ -98,7 +100,7 @@ public partial class App : Application
         catch (Exception ex) { MessageBox.Show(ex.Message, "Sticky Notes", MessageBoxButton.OK, MessageBoxImage.Warning); }
     }
 
-    public void NewNote() => ShowNote(new NotePlacement { Path = NoteStore.Create(Config.NotesFolder), Left = 100 + Notes.Count * 24, Top = 100 + Notes.Count * 24 });
+    public void NewNote() => ShowNote(new NotePlacement { Path = NoteSources(Config).CreateNote(Config.NotesFolder), Left = 100 + Notes.Count * 24, Top = 100 + Notes.Count * 24 });
 
     public void OpenNote()
     {

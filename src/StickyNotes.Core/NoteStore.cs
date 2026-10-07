@@ -90,8 +90,13 @@ public static class NoteStore
     {
         Directory.CreateDirectory(directory);
         var path = Path.Combine(directory, L10n.Format("NoteStore.Text04", DateTime.Now, Guid.NewGuid().ToString("N")[..6]));
-        var text = L10n.Format("NoteStore.Text05", Guid.NewGuid(), DateTimeOffset.Now);
-        File.WriteAllText(path, WithMetadata(text, new(L10n.Text("NoteStore.Text06"), ["sticky"], "active", "yellow")), new UTF8Encoding(false));
+        File.WriteAllText(path, InitialText(), new UTF8Encoding(false));
         return path;
+    }
+
+    public static string InitialText()
+    {
+        var text = L10n.Format("NoteStore.Text05", Guid.NewGuid(), DateTimeOffset.Now);
+        return WithMetadata(text, new(L10n.Text("NoteStore.Text06"), ["sticky"], "active", "yellow"));
     }
 }

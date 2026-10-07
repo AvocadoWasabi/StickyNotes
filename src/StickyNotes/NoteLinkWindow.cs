@@ -3,7 +3,9 @@ namespace StickyNotes;
 public sealed class NoteLinkWindow : Window
 {
     private readonly bool daily;
-    private readonly Func<string> resolveDaily;
+    private readonly Func<string>? resolveDaily;
+    private int loadVersion;
+    private bool closed;
     private FileSnapshot? source;
     private string? selectedPath;
     private string selectedFolder;
@@ -13,9 +15,9 @@ public sealed class NoteLinkWindow : Window
     internal NoteLinkPreview Preview { get; } = new();
     public NotePlacement? Result { get; private set; }
 
-    public NoteLinkWindow(bool daily) : this(daily, () => DailyNoteResolver.Resolve(App.Current.Config.DailyFolder, App.Current.Config.DailyPattern, DateTime.Today)) { }
+    public NoteLinkWindow(bool daily) : this(daily, null) { }
 
-    internal NoteLinkWindow(bool daily, Func<string> resolveDaily)
+    internal NoteLinkWindow(bool daily, Func<string>? resolveDaily)
     {
         this.daily = daily; this.resolveDaily = resolveDaily;
         selectedFolder = App.Current.Config.NotesFolder;
@@ -50,6 +52,7 @@ public sealed class NoteLinkWindow : Window
         Headings.Input.TextUpdated += () => Preview.Update(source, Headings.Heading);
         Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         Headings.Load(null);
+        Closed += (_, _) => { closed = true; loadVersion++; };
         if (daily) Loaded += (_, _) => TryLoad(null);
     }
 
@@ -60,20 +63,49 @@ public sealed class NoteLinkWindow : Window
         if (picker.ShowDialog(this) == true) TryLoad(picker.FileName);
     }
 
-    private void TryLoad(string? path)
+    private async void TryLoad(string? path)
     {
-        try { LoadSource(path); status.Text = ""; }
-        catch (Exception ex) { status.Text = ex.Message; }
+        var version = ++loadVersion;
+        try
+        {
+            ClearSource();
+            var access = App.Current.NoteSources(App.Current.Config);
+            path = daily ? await ResolveDailyAsync(access) : path;
+            ValidatePath(path);
+            selectedPath = path;
+            var snapshot = await access.ReadAsync(Path.GetFullPath(path!));
+            if (closed || version != loadVersion) return;
+            SetSource(snapshot); status.Text = "";
+        }
+        catch (Exception ex) { if (!closed && version == loadVersion) status.Text = ex.Message; }
     }
 
     internal void LoadSource(string? path = null)
     {
-        source = null; Headings.Load(null); Preview.Update(null, ""); sourceLabel.Text = L10n.Text("NoteLinkWindow.Text10");
-        path = daily ? resolveDaily() : path;
+        ClearSource();
+        var access = App.Current.NoteSources(App.Current.Config);
+        path = daily ? Task.Run(() => ResolveDailyAsync(access)).GetAwaiter().GetResult() : path;
+        ValidatePath(path);
+        selectedPath = path;
+        SetSource(access.Read(Path.GetFullPath(path!)));
+    }
+
+    private static void ValidatePath(string? path)
+    {
         if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path) || !Path.GetExtension(path).Equals(".md", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text11"));
-        selectedPath = path;
-        var snapshot = NoteStore.Read(Path.GetFullPath(path));
+    }
+
+    private Task<string> ResolveDailyAsync(NoteSource access) => resolveDaily is not null ? Task.FromResult(resolveDaily()) :
+        access.ResolveDailyAsync(App.Current.Config.DailyFolder, App.Current.Config.DailyPattern, DateTime.Today);
+
+    private void ClearSource()
+    {
+        source = null; Headings.Load(null); Preview.Update(null, ""); sourceLabel.Text = L10n.Text("NoteLinkWindow.Text10");
+    }
+
+    private void SetSource(FileSnapshot snapshot)
+    {
         Headings.Load(snapshot.Text);
         source = snapshot;
         Preview.Update(source, Headings.Heading);
@@ -84,8 +116,9 @@ public sealed class NoteLinkWindow : Window
     internal NotePlacement Prepare()
     {
         if (source is null) throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text14"));
-        if (daily && !string.Equals(Path.GetFullPath(resolveDaily()), source.Path, StringComparison.OrdinalIgnoreCase))
+        var access = App.Current.NoteSources(App.Current.Config);
+        if (daily && !string.Equals(Path.GetFullPath(Task.Run(() => ResolveDailyAsync(access)).GetAwaiter().GetResult()), source.Path, StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text15"));
-        return NoteLink.Prepare(source, Headings.Heading, daily, Path.Combine(App.DataDirectory, "backups"));
+        return access.PrepareLink(source, Headings.Heading, daily, Path.Combine(App.DataDirectory, "backups"));
     }
 }

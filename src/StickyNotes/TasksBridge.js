@@ -1,5 +1,5 @@
 // Executed inside the existing Obsidian instance by the official CLI.
-// Input is data, never interpolated JavaScript. No vault writes or clipboard access.
+// Input is data, never interpolated JavaScript. No clipboard access.
 async function stickyTasksPreview(request) {
     const fail = message => { throw new Error(message); };
     const normalize = value => value.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase();

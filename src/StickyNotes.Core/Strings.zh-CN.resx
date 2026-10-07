@@ -835,7 +835,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>启用 Tasks 查询（实验性，只读）</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>请先启动 Obsidian 及目标仓库中的 Tasks。每30秒获取原生 Markdown 结果，无需额外插件。仅使用可信查询：查询中的 JavaScript 和全局设置会在 Obsidian 内执行。</value>
+    <value>请先启动 Obsidian 及目标仓库中的 Tasks。启用后，正文、标题及日记查找均通过 CLI；正文和查询结果约每30秒刷新，失败时不会回退到本地读取。禁用后恢复原有方式。仅使用可信查询：JavaScript 和全局设置在 Obsidian 内执行。</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Obsidian.com 的绝对路径</value>
@@ -884,5 +884,20 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   </data>
   <data name="TasksPreview.Timeout" xml:space="preserve">
     <value>Tasks 请求超时。Obsidian 内的处理可能仍在运行。</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>笔记获取方式已改变。请先保留下草稿，重新加载后再保存。</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>正在通过 Obsidian CLI 获取笔记…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>已通过 Obsidian CLI 检查正文。</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>CLI 笔记获取失败（不会回退到本地读取）：</value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>超出 CLI 命令长度限制。请在 Obsidian 中保存较长的正文。</value>
   </data>
 </root>

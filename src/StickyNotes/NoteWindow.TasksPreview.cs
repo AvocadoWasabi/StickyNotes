@@ -76,7 +76,9 @@ public sealed partial class NoteWindow
 
     private async Task RefreshTasksPreview()
     {
-        if (closed || editing || snapshot is null || !BuildFlavor.TasksPreview) return;
+        if (closed || editing || snapshot is null || !BuildFlavor.TasksPreview || cliNoteError is not null) return;
+        if (NoteSource.UsesCli(app.Config) && !snapshot.Hash.StartsWith("cli:", StringComparison.Ordinal))
+        { await ReloadCliNoteAsync(true); return; }
         // Settings may change without the note text changing.
         RenderTasksPreview(false);
         if (!app.Config.ObsidianTasksEnabled || tasksQueries.Length == 0 || tasksBusy ||
@@ -87,7 +89,7 @@ public sealed partial class NoteWindow
         tasksCancellation = cancellation;
         try
         {
-            var response = await ObsidianTasksClient.QueryAsync(app.Config, snapshot.Path, tasksQueries, cancellation.Token);
+            var response = await app.TasksQueries(app.Config, snapshot.Path, tasksQueries, cancellation.Token);
             if (closed || editing || tasksIdentity != identity || cancellation.IsCancellationRequested) return;
             tasksResponse = response; tasksFetched = DateTime.Now; tasksError = null;
             RenderTasksPreview();

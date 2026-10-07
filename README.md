@@ -3,6 +3,7 @@
 # Markdown Sticky Notes
 
 Experimental: [separate Tasks CLI preview build and installation](docs/TASKS-CLI-PREVIEW.md#english) (`./build.ps1 -Publish -TasksPreview`).
+When enabled, this preview obtains all note text and daily-note discovery through Obsidian CLI, without local-read fallback. Disabling it keeps the original file access.
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
 

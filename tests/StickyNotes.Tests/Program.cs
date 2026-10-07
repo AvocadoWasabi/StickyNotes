@@ -128,6 +128,7 @@ internal static partial class Program
             Check(MarkdownView.FindCalendarCommand("```text\n@calendar 2026-10-05 example\n```\n\n@calendar 2026-10-06 real") == "@calendar 2026-10-06 real", "calendar examples in fenced code are not executed");
             LocalizationTests(root);
             TasksPreviewTests(root);
+            NoteSourceTests(root);
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }

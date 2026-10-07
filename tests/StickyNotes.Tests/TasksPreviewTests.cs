@@ -30,6 +30,8 @@ internal static partial class Program
         var before = File.ReadAllBytes(path);
         var settings = new StickyNotes.Core.Settings { ObsidianCli = cli, ObsidianVaultFolder = root,
             ObsidianVaultId = data.RootElement.GetProperty("name").GetString()! };
+        var cliNote = await new NoteSource(settings, true).ReadAsync(path, timeout.Token);
+        Check(cliNote.Text == StickyNotes.Core.NoteStore.Read(path).Text, "CLI desktop: existing note text matches direct UTF-8 reading");
         var response = await ObsidianTasksClient.QueryAsync(settings, path,
             ["ignore global query\nnot done\nlimit 3\nsort by due\ngroup by filename",
              "invalid-instruction-sticky-preview",
@@ -41,6 +43,7 @@ internal static partial class Program
         Check(response.Results[3].Error is null, "Tasks desktop: source-note placeholder resolves");
         Check(File.ReadAllBytes(path).SequenceEqual(before), "Tasks desktop: source Markdown unchanged");
         Console.WriteLine("Tasks desktop adapter version: " + response.Version);
+        await CliNoteFixtureSmoke(settings);
     }
 
     private static void TasksPreviewTests(string root)
@@ -51,10 +54,17 @@ internal static partial class Program
         Throws<InvalidOperationException>(() => ObsidianTasksClient.RelativeNotePath(vault, Path.Combine(vault, "..", "outside.md")), "Tasks: traversal rejected");
         const string query = "description includes \"日本語\"\n# ');throw new Error('injected');//";
         var code = ObsidianTasksClient.BuildCode(vault, "note.md", [query]);
-        var payload = code.Split("atob('")[1].Split("')")[0];
-        using var data = JsonDocument.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(payload)));
+        var payload = code.Split("Buffer.from('")[1].Split("'")[0];
+        using var compressed = new MemoryStream(Convert.FromBase64String(payload));
+        using var inflated = new System.IO.Compression.ZLibStream(compressed, System.IO.Compression.CompressionMode.Decompress);
+        using var data = JsonDocument.Parse(inflated);
         Check(data.RootElement.GetProperty("queries")[0].GetString() == query && !code.Contains(query), "Tasks: queries encoded as data, quotes and Unicode round trip");
         Throws<InvalidOperationException>(() => ObsidianTasksClient.BuildCode(vault, "note.md", [new string('x', 8001)]), "Tasks: command size bounded");
+        ObsidianTasksClient.ValidateCommand("日本語Vault", code);
+        Throws<InvalidOperationException>(() => ObsidianTasksClient.ValidateCommand(new string('語', 700), code), "CLI: encoded vault name included in IPC budget");
+        Throws<InvalidOperationException>(() => ObsidianTasksClient.ValidateCommand("vault", new string('x', 4000)), "CLI: oversized request rejected before launching Obsidian");
+        var largeText = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(5000));
+        Throws<InvalidOperationException>(() => ObsidianTasksClient.BuildRequestCode(new { text = largeText }, notes: true), "CLI: incompressible note text rejected before launching Obsidian");
         var response = ObsidianTasksClient.ParseResponse("startup log\n=> STICKY_TASKS_PREVIEW:{\"version\":\"7.23.1\",\"results\":[{\"markdown\":\"- [ ] 日本語\\n\",\"error\":null}]}\n", 1);
         Check(response.Results[0].Markdown == "- [ ] 日本語\n", "Tasks: CLI framing and Markdown preserved");
         Throws<InvalidOperationException>(() => ObsidianTasksClient.ParseResponse("=> STICKY_TASKS_PREVIEW:{\"error\":\"wrong vault\"}", 1), "Tasks: adapter errors surfaced");
@@ -83,6 +93,8 @@ internal static partial class Program
         var settings = App.Current.Config;
         var enabled = settings.ObsidianTasksEnabled;
         var vault = settings.ObsidianVaultFolder;
+        var previousSources = App.Current.NoteSources;
+        var previousQueries = App.Current.TasksQueries;
         var path = Path.Combine(root, "tasks-preview-ui.md");
         const string source = "# Mixed Markdown / 同居テスト\n\n通常の説明文 **Markdown**\n\n- [ ] 通常のチェックリスト\n\n```tasks\nnot done\nlimit 3\n```\n\n## メモ\nクエリの後の文章も表示します。\n\n```tasks\ndone\nlimit 1\n```\n";
         File.WriteAllText(path, source);
@@ -90,6 +102,8 @@ internal static partial class Program
         try
         {
             settings.ObsidianTasksEnabled = true; settings.ObsidianVaultFolder = root;
+            App.Current.NoteSources = config => new NoteSource(config, NoteSource.UsesCli(config), (_, _, _) => Task.FromResult(CliSnapshotEnvelope(source)));
+            App.Current.TasksQueries = (_, _, queries, _) => Task.FromResult(new TasksResponse("7.23.1", queries.Select(_ => new TasksOutput("", null)).ToArray()));
             window = new NoteWindow(new StickyNotes.Core.NotePlacement { Path = path, Width = 520, Height = 780 });
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
             typeof(NoteWindow).GetField("tasksResponse", flags)!.SetValue(window,
@@ -98,7 +112,7 @@ internal static partial class Program
             typeof(NoteWindow).GetMethod("RenderTasksPreview", flags)!.Invoke(window, [true]);
             var viewer = (FlowDocumentScrollViewer)typeof(NoteWindow).GetField("preview", flags)!.GetValue(window)!;
             var text = new TextRange(viewer.Document.ContentStart, viewer.Document.ContentEnd).Text;
-            Check(text.Contains("本家の検索結果") && text.Contains("完了したタスク") && text.Contains("クエリの後の文章"), "Tasks preview window: two result blocks and prose coexist");
+            Check(text.Contains("本家の検索結果") && text.Contains("完了したタスク") && text.Contains("クエリの後の文章"), "Tasks preview window: two result blocks and prose coexist: " + ((TextBlock)typeof(NoteWindow).GetField("status", flags)!.GetValue(window)!).Text);
             Check(File.ReadAllText(path) == source, "Tasks preview window: rendering does not replace query source");
             var content = (FrameworkElement)window.Content;
             content.Measure(new Size(520, 780)); content.Arrange(new Rect(0, 0, 520, 780)); content.UpdateLayout();
@@ -115,6 +129,7 @@ internal static partial class Program
         finally
         {
             window?.Close(); settings.ObsidianTasksEnabled = enabled; settings.ObsidianVaultFolder = vault;
+            App.Current.NoteSources = previousSources; App.Current.TasksQueries = previousQueries;
         }
     }
 }

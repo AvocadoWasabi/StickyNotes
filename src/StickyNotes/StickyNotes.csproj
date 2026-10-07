@@ -11,6 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="TasksBridge.js" />
+    <EmbeddedResource Include="NotesBridge.js" />
     <InternalsVisibleTo Include="StickyNotes.Tests" />
     <Resource Include="Assets/StickyNotes.ico" />
     <ProjectReference Include="../StickyNotes.Core/StickyNotes.Core.csproj" />

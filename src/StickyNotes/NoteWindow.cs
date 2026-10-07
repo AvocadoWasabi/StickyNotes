@@ -285,18 +285,22 @@ public sealed partial class NoteWindow : Window
     private string ResolvePath()
     {
         if (!Placement.Daily) return Placement.Path;
+        if (NoteSource.UsesCli(app.Config))
+            return Task.Run(() => ResolveCliPathAsync(app.NoteSources(app.Config), CancellationToken.None)).GetAwaiter().GetResult();
         return dailyDisplay.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, today(), app.Config.DailyRetention);
     }
 
     private void Reload()
     {
+        if (NoteSource.UsesCli(app.Config))
+        {
+            dirty = false; SetEditing(false);
+            _ = ReloadCliNoteAsync(true); return;
+        }
+        CancelCliRead();
         try
         {
-            var fresh = NoteStore.Read(ResolvePath());
-            var nextContent = Placement.Heading.Length > 0 ? SectionEditor.Find(fresh.Text, Placement.Heading).Content : NoteStore.Split(fresh.Text).Body;
-            snapshot = fresh; content = nextContent; dirty = false; SetEditing(false);
-            displayedDate = dailyDisplay.TargetDate;
-            Render(); status.Text = Placement.Daily ? L10n.Text("NoteWindow.Text17") + Path.GetFileName(fresh.Path) : L10n.Text("NoteWindow.Text18") + Path.GetFileName(fresh.Path);
+            AcceptSnapshot(app.NoteSources(app.Config).Read(ResolvePath()));
         }
         catch (Exception ex) { ShowReadError(ex); }
     }
@@ -436,8 +440,9 @@ public sealed partial class NoteWindow : Window
             prefix = Regex.Replace(prefix, @"(?m)^updated:[^\r\n]*", m => "updated: " + DateTimeOffset.Now.ToString("o"), RegexOptions.None, TimeSpan.FromSeconds(1));
             updated = prefix + next.Replace("\r\n", "\n").Replace("\n", newline);
         }
-        snapshot = NoteStore.Save(snapshot, updated, Path.Combine(App.DataDirectory, "backups"));
-        content = Placement.Heading.Length > 0 ? SectionEditor.Find(updated, Placement.Heading).Content : NoteStore.Split(updated).Body;
+        if (NoteSource.UsesCli(app.Config)) CancelCliRead();
+        snapshot = app.NoteSources(app.Config).Save(snapshot, updated, Path.Combine(App.DataDirectory, "backups"));
+        content = Placement.Heading.Length > 0 ? SectionEditor.Find(snapshot.Text, Placement.Heading).Content : NoteStore.Split(snapshot.Text).Body;
     }
 
     private void ToggleTask(int line, bool value)
@@ -469,6 +474,17 @@ public sealed partial class NoteWindow : Window
         if (closed) return;
         try
         {
+            if (NoteSource.UsesCli(app.Config))
+            {
+                await ReloadCliNoteAsync(false);
+                if (!editing && snapshot is not null && cliNoteError is null)
+                {
+                    await RefreshTasksPreview();
+                    if (lastCalendarCheck is null || Environment.TickCount64 - lastCalendarCheck.Value >= 60_000) await RefreshCalendar();
+                }
+                return;
+            }
+            CancelCliRead();
             var path = ResolvePath();
             if (!dirty && !editing)
             {
@@ -598,7 +614,8 @@ public sealed partial class NoteWindow : Window
         if (values is null) return;
         var list = values["tags"].Split([' ', ',', '、', '\n', '\r'], StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimStart('#')).Distinct().ToArray();
         if (list.Any(t => !Regex.IsMatch(t, @"^[\p{L}\p{N}_/-]+$") || t.All(char.IsDigit))) throw new InvalidOperationException(L10n.Text("NoteWindow.Text64"));
-        snapshot = NoteStore.Save(snapshot, NoteStore.WithMetadata(snapshot.Text, new(values["title"], list, values["status"], values["color"])), Path.Combine(App.DataDirectory, "backups"));
+        if (NoteSource.UsesCli(app.Config)) CancelCliRead();
+        snapshot = app.NoteSources(app.Config).Save(snapshot, NoteStore.WithMetadata(snapshot.Text, new(values["title"], list, values["status"], values["color"])), Path.Combine(App.DataDirectory, "backups"));
         Reload(); app.SaveConfig();
     }
 
@@ -625,6 +642,7 @@ public sealed partial class NoteWindow : Window
         calendarRefreshCancellation?.Cancel();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
         CancelTasksPreview();
+        CancelCliRead();
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }
 }
