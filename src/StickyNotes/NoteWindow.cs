@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 namespace StickyNotes;
 
-public sealed class NoteWindow : Window
+public sealed partial class NoteWindow : Window
 {
     public NotePlacement Placement { get; }
     internal StackPanel NoteControls { get; } = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(4, 0, 4, 3) };
@@ -303,6 +303,7 @@ public sealed class NoteWindow : Window
 
     private void ShowReadError(Exception error)
     {
+        CancelTasksPreview();
         calendarRefreshCancellation?.Cancel();
         snapshot = null; content = ""; activeCommand = null;
         dirty = false; SetEditing(false);
@@ -326,9 +327,9 @@ public sealed class NoteWindow : Window
         if (Placement.Heading.Length == 0) Placement.Color = metadata.Color;
         Background = Ui.Color(Placement.Color);
         title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? L10n.Text("NoteWindow.Text24") : L10n.Text("NoteWindow.Text25")) : L10n.Text("NoteWindow.Text26")) + Placement.Heading : metadata.Title;
-        Title = title.Text;
+        Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
-        preview.Document = MarkdownView.Render(content, ToggleTask);
+        RenderTasksPreview();
         var command = MarkdownView.FindCalendarCommand(content);
         if (activeCommand != command) { calendarRefreshCancellation?.Cancel(); activeCommand = command; eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null; }
     }
@@ -457,6 +458,7 @@ public sealed class NoteWindow : Window
         {
             if (dirty && MessageBox.Show(this, L10n.Text("NoteWindow.Text35"), L10n.Text("NoteWindow.Text36"), MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
             dailyDisplay.Refresh(today());
+            lastTasksCheck = null;
             Reload();
         }
         finally { decisionInProgress = false; }
@@ -478,6 +480,7 @@ public sealed class NoteWindow : Window
             // A monotonic interval keeps refreshing even when the PC clock is moved backwards.
             if (!editing && snapshot is not null &&
                 (lastCalendarCheck is null || Environment.TickCount64 - lastCalendarCheck.Value >= 60_000)) await RefreshCalendar();
+            if (!editing && snapshot is not null) await RefreshTasksPreview();
         }
         catch (Exception ex)
         {
@@ -576,6 +579,7 @@ public sealed class NoteWindow : Window
         menu.Items.Add(ContentScaleMenu());
         Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
         Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); });
+        if (BuildFlavor.TasksPreview) Add(L10n.Text("TasksPreview.Refresh"), () => { lastTasksCheck = null; _ = RefreshTasksPreview(); });
         Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
         Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
@@ -620,6 +624,7 @@ public sealed class NoteWindow : Window
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
         calendarRefreshCancellation?.Cancel();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
+        CancelTasksPreview();
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }
 }

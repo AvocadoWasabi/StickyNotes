@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+实验功能：[Tasks CLI 独立试验版与安装说明](docs/TASKS-CLI-PREVIEW.md#简体中文)（`./build.ps1 -Publish -TasksPreview`）。
+
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes 图标" width="112">
 
 Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔记，并在旁边显示 Google Calendar 日程。也可不使用 Obsidian。

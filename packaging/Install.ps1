@@ -1,8 +1,13 @@
 param(
-    [string]$InstallDirectory = (Join-Path $env:LOCALAPPDATA 'Programs/MarkdownStickyNotes'),
-    [string]$StartMenuDirectory = (Join-Path ([Environment]::GetFolderPath('Programs')) 'Markdown Sticky Notes')
+    [string]$InstallDirectory,
+    [string]$StartMenuDirectory,
+    [switch]$Preview
 )
 $ErrorActionPreference = 'Stop'
+$appName = if ($Preview) { 'Markdown Sticky Notes - Tasks Preview' } else { 'Markdown Sticky Notes' }
+$appFolder = if ($Preview) { 'MarkdownStickyNotes-TasksPreview' } else { 'MarkdownStickyNotes' }
+if (-not $InstallDirectory) { $InstallDirectory = Join-Path $env:LOCALAPPDATA "Programs/$appFolder" }
+if (-not $StartMenuDirectory) { $StartMenuDirectory = Join-Path ([Environment]::GetFolderPath('Programs')) $appName }
 $sourceDirectory = [IO.Path]::GetFullPath($PSScriptRoot)
 $targetDirectory = [IO.Path]::GetFullPath($InstallDirectory)
 $sourceExe = Join-Path $sourceDirectory 'StickyNotes.exe'
@@ -16,10 +21,10 @@ if ($sourceDirectory.TrimEnd('\') -ne $targetDirectory.TrimEnd('\')) {
 }
 New-Item -ItemType Directory -Path $StartMenuDirectory -Force | Out-Null
 $shell = New-Object -ComObject WScript.Shell
-$shortcut = $shell.CreateShortcut((Join-Path $StartMenuDirectory 'Markdown Sticky Notes.lnk'))
+$shortcut = $shell.CreateShortcut((Join-Path $StartMenuDirectory "$appName.lnk"))
 $shortcut.TargetPath = $targetExe
 $shortcut.WorkingDirectory = $targetDirectory
 $shortcut.IconLocation = "$targetExe,0"
 $shortcut.Save()
-Write-Host 'Installed. Open Markdown Sticky Notes from the Start menu.'
+Write-Host "Installed. Open $appName from the Start menu."
 Write-Host "Location: $targetDirectory"

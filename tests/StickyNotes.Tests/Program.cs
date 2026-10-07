@@ -30,8 +30,13 @@ internal static partial class Program
     }
 
     [STAThread]
-    public static void Main()
+    public static void Main(string[] args)
     {
+        if (args.SequenceEqual(new[] { "--tasks-cli-smoke" }))
+        {
+            TasksCliSmoke().GetAwaiter().GetResult();
+            return;
+        }
         var root = Path.Combine(Path.GetTempPath(), "StickyNotes.Tests-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root);
         var backups = Path.Combine(root, "backups");
@@ -122,6 +127,7 @@ internal static partial class Program
             Check(toggledLine == 2, "rendered task callback maps to source line, excluding fenced example");
             Check(MarkdownView.FindCalendarCommand("```text\n@calendar 2026-10-05 example\n```\n\n@calendar 2026-10-06 real") == "@calendar 2026-10-06 real", "calendar examples in fenced code are not executed");
             LocalizationTests(root);
+            TasksPreviewTests(root);
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }

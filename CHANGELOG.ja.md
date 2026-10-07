@@ -8,6 +8,8 @@
 
 ## 未リリース / Unreleased
 
+- `artifact/tasks-cli-preview`に専用インストーラー・設定・プロセス識別を持つ任意のTasks CLI試験版を追加。本家Obsidian TasksのMarkdown検索出力を通常本文と同居表示し、結果は読み取り専用・30秒更新・エラー明示とする。追加のObsidianプラグインは不要。内部APIへの依存と制約は[試用ガイド](docs/TASKS-CLI-PREVIEW.md#日本語)を参照。
+
 ## [0.0.6](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) — 2026-10-07
 
 - Google Tasks APIの仕様上、Google側で設定した予定時刻は取得できず日付のみを表示することを、設定画面・入力補完・3言語の資料に明記。

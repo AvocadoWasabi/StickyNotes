@@ -46,6 +46,16 @@ public sealed class SettingsWindow : Window
             var input = new TextBox { Text = value }; target.Children.Add(input); return input;
         }
         var notes = Add(L10n.Text("SettingsWindow.Text08"), app.Config.NotesFolder);
+        var tasksEnabled = new CheckBox { Content = L10n.Text("TasksPreview.Enable"), IsChecked = app.Config.ObsidianTasksEnabled };
+        var tasksPanel = new StackPanel();
+        tasksPanel.Children.Add(tasksEnabled);
+        tasksPanel.Children.Add(new TextBlock { Text = L10n.Text("TasksPreview.Help"), TextWrapping = TextWrapping.Wrap });
+        var tasksCli = Add(L10n.Text("TasksPreview.Cli"), app.Config.ObsidianCli, tasksPanel);
+        var tasksVault = Add(L10n.Text("TasksPreview.Vault"), app.Config.ObsidianVaultFolder, tasksPanel);
+        tasksPanel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(tasksVault)));
+        var tasksId = Add(L10n.Text("TasksPreview.VaultId"), app.Config.ObsidianVaultId, tasksPanel);
+        if (BuildFlavor.TasksPreview)
+            panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian Tasks — CLI Preview", IsExpanded = true, Content = tasksPanel });
         panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(notes)));
         var daily = Add(L10n.Text("SettingsWindow.Text10"), app.Config.DailyFolder);
         panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text11"), () => PickFolder(daily)));
@@ -247,7 +257,9 @@ public sealed class SettingsWindow : Window
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 TitleButtonOverlay = overlay.IsChecked == true,
                 ShowInTaskbar = taskbar.IsChecked == true,
-                GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text
+                GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text,
+                ObsidianTasksEnabled = tasksEnabled.IsChecked == true,
+                ObsidianCli = tasksCli.Text.Trim(), ObsidianVaultFolder = tasksVault.Text.Trim(), ObsidianVaultId = tasksId.Text.Trim()
             }, migrate);
             notes.Text = app.Config.NotesFolder; daily.Text = app.Config.DailyFolder;
             return true;

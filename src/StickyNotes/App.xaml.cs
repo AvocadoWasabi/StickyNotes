@@ -28,10 +28,10 @@ public partial class App : Application
         {
             using var identity = WindowsIdentity.GetCurrent();
             using var process = Process.GetCurrentProcess();
-            return $"StickyNotes.{identity.User!.Value}.{process.SessionId}";
+            return $"{BuildFlavor.Profile}.{identity.User!.Value}.{process.SessionId}";
         }
     }
-    public static string DataDirectory { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "StickyNotes");
+    public static string DataDirectory { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), BuildFlavor.Profile);
     private static string ConfigPath => Path.Combine(DataDirectory, "settings.json");
     private static string TokenPath => Path.Combine(DataDirectory, "google-token.bin");
 
@@ -40,6 +40,11 @@ public partial class App : Application
         base.OnStartup(e);
         L10n.Initialize(null);
         var command = AppCommands.Parse(e.Args);
+        if (BuildFlavor.TasksPreview)
+        {
+            TestMode = true;
+            Config.NotesFolder = Path.Combine(DataDirectory, "notes");
+        }
         if (e.Args.Length == 2 && e.Args[0] == "--data-dir")
         {
             TestMode = true;
@@ -50,7 +55,7 @@ public partial class App : Application
         {
             MessageBox.Show(L10n.Text("App.xaml.Text01")); Shutdown(); return;
         }
-        mutex = new Mutex(true, "Local\\StickyNotes.Desktop", out ownsMutex);
+        mutex = new Mutex(true, "Local\\" + BuildFlavor.Profile + ".Desktop", out ownsMutex);
         if (!ownsMutex)
         {
             if (command is not null)
@@ -79,7 +84,7 @@ public partial class App : Application
             Safe(() => JumpList.SetJumpList(this, AppCommands.CreateJumpList(Environment.ProcessPath!)));
         using (var iconStream = GetResourceStream(new Uri("pack://application:,,,/StickyNotes;component/Assets/StickyNotes.ico")).Stream)
             trayIcon = new System.Drawing.Icon(iconStream, System.Windows.Forms.SystemInformation.SmallIconSize);
-        tray = new Forms.NotifyIcon { Icon = trayIcon, Text = "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
+        tray = new Forms.NotifyIcon { Icon = trayIcon, Text = BuildFlavor.TasksPreview ? "Sticky Notes — Tasks CLI Preview" : "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => { if (Notes.Count == 0) Safe(NewNote); else { Notes[0].Show(); Notes[0].Activate(); } };
         foreach (var placement in Config.Windows.ToArray()) Safe(() => ShowNote(placement));
         if (Notes.Count == 0 && command?.Id != "new") Safe(NewNote);

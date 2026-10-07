@@ -14,6 +14,10 @@ public sealed class Settings : IJsonOnDeserialized
     public bool ShowInTaskbar { get; set; }
     public string GoogleCredentialsFile { get; set; } = "";
     public string CalendarId { get; set; } = "primary";
+    public bool ObsidianTasksEnabled { get; set; }
+    public string ObsidianCli { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Obsidian", "Obsidian.com");
+    public string ObsidianVaultFolder { get; set; } = "";
+    public string ObsidianVaultId { get; set; } = "";
     public List<NotePlacement> Windows { get; set; } = [];
 
     void IJsonOnDeserialized.OnDeserialized() => DailyPattern = DailyNotePatternMigration.Upgrade(DailyPattern);

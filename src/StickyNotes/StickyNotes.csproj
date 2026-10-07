@@ -10,10 +10,15 @@
     <Version>0.0.6</Version>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TasksBridge.js" />
     <InternalsVisibleTo Include="StickyNotes.Tests" />
     <Resource Include="Assets/StickyNotes.ico" />
     <ProjectReference Include="../StickyNotes.Core/StickyNotes.Core.csproj" />
     <PackageReference Include="Markdig" Version="0.37.0" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
+  <PropertyGroup Condition="'$(TasksPreviewBuild)' == 'true'">
+    <DefineConstants>$(DefineConstants);TASKS_PREVIEW</DefineConstants>
+    <InformationalVersion>0.0.6-tasks-cli-preview</InformationalVersion>
+  </PropertyGroup>
 </Project>

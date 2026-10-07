@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+Experimental: [separate Tasks CLI preview build and installation](docs/TASKS-CLI-PREVIEW.md#english) (`./build.ps1 -Publish -TasksPreview`).
+
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
 
 A Markdown sticky-note app for Windows. Edit Obsidian notes and daily notes directly, and display Google Calendar events alongside them. Obsidian is optional.

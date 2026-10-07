@@ -831,4 +831,58 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
   <data name="GoogleTasks.Partial" xml:space="preserve">
     <value>Some data could not be retrieved. Check the Calendar / Tasks messages.</value>
   </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>Enable Tasks queries (experimental, read-only)</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>Start Obsidian and Tasks in the target vault first. Fetches native Markdown results every 30 seconds; no extra plugin. Use trusted queries only: query JavaScript and global settings run inside Obsidian.</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Absolute path to Obsidian.com</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>Target vault folder</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>Vault name / ID (blank: folder name)</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>Absolute vault and note paths are required.</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>This note is not a Markdown file inside the configured vault.</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>Maximum 20 queries / 8,000 characters per note. Shorten long paths or queries.</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>Configure the absolute path to the official Obsidian.com.</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>No valid CLI result. Check Obsidian CLI settings and the target vault.</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>Start Obsidian. The preview does not intentionally launch a stopped app.</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>CLI output limit exceeded. Add a limit to the query.</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>Refresh Tasks (preview)</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI Preview — waiting / read-only</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — fetched {1} / read-only</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Tasks fetch error (displayed results are not current): </value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>No displayed results</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Tasks request timed out. Work inside Obsidian may still be running.</value>
+  </data>
 </root>

@@ -831,4 +831,58 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="GoogleTasks.Partial" xml:space="preserve">
     <value>部分数据获取失败，请查看 Calendar / Tasks 栏的提示。</value>
   </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>启用 Tasks 查询（实验性，只读）</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>请先启动 Obsidian 及目标仓库中的 Tasks。每30秒获取原生 Markdown 结果，无需额外插件。仅使用可信查询：查询中的 JavaScript 和全局设置会在 Obsidian 内执行。</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Obsidian.com 的绝对路径</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>目标仓库文件夹</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>仓库名称／ID（留空使用文件夹名）</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>需要仓库和笔记的绝对路径。</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>此笔记不是指定仓库内的 Markdown 文件。</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>每张便签最多20个查询、共8,000字符。请缩短过长的路径或查询。</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>请设置官方 Obsidian.com 的绝对路径。</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>无法获取有效的 CLI 结果。请检查 Obsidian CLI 设置及目标仓库。</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>请启动 Obsidian。试验版不会主动启动已停止的应用。</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>CLI 输出超出上限。请在查询中添加 limit。</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>刷新 Tasks（试验版）</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI Preview — 等待加载／只读</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — 获取于 {1}／只读</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Tasks 获取错误（所显示结果不是最新的）：</value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>没有显示结果</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Tasks 请求超时。Obsidian 内的处理可能仍在运行。</value>
+  </data>
 </root>

@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+試験機能：[Tasks CLIの独立テスト版・導入手順](docs/TASKS-CLI-PREVIEW.md#日本語)（`./build.ps1 -Publish -TasksPreview`）。
+
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
 
 Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリーノートを直接編集し、Google Calendarの予定を並べて表示できます。Obsidianなしでも使えます。

@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add an opt-in, separately packaged Tasks CLI preview under `artifact/tasks-cli-preview`, with its own installer, profile and process identity. Display installed Obsidian Tasks' native Markdown query output alongside regular note content; read-only results, 30-second refresh and explicit errors. No extra Obsidian plugin. See the [trial guide](docs/TASKS-CLI-PREVIEW.md#english) for internal-API dependencies and limits.
+
 ## [0.0.6](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) — 2026-10-07
 
 - Explicitly state in Settings, completion help, and all three documentation languages that the Google Tasks API provides dates only and cannot retrieve scheduled times set in Google.

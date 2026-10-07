@@ -2,6 +2,7 @@
 **/bin/
 **/obj/
 artifacts/
+artifact/
 .vs/
 # Local development instructions (keep on disk, never commit)
 AGENTS.md

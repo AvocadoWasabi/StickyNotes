@@ -831,4 +831,58 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="GoogleTasks.Partial" xml:space="preserve">
     <value>一部の取得に失敗しました。予定・Tasks欄の案内を確認してください。</value>
   </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>Tasksクエリ連携を有効にする（試験・読み取り専用）</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>Obsidianと対象VaultのTasksを先に起動してください。30秒ごとに本家のMarkdown出力を取得します。追加プラグインは不要です。信頼できるクエリのみ使用してください。JavaScriptを含むクエリやグローバル設定はObsidian内で実行されます。</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Obsidian.com の絶対パス</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>対象Vaultのフォルダ</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>Vault名／ID（空欄ならフォルダ名）</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>Vaultとノートの絶対パスが必要です。</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>このノートは指定Vault内のMarkdownファイルではありません。</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>1つの付箋は最大20クエリ・合計8,000文字です。長いパスやクエリは短くしてください。</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>公式Obsidian.comの絶対パスを設定してください。</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>CLIから結果を取得できません。ObsidianのCLI設定・対象Vaultを確認してください。</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>Obsidianを起動してください。試験版では停止中の本体を自動起動しません。</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>CLIの出力上限を超えました。クエリにlimitを追加してください。</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>Tasksを更新（試験版）</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI Preview — 読み込み待ち・読み取り専用</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — {1}取得・読み取り専用</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Tasks取得エラー（表示中の結果は最新ではありません）: </value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>表示結果なし</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Tasks取得がタイムアウトしました。Obsidian内での処理終了は保証されません。</value>
+  </data>
 </root>
