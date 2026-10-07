@@ -6,17 +6,14 @@
 
 使用方法见 [README](README.zh-CN.md)，发布包见 [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases)。
 
-## 未发布 / Unreleased
+## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 
-- 在确定仓库／基准目录后，支持获取目录列表、输入新相对名称并在确认时创建文件夹。通过是／否／取消选择是否迁移已有应用便签，保留打开草稿及引用路径，拒绝同名冲突，移动或设置保存失败时回滚。CLI文件夹操作均通过Obsidian；中断时保留私有恢复记录。
-
-- 本地构建默认使用 Obsidian CLI，保留已有的明确禁用选择。获取已打开的仓库，采用 Obsidian 新建位置及核心 Daily notes 的文件夹／格式／模板，隐藏重复本地设置但保留其值。删除仓库全量查找，仅按原生路径解析今天、昨天，两种来源共用保留逻辑。验证官方`daily:path`一致性、正文来源／渲染一致性及保存冲突。
-
-- CLI 集成同时提供于普通`artifacts/app`和可选独立试验版；安装与配置保持分离，不相互复制。已发布的 v0.0.6 不变。
-
-- 试验版集成启用时，将正文读取、标题预览、日记查找、新建及保存统一通过 Obsidian CLI，失败时不回退到本地读取；禁用时保持原方式。验证两种来源的普通正文 WPF 渲染一致，包括 BOM、CRLF 和 Unicode；CLI 保存保留备份及冲突检查。压缩并分离 CLI 桥接，在启动前拒绝超长请求，以缓解 Obsidian 1.14.4 长请求引发的 JSON 解析错误。
-
-- 在`artifacts/tasks-cli-preview`添加可选的 Tasks CLI 独立试验版，包含专用安装程序、设置及进程标识。在普通正文中显示已安装 Obsidian Tasks 的原生 Markdown 查询输出；结果只读、30秒刷新并明确显示错误，无需额外 Obsidian 插件。内部 API 依赖及限制见[试用指南](docs/TASKS-CLI-PREVIEW.md#简体中文)。
+- 新配置默认使用 Obsidian CLI，获取已打开的仓库以及核心 Daily notes 的文件夹、日期格式和模板。保留已有明确禁用 CLI 的选择及隐藏的本地设置。使用原生路径解析今天、昨天，不扫描整个仓库，两种方式共用缺失日记保留逻辑。
+- 在普通正文中显示已安装 Obsidian Tasks 的原生 Markdown 查询输出。结果只读、约30秒刷新，不覆盖查询原文。Obsidian 必须运行并启用 CLI；仅查询需要 Tasks 插件。内部 API 依赖和 WPF 渲染限制见 [CLI 指南](docs/TASKS-CLI-PREVIEW.md#简体中文)。
+- CLI 启用时，正文读取、标题预览、新建和保存均通过 CLI，不回退到本地读取。保留备份和哈希冲突检查，验证 BOM、CRLF、Unicode 普通正文的渲染一致性。压缩并拆分适配器，启动前拒绝超长请求，以缓解 Obsidian 1.14.4 长请求引发的 JSON 解析错误。
+- 确定仓库／基准目录后，可选择已有便签目录或输入新的相对名称。确认时通过是／否／取消决定是否迁移已有应用便签。保留草稿及引用路径，拒绝同名冲突，移动或保存设置失败时回滚。参见[迁移范围及恢复](docs/STICKY-FOLDERS.md#简体中文)，包括强制中断后的手动恢复及相对链接不改写。
+- 普通发布包包含 CLI 集成；从源码构建的可选独立版仍位于`artifacts/tasks-cli-preview`，保留专用安装程序和配置，不相互复制。同步三种语言的安装、使用、开发和发布文档。
+- 已知低影响问题：CLI 实机测试偶尔出现临时快照／哈希不一致或保存冲突。覆盖被拒绝，重试通过，但原因未确定。请保留草稿，重新加载后重试。自动验证759项，并使用合成数据验证原生 CLI 和文件夹迁移。
 
 ## [0.0.6](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) — 2026-10-07
 

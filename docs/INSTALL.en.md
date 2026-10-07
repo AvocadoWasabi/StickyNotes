@@ -4,7 +4,9 @@
 
 ## Requirements
 
-Windows 10 / 11 (x64). No separate .NET installation or administrator privileges are required. Local mode needs no Obsidian plugins. Unreleased local builds default to CLI mode: Obsidian must be running with CLI enabled; daily notes require its core Daily notes plugin and Tasks queries require Tasks. See [CLI setup](TASKS-CLI-PREVIEW.md#english).
+Windows 10 / 11 (x64). No separate .NET installation or administrator privileges are required. Local mode needs no Obsidian plugins. New settings in v0.0.7 default to CLI mode: Obsidian must be running with CLI enabled; daily notes require its core Daily notes plugin and Tasks queries require Tasks. See [CLI setup](TASKS-CLI-PREVIEW.md#english).
+
+**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
 
 ## Installation
 
@@ -21,7 +23,7 @@ For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whol
 
 Choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language).
 
-For the current local build, configure **Settings → Obsidian CLI** and use **Get open vault from Obsidian**. Check native daily settings. After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
+Configure **Settings → Obsidian CLI** and use **Get open vault from Obsidian**. Check native daily settings. After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
 
 - [Basic usage](../README.md#basic-usage)
 - [Folder migration and daily-note settings](USAGE.en.md#storage)

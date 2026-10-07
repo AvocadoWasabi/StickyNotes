@@ -1,14 +1,16 @@
 [English](#english) | [日本語](#日本語) | [简体中文](#简体中文)
 
-# Obsidian CLI — local build (experimental)
+# Obsidian CLI / Obsidian CLI連携 / Obsidian CLI 集成
 
 ## English
 
-Local builds use Obsidian CLI by default. The existing standard profile is retained; an explicitly saved local-only selection remains respected. Released v0.0.6 downloads are unchanged.
+Since v0.0.7, new settings use Obsidian CLI by default. The existing standard profile is retained; an explicitly saved local-only selection remains respected. Disable CLI in Settings to use local files without Obsidian. This integration depends on internal Obsidian/Tasks APIs; the tested versions and limits are below.
+
+**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
 
 ### Setup
 
-1. Run `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`. Start **Markdown Sticky Notes**. The optional isolated build remains `./build.ps1 -Publish -TasksPreview`, with its installer/ZIP under `artifacts/tasks-cli-preview` and separate `StickyNotes-TasksPreview` profile.
+1. Download the [v0.0.7 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7), extract all files and run `Install.cmd`. Start **Markdown Sticky Notes**. For a source build, run `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`. The optional isolated build remains `./build.ps1 -Publish -TasksPreview`, with its installer/ZIP under `artifacts/tasks-cli-preview` and separate `StickyNotes-TasksPreview` profile.
 2. Start Obsidian, open the intended vault and enable **Settings → General → Command line interface**. For daily notes, enable the **Daily notes core plugin**; for `tasks` queries, enable **Tasks**. Tested with Obsidian 1.14.4 / Tasks 7.23.1.
 3. In sticky-note **Settings → Obsidian CLI**, leave **Use Obsidian CLI** checked, verify the absolute path to `Obsidian.com`, and click **Get open vault from Obsidian**. Review the resulting vault folder/name and save. Manual connection entry remains available. A new profile without a vault opens Settings first.
 4. Open a Markdown note inside that vault, or use **Display a daily note** and choose its heading. Missing daily files are not created automatically.
@@ -24,7 +26,7 @@ Local builds use Obsidian CLI by default. The existing standard profile is retai
 
 Tasks runs the installed plugin's native search and Markdown export; results are read-only and never replace the query source. Ordinary text and checkboxes remain editable. The sticky app renders the returned Markdown, so Obsidian HTML/CSS, interactive controls and some layouts are not reproduced. Use trusted queries: Tasks JavaScript filters, global queries and presets execute with Obsidian's privileges.
 
-UTF-8 is decoded strictly, preserving newline/whitespace behavior and the original reader's BOM policy. Saves verify a hash inside `vault.process` and back up the original text before writing. They rely on Obsidian's queue and do not lock independent external editors. One live test previously reported a transient save conflict; four subsequent runs passed. Its cause remains unisolated (low impact: overwrite was rejected).
+UTF-8 is decoded strictly, preserving newline/whitespace behavior and the original reader's BOM policy. Saves verify a hash inside `vault.process` and back up the original text before writing. They rely on Obsidian's queue and do not lock independent external editors. Live tests have occasionally reported transient snapshot/hash mismatches or save conflicts; retries passed, but the cause remains unisolated (low impact: overwrite was rejected). Keep any draft text and reload before retrying.
 
 CLI calls are serialized with a 25-second timeout including queue wait. Source notes are limited to 2 MB; queries to 20 blocks / 8,000 characters, export to 200,000 characters per block, and total output is bounded. Compressed arguments plus framing reserve must fit 4,000 bytes, mitigating Obsidian 1.14.4's observed long-request JSON parsing error. Large edits may need saving in Obsidian. Synchronous save/link confirmation can wait for the timeout; after a timeout, reload before retrying because executing JavaScript is not cancelled.
 
@@ -40,11 +42,13 @@ References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer]
 
 ## 日本語
 
-ローカルビルドはObsidian CLIを既定にします。通常の設定プロファイルは維持し、以前に明示保存したローカル専用の選択も保持します。公開済みv0.0.6の配布物は変更しません。
+v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プロファイルと以前に明示保存したローカル専用の選択を維持します。設定でCLIを無効にすればObsidianなしでローカルファイルを使えます。Obsidian／Tasksの内部APIに依存するため、確認済みバージョンと制限を以下に記載します。
+
+**v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
 
 ### 導入
 
-1. `./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`で導入して **Markdown Sticky Notes** を起動します。独立試験版は引き続き`./build.ps1 -Publish -TasksPreview`で作成でき、インストーラー・ZIPは`artifacts/tasks-cli-preview`、設定は別の`StickyNotes-TasksPreview`です。
+1. [v0.0.7のZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7)をダウンロードし、全体を展開して`Install.cmd`を実行後、**Markdown Sticky Notes** を起動します。ソースからの場合は`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`で導入します。独立試験版は引き続き`./build.ps1 -Publish -TasksPreview`で作成でき、インストーラー・ZIPは`artifacts/tasks-cli-preview`、設定は別の`StickyNotes-TasksPreview`です。
 2. Obsidianで対象Vaultを開き、**設定 → 一般 → コマンドラインインターフェース**を有効にします。デイリーにはコアプラグインの **デイリーノート**、`tasks`クエリには **Tasks** が必要です。Obsidian 1.14.4／Tasks 7.23.1で確認しています。
 3. 付箋の **設定 → Obsidian CLI** で **Obsidian CLIを使用する** を有効にし、`Obsidian.com`の絶対パスを確認して **開いているVaultをObsidianから取得** を押します。取得されたVaultフォルダ・名前を確認して保存します。接続先の手入力も可能です。Vault未設定の新規プロファイルでは設定画面を先に開きます。
 4. Vault内のMarkdownを開くか、**デイリーノートを表示**から見出しを選びます。未作成のデイリーノートは自動作成しません。
@@ -60,7 +64,7 @@ References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer]
 
 Tasksはインストール済み本家の検索とMarkdown出力を使います。結果は読み取り専用で、クエリ原文を置き換えて保存しません。通常の本文・チェックボックスは編集できます。取得結果は付箋側でMarkdown描画するため、ObsidianのHTML/CSSや操作部品、一部のレイアウトは再現しません。JavaScriptフィルター・グローバルクエリ・プリセットはObsidianの権限で実行するため、信頼できるクエリを使用してください。
 
-UTF-8を厳密に復号し、改行・空白と従来のBOM処理を維持します。保存は`vault.process`内でハッシュを照合し、元の文字列をバックアップしてから書き込みます。Obsidianのキュー処理に依存し、独立した外部エディターをロックするものではありません。過去の実機テストで一時的な保存競合が1回あり、その後4回は通過しました。原因は未特定です（影響度・低：上書きは拒否）。
+UTF-8を厳密に復号し、改行・空白と従来のBOM処理を維持します。保存は`vault.process`内でハッシュを照合し、元の文字列をバックアップしてから書き込みます。Obsidianのキュー処理に依存し、独立した外部エディターをロックするものではありません。実機テストでは一時的なスナップショット／ハッシュ不一致や保存競合がまれに発生しています。再試行は通過しましたが、原因は未特定です（影響度・低：上書きは拒否）。下書きを控え、再読込後に再試行してください。
 
 CLIは同時1要求、待機込み25秒のタイムアウトです。元ノート2 MB、クエリ20ブロック／合計8,000文字、各結果200,000文字までで、総出力にも上限があります。圧縮引数と通信形式の予備領域を4,000バイト以内に抑え、Obsidian 1.14.4で観測した長い要求のJSON解析エラーを回避します。長い編集はObsidianでの保存が必要な場合があります。保存・連携確定はタイムアウトまで画面を待たせる場合があり、実行済みJavaScriptはキャンセルされないため、タイムアウト後は再読込してから再試行してください。
 
@@ -76,11 +80,13 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 
 ## 简体中文
 
-本地构建默认使用 Obsidian CLI。保留普通配置及以前明确保存的本地模式选择。已发布的 v0.0.6 下载不变。
+从 v0.0.7 起，新配置默认使用 Obsidian CLI。保留普通配置及以前明确保存的本地模式选择。可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。集成依赖 Obsidian／Tasks 内部 API，已验证版本和限制见下文。
+
+**从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
 
 ### 安装
 
-1. 运行`./build.ps1 -Publish`，使用`artifacts/app/Install.cmd`安装并启动 **Markdown Sticky Notes**。独立试验版仍可用`./build.ps1 -Publish -TasksPreview`生成，安装程序／ZIP 位于`artifacts/tasks-cli-preview`，使用独立的`StickyNotes-TasksPreview`配置。
+1. 下载 [v0.0.7 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7)，解压全部文件并运行`Install.cmd`，启动 **Markdown Sticky Notes**。从源码构建时，运行`./build.ps1 -Publish`后使用`artifacts/app/Install.cmd`安装。独立试验版仍可用`./build.ps1 -Publish -TasksPreview`生成，安装程序／ZIP 位于`artifacts/tasks-cli-preview`，使用独立的`StickyNotes-TasksPreview`配置。
 2. 在 Obsidian 打开目标仓库并启用 **设置 → 常规 → 命令行界面**。日记需要核心 **日记** 插件；`tasks`查询需要 **Tasks**。已验证 Obsidian 1.14.4／Tasks 7.23.1。
 3. 在便签 **设置 → Obsidian CLI** 中启用 **使用 Obsidian CLI**，确认`Obsidian.com`绝对路径并点击 **从 Obsidian 获取当前仓库**。检查仓库目录／名称后保存，也可手动填写连接信息。未配置仓库的新配置会先打开设置。
 4. 打开仓库内的 Markdown，或通过 **显示每日笔记** 选择标题。缺失的日记不会自动创建。
@@ -96,7 +102,7 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 
 Tasks 使用已安装原插件的查询及 Markdown 导出。结果只读，不会覆盖查询原文；普通正文和复选框仍可编辑。便签使用自身 Markdown 渲染器，不重现 Obsidian HTML/CSS、交互控件及部分布局。JavaScript 筛选器、全局查询和预设以 Obsidian 权限执行，请使用可信查询。
 
-严格解码 UTF-8，保留换行、空白及原有 BOM 处理。保存时在`vault.process`内核对哈希，先备份原文本再写入。依赖 Obsidian 队列，不锁定独立外部编辑器。此前实机测试曾出现一次临时保存冲突，随后四次通过，原因仍未确定（影响较低：覆盖被拒绝）。
+严格解码 UTF-8，保留换行、空白及原有 BOM 处理。保存时在`vault.process`内核对哈希，先备份原文本再写入。依赖 Obsidian 队列，不锁定独立外部编辑器。实机测试偶尔出现临时快照／哈希不一致或保存冲突；重试通过，但原因仍未确定（影响较低：覆盖被拒绝）。请保留草稿，重新加载后重试。
 
 CLI 串行执行，含排队25秒超时。源笔记限2 MB，查询20块／共8,000字符，每块结果200,000字符，总输出也有限制。压缩参数及通信格式预留空间须在4,000字节内，以规避 Obsidian 1.14.4 已观察到的长请求 JSON 解析错误。长编辑可能需要在 Obsidian 保存。同步保存／关联确认可能阻塞至超时；已执行的 JavaScript 不会取消，超时后应重新加载再重试。
 

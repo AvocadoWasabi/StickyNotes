@@ -2,7 +2,9 @@
 
 # Markdown Sticky Notes
 
-Experimental, unreleased: the standard local build (`./build.ps1`) defaults to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Existing settings that explicitly disable CLI remain local. The separate profile build remains available with `./build.ps1 -Publish -TasksPreview`; published v0.0.6 is unchanged.
+Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Keep Obsidian running with CLI enabled. Existing settings that explicitly disable CLI remain local; you can also disable CLI in Settings to use local files without Obsidian.
+**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
+
 CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
@@ -28,9 +30,9 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 
 ## Download and install
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.6 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) and extract it.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.7 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) and extract it.
 2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
-3. Open `Settings` from the notification-area icon and choose a notes folder.
+3. Open `Settings` from the notification-area icon. In **Obsidian CLI**, get the open vault, then select a sticky-note folder. To use local files, disable CLI and choose a base folder first. [Connection and plugin setup](docs/TASKS-CLI-PREVIEW.md#english).
 
 No administrator privileges or separate .NET installation are required. The app is unsigned, so Windows may ask for confirmation. See the [installation guide](docs/INSTALL.en.md) for updates, removal, and portable use.
 

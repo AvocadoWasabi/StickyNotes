@@ -2,7 +2,9 @@
 
 # Markdown Sticky Notes
 
-未发布的实验功能：普通本地构建（`./build.ps1`）默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。已有设置中明确禁用 CLI 时保留本地方式。仍可使用`./build.ps1 -Publish -TasksPreview`生成独立配置版；已发布的 v0.0.6 不变。
+从 v0.0.7 起，新配置默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。请保持 Obsidian 运行并启用 CLI。保留已有设置中明确禁用 CLI 的选择；也可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。
+**从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
+
 CLI 模式从 Obsidian 获取正文及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes 图标" width="112">
@@ -28,9 +30,9 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 下载与安装
 
-1. 从 [v0.0.6 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) 下载 `StickyNotes-win-x64.zip` 并解压。
+1. 从 [v0.0.7 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
-3. 在通知区域图标的 `设置` 中选择便签文件夹。
+3. 在通知区域图标的 **设置 → Obsidian CLI** 获取当前仓库，再选择便签保存目录。使用本地文件时，先禁用 CLI 并选择基准目录。参见[连接及插件设置](docs/TASKS-CLI-PREVIEW.md#简体中文)。
 
 无需管理员权限或另外安装 .NET。应用未签名，Windows 可能要求确认。更新、卸载和免安装使用见[安装指南](docs/INSTALL.zh-CN.md)。
 

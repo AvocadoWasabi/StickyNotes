@@ -6,17 +6,14 @@ User-facing changes are recorded here, newest releases first. Development commit
 
 See the [README](README.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
-## Unreleased
+## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 
-- Add sticky-note folder selection after vault/base selection: retrieve folders, accept new relative names and create on confirmation. Ask Yes/No/Cancel about migrating existing app-created sticky notes, preserve open drafts/paths, reject collisions and roll back failed moves/settings saves. CLI folder operations stay inside Obsidian; keep private recovery records for interrupted migrations.
-
-- Default local builds to Obsidian CLI while preserving existing explicit opt-outs. Detect the open vault, use Obsidian's new-note location and core Daily notes folder/format/template, and hide duplicate local settings without discarding them. Resolve only today/yesterday through native paths instead of scanning the vault; share retention logic across both sources. Verify official `daily:path` parity, note-source/rendering parity and save conflicts.
-
-- Include CLI integration in standard `artifacts/app` builds and the optional isolated preview. Retain separate installers and profiles without copying settings between them. Published v0.0.6 is unchanged.
-
-- Unify note reads, heading previews, daily-note discovery, creation and saving through Obsidian CLI when the preview integration is enabled; no local-read fallback. Preserve original access when disabled. Verify identical non-query WPF rendering across both sources, including BOM/CRLF/Unicode, and preserve backups/conflict checks on CLI saves. Compress and separate CLI bridges and reject oversized requests before launch to mitigate Obsidian 1.14.4's JSON parsing error on long requests.
-
-- Add an opt-in, separately packaged Tasks CLI preview under `artifacts/tasks-cli-preview`, with its own installer, profile and process identity. Display installed Obsidian Tasks' native Markdown query output alongside regular note content; read-only results, 30-second refresh and explicit errors. No extra Obsidian plugin. See the [trial guide](docs/TASKS-CLI-PREVIEW.md#english) for internal-API dependencies and limits.
+- Default new settings to Obsidian CLI. Detect the open vault and obtain core Daily notes folder, format and template from Obsidian. Preserve existing explicit CLI opt-outs and hidden local settings. Resolve today/yesterday through native paths without searching the whole vault, with shared missing-note retention behavior.
+- Display the installed Obsidian Tasks plugin's native Markdown query output alongside regular text. Results are read-only, refresh about every 30 seconds and never overwrite the query source. Obsidian must run with CLI enabled; Tasks is required only for queries. Internal APIs and WPF rendering limits are documented in the [CLI guide](docs/TASKS-CLI-PREVIEW.md#english).
+- Route Markdown reads, heading previews, creation and saves through CLI when enabled, with no local-read fallback. Preserve backups and hash conflict checks; verify equivalent ordinary-text rendering for BOM, CRLF and Unicode. Compress and split adapters and reject oversized requests before launch to mitigate Obsidian 1.14.4's long-request JSON parsing error.
+- Add sticky-note folder selection after vault/base selection: retrieve existing folders or enter a new relative name. Confirm asks Yes/No/Cancel about migrating app-created sticky notes. Preserve open drafts and paths, reject collisions and roll back move/settings-save failures. See [migration scope and recovery](docs/STICKY-FOLDERS.md#english), including manual recovery after abrupt interruption and unchanged relative links.
+- Include CLI integration in the standard package. Retain the optional isolated source build under `artifacts/tasks-cli-preview` with its own installer/profile; do not copy settings between profiles. Synchronize installation, usage, development and release documentation in three languages.
+- Known low-impact issue: live CLI tests occasionally observe a transient snapshot/hash mismatch or save conflict. Overwrites are refused; retries passed, but the cause remains unisolated. Preserve draft text and reload before retrying. Automated validation: 759 tests; native CLI and folder migration checks also exercised on synthetic data.
 
 ## [0.0.6](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) — 2026-10-07
 

@@ -4,7 +4,7 @@
 
 ## English
 
-This feature is in the unreleased local build; published v0.0.6 packages are unchanged.
+Available in v0.0.7 and later, in both CLI and local modes.
 
 1. In Settings, select the Obsidian vault, or disable CLI and choose a local base folder.
 2. Select **Select sticky-note folder…**. The app retrieves folders under that root. Choose one from the editable list, or type a new relative path such as `Sticky Notes/Work`. `.` selects the root.
@@ -22,7 +22,7 @@ Validation: local migration/rollback/collision and UI confirmation tests run wit
 
 ## 日本語
 
-未リリースのローカルビルドの機能です。公開済みv0.0.6の配布物は変更しません。
+v0.0.7以降のCLI・ローカル両方式で使用できます。
 
 1. 設定でObsidianのVaultを指定します。ローカル方式ではCLIを無効にし、基準フォルダを選びます。
 2. **付箋の保存フォルダを選択…** を押すと、基準内のフォルダ一覧を取得します。一覧から選ぶか、`付箋/仕事`のような新しい相対パスを入力します。`.`は直下です。
@@ -40,7 +40,7 @@ CLIモードでは一覧取得・フォルダ作成・対象本文の取得・�
 
 ## 简体中文
 
-此功能用于未发布的本地构建；已发布的v0.0.6安装包不变。
+v0.0.7 及以上版本的 CLI 和本地模式均可使用。
 
 1. 在设置中选择Obsidian仓库；本地模式则禁用CLI并选择基准文件夹。
 2. 点击**选择便签保存文件夹…**，获取基准内的目录列表。选择已有目录，或输入`便签/工作`等新的相对路径。`.`表示根目录。

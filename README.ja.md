@@ -2,7 +2,9 @@
 
 # Markdown Sticky Notes
 
-未リリースの試験機能：通常ローカルビルド（`./build.ps1`）は[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。既存設定で明示的に無効にした場合はローカル方式を維持します。独立設定版は`./build.ps1 -Publish -TasksPreview`で作成できます。公開済みv0.0.6は変更しません。
+v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。CLIを有効にしたObsidianを起動しておいてください。既存設定の明示的な無効指定は維持します。設定でCLIを無効にすれば、Obsidianなしでローカルファイルを使えます。
+**v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
+
 CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
@@ -28,9 +30,9 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## ダウンロードとインストール
 
-1. [v0.0.6の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+1. [v0.0.7の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
-3. 通知領域アイコンの「設定」で付箋の保存先を選びます。
+3. 通知領域アイコンの「設定 → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
 
 管理者権限や.NETの追加インストールは不要です。未署名のためWindowsの確認が出る場合があります。更新・削除・インストールせず使う方法は[導入ガイド](docs/INSTALL.md)を参照してください。
 
