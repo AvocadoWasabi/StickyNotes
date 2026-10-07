@@ -25,7 +25,7 @@ Both commands restore, build Release, run tests, and generate a self-contained a
 
 `-Publish` additionally creates or updates `artifacts/StickyNotes-win-x64.zip` and its SHA256 checksum. A normal build leaves any existing ZIP unchanged, so use `-Publish` when distributing a ZIP.
 
-Standard local builds default to Obsidian CLI; existing explicit local-mode settings are preserved. Configure **Settings → Obsidian CLI**. Obsidian owns new-note locations and Daily notes settings; `DailyBridge` resolves today/yesterday without listing the vault, and both sources share retention logic. The standard profile remains separate from the optional `./build.ps1 -Publish -TasksPreview` output in `artifacts/tasks-cli-preview`. See [CLI setup, architecture and limitations](TASKS-CLI-PREVIEW.md#english).
+Standard local builds default to Obsidian CLI; existing explicit local-mode settings are preserved. Configure **Settings → Obsidian CLI**. Obsidian supplies Daily notes settings; an optional sticky-folder override uses `FoldersBridge` for folder listing, creation and moves, with a shared local/CLI migration coordinator; `DailyBridge` resolves today/yesterday without listing the vault, and both sources share retention logic. The standard profile remains separate from the optional `./build.ps1 -Publish -TasksPreview` output in `artifacts/tasks-cli-preview`. See [CLI setup, architecture and limitations](TASKS-CLI-PREVIEW.md#english).
 
 `src/StickyNotes.Core` handles storage, section editing, and Calendar integration; `src/StickyNotes` contains the WPF UI; `tests` covers data protection, rendering, and APIs.
 

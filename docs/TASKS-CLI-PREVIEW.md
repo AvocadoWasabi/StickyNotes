@@ -16,7 +16,7 @@ Local builds use Obsidian CLI by default. The existing standard profile is retai
 ### One source of settings
 
 - Daily folder, date format and template come from Obsidian and are displayed as read-only information. The native path routine used by `daily:path` resolves today and yesterday, including locale-dependent weekdays and nested date folders. The app no longer scans every vault Markdown file or translates the date format into a local regex.
-- New sticky notes use Obsidian's new-note location. The saved local note folder, daily folder and regex are hidden and ignored in CLI mode. Uncheck **Use Obsidian CLI** to restore them. Their values are retained; switching modes does not migrate existing files or copy the isolated preview profile.
+- Choose a sticky-note folder from the retrieved vault list, or type a new relative name. Confirm asks Yes/No/Cancel about moving existing app-created sticky notes. Without a selection, Obsidian's new-note location remains the default. Local base-folder and daily-regex fields remain hidden in CLI mode. See [folder selection, migration and recovery](STICKY-FOLDERS.md#english).
 - Today's missing-note behavior remains configurable in the sticky app: wait, keep yesterday until today exists, or keep yesterday until manual refresh. These are display preferences, not duplicate Obsidian settings. Changing Obsidian's path settings resets retained-date state.
 - Fixed notes, heading previews, reads, creation and saves all use CLI in this mode. There is no fallback to direct local reads. Text and query results refresh about every 30 seconds; reload retries the note immediately. CLI failures retain prior CLI content with an error and preserve drafts. Changing mode while editing requires reloading before saving.
 
@@ -52,7 +52,7 @@ References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer]
 ### 設定の一元化
 
 - デイリーフォルダ・日付形式・テンプレートをObsidianから読み、変更不可の情報として表示します。`daily:path`が使う本家の処理で今日・前日のパスを解決するため、曜日の言語や日付別サブフォルダもObsidianに従います。Vault全体のMarkdown一覧検索や、付箋側での日付形式から正規表現への変換は行いません。
-- 新規付箋はObsidianの新規ノート保存先へ作成します。CLIモードでは旧ローカル保存先・デイリーフォルダ・正規表現を隠して使用しません。**Obsidian CLIを使用する**を無効にすると再表示します。値は保持し、方式の切替で既存ファイルを移行したり独立試験版の設定をコピーしたりしません。
+- Vaultのフォルダ一覧から付箋保存先を選ぶか、新しい相対名を入力できます。決定後に既存のアプリ作成付箋の移行を「はい／いいえ／キャンセル」で選びます。未指定時はObsidianの新規保存先が既定です。CLI時はローカル基準フォルダ・デイリー正規表現を隠します。[保存先選択・移行・復旧](STICKY-FOLDERS.md#日本語)を参照してください。
 - 今日の分がない場合の「待機」「今日ができるまで前日保持」「手動更新まで前日保持」は付箋側で選べます。Obsidianの設定と重複しない表示上の設定です。Obsidianのパス設定が変われば保持状態をリセットします。
 - 固定ノート・見出しプレビュー・読込・作成・保存をCLIへ統一し、直接のローカル読込にフォールバックしません。本文・結果は約30秒ごとに更新し、再読込で本文を即時取得します。失敗時は前回CLI本文とエラーを表示し、下書きを保全します。編集中に方式を切り替えた場合は保存前に再読込が必要です。
 
@@ -88,7 +88,7 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 ### 统一设置来源
 
 - 日记目录、日期格式及模板从 Obsidian 读取并只读显示。使用`daily:path`对应的原生处理解析今天及昨天的路径，包括语言相关星期及按日期划分的子目录。不再扫描整个仓库的 Markdown 列表，也不把日期格式转换为本地正则。
-- 新便签使用 Obsidian 的新笔记位置。CLI 模式隐藏并忽略旧本地笔记目录、日记目录及正则。取消 **使用 Obsidian CLI** 可恢复显示，原值保留；切换模式不会迁移文件或复制独立试验版配置。
+- 可从仓库目录列表选择便签保存位置，或输入新的相对名称。确定后选择是／否／取消，决定是否迁移已有应用便签。未选择时仍采用Obsidian新笔记位置。CLI模式隐藏本地基准目录及日记正则字段。参见[目录选择、迁移及恢复](STICKY-FOLDERS.md#简体中文)。
 - 今日缺失时仍可选择等待、保留昨天直到今日创建、或保留到手动刷新。这些是便签显示偏好，并非重复的 Obsidian 设置。Obsidian 路径设置改变时重置日期保留状态。
 - 固定笔记、标题预览、读取、创建和保存统一走 CLI，失败时不回退到本地读取。正文／结果约每30秒刷新，重新加载可立即取正文。失败保留上次 CLI 正文并显示错误，保护草稿。编辑期间切换模式后，保存前须重新加载。
 

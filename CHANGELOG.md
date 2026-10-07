@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add sticky-note folder selection after vault/base selection: retrieve folders, accept new relative names and create on confirmation. Ask Yes/No/Cancel about migrating existing app-created sticky notes, preserve open drafts/paths, reject collisions and roll back failed moves/settings saves. CLI folder operations stay inside Obsidian; keep private recovery records for interrupted migrations.
+
 - Default local builds to Obsidian CLI while preserving existing explicit opt-outs. Detect the open vault, use Obsidian's new-note location and core Daily notes folder/format/template, and hide duplicate local settings without discarding them. Resolve only today/yesterday through native paths instead of scanning the vault; share retention logic across both sources. Verify official `daily:path` parity, note-source/rendering parity and save conflicts.
 
 - Include CLI integration in standard `artifacts/app` builds and the optional isolated preview. Retain separate installers and profiles without copying settings between them. Published v0.0.6 is unchanged.

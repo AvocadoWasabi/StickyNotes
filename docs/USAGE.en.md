@@ -88,22 +88,9 @@ The app saves note positions, sizes, and always-on-top settings as notes move an
 
 ## Storage and Obsidian
 
-The current local build defaults to [CLI mode](TASKS-CLI-PREVIEW.md#english): Obsidian determines new-note locations and Daily notes settings. The manual folders and migration described below apply only to local mode with CLI disabled (and published v0.0.6). Switching CLI mode does not migrate files; explicit existing local settings are preserved.
+After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
 
-New notes are saved in `Documents/StickyNotesData` by default. Open `… → Settings` (Settings) to select a folder in your Obsidian vault, such as `Vault/Sticky Notes`.
-
-When you save a folder change, the app asks whether to migrate existing note files. Choose **Yes** to move every `.md` file in the old folder, including subfolders and closed notes; **No** changes only the folder for new notes; **Cancel** leaves settings unchanged.
-
-Open notes keep their placement and unsaved edits. The notes folder and daily-note folder are independent settings: changing or migrating the notes folder never rewrites the daily-note folder value.
-
-If the old notes folder also contains daily Markdown files, those files are included in the move; explicitly update the daily-note folder if you want it to follow them. Files outside the old folder and non-Markdown files stay in place.
-
-<details>
-<summary>Migration restrictions</summary>
-
-Migration never overwrites an existing file. Name collisions stop the move; other move or settings-save failures trigger a rollback. If a file cannot be restored, the error lists its location for manual recovery. Parent/child folder pairs and paths containing links or junctions cannot be migrated. Relative links to files left behind may need updating. Back up your notes before a large move: interruption or power loss can leave files in both folders, so check both before retrying.
-
-</details>
+An explicit sticky folder takes precedence over Obsidian's general new-note location. Without a selection, CLI mode retains Obsidian's default; local mode retains its saved folder (initially `Documents/StickyNotesData`). Daily-note settings remain independent.
 
 ### Properties and Bases
 

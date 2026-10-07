@@ -13,6 +13,7 @@
     <EmbeddedResource Include="TasksBridge.js" />
     <EmbeddedResource Include="NotesBridge.js" />
     <EmbeddedResource Include="DailyBridge.js" />
+    <EmbeddedResource Include="FoldersBridge.js" />
     <InternalsVisibleTo Include="StickyNotes.Tests" />
     <Resource Include="Assets/StickyNotes.ico" />
     <ProjectReference Include="../StickyNotes.Core/StickyNotes.Core.csproj" />

@@ -119,6 +119,7 @@ internal static partial class Program
             Throws<IOException>(() => failing.Read(path), "Note source: CLI failure never falls back to local reading");
         }
         ObsidianDailyTests(root);
+        StickyFolderTests(root);
         CliNoteWindowTests(root);
     }
 

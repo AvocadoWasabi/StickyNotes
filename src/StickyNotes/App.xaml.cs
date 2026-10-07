@@ -17,6 +17,7 @@ public partial class App : Application
     public List<NoteWindow> Notes { get; } = [];
     public bool Exiting { get; private set; }
     public bool TestMode { get; private set; }
+    internal bool IsChangingFolder { get; private set; }
     internal Func<Settings, NoteSource> NoteSources { get; set; } = NoteSource.Create;
     internal Func<Settings, string, string[], CancellationToken, Task<TasksResponse>> TasksQueries { get; set; } = ObsidianTasksClient.QueryAsync;
     private Forms.NotifyIcon? tray;
@@ -105,7 +106,11 @@ public partial class App : Application
         catch (Exception ex) { MessageBox.Show(ex.Message, "Sticky Notes", MessageBoxButton.OK, MessageBoxImage.Warning); }
     }
 
-    public void NewNote() => ShowNote(new NotePlacement { Path = NoteSources(Config).CreateNote(Config.NotesFolder), Left = 100 + Notes.Count * 24, Top = 100 + Notes.Count * 24 });
+    public void NewNote()
+    {
+        if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
+        ShowNote(new NotePlacement { Path = NoteSources(Config).CreateNote(Config.NotesFolder), Left = 100 + Notes.Count * 24, Top = 100 + Notes.Count * 24 });
+    }
 
     public void OpenNote()
     {
@@ -180,27 +185,44 @@ public partial class App : Application
 
     public void ApplySettings(Settings next, bool migrate)
     {
+        if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
+        if (migrate) NoteFolderMigration.Move(Config.NotesFolder, next.NotesFolder, paths => CommitSettings(next, paths));
+        else CommitSettings(next, new Dictionary<string, string>());
+        RefreshSettingsWindows();
+    }
+
+    internal async Task ApplyFolderSettingsAsync(Settings next, bool migrate)
+    {
+        if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
+        IsChangingFolder = true;
+        foreach (var note in Notes) note.PauseFolderChange();
+        try { await StickyFolderChange.ApplyAsync(Config, next, migrate, NoteSources,
+            paths => CommitSettings(next, paths), Path.Combine(DataDirectory, "folder-migrations")); }
+        finally { IsChangingFolder = false; }
+        RefreshSettingsWindows();
+    }
+
+    private void CommitSettings(Settings next, IReadOnlyDictionary<string, string> paths)
+    {
         var previous = Config;
-        void Commit(IReadOnlyDictionary<string, string> paths)
+        var restore = new List<Action>();
+        try
         {
-            var restore = new List<Action>();
-            try
-            {
-                if (paths.Count > 0)
-                    foreach (var note in Notes) restore.Add(note.Relocate(paths));
-                Config = next;
-                SaveConfig();
-            }
-            catch
-            {
-                Config = previous;
-                foreach (var undo in restore) undo();
-                throw;
-            }
+            if (paths.Count > 0)
+                foreach (var note in Notes) restore.Add(note.Relocate(paths));
+            Config = next;
+            SaveConfig();
         }
-        if (migrate)
-            NoteFolderMigration.Move(previous.NotesFolder, next.NotesFolder, Commit);
-        else Commit(new Dictionary<string, string>());
+        catch
+        {
+            Config = previous;
+            foreach (var undo in restore) undo();
+            throw;
+        }
+    }
+
+    private void RefreshSettingsWindows()
+    {
         foreach (var note in Notes)
         {
             note.ApplyButtonDisplay();
@@ -210,6 +232,7 @@ public partial class App : Application
 
     private bool PrepareExit()
     {
+        if (IsChangingFolder) return false;
         foreach (var note in Notes.ToArray()) if (!note.CanClose()) return false;
         SaveConfig();
         Exiting = true;

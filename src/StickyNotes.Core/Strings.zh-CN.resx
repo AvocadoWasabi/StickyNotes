@@ -904,7 +904,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>从 Obsidian 获取当前仓库</value>
   </data>
   <data name="CliDaily.Help" xml:space="preserve">
-    <value>目录、日期格式及模板遵循 Obsidian。仅检查今天和昨天的路径，不自动创建缺失的日记。新便签使用 Obsidian 的新笔记保存位置。</value>
+    <value>目录、日期格式及模板遵循 Obsidian。仅检查今天和昨天的路径，不自动创建缺失的日记。可通过便签文件夹选择器指定保存位置；未指定时遵循 Obsidian。</value>
   </data>
   <data name="CliDaily.Summary" xml:space="preserve">
     <value>目录：{0}
@@ -932,5 +932,48 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   </data>
   <data name="CliDaily.PATH" xml:space="preserve">
     <value>请检查 Obsidian 的日记目录及日期格式。</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>基准文件夹（本地模式）</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>选择便签保存文件夹…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>便签保存位置：{0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>从列表选择，或输入新的相对路径来创建文件夹。“.”表示上述根目录。确定后选择是否迁移已有便签，并保存设置。取消不会创建文件夹。</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>将便签保存在此处？
+{0}
+
+是：迁移旧保存位置中由本应用创建的便签（含子文件夹）。
+否：仅更改新便签的保存位置。
+取消：不做更改。
+
+普通关联笔记和日记不迁移。移动笔记内的相对链接不会改写。</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>正在更改便签保存位置，请等待完成。</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>请输入基准目录内的相对路径。不允许父级、隐藏目录或保留名称。</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>条目过多，请选择更小的基准文件夹（10,000项／1,000个便签）。</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>目标文件已存在或迁移时内容已变更，不会覆盖。</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>不支持在不同仓库或访问模式间迁移。选择“否”可仅更改保存位置。</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>部分移动无法回滚。请保留此恢复记录，并在重试前检查两处路径：</value>
   </data>
 </root>

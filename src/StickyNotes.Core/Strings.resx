@@ -904,7 +904,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>開いているVaultをObsidianから取得</value>
   </data>
   <data name="CliDaily.Help" xml:space="preserve">
-    <value>保存先・日付形式・テンプレートはObsidianの設定に従います。今日と前日のパスだけを確認し、ノートは自動作成しません。新しい付箋もObsidianの新規ノート保存先へ作成します。</value>
+    <value>保存先・日付形式・テンプレートはObsidianの設定に従います。今日と前日のパスだけを確認し、ノートは自動作成しません。付箋の保存先は専用の選択画面で指定でき、未指定ならObsidianに従います。</value>
   </data>
   <data name="CliDaily.Summary" xml:space="preserve">
     <value>フォルダ: {0}
@@ -932,5 +932,48 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   </data>
   <data name="CliDaily.PATH" xml:space="preserve">
     <value>Obsidianのデイリーノート保存先・日付形式を確認してください。</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>基準フォルダ（ローカルモード）</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>付箋の保存フォルダを選択…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>付箋の保存先: {0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>一覧から選ぶか、新しい相対パスを入力してフォルダを作成します。「.」は上記の直下です。決定後に既存付箋の移行を選び、設定を保存します。キャンセルでは作成しません。</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>決定</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>このフォルダを保存先にしますか？
+{0}
+
+はい：以前の保存先にある、このアプリが作成した付箋も移動（サブフォルダを含む）。
+いいえ：新しい付箋の保存先だけ変更。
+キャンセル：変更しない。
+
+通常のリンク先ノート・デイリーは対象外です。移動したノート内の相対リンクは書き換えません。</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>付箋の保存先を変更しています。完了までお待ちください。</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>基準フォルダ内の相対パスを入力してください。親階層・隠しフォルダ・予約名は指定できません。</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>件数が上限を超えました。より小さな基準フォルダを選んでください（10,000項目／付箋1,000件）。</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>移行先に同名ファイルがあるか、移行中に内容が変わりました。上書きしません。</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>異なるVault間・取得方式間の移行には対応していません。「いいえ」で保存先だけ変更できます。</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>一部の移動を元に戻せませんでした。復旧記録を保持し、再試行前に両方のパスを確認してください：</value>
   </data>
 </root>

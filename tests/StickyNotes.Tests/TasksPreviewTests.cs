@@ -8,7 +8,7 @@ using StickyNotes;
 
 internal static partial class Program
 {
-    private static async Task TasksCliSmoke()
+    private static async Task TasksCliSmoke(bool foldersOnly = false)
     {
         var cli = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Obsidian", "Obsidian.com");
         var start = new System.Diagnostics.ProcessStartInfo(cli) { UseShellExecute = false, CreateNoWindow = true,
@@ -30,6 +30,7 @@ internal static partial class Program
         var before = File.ReadAllBytes(path);
         var settings = new StickyNotes.Core.Settings { ObsidianCli = cli, ObsidianVaultFolder = root,
             ObsidianVaultId = data.RootElement.GetProperty("name").GetString()! };
+        if (foldersOnly) { await StickyFolderSmoke(settings); return; }
         var cliNote = await new NoteSource(settings, true).ReadAsync(path, timeout.Token);
         Check(cliNote.Text == StickyNotes.Core.NoteStore.Read(path).Text, "CLI desktop: existing note text matches direct UTF-8 reading");
         var response = await ObsidianTasksClient.QueryAsync(settings, path,
@@ -45,6 +46,7 @@ internal static partial class Program
         Console.WriteLine("Tasks desktop adapter version: " + response.Version);
         await NativeDailyCliSmoke(settings);
         await CliNoteFixtureSmoke(settings);
+        await StickyFolderSmoke(settings);
     }
 
     private static void TasksPreviewTests(string root)

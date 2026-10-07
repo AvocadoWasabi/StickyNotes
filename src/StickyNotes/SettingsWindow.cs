@@ -45,7 +45,7 @@ public sealed class SettingsWindow : Window
             target.Children.Add(new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap });
             var input = new TextBox { Text = value }; target.Children.Add(input); return input;
         }
-        var notes = Add(L10n.Text("SettingsWindow.Text08"), app.Config.NotesFolder);
+        var notes = Add(L10n.Text("StickyFolder.Root"), string.IsNullOrWhiteSpace(app.Config.NotesRoot) ? app.Config.NotesFolder : app.Config.NotesRoot);
         var notesLabel = panel.Children[panel.Children.IndexOf(notes) - 1];
         var tasksEnabled = new CheckBox { Name = "UseObsidianCli", Content = L10n.Text("TasksPreview.Enable"), IsChecked = app.Config.ObsidianTasksEnabled };
         var tasksPanel = new StackPanel();
@@ -60,6 +60,18 @@ public sealed class SettingsWindow : Window
         panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian CLI", IsExpanded = true, Content = tasksPanel });
         var notesBrowse = Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(notes));
         panel.Children.Add(notesBrowse);
+        var chooseStickyFolder = new Button { Name = "ChooseStickyFolder", Content = L10n.Text("StickyFolder.Title") };
+        var stickyFolderStatus = new TextBlock { Name = "StickyFolderStatus", TextWrapping = TextWrapping.Wrap };
+        panel.Children.Add(chooseStickyFolder); panel.Children.Add(stickyFolderStatus);
+        void ShowStickyFolder()
+        {
+            stickyFolderStatus.Text = tasksEnabled.IsChecked == true
+                ? L10n.Format("StickyFolder.Current", app.Config.ObsidianNotesFolder ?? L10n.Text("CliDaily.Default"))
+                : L10n.Format("StickyFolder.Current", app.Config.NotesFolder);
+            chooseStickyFolder.IsEnabled = Path.IsPathFullyQualified(tasksEnabled.IsChecked == true ? tasksVault.Text.Trim() : notes.Text.Trim());
+        }
+        notes.TextChanged += (_, _) => ShowStickyFolder();
+        tasksVault.TextChanged += (_, _) => ShowStickyFolder();
         var manualDailyStart = panel.Children.Count;
         var daily = Add(L10n.Text("SettingsWindow.Text10"), app.Config.DailyFolder);
         panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text11"), () => PickFolder(daily)));
@@ -176,6 +188,7 @@ public sealed class SettingsWindow : Window
             foreach (var control in manualDailyControls) control.Visibility = visibility;
             notes.Visibility = notesLabel.Visibility = notesBrowse.Visibility = insertTags.Visibility = visibility;
             dailyHelp.Text = L10n.Text(cli ? "CliDaily.Help" : "SettingsWindow.Text14");
+            ShowStickyFolder();
             SchedulePreview();
         }
         tasksEnabled.Checked += (_, _) => UpdateSourceMode();
@@ -286,7 +299,7 @@ public sealed class SettingsWindow : Window
         googlePanel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text58"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         var calendar = Add(L10n.Text("SettingsWindow.Text59"), app.Config.CalendarId, googlePanel);
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 10) };
-        bool Save()
+        Settings ReadSettings()
         {
             var cli = tasksEnabled.IsChecked == true;
             if (cli)
@@ -301,20 +314,15 @@ public sealed class SettingsWindow : Window
                 DailyNoteResolver.Validate(pattern.Text);
             }
             if (string.IsNullOrWhiteSpace(calendar.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text62"));
-            var folder = cli ? app.Config.NotesFolder : NoteFolderMigration.Normalize(notes.Text);
-            var migrate = false;
-            if (!cli && !NoteFolderMigration.SameFolder(app.Config.NotesFolder, folder))
-            {
-                var answer = MessageBox.Show(this,
-                    L10n.Format("SettingsWindow.Text63", app.Config.NotesFolder, folder),
-                    L10n.Text("SettingsWindow.Text64"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
-                if (answer is not (MessageBoxResult.Yes or MessageBoxResult.No)) return false;
-                migrate = answer == MessageBoxResult.Yes;
-            }
-            app.ApplySettings(new Settings
+            var sameRoot = cli || NoteFolderMigration.SameFolder(notes.Text, string.IsNullOrWhiteSpace(app.Config.NotesRoot) ? app.Config.NotesFolder : app.Config.NotesRoot);
+            var sameVault = string.Equals(tasksVault.Text.Trim().TrimEnd('\\', '/'), app.Config.ObsidianVaultFolder.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase);
+            return new Settings
             {
                 Language = languageCodes[Math.Max(0, language.SelectedIndex)],
-                NotesFolder = folder, DailyFolder = cli ? app.Config.DailyFolder : daily.Text, DailyPattern = cli ? app.Config.DailyPattern : pattern.Text,
+                NotesFolder = sameRoot ? app.Config.NotesFolder : NoteFolderMigration.Normalize(notes.Text),
+                NotesRoot = cli ? app.Config.NotesRoot : NoteFolderMigration.Normalize(notes.Text),
+                ObsidianNotesFolder = sameVault ? app.Config.ObsidianNotesFolder : null,
+                DailyFolder = cli ? app.Config.DailyFolder : daily.Text, DailyPattern = cli ? app.Config.DailyPattern : pattern.Text,
                 DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 TitleButtonOverlay = overlay.IsChecked == true,
@@ -322,8 +330,32 @@ public sealed class SettingsWindow : Window
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text,
                 ObsidianTasksEnabled = tasksEnabled.IsChecked == true,
                 ObsidianCli = tasksCli.Text.Trim(), ObsidianVaultFolder = tasksVault.Text.Trim(), ObsidianVaultId = tasksId.Text.Trim()
-            }, migrate);
-            notes.Text = app.Config.NotesFolder; daily.Text = app.Config.DailyFolder;
+            };
+        }
+        bool SelectStickyFolder(Settings next)
+        {
+            var source = app.NoteSources(next);
+            var selected = source.IsCli ? next.ObsidianNotesFolder : StickyFolderPath.Relative(source.FolderRoot, next.NotesFolder);
+            var picker = new StickyFolderWindow(source, selected, async (relative, migrate) =>
+            {
+                if (source.IsCli) next.ObsidianNotesFolder = relative;
+                else next.NotesFolder = StickyFolderPath.Absolute(source.FolderRoot, relative);
+                await app.ApplyFolderSettingsAsync(next, migrate);
+                ShowStickyFolder();
+            }) { Owner = this };
+            picker.ShowDialog();
+            return picker.Committed;
+        }
+        chooseStickyFolder.Click += (_, _) => app.Safe(() => SelectStickyFolder(ReadSettings()));
+        bool Save()
+        {
+            var next = ReadSettings();
+            var rootChanged = next.ObsidianTasksEnabled
+                ? !string.Equals(next.ObsidianVaultFolder.TrimEnd('\\', '/'), app.Config.ObsidianVaultFolder.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase)
+                : !NoteFolderMigration.SameFolder(next.NotesRoot, string.IsNullOrWhiteSpace(app.Config.NotesRoot) ? app.Config.NotesFolder : app.Config.NotesRoot);
+            if (rootChanged) return SelectStickyFolder(next);
+            app.ApplySettings(next, false);
+            ShowStickyFolder();
             return true;
         }
         var login = new Button { Name = "GoogleLogin", Content = L10n.Text("SettingsWindow.Text65") };

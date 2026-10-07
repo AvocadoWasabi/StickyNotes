@@ -6,6 +6,9 @@ public sealed class Settings : IJsonOnDeserialized
 {
     public string Language { get; set; } = "";
     public string NotesFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StickyNotesData");
+    public string NotesRoot { get; set; } = "";
+    // null inherits Obsidian's location; "." explicitly selects the vault root.
+    public string? ObsidianNotesFolder { get; set; }
     public string DailyFolder { get; set; } = "";
     public string DailyPattern { get; set; } = DailyNoteResolver.RegexExample;
     public DailyNoteRetention DailyRetention { get; set; }

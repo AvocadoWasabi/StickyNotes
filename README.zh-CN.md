@@ -3,7 +3,7 @@
 # Markdown Sticky Notes
 
 未发布的实验功能：普通本地构建（`./build.ps1`）默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。已有设置中明确禁用 CLI 时保留本地方式。仍可使用`./build.ps1 -Publish -TasksPreview`生成独立配置版；已发布的 v0.0.6 不变。
-CLI 模式从 Obsidian 获取正文、新建笔记位置及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
+CLI 模式从 Obsidian 获取正文及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes 图标" width="112">
 
@@ -54,9 +54,9 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 文件存储与 Obsidian
 
-CLI 模式采用 Obsidian 的新建笔记位置。本地模式默认保存到 `Documents/StickyNotesData`；选择仓库内文件夹，即可在无需 CLI 或插件的情况下与 Obsidian 编辑同一 `.md` 文件。
+确定仓库（CLI）或本地基准目录后，点击**选择便签保存文件夹…**。从列表选择或输入新的相对路径，点击**确定**后选择是否迁移已有应用便签。**是**迁移，**否**仅更改新便签位置，**取消**不做更改。范围、回滚及恢复请参见[文件夹选择与迁移指南](docs/STICKY-FOLDERS.md#简体中文)。
 
-更改本地模式的保存位置时也可迁移已有 Markdown。移动前请查看[迁移范围与限制](docs/USAGE.zh-CN.md#storage)。
+显式便签目录优先于Obsidian的一般新笔记位置。未选择时，CLI保持Obsidian默认位置，本地模式保留已有目录（初始为`Documents/StickyNotesData`）。日记设置独立。
 
 ## 显示和编辑每日笔记的指定部分
 

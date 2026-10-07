@@ -904,7 +904,7 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>Get open vault from Obsidian</value>
   </data>
   <data name="CliDaily.Help" xml:space="preserve">
-    <value>Folder, date format and template follow Obsidian. Only today's and yesterday's paths are checked; missing daily notes are not created. New sticky notes use Obsidian's new-note location.</value>
+    <value>Folder, date format and template follow Obsidian. Only today's and yesterday's paths are checked; missing daily notes are not created. Use the sticky-folder selector to override the new-note location; otherwise it follows Obsidian.</value>
   </data>
   <data name="CliDaily.Summary" xml:space="preserve">
     <value>Folder: {0}
@@ -932,5 +932,48 @@ Today: {3} ({4})</value>
   </data>
   <data name="CliDaily.PATH" xml:space="preserve">
     <value>Check the daily-note folder and date format in Obsidian.</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>Base folder (local mode)</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>Select sticky-note folder…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>Sticky-note folder: {0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>Select a folder or enter a new relative path to create it. “.” means the root above. Confirm asks about moving existing sticky notes, then saves Settings. Cancel creates nothing.</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>Save sticky notes here?
+{0}
+
+Yes: also move app-created sticky notes from the previous save folder (including subfolders).
+No: only change where new notes are saved.
+Cancel: make no changes.
+
+Ordinary linked notes and daily notes are excluded. Relative links inside moved notes are not rewritten.</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>Updating the sticky-note folder. Please wait.</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>Enter a relative folder path inside the selected root. Parent, hidden and reserved paths are not allowed.</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>Too many entries. Select a smaller base folder (10,000 entries / 1,000 sticky notes).</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>A file already exists or changed during migration. Nothing is overwritten.</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>Migration between different vaults or access modes is not supported. Choose No to change only the save location.</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>Some moves could not be rolled back. Keep this recovery log and check both paths before retrying:</value>
   </data>
 </root>

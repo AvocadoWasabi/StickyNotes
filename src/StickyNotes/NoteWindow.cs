@@ -292,6 +292,7 @@ public sealed partial class NoteWindow : Window
 
     private void Reload()
     {
+        if (app.IsChangingFolder) return;
         if (NoteSource.UsesCli(app.Config))
         {
             dirty = false; SetEditing(false);
@@ -471,6 +472,7 @@ public sealed partial class NoteWindow : Window
 
     private async Task Tick()
     {
+        if (app.IsChangingFolder) return;
         if (closed) return;
         try
         {

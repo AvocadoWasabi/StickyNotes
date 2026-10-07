@@ -3,7 +3,7 @@
 # Markdown Sticky Notes
 
 未リリースの試験機能：通常ローカルビルド（`./build.ps1`）は[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。既存設定で明示的に無効にした場合はローカル方式を維持します。独立設定版は`./build.ps1 -Publish -TasksPreview`で作成できます。公開済みv0.0.6は変更しません。
-CLIモードでは本文・新規ノート保存先・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
+CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
 
@@ -54,9 +54,9 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## 保存先とObsidian
 
-CLIモードの新規ノートはObsidianの新規ノート保存先を使います。ローカルモードの初期保存先は `Documents/StickyNotesData`。Vault内のフォルダを選ぶと、CLIやプラグインなしでObsidianと同じ `.md` を編集できます。
+Vault（CLI）またはローカルの基準フォルダを決めたら、**付箋の保存フォルダを選択…**を押します。一覧選択または新しい相対パスの入力後、**決定**で既存のアプリ作成付箋も移行するか選びます。**はい**は移行、**いいえ**は今後の保存先だけ変更、**キャンセル**は変更しません。対象範囲・巻き戻し・復旧については[保存先と移行のガイド](docs/STICKY-FOLDERS.md#日本語)を参照してください。
 
-ローカルモードの保存先変更時は既存Markdownの移行も選べます。移行対象と制約は[保存先の補足](docs/USAGE.md#storage)を確認してください。
+指定した付箋フォルダをObsidian全般の新規保存先より優先します。未指定ならCLIはObsidianの既定、ローカル方式は保存済みフォルダ（初期値`Documents/StickyNotesData`）を維持します。デイリー設定は独立しています。
 
 ## デイリーノートの特定箇所を常に表示・編集
 

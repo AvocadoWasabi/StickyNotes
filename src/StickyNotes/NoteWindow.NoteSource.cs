@@ -11,6 +11,8 @@ public sealed partial class NoteWindow
     private string? cliNoteError;
     private int cliReadVersion;
 
+    internal void PauseFolderChange() { CancelCliRead(); CancelTasksPreview(); }
+
     private string ReadIdentity() => JsonSerializer.Serialize(new { Placement.Path, Placement.Daily, Placement.Heading,
         app.Config.ObsidianTasksEnabled, app.Config.ObsidianCli, app.Config.ObsidianVaultFolder, app.Config.ObsidianVaultId,
         app.Config.DailyRetention, Date = today().Date });
@@ -43,7 +45,7 @@ public sealed partial class NoteWindow
 
     private async Task ReloadCliNoteAsync(bool force)
     {
-        if (closed || !NoteSource.UsesCli(app.Config)) return;
+        if (closed || app.IsChangingFolder || !NoteSource.UsesCli(app.Config)) return;
         var identity = ReadIdentity();
         var changed = identity != cliReadIdentity;
         if (!force && !changed && (cliReadCancellation is not null || (lastCliRead is { } last && Environment.TickCount64 - last < 30_000))) return;

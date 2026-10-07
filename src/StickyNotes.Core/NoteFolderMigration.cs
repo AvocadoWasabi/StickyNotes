@@ -19,7 +19,7 @@ public static class NoteFolderMigration
     }
 
     // Reject links/junctions rather than traversing outside the selected folders.
-    private static void CheckPath(string path)
+    public static void CheckPath(string path)
     {
         for (string? current = path; current is not null; current = Path.GetDirectoryName(current))
         {

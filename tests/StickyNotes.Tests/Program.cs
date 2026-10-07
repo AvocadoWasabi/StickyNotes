@@ -32,9 +32,9 @@ internal static partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        if (args.SequenceEqual(new[] { "--tasks-cli-smoke" }))
+        if (args.Length == 1 && args[0] is "--tasks-cli-smoke" or "--folders-cli-smoke")
         {
-            TasksCliSmoke().GetAwaiter().GetResult();
+            TasksCliSmoke(args[0] == "--folders-cli-smoke").GetAwaiter().GetResult();
             return;
         }
         var root = Path.Combine(Path.GetTempPath(), "StickyNotes.Tests-" + Guid.NewGuid().ToString("N"));

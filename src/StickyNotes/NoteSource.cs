@@ -4,7 +4,7 @@ using System.Threading;
 namespace StickyNotes;
 
 // All note-content I/O is selected once per operation; CLI failures never fall back to disk.
-internal sealed class NoteSource
+internal sealed partial class NoteSource
 {
     private readonly Settings settings;
     private readonly bool cli;
@@ -16,6 +16,7 @@ internal sealed class NoteSource
         // Do not let an in-flight request adopt a newly selected vault/profile.
         this.settings = new Settings { ObsidianCli = settings.ObsidianCli,
             ObsidianVaultFolder = settings.ObsidianVaultFolder, ObsidianVaultId = settings.ObsidianVaultId,
+            NotesFolder = settings.NotesFolder, NotesRoot = settings.NotesRoot, ObsidianNotesFolder = settings.ObsidianNotesFolder,
             DailyFolder = settings.DailyFolder, DailyPattern = settings.DailyPattern };
         this.cli = cli; this.execute = execute ?? ObsidianTasksClient.ExecuteAsync;
     }
@@ -64,6 +65,7 @@ internal sealed class NoteSource
 
     public FileSnapshot Save(FileSnapshot expected, string text, string backup)
     {
+        if (System.Windows.Application.Current is App { IsChangingFolder: true }) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         if (cli != expected.Hash.StartsWith("cli:", StringComparison.Ordinal))
             throw new ConflictException(L10n.Text("CliNote.ReloadBeforeSave"));
         if (!cli) return NoteStore.Save(expected, text, backup);
@@ -83,7 +85,8 @@ internal sealed class NoteSource
         var text = NoteStore.InitialText();
         return Task.Run(async () =>
         {
-            using var result = await Request(new { mode = "create", root = Root, name, text }, CancellationToken.None).ConfigureAwait(false);
+            var folder = settings.ObsidianNotesFolder is null ? null : StickyFolderPath.Normalize(settings.ObsidianNotesFolder);
+            using var result = await Request(new { mode = "create", root = Root, name, text, folder }, CancellationToken.None).ConfigureAwait(false);
             var path = Path.GetFullPath(Path.Combine(Root, result.RootElement.GetProperty("path").GetString()!));
             _ = ObsidianTasksClient.RelativeNotePath(Root, path);
             return DecodeSnapshot(path, result.RootElement).Path;

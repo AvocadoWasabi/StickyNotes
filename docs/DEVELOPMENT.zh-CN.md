@@ -25,7 +25,7 @@
 
 `-Publish` 额外生成或更新 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。普通构建不会更新已有 ZIP；分发 ZIP 时请使用 `-Publish`。
 
-普通本地构建默认使用 Obsidian CLI，保留已有的明确本地模式设置。在 **设置 → Obsidian CLI** 配置连接。新建位置及 Daily notes 设置由 Obsidian 管理；`DailyBridge`仅解析今天、昨天，不列举仓库，两种来源共用保留逻辑。普通配置与`./build.ps1 -Publish -TasksPreview`输出到`artifacts/tasks-cli-preview`的独立配置保持分离。参见 [CLI 设置、架构及限制](TASKS-CLI-PREVIEW.md#简体中文)。
+普通本地构建默认使用 Obsidian CLI，保留已有的明确本地模式设置。在 **设置 → Obsidian CLI** 配置连接。Daily notes设置由Obsidian管理；显式便签目录通过`FoldersBridge`列举／创建／移动，并与本地模式共用迁移控制；`DailyBridge`仅解析今天、昨天，不列举仓库，两种来源共用保留逻辑。普通配置与`./build.ps1 -Publish -TasksPreview`输出到`artifacts/tasks-cli-preview`的独立配置保持分离。参见 [CLI 设置、架构及限制](TASKS-CLI-PREVIEW.md#简体中文)。
 
 `src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
 

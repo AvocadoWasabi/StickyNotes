@@ -17,6 +17,7 @@ internal static class ObsidianTasksClient
     private static readonly string Script = Compress(ReadScript("TasksBridge"));
     private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
     private static readonly string DailyScript = Compress(ReadScript("DailyBridge"));
+    private static readonly string FoldersScript = Compress(ReadScript("FoldersBridge"));
     private static string Compress(string value)
     {
         using var output = new MemoryStream();
@@ -55,6 +56,7 @@ internal static class ObsidianTasksClient
         => BuildRequestCode(request, notes ? NotesScript : Script);
 
     internal static string BuildDailyCode(object request) => BuildRequestCode(request, DailyScript);
+    internal static string BuildFoldersCode(object request) => BuildRequestCode(request, FoldersScript);
 
     private static string BuildRequestCode(object request, string script)
     {

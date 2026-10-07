@@ -3,7 +3,7 @@
 # Markdown Sticky Notes
 
 Experimental, unreleased: the standard local build (`./build.ps1`) defaults to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Existing settings that explicitly disable CLI remain local. The separate profile build remains available with `./build.ps1 -Publish -TasksPreview`; published v0.0.6 is unchanged.
-CLI mode obtains note text, new-note locations and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
+CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
 
@@ -54,9 +54,9 @@ See the [usage reference](docs/USAGE.en.md#editing) for taskbar icons, button vi
 
 ## Storage and Obsidian
 
-In CLI mode, new notes use Obsidian's new-note location. In local mode, new notes default to `Documents/StickyNotesData`; choose a vault folder to edit the same `.md` files as Obsidian without CLI or plugins.
+After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](docs/STICKY-FOLDERS.md#english) for scope, rollback and recovery.
 
-Changing the local-mode folder can also migrate existing Markdown. Check the [migration scope and restrictions](docs/USAGE.en.md#storage) before moving files.
+An explicit sticky folder takes precedence over Obsidian's general new-note location. Without a selection, CLI mode retains Obsidian's default; local mode retains its saved folder (initially `Documents/StickyNotesData`). Daily-note settings remain independent.
 
 ## Display and edit a daily note section
 

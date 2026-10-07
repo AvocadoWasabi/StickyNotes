@@ -10,7 +10,9 @@ async function stickyTasksPreview(request) {
     if (request.mode === 'create') {
         if (request.name) {
             if (/[\\/]/.test(request.name) || !request.name.endsWith('.md')) fail('Invalid note name.');
-            const parent = app.fileManager.getNewFileParent('');
+            const parent = request.folder == null ? app.fileManager.getNewFileParent('') :
+                (request.folder === '.' ? app.vault.getRoot() : app.vault.getAbstractFileByPathInsensitive(request.folder));
+            if (!parent || !Array.isArray(parent.children)) fail('The sticky-note folder is missing. Select it again in Settings.');
             const prefix = parent.path.replace(/^\/+|\/+$/g, '');
             request.path = (prefix ? prefix + '/' : '') + request.name;
         }

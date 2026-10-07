@@ -99,4 +99,11 @@ public static class NoteStore
         var text = L10n.Format("NoteStore.Text05", Guid.NewGuid(), DateTimeOffset.Now);
         return WithMetadata(text, new(L10n.Text("NoteStore.Text06"), ["sticky"], "active", "yellow"));
     }
+
+    public static bool IsSticky(string text)
+    {
+        var yaml = Parse(Split(text).Frontmatter);
+        return yaml.Children.TryGetValue(new YamlScalarNode("type"), out var type) && type.ToString() == "sticky" &&
+            yaml.Children.TryGetValue(new YamlScalarNode("id"), out var id) && Guid.TryParseExact(id.ToString(), "D", out _);
+    }
 }
