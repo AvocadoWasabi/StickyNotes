@@ -3,4 +3,5 @@
   <ItemGroup><ProjectReference Include="../../src/StickyNotes/StickyNotes.csproj" /></ItemGroup>
   <ItemGroup><None Update="NoteTransportHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><None Update="DataviewBridgeHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><None Update="QueryTaskHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
 </Project>

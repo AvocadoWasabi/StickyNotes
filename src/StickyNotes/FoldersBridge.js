@@ -31,6 +31,13 @@ async function stickyFolderOperation(q) {
     const path = clean(q.path);
     if (q.mode === 'ensure') { await ensure(path); return {}; }
     if (q.mode === 'exists') return { exists: !!get(path) };
+    if (q.mode === 'browse') {
+        if (!folder(get(path))) fail('The selected folder is missing.');
+        const notes = app.vault.getMarkdownFiles().filter(f => (!path || f.path.toLowerCase().startsWith(path.toLowerCase() + '/')) &&
+            !f.path.split('/').some(p => p.startsWith('.'))).map(f => f.path).sort();
+        if (notes.length > 1000) fail('Too many notes (1000). Choose a smaller folder.');
+        return {notes};
+    }
     if (q.mode === 'sticky') {
         const excluded = clean(q.exclude);
         const under = (p, base) => !base || p.toLowerCase().startsWith(base.toLowerCase() + '/');

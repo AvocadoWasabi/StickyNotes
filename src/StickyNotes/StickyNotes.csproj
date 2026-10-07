@@ -12,6 +12,7 @@
   <ItemGroup>
     <EmbeddedResource Include="TasksBridge.js" />
     <EmbeddedResource Include="DataviewBridge.js" />
+    <EmbeddedResource Include="QueryTaskTargets.js" />
     <EmbeddedResource Include="NotesBridge.js" />
     <EmbeddedResource Include="DailyBridge.js" />
     <EmbeddedResource Include="FoldersBridge.js" />

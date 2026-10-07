@@ -8,6 +8,8 @@
 
 ## 未发布
 
+- 支持修改 Tasks 和 Dataview TASK 结果中已验证原任务的复选框，保留备份和整篇笔记冲突检查。Tasks 使用状态循环／重复任务逻辑，Dataview 仅修改选中复选框。便签、通知区域和任务栏菜单新增 **从便签文件夹打开…**，支持文件名筛选、正文渲染／YAML 预览并重新打开已关闭便签。参见 [行为及限制](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
+
 - 新增通过 Obsidian CLI 显示 Dataview LIST／TABLE／TASK，传入原笔记上下文，独立刷新和报告 Tasks／Dataview 错误，并丢弃过期响应。结果只读，保留查询原文。不支持 DataviewJS、内联表达式或 CALENDAR，参见 [Dataview 指南](docs/DATAVIEW.md#简体中文)。已发布的 v0.0.7 包保持不变。
 
 - 新增单击／双击开始编辑的设置，默认仍为单击。光标定位到点击处对应的 Markdown 源文本并滚动显示。Esc 保存并结束编辑，失败时保留草稿；有补全候选时先关闭候选。保留复选框、链接、滚动条及输入法操作。

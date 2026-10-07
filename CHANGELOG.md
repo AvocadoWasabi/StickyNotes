@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Enable source-verified checkboxes in Tasks and Dataview TASK results, with backups and whole-note conflict checks. Preserve Tasks status/recurrence behavior; Dataview updates the selected checkbox only. Add **Browse sticky-note folder…** to note, tray and taskbar menus, with filename filtering, rendered body/YAML previews, and reopening of closed notes. See [behavior and limits](docs/QUERY-EDITING-AND-BROWSER.md#english).
+
 - Add read-only Dataview LIST/TABLE/TASK previews through Obsidian CLI, with source-note context, independent Tasks/Dataview refresh and errors, and stale-response protection. Preserve query source. DataviewJS, inline expressions and CALENDAR are unsupported; see the [Dataview guide](docs/DATAVIEW.md#english). Published v0.0.7 packages are unchanged.
 
 - Add a Settings choice between single-click and double-click editing, retaining single click by default. Place the caret at the clicked Markdown source position and scroll it into view. Esc saves and finishes editing, preserving drafts on failure; dismiss completion suggestions before saving. Keep checkbox, link, scrollbar and IME behavior.

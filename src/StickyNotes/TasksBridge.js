@@ -30,10 +30,23 @@ async function stickyTasksPreview(request) {
                 fail('This Tasks version does not expose Markdown query results.');
             if (renderer.query.error) fail(String(renderer.query.error));
             renderer.performSearch(plugin.getTasks());
+            const targets = stickyTaskTargets();
+            const exporter = renderer.markdownRenderer;
+            if (typeof exporter?.formatTask !== 'function' || typeof exporter?.formatListItem !== 'function')
+                fail('This Tasks version does not expose source task mapping.');
+            for (const method of ['formatTask', 'formatListItem']) {
+                const original = exporter[method];
+                exporter[method] = function(task) {
+                    const text = original.call(this, task);
+                    return targets.mark(text, {path:task.taskLocation?.path, line:task.taskLocation?.lineNumber, original:task.originalMarkdown});
+                };
+            }
             const markdown = await renderer.resultsAsMarkdown();
-            if (typeof markdown !== 'string' || markdown.length > 200000)
+            if (typeof markdown !== 'string' || markdown.length > 260000)
                 fail('Query output is too large (200,000 characters). Add a limit to the query.');
-            results.push({ markdown, error: null });
+            const exported = await targets.finish(markdown);
+            if (exported.markdown.length > 200000) fail('Query output is too large (200,000 characters). Add a limit to the query.');
+            results.push(exported);
         } catch (error) {
             results.push({ markdown: null, error: String(error.message || error).slice(0, 4000) });
         } finally {

@@ -11,6 +11,7 @@ internal static class AppCommands
     {
         new AppCommand(1, "new", L10n.Text("AppCommands.Text01")),
         new AppCommand(2, "open", L10n.Text("AppCommands.Text02")),
+        new AppCommand(9, "browse-notes", L10n.Text("NoteBrowser.Title")),
         new AppCommand(3, "link-section", L10n.Text("AppCommands.Text03")),
         new AppCommand(4, "link-daily", L10n.Text("AppCommands.Text04")),
         new AppCommand(5, "show-all", L10n.Text("AppCommands.Text05")),

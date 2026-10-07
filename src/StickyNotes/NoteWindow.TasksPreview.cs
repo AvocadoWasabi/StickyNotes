@@ -29,6 +29,7 @@ public sealed partial class NoteWindow
     private string queryIdentity = "";
     private readonly QueryPreviewState tasksPreview = new("tasks", "TasksPreview");
     private readonly QueryPreviewState dataviewPreview = new("dataview", "DataviewPreview");
+    private bool queryTaskSaving;
 
     internal static FencedCodeBlock[] FindQueryBlocks(string markdown, string language) =>
         Markdown.Parse(markdown, MarkdownView.Pipeline).Descendants<FencedCodeBlock>()
@@ -85,7 +86,9 @@ public sealed partial class NoteWindow
                 section.Blocks.Add(new Paragraph(new Run(L10n.Text(state.ResourcePrefix + ".Error") + error)) { Foreground = Brushes.DarkRed });
             if (result?.Markdown is { } markdown)
             {
-                var rendered = MarkdownView.Render(markdown, (_, _) => { }, readOnly: true);
+                var targets = (result.Tasks ?? []).GroupBy(t => t.OutputLine).Where(g => g.Count() == 1).ToDictionary(g => g.Key, g => g.Single());
+                var rendered = MarkdownView.Render(markdown, (line, value) => _ = ToggleQueryTask(state, targets[line], value),
+                    canToggle: line => !queryTaskSaving && error is null && targets.ContainsKey(line));
                 while (rendered.Blocks.FirstBlock is { } child)
                 {
                     rendered.Blocks.Remove(child); section.Blocks.Add(child);
@@ -94,6 +97,34 @@ public sealed partial class NoteWindow
             }
             return section;
         });
+    }
+
+    private async Task ToggleQueryTask(QueryPreviewState state, QueryTaskTarget target, bool value)
+    {
+        if (queryTaskSaving || editing || dirty || closed || !app.Config.ObsidianTasksEnabled || QueryIdentity() != queryIdentity) return;
+        var identity = queryIdentity;
+        queryTaskSaving = true; RenderQueryPreviews();
+        try
+        {
+            await app.NoteSources(app.Config).ToggleQueryTaskAsync(target, state.Language, value, Path.Combine(App.DataDirectory, "backups"));
+            if (closed || editing || dirty || identity != QueryIdentity()) return;
+            CancelQueryPreviews();
+            await ReloadCliNoteAsync(true);
+        }
+        catch (Exception ex)
+        {
+            if (!closed && !editing && identity == QueryIdentity())
+            {
+                state.Error = ex.Message; status.Text = ex.Message;
+                // A timeout may have completed remotely. Require a refresh before retrying.
+                state.Response = null; state.Fetched = null;
+            }
+        }
+        finally
+        {
+            queryTaskSaving = false;
+            if (!closed && !editing && !dirty) RenderQueryPreviews();
+        }
     }
 
     private async Task RefreshQueryPreviews()

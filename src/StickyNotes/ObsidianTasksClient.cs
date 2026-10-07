@@ -9,7 +9,8 @@ using System.Security.Principal;
 
 namespace StickyNotes;
 
-internal sealed record TasksOutput(string? Markdown, string? Error);
+internal sealed record QueryTaskTarget(int OutputLine, string Path, int Line, string Hash);
+internal sealed record TasksOutput(string? Markdown, string? Error, QueryTaskTarget[]? Tasks = null);
 internal sealed record TasksResponse(string Version, TasksOutput[] Results);
 
 internal static class ObsidianTasksClient
@@ -17,8 +18,8 @@ internal static class ObsidianTasksClient
     private static readonly SemaphoreSlim Gate = new(1, 1);
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
     private const string Marker = "STICKY_TASKS_PREVIEW:";
-    private static readonly string Script = Compress(ReadScript("TasksBridge"));
-    private static readonly string DataviewScript = Compress(ReadScript("DataviewBridge"));
+    private static readonly string Script = Compress(ReadScript("QueryTaskTargets") + " " + ReadScript("TasksBridge"));
+    private static readonly string DataviewScript = Compress(ReadScript("QueryTaskTargets") + " " + ReadScript("DataviewBridge"));
     private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
     private static readonly string DailyScript = Compress(ReadScript("DailyBridge"));
     private static readonly string FoldersScript = Compress(ReadScript("FoldersBridge"));
@@ -53,7 +54,7 @@ internal static class ObsidianTasksClient
     {
         if (queries.Length > 20 || queries.Sum(q => q.Length) > 8000)
             throw new InvalidOperationException(L10n.Text("TasksPreview.QueryLimit"));
-        return BuildRequestCode(new { root, path, queries });
+        return BuildRequestCode(new { root, path, queries }, Script, enforceLimit: false);
     }
 
     internal static string BuildRequestCode(object request, bool notes = false)
@@ -63,7 +64,7 @@ internal static class ObsidianTasksClient
     {
         if (queries.Length > 20 || queries.Sum(q => q.Length) > 8000)
             throw new InvalidOperationException(L10n.Text("DataviewPreview.QueryLimit"));
-        return BuildRequestCode(new { root, path, queries }, DataviewScript);
+        return BuildRequestCode(new { root, path, queries }, DataviewScript, enforceLimit: false);
     }
 
     private static string? DataviewError(string? error) => error switch
@@ -88,8 +89,8 @@ internal static class ObsidianTasksClient
     {
         var relative = RelativeNotePath(settings.ObsidianVaultFolder, note);
         var root = Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
-        var code = BuildDataviewCode(root, relative, queries);
-        return ParseDataviewResponse(await ExecuteAsync(settings, code, token).ConfigureAwait(false), queries.Length);
+        using var command = PrepareQueryCommand(settings, root, relative, queries, dataview: true);
+        return ParseDataviewResponse(await ExecuteAsync(settings, command.Code, token).ConfigureAwait(false), queries.Length);
     }
 
     internal static string BuildDailyCode(object request) => BuildRequestCode(request, DailyScript);
@@ -115,9 +116,19 @@ internal static class ObsidianTasksClient
     }
 
     internal static NoteCommand PrepareNoteCommand(Settings settings, object request)
+        => PrepareCommand(settings, request, NotesScript);
+
+    internal static NoteCommand PrepareQueryCommand(Settings settings, string root, string path, string[] queries, bool dataview)
+    {
+        if (queries.Length > 20 || queries.Sum(q => q.Length) > 8000)
+            throw new InvalidOperationException(L10n.Text(dataview ? "DataviewPreview.QueryLimit" : "TasksPreview.QueryLimit"));
+        return PrepareCommand(settings, new { root, path, queries }, dataview ? DataviewScript : Script);
+    }
+
+    private static NoteCommand PrepareCommand(Settings settings, object request, string script)
     {
         var vault = VaultName(settings);
-        var inline = BuildRequestCode(request, NotesScript, enforceLimit: false);
+        var inline = BuildRequestCode(request, script, enforceLimit: false);
         if (inline.Length <= 3500 && CommandFits(vault, inline)) return new(inline);
 
         // Only this user's Obsidian can read the transfer. CreateNew prevents replacement,
@@ -133,7 +144,7 @@ internal static class ObsidianTasksClient
         {
             // The request remains JSON data. Only the bundled bridge is evaluated, after
             // verifying the exact bytes produced here; no note content enters the CLI arguments.
-            var bytes = Convert.FromBase64String(Compress(JsonSerializer.Serialize(new { request, script = NotesScript })));
+            var bytes = Convert.FromBase64String(Compress(JsonSerializer.Serialize(new { request, script })));
             transfer.Write(bytes);
             transfer.Flush();
             var location = Convert.ToBase64String(Encoding.UTF8.GetBytes(path));
@@ -174,6 +185,15 @@ internal static class ObsidianTasksClient
         if (response is null || string.IsNullOrWhiteSpace(response.Version) || response.Results is null || response.Results.Length != count ||
             response.Results.Any(r => r is null || (r.Markdown is null && r.Error is null)))
             throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
+        foreach (var result in response.Results)
+        {
+            var outputLines = result.Markdown?.Count(c => c == '\n') + 1 ?? 0;
+            if (result.Tasks is { } targets && (targets.Length > 1000 || targets.Any(t => t is null ||
+                t.OutputLine < 0 || t.OutputLine >= outputLines || t.Line < 0 || t.Line > 2000000 ||
+                string.IsNullOrEmpty(t.Path) || StickyFolderPath.Normalize(t.Path) != t.Path || !t.Path.EndsWith(".md", StringComparison.OrdinalIgnoreCase) ||
+                t.Hash is null || !System.Text.RegularExpressions.Regex.IsMatch(t.Hash, "^cli:[0-9a-f]{64}$"))))
+                throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
+        }
         return response;
     }
 
@@ -199,8 +219,8 @@ internal static class ObsidianTasksClient
     {
         var relative = RelativeNotePath(settings.ObsidianVaultFolder, note);
         var root = Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
-        var code = BuildCode(root, relative, queries);
-        return ParseResponse(await ExecuteAsync(settings, code, token).ConfigureAwait(false), queries.Length);
+        using var command = PrepareQueryCommand(settings, root, relative, queries, dataview: false);
+        return ParseResponse(await ExecuteAsync(settings, command.Code, token).ConfigureAwait(false), queries.Length);
     }
 
     internal static async Task<string> ExecuteAsync(Settings settings, string code, CancellationToken token)

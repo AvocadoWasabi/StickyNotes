@@ -32,6 +32,11 @@ internal static partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--query-task-smoke")
+        {
+            QueryTaskSmoke().GetAwaiter().GetResult();
+            return;
+        }
         if (args.Length == 1 && args[0] == "--dataview-bridge-smoke")
         {
             DataviewBridgeSmoke().GetAwaiter().GetResult();
@@ -140,6 +145,7 @@ internal static partial class Program
             LocalizationTests(root);
             TasksPreviewTests(root);
             DataviewTests(root);
+            QueryEditingTests(root);
             NoteSourceTests(root);
             Console.WriteLine($"\n{count} tests passed.");
         }
@@ -153,12 +159,12 @@ internal static partial class Program
         var executable = @"C:\A folder\日本語\StickyNotes.exe";
         var jump = AppCommands.CreateJumpList(executable);
         var tasks = jump.JumpItems.OfType<System.Windows.Shell.JumpTask>().Where(task => !string.IsNullOrEmpty(task.Title)).ToArray();
-        Check(tasks.Length == 8 && tasks.Select(task => task.Title).SequenceEqual(AppCommands.All.Select(command => command.Title)), "taskbar includes every tray operation in the same order");
-        Check(tray.Items.Count == jump.JumpItems.Count && tray.Items.Count == 9, "tray and taskbar include the same separator before Exit");
+        Check(tasks.Length == 9 && tasks.Select(task => task.Title).SequenceEqual(AppCommands.All.Select(command => command.Title)), "taskbar includes every tray operation in the same order");
+        Check(tray.Items.Count == jump.JumpItems.Count && tray.Items.Count == 10, "tray and taskbar include the same separator before Exit");
         for (var index = 0; index < AppCommands.All.Count; index++)
         {
             var command = AppCommands.All[index];
-            tray.Items[index < 7 ? index : index + 1].PerformClick();
+            tray.Items[index + AppCommands.All.Take(index + 1).Count(c => c.SeparatorBefore)].PerformClick();
             Check(selected[^1] == command && AppCommands.Parse(tasks[index].Arguments.Split(' ')) == command,
                 "tray and taskbar select the same command: " + command.Id);
         }
@@ -179,23 +185,23 @@ internal static partial class Program
             foreach (var command in AppCommands.All) await AppCommandPipe.Send(name, command);
             using var deadline = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(5));
             while (received.Count < AppCommands.All.Count) await Task.Delay(10, deadline.Token);
-            Check(received.Select(command => command.Id).SequenceEqual(AppCommands.All.Select(command => command.Id)), "pipe forwards all eight operations once and in order");
+            Check(received.Select(command => command.Id).SequenceEqual(AppCommands.All.Select(command => command.Id)), "pipe forwards all operations once and in order");
             using (var invalid = new System.IO.Pipes.NamedPipeClientStream(".", name, System.IO.Pipes.PipeDirection.InOut, System.IO.Pipes.PipeOptions.Asynchronous | System.IO.Pipes.PipeOptions.CurrentUserOnly))
             {
                 await invalid.ConnectAsync(deadline.Token);
                 await invalid.WriteAsync(new byte[] { 255 }, deadline.Token);
                 Check(await invalid.ReadAsync(new byte[1], deadline.Token) == 0, "unknown pipe command is rejected without acknowledgement");
             }
-            await AppCommandPipe.Send(name, AppCommands.All[4]);
-            while (received.Count < 9) await Task.Delay(10, deadline.Token);
-            Check(received.Count == 9 && received.Last().Id == "show-all", "pipe remains usable after rejecting an unknown command");
+            await AppCommandPipe.Send(name, AppCommands.All.Single(c => c.Id == "show-all"));
+            while (received.Count < AppCommands.All.Count + 1) await Task.Delay(10, deadline.Token);
+            Check(received.Count == AppCommands.All.Count + 1 && received.Last().Id == "show-all", "pipe remains usable after rejecting an unknown command");
             using (var idle = new System.IO.Pipes.NamedPipeClientStream(".", name, System.IO.Pipes.PipeDirection.InOut, System.IO.Pipes.PipeOptions.Asynchronous | System.IO.Pipes.PipeOptions.CurrentUserOnly))
             {
                 await idle.ConnectAsync(deadline.Token);
                 Check(await idle.ReadAsync(new byte[1], deadline.Token) == 0, "idle clients time out without blocking subsequent commands");
             }
             await AppCommandPipe.Send(name, AppCommands.All[0]);
-            while (received.Count < 10) await Task.Delay(10, deadline.Token);
+            while (received.Count < AppCommands.All.Count + 2) await Task.Delay(10, deadline.Token);
             Check(received.Last().Id == "new", "commands continue after idle client timeout");
         }
         finally { pipe.Dispose(); }

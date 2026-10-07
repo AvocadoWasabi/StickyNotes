@@ -33,10 +33,33 @@ async function stickyTasksPreview(request) {
         const bytes = await app.vault.adapter.readBinary(file.path);
         return snapshot(new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes));
     }
-    if (request.mode === 'save') {
+    if (request.mode === 'save' || request.mode === 'toggle-query-task') {
         const text = await app.vault.process(file, current => {
             if (fingerprint(current) !== request.hash) fail('STICKY_CONFLICT');
-            const updated = checkSize((current.startsWith('\uFEFF') ? '\uFEFF' : '') + request.text.replace(/^\uFEFF+/, ''));
+            let updated;
+            if (request.mode === 'toggle-query-task') {
+                if (!Number.isInteger(request.line) || request.line < 0 || typeof request.checked !== 'boolean' ||
+                    !['tasks', 'dataview'].includes(request.provider)) fail('Invalid task update.');
+                const parts = current.split(/(\r?\n)/), offset = request.line * 2;
+                const original = parts[offset]?.replace(/^\uFEFF/, '');
+                const match = original?.match(/^(\s*(?:>\s*)*(?:[-*+]|\d+[.)])\s+\[)(.)(\]\s+.*)$/);
+                if (!match || (match[2] !== ' ') === request.checked) fail('STICKY_CONFLICT');
+                let replacement = match[1] + (request.checked ? 'x' : ' ') + match[3];
+                if (request.provider === 'tasks') {
+                    const plugin = app.plugins.plugins['obsidian-tasks-plugin'];
+                    if (plugin?.getState?.() !== 'Warm') fail('Tasks is not ready.');
+                    const matches = plugin.getTasks().filter(t => t.taskLocation?.path === file.path && t.taskLocation.lineNumber === request.line);
+                    if (matches.length === 1) {
+                        const task = matches[0];
+                        if (task.originalMarkdown !== original || typeof task.toggleWithRecurrenceInUsersOrder !== 'function') fail('STICKY_CONFLICT');
+                        const toggled = task.toggleWithRecurrenceInUsersOrder();
+                        if (!Array.isArray(toggled) || toggled.length === 0 || toggled.length > 100) fail('Invalid Tasks update.');
+                        replacement = toggled.map(t => t.toFileLineString()).join(current.includes('\r\n') ? '\r\n' : '\n');
+                    } else if (matches.length > 1) fail('STICKY_CONFLICT');
+                }
+                parts[offset] = (offset === 0 && current.startsWith('\uFEFF') ? '\uFEFF' : '') + replacement;
+                updated = checkSize(parts.join(''));
+            } else updated = checkSize((current.startsWith('\uFEFF') ? '\uFEFF' : '') + request.text.replace(/^\uFEFF+/, ''));
             // Back up the exact string provided by Obsidian before applying the edit.
             const fs = require('fs');
             const path = require('path');

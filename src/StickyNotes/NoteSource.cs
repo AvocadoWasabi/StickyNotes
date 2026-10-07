@@ -64,6 +64,20 @@ internal sealed partial class NoteSource
     // Save/close confirmation remains synchronous. Run CLI continuations off the dispatcher.
     public FileSnapshot Read(string path) => Task.Run(() => ReadAsync(path)).GetAwaiter().GetResult();
 
+    internal async Task<FileSnapshot> ToggleQueryTaskAsync(QueryTaskTarget task, string provider, bool value, string backup)
+    {
+        if (!cli || System.Windows.Application.Current is App { IsChangingFolder: true })
+            throw new InvalidOperationException(L10n.Text("CliNote.ReloadBeforeSave"));
+        var path = StickyFolderPath.Absolute(Root, task.Path);
+        var relative = ObsidianTasksClient.RelativeNotePath(Root, path);
+        if (task.Line < 0 || task.Line > 2000000 || provider is not ("tasks" or "dataview") ||
+            !System.Text.RegularExpressions.Regex.IsMatch(task.Hash, "^cli:[0-9a-f]{64}$"))
+            throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
+        using var result = await Request(new { mode = "toggle-query-task", root = Root, path = relative,
+            hash = task.Hash, line = task.Line, provider, @checked = value, backup = Path.GetFullPath(backup) }, CancellationToken.None).ConfigureAwait(false);
+        return DecodeSnapshot(path, result.RootElement);
+    }
+
     public FileSnapshot Save(FileSnapshot expected, string text, string backup)
     {
         if (System.Windows.Application.Current is App { IsChangingFolder: true }) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));

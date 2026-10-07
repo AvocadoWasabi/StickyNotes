@@ -39,6 +39,34 @@ internal sealed partial class NoteSource
         using var result = await FolderRequest(new { mode = "ensure", root = Root, path = StickyFolderPath.Relative(Root, absolute) }).ConfigureAwait(false);
     }
 
+    internal async Task<string[]> BrowseNotesAsync(string folder, CancellationToken token = default)
+    {
+        var relative = StickyFolderPath.Relative(FolderRoot, folder);
+        if (cli)
+        {
+            using var response = await FolderRequest(new { mode = "browse", root = Root, path = relative }, token).ConfigureAwait(false);
+            var notes = response.RootElement.GetProperty("notes").Deserialize<string[]>()!;
+            if (notes.Length > 1000) throw new IOException(L10n.Text("StickyFolder.Limit"));
+            return notes.Select(p =>
+            {
+                var full = StickyFolderPath.Absolute(Root, p);
+                _ = ObsidianTasksClient.RelativeNotePath(folder, full);
+                return full;
+            }).Distinct(StringComparer.OrdinalIgnoreCase).Order(StringComparer.OrdinalIgnoreCase).ToArray();
+        }
+        return await Task.Run(() =>
+        {
+            if (!Directory.Exists(folder)) throw new DirectoryNotFoundException(folder);
+            var notes = new List<string>();
+            Walk(folder, _ => { }, path =>
+            {
+                if (Path.GetExtension(path).Equals(".md", StringComparison.OrdinalIgnoreCase)) notes.Add(path);
+                if (notes.Count > 1000) throw new IOException(L10n.Text("StickyFolder.Limit"));
+            }, token);
+            return notes.Order(StringComparer.OrdinalIgnoreCase).ToArray();
+        }, token).ConfigureAwait(false);
+    }
+
     internal async Task<bool> PathExistsAsync(string absolute)
     {
         if (!cli) { NoteFolderMigration.CheckPath(absolute); return File.Exists(absolute) || Directory.Exists(absolute); }

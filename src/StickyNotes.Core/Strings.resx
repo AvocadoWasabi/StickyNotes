@@ -871,10 +871,10 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>Tasksを更新（試験版）</value>
   </data>
   <data name="TasksPreview.Waiting" xml:space="preserve">
-    <value>Tasks CLI Preview — 読み込み待ち・読み取り専用</value>
+    <value>Tasks CLI — 読み込み待ち</value>
   </data>
   <data name="TasksPreview.Updated" xml:space="preserve">
-    <value>Tasks {0} — {1}取得・読み取り専用</value>
+    <value>Tasks {0} — {1}取得</value>
   </data>
   <data name="TasksPreview.Error" xml:space="preserve">
     <value>Tasks取得エラー（表示中の結果は最新ではありません）: </value>
@@ -983,10 +983,10 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>Tasks / Dataviewを更新</value>
   </data>
   <data name="DataviewPreview.Waiting" xml:space="preserve">
-    <value>Dataview CLI — 取得待ち / 読み取り専用</value>
+    <value>Dataview CLI — 取得待ち</value>
   </data>
   <data name="DataviewPreview.Updated" xml:space="preserve">
-    <value>Dataview {0} — {1}取得 / 読み取り専用</value>
+    <value>Dataview {0} — {1}取得</value>
   </data>
   <data name="DataviewPreview.Error" xml:space="preserve">
     <value>Dataview取得エラー（表示結果は最新ではありません）: </value>
@@ -1018,4 +1018,13 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="DataviewPreview.QueryLimit" xml:space="preserve">
     <value>Dataviewクエリは1ノート20ブロック・合計8,000文字までです。</value>
   </data>
+  <data name="NoteBrowser.Title" xml:space="preserve"><value>付箋フォルダから開く…</value></data>
+  <data name="NoteBrowser.Help" xml:space="preserve"><value>フォルダ内のMarkdownを選んで開き直せます。プレビューとYAMLは読み取り専用で、クエリは実行しません。</value></data>
+  <data name="NoteBrowser.Open" xml:space="preserve"><value>付箋として開く</value></data>
+  <data name="NoteBrowser.Search" xml:space="preserve"><value>ファイル名・パスで絞り込み</value></data>
+  <data name="NoteBrowser.Preview" xml:space="preserve"><value>本文プレビュー</value></data>
+  <data name="NoteBrowser.Loading" xml:space="preserve"><value>読み込み中…</value></data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve"><value>一覧を更新</value></data>
+  <data name="NoteBrowser.Count" xml:space="preserve"><value>{0}件のMarkdownノート</value></data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve"><value>（先頭50,000文字を表示）</value></data>
 </root>

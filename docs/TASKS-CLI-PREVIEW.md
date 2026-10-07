@@ -4,7 +4,7 @@
 
 ## English
 
-Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results are read-only and refresh about every 30 seconds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
 
 Since v0.0.7, new settings use Obsidian CLI by default. The existing standard profile is retained; an explicitly saved local-only selection remains respected. Disable CLI in Settings to use local files without Obsidian. This integration depends on internal Obsidian/Tasks APIs; the tested versions and limits are below.
 
@@ -26,7 +26,7 @@ Since v0.0.7, new settings use Obsidian CLI by default. The existing standard pr
 
 ### Tasks, preservation and limits
 
-Tasks runs the installed plugin's native search and Markdown export; results are read-only and never replace the query source. Ordinary text and checkboxes remain editable. The sticky app renders the returned Markdown, so Obsidian HTML/CSS, interactive controls and some layouts are not reproduced. Use trusted queries: Tasks JavaScript filters, global queries and presets execute with Obsidian's privileges.
+Tasks runs the installed plugin's native search and Markdown export; results never replace the query source, and verified checkboxes can update the original tasks. Ordinary text and checkboxes remain editable. The sticky app renders the returned Markdown, so Obsidian HTML/CSS, interactive controls and some layouts are not reproduced. Use trusted queries: Tasks JavaScript filters, global queries and presets execute with Obsidian's privileges.
 
 UTF-8 is decoded strictly, preserving newline/whitespace behavior and the original reader's BOM policy. Saves verify a hash inside `vault.process` and back up the original text before writing. They rely on Obsidian's queue and do not lock independent external editors. Live tests have occasionally reported transient snapshot/hash mismatches or save conflicts; retries passed, but the cause remains unisolated (low impact: overwrite was rejected). Keep any draft text and reload before retrying.
 
@@ -44,7 +44,7 @@ References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer]
 
 ## 日本語
 
-現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は読み取り専用・約30秒更新で、DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
+現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
 
 v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プロファイルと以前に明示保存したローカル専用の選択を維持します。設定でCLIを無効にすればObsidianなしでローカルファイルを使えます。Obsidian／Tasksの内部APIに依存するため、確認済みバージョンと制限を以下に記載します。
 
@@ -66,7 +66,7 @@ v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プ�
 
 ### Tasks・データ保持・制約
 
-Tasksはインストール済み本家の検索とMarkdown出力を使います。結果は読み取り専用で、クエリ原文を置き換えて保存しません。通常の本文・チェックボックスは編集できます。取得結果は付箋側でMarkdown描画するため、ObsidianのHTML/CSSや操作部品、一部のレイアウトは再現しません。JavaScriptフィルター・グローバルクエリ・プリセットはObsidianの権限で実行するため、信頼できるクエリを使用してください。
+Tasksはインストール済み本家の検索とMarkdown出力を使います。クエリ原文を置き換えて保存せず、元ノートを照合できたタスクのチェック状態を更新できます。通常の本文・チェックボックスは編集できます。取得結果は付箋側でMarkdown描画するため、ObsidianのHTML/CSSや操作部品、一部のレイアウトは再現しません。JavaScriptフィルター・グローバルクエリ・プリセットはObsidianの権限で実行するため、信頼できるクエリを使用してください。
 
 UTF-8を厳密に復号し、改行・空白と従来のBOM処理を維持します。保存は`vault.process`内でハッシュを照合し、元の文字列をバックアップしてから書き込みます。Obsidianのキュー処理に依存し、独立した外部エディターをロックするものではありません。実機テストでは一時的なスナップショット／ハッシュ不一致や保存競合がまれに発生しています。再試行は通過しましたが、原因は未特定です（影響度・低：上書きは拒否）。下書きを控え、再読込後に再試行してください。
 
@@ -84,7 +84,7 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 
 ## 简体中文
 
-当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果只读，约每 30 秒刷新；不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。
+当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。
 
 从 v0.0.7 起，新配置默认使用 Obsidian CLI。保留普通配置及以前明确保存的本地模式选择。可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。集成依赖 Obsidian／Tasks 内部 API，已验证版本和限制见下文。
 
@@ -106,7 +106,7 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 
 ### Tasks、数据保护与限制
 
-Tasks 使用已安装原插件的查询及 Markdown 导出。结果只读，不会覆盖查询原文；普通正文和复选框仍可编辑。便签使用自身 Markdown 渲染器，不重现 Obsidian HTML/CSS、交互控件及部分布局。JavaScript 筛选器、全局查询和预设以 Obsidian 权限执行，请使用可信查询。
+Tasks 使用已安装原插件的查询及 Markdown 导出。结果不会覆盖查询原文，已验证的复选框可修改原任务；普通正文和复选框仍可编辑。便签使用自身 Markdown 渲染器，不重现 Obsidian HTML/CSS、交互控件及部分布局。JavaScript 筛选器、全局查询和预设以 Obsidian 权限执行，请使用可信查询。
 
 严格解码 UTF-8，保留换行、空白及原有 BOM 处理。保存时在`vault.process`内核对哈希，先备份原文本再写入。依赖 Obsidian 队列，不锁定独立外部编辑器。实机测试偶尔出现临时快照／哈希不一致或保存冲突；重试通过，但原因仍未确定（影响较低：覆盖被拒绝）。请保留草稿，重新加载后重试。
 

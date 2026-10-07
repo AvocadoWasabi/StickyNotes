@@ -635,6 +635,7 @@ public sealed partial class NoteWindow : Window
         if (app.Config.ObsidianTasksEnabled) Add(L10n.Text("QueryPreview.Refresh"), () => { ResetQueryRefresh(); _ = RefreshQueryPreviews(); });
         Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
+        Add(L10n.Text("NoteBrowser.Title"), app.BrowseNotes);
         Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
         Add(L10n.Text("NoteWindow.Text55"), app.LinkDaily);
         Add(L10n.Text("NoteWindow.Text56"), () => new SettingsWindow().ShowDialog());

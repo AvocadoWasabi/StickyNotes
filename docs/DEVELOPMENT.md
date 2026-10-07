@@ -27,7 +27,9 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 通常ローカルビルドはObsidian CLIを既定とし、既存の明示的なローカル設定は維持します。「設定 → Obsidian CLI」で接続します。Daily notes設定はObsidianを参照します。付箋保存先の上書き指定は`FoldersBridge`で一覧・作成・移動を扱い、移行制御はCLI／ローカル共通です。`DailyBridge`がVaultを列挙せず今日・昨日を解決、保持処理は両取得方式で共用します。通常プロファイルと、`./build.ps1 -Publish -TasksPreview`による`artifacts/tasks-cli-preview`の独立プロファイルは分離したままです。[CLI手順・構成・制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
 
-`DataviewBridge.js`は元ノートのパスを渡して本家の`queryMarkdown` APIを呼びます。TasksとDataviewは描画・ライフサイクル処理を共用し、状態とエラーは独立しています。通常テストで表示と古い応答を検証し、任意のNode.js `--dataview-bridge-smoke`で生成した実際のCLIコードを合成APIデータで検証できます。[Dataviewの構成・制限・検証状況](DATAVIEW.md#日本語)を参照してください。
+`DataviewBridge.js`は元ノートのパスを渡して本家の`query` + Markdown export APIsを呼びます。TasksとDataviewは描画・ライフサイクル処理を共用し、状態とエラーは独立しています。通常テストで表示と古い応答を検証し、任意のNode.js `--dataview-bridge-smoke`で生成した実際のCLIコードを合成APIデータで検証できます。[Dataviewの構成・制限・検証状況](DATAVIEW.md#日本語)を参照してください。
+
+`QueryTaskTargets.js`は出力したチェックボックスを照合済みの元ノートに対応付け、`NotesBridge.js`がバックアップ・ハッシュ競合検出付きで更新します。`NoteBrowserWindow`は`NoteSource`から一覧を取得し、クエリを実行せず通常のMarkdown／YAMLを表示します。任意の`--query-task-smoke`で生成したアダプターを合成ノートで検証できます。[チェック操作と一覧の仕様](QUERY-EDITING-AND-BROWSER.md#日本語)を参照してください。
 
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 

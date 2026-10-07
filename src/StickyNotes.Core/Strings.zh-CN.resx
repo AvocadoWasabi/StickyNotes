@@ -871,10 +871,10 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>刷新 Tasks（试验版）</value>
   </data>
   <data name="TasksPreview.Waiting" xml:space="preserve">
-    <value>Tasks CLI Preview — 等待加载／只读</value>
+    <value>Tasks CLI — 等待加载</value>
   </data>
   <data name="TasksPreview.Updated" xml:space="preserve">
-    <value>Tasks {0} — 获取于 {1}／只读</value>
+    <value>Tasks {0} — 获取于 {1}</value>
   </data>
   <data name="TasksPreview.Error" xml:space="preserve">
     <value>Tasks 获取错误（所显示结果不是最新的）：</value>
@@ -983,10 +983,10 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>刷新 Tasks / Dataview</value>
   </data>
   <data name="DataviewPreview.Waiting" xml:space="preserve">
-    <value>Dataview CLI — 等待获取 / 只读</value>
+    <value>Dataview CLI — 等待获取</value>
   </data>
   <data name="DataviewPreview.Updated" xml:space="preserve">
-    <value>Dataview {0} — 获取于 {1} / 只读</value>
+    <value>Dataview {0} — 获取于 {1}</value>
   </data>
   <data name="DataviewPreview.Error" xml:space="preserve">
     <value>Dataview 获取失败（显示结果不是最新的）：</value>
@@ -1018,4 +1018,13 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="DataviewPreview.QueryLimit" xml:space="preserve">
     <value>每篇笔记的 Dataview 查询最多为 20 块、合计 8,000 字符。</value>
   </data>
+  <data name="NoteBrowser.Title" xml:space="preserve"><value>从便签文件夹打开…</value></data>
+  <data name="NoteBrowser.Help" xml:space="preserve"><value>选择 Markdown 笔记重新打开。预览和 YAML 为只读，不执行查询。</value></data>
+  <data name="NoteBrowser.Open" xml:space="preserve"><value>作为便签打开</value></data>
+  <data name="NoteBrowser.Search" xml:space="preserve"><value>按文件名或路径筛选</value></data>
+  <data name="NoteBrowser.Preview" xml:space="preserve"><value>正文预览</value></data>
+  <data name="NoteBrowser.Loading" xml:space="preserve"><value>正在加载…</value></data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve"><value>刷新列表</value></data>
+  <data name="NoteBrowser.Count" xml:space="preserve"><value>{0} 篇 Markdown 笔记</value></data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve"><value>（显示前 50,000 字符）</value></data>
 </root>

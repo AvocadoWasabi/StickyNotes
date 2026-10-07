@@ -66,7 +66,8 @@ internal static partial class Program
         using var data = JsonDocument.Parse(inflated);
         Check(data.RootElement.GetProperty("queries")[0].GetString() == query && !code.Contains(query), "Tasks: queries encoded as data, quotes and Unicode round trip");
         Throws<InvalidOperationException>(() => ObsidianTasksClient.BuildCode(vault, "note.md", [new string('x', 8001)]), "Tasks: command size bounded");
-        ObsidianTasksClient.ValidateCommand("日本語Vault", code);
+        using var command = ObsidianTasksClient.PrepareQueryCommand(new StickyNotes.Core.Settings { ObsidianVaultFolder = vault, ObsidianVaultId = "日本語Vault" }, vault, "note.md", [query], false);
+        ObsidianTasksClient.ValidateCommand("日本語Vault", command.Code);
         Throws<InvalidOperationException>(() => ObsidianTasksClient.ValidateCommand(new string('語', 700), code), "CLI: encoded vault name included in IPC budget");
         Throws<InvalidOperationException>(() => ObsidianTasksClient.ValidateCommand("vault", new string('x', 4000)), "CLI: oversized request rejected before launching Obsidian");
         var largeText = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(5000));

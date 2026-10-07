@@ -14,7 +14,8 @@ internal static partial class Program
     {
         const string query = "TABLE file.name WHERE contains(file.name, \"日本語');throw 1;//\")";
         var code = ObsidianTasksClient.BuildDataviewCode(root, "日本語/note.md", [query]);
-        ObsidianTasksClient.ValidateCommand("日本語Vault", code);
+        using var command = ObsidianTasksClient.PrepareQueryCommand(new Settings { ObsidianVaultFolder = root, ObsidianVaultId = "日本語Vault" }, root, "日本語/note.md", [query], true);
+        ObsidianTasksClient.ValidateCommand("日本語Vault", command.Code);
         using var compressed = new MemoryStream(Convert.FromBase64String(code.Split("Buffer.from('")[1].Split("'")[0]));
         using var inflated = new System.IO.Compression.ZLibStream(compressed, System.IO.Compression.CompressionMode.Decompress);
         using var data = JsonDocument.Parse(inflated);

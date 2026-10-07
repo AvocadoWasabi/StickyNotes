@@ -36,12 +36,7 @@ internal static partial class Program
                 new { date = ObsidianDailyNotes.DateKey(today.AddDays(-1)), path = "Diary/yesterday(火).md", exists = true } } });
 
     private static JsonDocument DecodeCliRequest(string code)
-    {
-        var payload = code.Split("Buffer.from('")[1].Split("'")[0];
-        using var compressed = new MemoryStream(Convert.FromBase64String(payload));
-        using var inflated = new System.IO.Compression.ZLibStream(compressed, System.IO.Compression.CompressionMode.Decompress);
-        return JsonDocument.Parse(inflated);
-    }
+        => JsonDocument.Parse(CliRequest(code).GetRawText());
 
     private static void ObsidianDailyTests(string root)
     {

@@ -2,7 +2,9 @@
 
 # Usage reference
 
-Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results are read-only and refresh about every 30 seconds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+Use **Browse sticky-note folder…** from **…**, the tray menu or the taskbar menu to reopen closed notes with body/YAML previews. [Query checkbox updates and folder browsing](QUERY-EDITING-AND-BROWSER.md#english).
+
+Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
 
 [Back to basic usage](../README.md)
 

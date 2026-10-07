@@ -119,6 +119,12 @@ public partial class App : Application
         if (picker.ShowDialog() == true) ShowNote(new() { Path = picker.FileName });
     }
 
+    public void BrowseNotes()
+    {
+        if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
+        new NoteBrowserWindow(NoteSources(Config), path => ShowNote(new() { Path = path })).ShowDialog();
+    }
+
     public void LinkSection()
     {
         var dialog = new NoteLinkWindow(false);
@@ -135,7 +141,7 @@ public partial class App : Application
     {
         var existing = Notes.FirstOrDefault(n => n.Placement.Daily == placement.Daily &&
             n.Placement.Heading == placement.Heading && string.Equals(n.Placement.Path, placement.Path, StringComparison.OrdinalIgnoreCase));
-        if (existing is not null) { existing.Show(); existing.Activate(); return; }
+        if (existing is not null) { existing.Show(); if (existing.WindowState == WindowState.Minimized) existing.WindowState = WindowState.Normal; existing.Activate(); return; }
         var window = new NoteWindow(placement);
         Notes.Add(window);
         window.Show();
@@ -163,6 +169,7 @@ public partial class App : Application
         {
             case "new": NewNote(); break;
             case "open": OpenNote(); break;
+            case "browse-notes": BrowseNotes(); break;
             case "link-section": LinkSection(); break;
             case "link-daily": LinkDaily(); break;
             case "show-all":

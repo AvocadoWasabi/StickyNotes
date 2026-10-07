@@ -871,10 +871,10 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>Refresh Tasks (preview)</value>
   </data>
   <data name="TasksPreview.Waiting" xml:space="preserve">
-    <value>Tasks CLI Preview — waiting / read-only</value>
+    <value>Tasks CLI — waiting</value>
   </data>
   <data name="TasksPreview.Updated" xml:space="preserve">
-    <value>Tasks {0} — fetched {1} / read-only</value>
+    <value>Tasks {0} — fetched {1}</value>
   </data>
   <data name="TasksPreview.Error" xml:space="preserve">
     <value>Tasks fetch error (displayed results are not current): </value>
@@ -983,10 +983,10 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
     <value>Refresh Tasks / Dataview</value>
   </data>
   <data name="DataviewPreview.Waiting" xml:space="preserve">
-    <value>Dataview CLI — waiting / read-only</value>
+    <value>Dataview CLI — waiting</value>
   </data>
   <data name="DataviewPreview.Updated" xml:space="preserve">
-    <value>Dataview {0} — fetched {1} / read-only</value>
+    <value>Dataview {0} — fetched {1}</value>
   </data>
   <data name="DataviewPreview.Error" xml:space="preserve">
     <value>Dataview fetch error (displayed results are not current): </value>
@@ -1018,4 +1018,13 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="DataviewPreview.QueryLimit" xml:space="preserve">
     <value>Dataview queries are limited to 20 blocks and 8,000 total characters per note.</value>
   </data>
+  <data name="NoteBrowser.Title" xml:space="preserve"><value>Browse sticky-note folder…</value></data>
+  <data name="NoteBrowser.Help" xml:space="preserve"><value>Select a Markdown note to reopen. Preview and YAML are read-only; queries are not executed.</value></data>
+  <data name="NoteBrowser.Open" xml:space="preserve"><value>Open as sticky note</value></data>
+  <data name="NoteBrowser.Search" xml:space="preserve"><value>Filter by filename or path</value></data>
+  <data name="NoteBrowser.Preview" xml:space="preserve"><value>Body preview</value></data>
+  <data name="NoteBrowser.Loading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve"><value>Refresh list</value></data>
+  <data name="NoteBrowser.Count" xml:space="preserve"><value>{0} Markdown notes</value></data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve"><value> (first 50,000 characters)</value></data>
 </root>

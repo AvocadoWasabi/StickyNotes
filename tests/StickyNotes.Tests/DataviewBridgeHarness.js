@@ -10,14 +10,14 @@ async function main() {
     const calls = [];
     const plugin = {
         manifest: { version: 'synthetic-api' }, index: { initialized: true },
-        api: { queryMarkdown: async (query, origin) => {
+        api: { query: async (query, origin) => {
             calls.push({ query, origin });
             if (query === 'broken query') return { successful: false, error: 'DQL parse error' };
-            if (query === 'oversized') return { successful: true, value: 'x'.repeat(200001) };
+            if (query === 'oversized') return { successful: true, value: {type:'list',values:['x'.repeat(200001)]} };
             if (query === 'invalid response') return { successful: true, value: {} };
             if (query === 'throws') throw new Error('Plugin error');
-            return { successful: true, value: query.startsWith('LIST') ? '- Entry' : query.startsWith('TABLE') ? '| Name |\n| --- |\n| Entry |' : '- [ ] Task' };
-        } }
+            return { successful: true, value: query.startsWith('LIST') ? {type:'list',values:['Entry']} : query.startsWith('TABLE') ? {type:'table',headers:['Name'],values:[['Entry']]} : {type:'task',values:[]} };
+        }, markdownList: values => '- ' + values.join('\n- '), markdownTable: () => '| Name |\n| --- |\n| Entry |', markdownTaskList: () => '- [ ] Task' }
     };
     const vault = {
         adapter: { getBasePath: () => 'c:\\SyntheticVault\\' },
@@ -42,9 +42,9 @@ async function main() {
     delete plugin.index.initialized;
     check((await run()).error === 'STICKY_DATAVIEW_UnsupportedApi', 'Dataview bridge: unknown index contract rejected');
     plugin.index.initialized = true;
-    const queryMarkdown = plugin.api.queryMarkdown; delete plugin.api.queryMarkdown;
-    check((await run()).error === 'STICKY_DATAVIEW_UnsupportedApi', 'Dataview bridge: missing queryMarkdown API rejected');
-    plugin.api.queryMarkdown = queryMarkdown;
+    const queryApi = plugin.api.query; delete plugin.api.query;
+    check((await run()).error === 'STICKY_DATAVIEW_UnsupportedApi', 'Dataview bridge: missing query API rejected');
+    plugin.api.query = queryApi;
     vault.adapter.getBasePath = () => 'C:/OtherVault';
     check((await run()).error.includes('does not match'), 'Dataview bridge: wrong vault rejected');
     vault.adapter.getBasePath = () => 'C:/SyntheticVault';
