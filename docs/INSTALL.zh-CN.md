@@ -4,7 +4,7 @@
 
 ## 环境要求
 
-Windows 10 / 11 64 位（x64）。无需单独安装 .NET、管理员权限或 Obsidian 插件。
+Windows 10 / 11 64 位（x64）。无需单独安装 .NET 或管理员权限。本地模式无需 Obsidian 插件。未发布的本地构建默认使用 CLI：Obsidian 必须运行并启用 CLI；日记需要核心 Daily notes 插件，Tasks 查询需要 Tasks。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。
 
 ## 安装
 
@@ -21,7 +21,7 @@ Windows 10 / 11 64 位（x64）。无需单独安装 .NET、管理员权限或 O
 
 在设置中选择显示语言，保存后重启。[语言设置详情](USAGE.zh-CN.md#language)。
 
-在通知区域图标的 `设置` 中选择便签文件夹。与 Obsidian 共用时选择仓库内目录。每日笔记文件夹单独设置。
+当前本地构建中，打开 **设置 → Obsidian CLI**，点击**从 Obsidian 获取当前仓库**，确认读取的日记设置并保存。新建及日记位置由 Obsidian 提供，无需重复设置文件夹或正则表达式。已发布的 v0.0.6 及禁用 CLI 的本地模式仍使用手动文件夹设置；已有的明确本地模式选择保持不变。
 
 - [基本操作](../README.zh-CN.md#基本操作)
 - [文件迁移与每日笔记设置](USAGE.zh-CN.md#storage)

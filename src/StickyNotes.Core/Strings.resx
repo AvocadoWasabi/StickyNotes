@@ -832,10 +832,10 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>一部の取得に失敗しました。予定・Tasks欄の案内を確認してください。</value>
   </data>
   <data name="TasksPreview.Enable" xml:space="preserve">
-    <value>Tasksクエリ連携を有効にする（試験・読み取り専用）</value>
+    <value>Obsidian CLIを使用する（既定）</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>Obsidianと対象VaultのTasksを先に起動してください。有効時は本文・見出し・デイリー検索もCLI経由となり、本文と検索結果を約30秒ごとに取得します。失敗時にローカル読込へ切り替えません。無効時は従来方式です。信頼できるクエリのみ使用してください。JavaScriptとグローバル設定はObsidian内で実行されます。</value>
+    <value>Obsidianを起動し、対象Vaultを指定してください。本文・保存・デイリー設定をCLIで扱います。TasksクエリにはTasksプラグインが必要です。失敗時にローカル読込へ切り替えません。無効にすると従来のローカル設定を表示します。クエリ内のJavaScriptはObsidian内で実行されるため、信頼できるクエリを使ってください。</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Obsidian.com の絶対パス</value>
@@ -899,5 +899,38 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   </data>
   <data name="CliNote.CommandLimit" xml:space="preserve">
     <value>CLIコマンドの長さ上限を超えました。長い本文の保存はObsidian側で行ってください。</value>
+  </data>
+  <data name="CliDaily.Detect" xml:space="preserve">
+    <value>開いているVaultをObsidianから取得</value>
+  </data>
+  <data name="CliDaily.Help" xml:space="preserve">
+    <value>保存先・日付形式・テンプレートはObsidianの設定に従います。今日と前日のパスだけを確認し、ノートは自動作成しません。新しい付箋もObsidianの新規ノート保存先へ作成します。</value>
+  </data>
+  <data name="CliDaily.Summary" xml:space="preserve">
+    <value>フォルダ: {0}
+日付形式: {1}
+テンプレート: {2}
+今日: {3}（{4}）</value>
+  </data>
+  <data name="CliDaily.Default" xml:space="preserve">
+    <value>Obsidianの既定</value>
+  </data>
+  <data name="CliDaily.None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="CliDaily.Exists" xml:space="preserve">
+    <value>作成済み</value>
+  </data>
+  <data name="CliDaily.Missing" xml:space="preserve">
+    <value>未作成・作成待ち</value>
+  </data>
+  <data name="CliDaily.DISABLED" xml:space="preserve">
+    <value>Obsidianのコアプラグイン「デイリーノート」を有効にしてください。</value>
+  </data>
+  <data name="CliDaily.UNSUPPORTED" xml:space="preserve">
+    <value>このObsidianのデイリーノートAPIには対応していません。</value>
+  </data>
+  <data name="CliDaily.PATH" xml:space="preserve">
+    <value>Obsidianのデイリーノート保存先・日付形式を確認してください。</value>
   </data>
 </root>

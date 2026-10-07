@@ -13,7 +13,7 @@ public sealed partial class NoteWindow
 
     private string ReadIdentity() => JsonSerializer.Serialize(new { Placement.Path, Placement.Daily, Placement.Heading,
         app.Config.ObsidianTasksEnabled, app.Config.ObsidianCli, app.Config.ObsidianVaultFolder, app.Config.ObsidianVaultId,
-        app.Config.DailyFolder, app.Config.DailyPattern, app.Config.DailyRetention, Date = today().Date });
+        app.Config.DailyRetention, Date = today().Date });
 
     private void CancelCliRead()
     {
@@ -34,13 +34,11 @@ public sealed partial class NoteWindow
     {
         if (!Placement.Daily) return Placement.Path;
         var identity = ReadIdentity();
-        var folder = app.Config.DailyFolder; var pattern = app.Config.DailyPattern;
-        // One listing is shared by today's and yesterday's date-resolution attempts.
-        var paths = await source.MarkdownPathsAsync(token);
+        var date = today().Date;
+        var daily = await source.GetDailyNotesAsync(date, token);
         token.ThrowIfCancellationRequested();
         if (closed || identity != ReadIdentity()) throw new OperationCanceledException(token);
-        return dailyDisplay.Resolve(folder, pattern, today(), app.Config.DailyRetention,
-            date => DailyNoteResolver.ResolveFromPaths(folder, pattern, date, paths, token));
+        return dailyDisplay.Resolve(daily.Configuration, date, app.Config.DailyRetention, daily.Resolve);
     }
 
     private async Task ReloadCliNoteAsync(bool force)

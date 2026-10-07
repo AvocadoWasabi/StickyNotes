@@ -4,7 +4,7 @@
 
 ## Requirements
 
-Windows 10 / 11 (x64). No separate .NET installation, administrator privileges, or Obsidian plugins are required.
+Windows 10 / 11 (x64). No separate .NET installation or administrator privileges are required. Local mode needs no Obsidian plugins. Unreleased local builds default to CLI mode: Obsidian must be running with CLI enabled; daily notes require its core Daily notes plugin and Tasks queries require Tasks. See [CLI setup](TASKS-CLI-PREVIEW.md#english).
 
 ## Installation
 
@@ -21,7 +21,7 @@ For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whol
 
 Choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language).
 
-Open `Settings` from the notification-area icon and choose a notes folder. For Obsidian, choose a folder in your vault. The daily-note folder is configured separately.
+For the current local build, open **Settings → Obsidian CLI**, use **Get open vault from Obsidian**, check the retrieved daily settings, then save. New-note and daily-note locations come from Obsidian; no duplicate folder or regex setup is needed. Published v0.0.6 and CLI-disabled local mode use manual note and daily-note folders. Existing explicit local-mode settings are preserved.
 
 - [Basic usage](../README.md#basic-usage)
 - [Folder migration and daily-note settings](USAGE.en.md#storage)

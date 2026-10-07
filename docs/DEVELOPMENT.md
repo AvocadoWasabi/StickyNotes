@@ -25,7 +25,7 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 `-Publish` は追加で `artifacts/StickyNotes-win-x64.zip` とSHA256チェックサムを生成・更新します。通常のビルドでは既存ZIPは更新しないため、ZIPを配布する場合は `-Publish` を使用してください。
 
-通常のローカルビルドには、既定で無効のObsidian Tasks CLI連携も含まれます。「設定 → Obsidian Tasks — CLI Preview」で有効にします。通常の設定・保存先を使用し、独立試験版の設定は引き継ぎません。設定を分離して検証する場合は`./build.ps1 -Publish -TasksPreview`で`artifacts/tasks-cli-preview`へ出力できます。[CLI連携の手順と制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
+通常ローカルビルドはObsidian CLIを既定とし、既存の明示的なローカル設定は維持します。「設定 → Obsidian CLI」で接続します。新規保存先とDaily notes設定はObsidianを参照し、`DailyBridge`がVaultを列挙せず今日・昨日を解決、保持処理は両取得方式で共用します。通常プロファイルと、`./build.ps1 -Publish -TasksPreview`による`artifacts/tasks-cli-preview`の独立プロファイルは分離したままです。[CLI手順・構成・制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
 
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 

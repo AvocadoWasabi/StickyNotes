@@ -97,7 +97,7 @@ public sealed class NoteLinkWindow : Window
     }
 
     private Task<string> ResolveDailyAsync(NoteSource access) => resolveDaily is not null ? Task.FromResult(resolveDaily()) :
-        access.ResolveDailyAsync(App.Current.Config.DailyFolder, App.Current.Config.DailyPattern, DateTime.Today);
+        access.ResolveDailyAsync(DateTime.Today);
 
     private void ClearSource()
     {

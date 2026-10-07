@@ -43,12 +43,14 @@ internal static partial class Program
         Check(response.Results[3].Error is null, "Tasks desktop: source-note placeholder resolves");
         Check(File.ReadAllBytes(path).SequenceEqual(before), "Tasks desktop: source Markdown unchanged");
         Console.WriteLine("Tasks desktop adapter version: " + response.Version);
+        await NativeDailyCliSmoke(settings);
         await CliNoteFixtureSmoke(settings);
     }
 
     private static void TasksPreviewTests(string root)
     {
-        Check(!NoteSource.UsesCli(new StickyNotes.Core.Settings()), "CLI integration: disabled by default in every build");
+        Check(NoteSource.UsesCli(new StickyNotes.Core.Settings()), "CLI integration: enabled by default in every build");
+        Check(!JsonSerializer.Deserialize<StickyNotes.Core.Settings>("{\"ObsidianTasksEnabled\":false}")!.ObsidianTasksEnabled, "CLI integration: explicit legacy local mode survives loading");
         Check(NoteSource.UsesCli(new StickyNotes.Core.Settings { ObsidianTasksEnabled = true }), "CLI integration: settings enable it in the standard build too");
         var vault = Path.Combine(root, "vault");
         Check(ObsidianTasksClient.RelativeNotePath(vault, Path.Combine(vault, "日本語", "note.md")) == "日本語/note.md", "Tasks: vault relative Unicode path");

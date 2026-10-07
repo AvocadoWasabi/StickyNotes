@@ -832,10 +832,10 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>Some data could not be retrieved. Check the Calendar / Tasks messages.</value>
   </data>
   <data name="TasksPreview.Enable" xml:space="preserve">
-    <value>Enable Tasks queries (experimental, read-only)</value>
+    <value>Use Obsidian CLI (default)</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>Start Obsidian and Tasks in the target vault first. When enabled, text, headings and daily-note discovery use CLI; text and query results refresh about every 30 seconds, without local-read fallback. Disabling restores the original method. Use trusted queries only: JavaScript and global settings run inside Obsidian.</value>
+    <value>Start Obsidian and select its vault. CLI handles note text, saving and daily settings. Tasks queries require the Tasks plugin. Failures never fall back to local reads. Disable CLI to show the legacy local settings. Use trusted queries: query JavaScript executes inside Obsidian.</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Absolute path to Obsidian.com</value>
@@ -899,5 +899,38 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
   </data>
   <data name="CliNote.CommandLimit" xml:space="preserve">
     <value>CLI command length limit exceeded. Save long note text in Obsidian.</value>
+  </data>
+  <data name="CliDaily.Detect" xml:space="preserve">
+    <value>Get open vault from Obsidian</value>
+  </data>
+  <data name="CliDaily.Help" xml:space="preserve">
+    <value>Folder, date format and template follow Obsidian. Only today's and yesterday's paths are checked; missing daily notes are not created. New sticky notes use Obsidian's new-note location.</value>
+  </data>
+  <data name="CliDaily.Summary" xml:space="preserve">
+    <value>Folder: {0}
+Date format: {1}
+Template: {2}
+Today: {3} ({4})</value>
+  </data>
+  <data name="CliDaily.Default" xml:space="preserve">
+    <value>Obsidian default</value>
+  </data>
+  <data name="CliDaily.None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="CliDaily.Exists" xml:space="preserve">
+    <value>exists</value>
+  </data>
+  <data name="CliDaily.Missing" xml:space="preserve">
+    <value>not created; waiting</value>
+  </data>
+  <data name="CliDaily.DISABLED" xml:space="preserve">
+    <value>Enable Obsidian's Daily notes core plugin.</value>
+  </data>
+  <data name="CliDaily.UNSUPPORTED" xml:space="preserve">
+    <value>This Obsidian Daily notes API is not supported.</value>
+  </data>
+  <data name="CliDaily.PATH" xml:space="preserve">
+    <value>Check the daily-note folder and date format in Obsidian.</value>
   </data>
 </root>

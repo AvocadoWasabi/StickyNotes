@@ -2,8 +2,8 @@
 
 # Markdown Sticky Notes
 
-未リリースの試験機能：[Obsidian Tasks CLI連携](docs/TASKS-CLI-PREVIEW.md#日本語)を通常のローカルビルド（`./build.ps1`）でも利用できます。初期状態では無効です。独立設定の試験版も`./build.ps1 -Publish -TasksPreview`で作成できます。
-連携を有効にすると、本文取得・デイリーノート検索をObsidian CLIへ統一し、ローカル読込にはフォールバックしません。無効時は従来のファイルアクセスを維持します。
+未リリースの試験機能：通常ローカルビルド（`./build.ps1`）は[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。既存設定で明示的に無効にした場合はローカル方式を維持します。独立設定版は`./build.ps1 -Publish -TasksPreview`で作成できます。公開済みv0.0.6は変更しません。
+CLIモードでは本文・新規ノート保存先・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
 
@@ -54,13 +54,13 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## 保存先とObsidian
 
-初期保存先は `Documents/StickyNotesData`。設定でVault内のフォルダを選ぶと、Obsidianと同じ `.md` を編集できます。CLIやプラグインは不要です。
+CLIモードの新規ノートはObsidianの新規ノート保存先を使います。ローカルモードの初期保存先は `Documents/StickyNotesData`。Vault内のフォルダを選ぶと、CLIやプラグインなしでObsidianと同じ `.md` を編集できます。
 
-保存先変更時は既存Markdownの移行も選べます。移行対象と制約は[保存先の補足](docs/USAGE.md#storage)を確認してください。
+ローカルモードの保存先変更時は既存Markdownの移行も選べます。移行対象と制約は[保存先の補足](docs/USAGE.md#storage)を確認してください。
 
 ## デイリーノートの特定箇所を常に表示・編集
 
-1. 設定でデイリーノートのフォルダと日時タグ付き正規表現を指定し、一致ファイル名を確認して保存します。
+1. CLIモードではObsidianのコアDaily notesプラグインを設定し、付箋の設定画面で取得結果を確認します。ローカルモードではフォルダと日時タグ付き正規表現を指定し、一致ファイル名を確認して保存します。
 2. `… → デイリーノートを表示…` から見出しを選び、「表示」を押します。空欄なら本文全体を表示します。
 3. 付箋で本文を編集したり、タスクをチェックしたりすると元のノートに反映されます。
 

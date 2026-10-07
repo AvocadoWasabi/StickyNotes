@@ -88,9 +88,14 @@ public partial class App : Application
             trayIcon = new System.Drawing.Icon(iconStream, System.Windows.Forms.SystemInformation.SmallIconSize);
         tray = new Forms.NotifyIcon { Icon = trayIcon, Text = BuildFlavor.TasksPreview ? "Sticky Notes — Tasks CLI Preview" : "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => { if (Notes.Count == 0) Safe(NewNote); else { Notes[0].Show(); Notes[0].Activate(); } };
+        var needsCliSetup = NoteSource.UsesCli(Config) && string.IsNullOrWhiteSpace(Config.ObsidianVaultFolder);
         foreach (var placement in Config.Windows.ToArray()) Safe(() => ShowNote(placement));
-        if (Notes.Count == 0 && command?.Id != "new") Safe(NewNote);
-        if (command is not null) Dispatcher.BeginInvoke(new Action(() => ExecuteCommand(command)));
+        if (needsCliSetup) Dispatcher.BeginInvoke(new Action(() => Safe(() => new SettingsWindow().ShowDialog())));
+        else
+        {
+            if (Notes.Count == 0 && command?.Id != "new") Safe(NewNote);
+            if (command is not null) Dispatcher.BeginInvoke(new Action(() => ExecuteCommand(command)));
+        }
         SessionEnding += (_, args) => { if (!PrepareExit()) args.Cancel = true; };
     }
 

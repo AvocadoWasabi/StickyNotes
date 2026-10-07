@@ -195,7 +195,7 @@ internal static partial class Program
         Check(!JsonSerializer.Deserialize<Settings>("{}")!.ShowInTaskbar, "older settings retain tray-only notes");
         var app = App.Current;
         var previous = app.Config;
-        app.ApplySettings(new Settings { NotesFolder = previous.NotesFolder, DailyFolder = root }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = previous.NotesFolder, DailyFolder = root }, false);
         var path = Path.Combine(root, "temporary-front.md");
         File.WriteAllText(path, "# Temporary front\nbody\n");
         var note = new NoteWindow(new NotePlacement { Path = path }, () => MessageBoxResult.Cancel, _ => { });
@@ -292,7 +292,7 @@ internal static partial class Program
         Check(!JsonSerializer.Deserialize<Settings>("{}")!.TitleButtonOverlay, "older settings keep the always-visible button row");
         var app = App.Current;
         var previous = app.Config;
-        app.ApplySettings(new Settings { NotesFolder = previous.NotesFolder, DailyFolder = root }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = previous.NotesFolder, DailyFolder = root }, false);
         var path = Path.Combine(root, "title-overlay.md");
         File.WriteAllText(path, "# Overlay\nbody\n");
         var note = new NoteWindow(new NotePlacement { Path = path }, () => MessageBoxResult.Cancel, _ => { });
@@ -472,7 +472,7 @@ internal static partial class Program
     {
         var app = App.Current;
         Check(!new Settings().AutoSaveOnFocusLoss && !JsonSerializer.Deserialize<Settings>("{}")!.AutoSaveOnFocusLoss, "focus-loss saving defaults to confirmation for new and old settings");
-        Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(new Settings { AutoSaveOnFocusLoss = true }))!.AutoSaveOnFocusLoss, "focus-loss autosave setting survives serialization");
+        Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(new Settings { ObsidianTasksEnabled = false, AutoSaveOnFocusLoss = true }))!.AutoSaveOnFocusLoss, "focus-loss autosave setting survives serialization");
         var previousAutoSave = app.Config.AutoSaveOnFocusLoss;
         app.Config.AutoSaveOnFocusLoss = false;
         var folder = Path.Combine(root, "focus-editing"); Directory.CreateDirectory(folder);
@@ -817,19 +817,19 @@ internal static partial class Program
         var target = Path.Combine(root, "independent-target");
         Directory.CreateDirectory(source);
         var note = NoteStore.Create(source);
-        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = source }, false);
-        app.ApplySettings(new Settings { NotesFolder = target, DailyFolder = source }, true);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = source, DailyFolder = source }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = target, DailyFolder = source }, true);
         Check(app.Config.NotesFolder == target && app.Config.DailyFolder == source, "migrating notes does not synchronize equal daily-folder setting");
         Check(File.Exists(Path.Combine(target, Path.GetFileName(note))), "independent settings retain requested Markdown migration");
         var saved = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!;
         Check(saved.NotesFolder == target && saved.DailyFolder == source, "separate folder values persist for restart");
 
         var chosenDaily = Path.Combine(target, "chosen-daily");
-        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = chosenDaily }, true);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = source, DailyFolder = chosenDaily }, true);
         Check(app.Config.DailyFolder == chosenDaily, "migration preserves explicitly selected daily folder inside old notes folder");
-        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = target }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = source, DailyFolder = target }, false);
         Check(app.Config.NotesFolder == source && app.Config.DailyFolder == target, "changing daily folder leaves notes folder unchanged");
-        app.ApplySettings(new Settings { NotesFolder = target, DailyFolder = target }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = target, DailyFolder = target }, false);
         Check(app.Config.NotesFolder == target && app.Config.DailyFolder == target, "changing notes folder without migration preserves chosen daily folder");
 
         var settingsWindow = new SettingsWindow(() => false);
@@ -840,7 +840,7 @@ internal static partial class Program
         inputs[1].Text = chosenDaily;
         Check(inputs[0].Text == source, "editing daily input does not change notes input");
         settingsWindow.Close();
-        app.ApplySettings(new Settings { NotesFolder = source, DailyFolder = target }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = source, DailyFolder = target }, false);
         var reopened = new SettingsWindow(() => false);
         var reopenedInputs = (SettingsPanel(reopened)).Children.OfType<TextBox>().ToArray();
         Check(reopenedInputs[0].Text == source && reopenedInputs[1].Text == target, "reopened settings display independently saved folders");
@@ -858,7 +858,7 @@ internal static partial class Program
         File.WriteAllText(yesterday, "## Tasks\n- [ ] yesterday\n");
         var app = App.Current;
         var previous = app.Config;
-        app.ApplySettings(new Settings { NotesFolder = previous.NotesFolder, DailyFolder = folder }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = previous.NotesFolder, DailyFolder = folder }, false);
         var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
         void Call(NoteWindow window, string method) => typeof(NoteWindow).GetMethod(method, flags)!.Invoke(window, null);
         void Tick(NoteWindow window) => ((Task)typeof(NoteWindow).GetMethod("Tick", flags)!.Invoke(window, null)!).GetAwaiter().GetResult();
@@ -965,7 +965,7 @@ internal static partial class Program
         Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, today) == current, "regex selects today's Japanese weekday filename and ignores prefixes");
         Check(DailyNoteResolver.Resolve(folder, DailyNoteResolver.RegexExample, today.AddDays(-1)).EndsWith("2026-10-04(日).md"), "regex rolls over using requested date");
         Check(new Settings().DailyPattern == DailyNoteResolver.RegexExample, "new settings default to tagged regex");
-        var settings = new Settings { DailyPattern = "Diary/" + DailyNoteResolver.RegexExample };
+        var settings = new Settings { ObsidianTasksEnabled = false, DailyPattern = "Diary/" + DailyNoteResolver.RegexExample };
         Check(JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(settings))!.DailyPattern == settings.DailyPattern, "custom tagged regex round trips unchanged");
         Check(!JsonSerializer.Serialize(settings).Contains("DailyPatternIsRegex"), "saved settings no longer contain a format mode flag");
         var legacy = JsonSerializer.Deserialize<Settings>("{\"DailyPattern\":\"yyyy-MM-dd(ddd)\",\"DailyPatternIsRegex\":false}")!;
@@ -1088,6 +1088,7 @@ internal static partial class Program
         Check(File.ReadAllText(Path.Combine(recoverySource, "note.md")) == "concurrent creation" && File.ReadAllText(Path.Combine(recoveryDestination, "note.md")) == "original", "rollback never overwrites concurrent source files");
 
         var app = new TestApp { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        app.Config.ObsidianTasksEnabled = false;
         typeof(App).GetProperty(nameof(App.DataDirectory))!.SetValue(null, Path.Combine(root, "app-settings"));
         Directory.CreateDirectory(App.DataDirectory);
         app.Config.NotesFolder = destination;
@@ -1109,7 +1110,7 @@ internal static partial class Program
         var outside = new NoteWindow(new NotePlacement { Path = Path.Combine(root, "bom.md"), Heading = "Tasks" });
         app.Notes.Add(outside);
         var next = Path.Combine(root, "app-migrated");
-        app.ApplySettings(new Settings { NotesFolder = next, DailyFolder = app.Config.DailyFolder }, true);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = next, DailyFolder = app.Config.DailyFolder }, true);
         Check(placement.Path == Path.Combine(next, "a.md") && placement.Left == 234 && placement.Pinned, "open window follows migration and retains placement");
         Check(((FileSnapshot)snapshotField.GetValue(window)!).Path == placement.Path && editor.Text == "unsaved edit" && (bool)dirtyField.GetValue(window)!, "migration retains unsaved editor and updates snapshot path");
         Check(app.Config.DailyFolder == Path.Combine(destination, "nested"), "daily folder inside source remains explicitly configured after migration");
@@ -1118,11 +1119,11 @@ internal static partial class Program
         var oldConfig = app.Config;
         // Block the temporary settings file to exercise application + filesystem rollback together.
         Directory.CreateDirectory(Path.Combine(App.DataDirectory, "settings.json.tmp"));
-        Throws<UnauthorizedAccessException>(() => app.ApplySettings(new Settings { NotesFolder = destination }, true), "settings persistence error aborts application migration");
+        Throws<UnauthorizedAccessException>(() => app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = destination }, true), "settings persistence error aborts application migration");
         Check(ReferenceEquals(app.Config, oldConfig) && File.Exists(placement.Path) && ((FileSnapshot)snapshotField.GetValue(window)!).Path == placement.Path, "settings failure restores config, placement, snapshot, and files");
         Directory.Delete(Path.Combine(App.DataDirectory, "settings.json.tmp"));
         Check((bool)typeof(NoteWindow).GetMethod("Save", flags)!.Invoke(window, null)! && File.ReadAllText(placement.Path).Contains("unsaved edit") && !File.Exists(Path.Combine(destination, "a.md")), "unsaved editing saves to migrated file without recreating original");
-        app.ApplySettings(new Settings { NotesFolder = destination }, false);
+        app.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = destination }, false);
         Check(app.Config.NotesFolder == destination && placement.Path == Path.Combine(next, "a.md") && File.Exists(placement.Path), "declining migration changes only new-note folder");
     }
 

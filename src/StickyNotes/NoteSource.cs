@@ -15,7 +15,8 @@ internal sealed class NoteSource
     {
         // Do not let an in-flight request adopt a newly selected vault/profile.
         this.settings = new Settings { ObsidianCli = settings.ObsidianCli,
-            ObsidianVaultFolder = settings.ObsidianVaultFolder, ObsidianVaultId = settings.ObsidianVaultId };
+            ObsidianVaultFolder = settings.ObsidianVaultFolder, ObsidianVaultId = settings.ObsidianVaultId,
+            DailyFolder = settings.DailyFolder, DailyPattern = settings.DailyPattern };
         this.cli = cli; this.execute = execute ?? ObsidianTasksClient.ExecuteAsync;
     }
 
@@ -24,6 +25,16 @@ internal sealed class NoteSource
     internal static NoteSource Create(Settings settings) => new(settings, UsesCli(settings));
 
     private string Root => Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
+    internal async Task<(string Root, string Name)> DiscoverVaultAsync(CancellationToken token = default)
+    {
+        const string code = "'STICKY_TASKS_PREVIEW:'+JSON.stringify({root:app.vault.adapter.getBasePath(),name:app.vault.getName()})";
+        using var result = ObsidianTasksClient.ParseEnvelope(await execute(settings, code, token).ConfigureAwait(false));
+        var root = result.RootElement.GetProperty("root").GetString();
+        var name = result.RootElement.GetProperty("name").GetString();
+        if (root is null || !Path.IsPathFullyQualified(root) || string.IsNullOrWhiteSpace(name))
+            throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
+        return (Path.GetFullPath(root), name);
+    }
     private async Task<JsonDocument> Request(object request, CancellationToken token)
     {
         var output = await execute(settings, ObsidianTasksClient.BuildRequestCode(request, notes: true), token).ConfigureAwait(false);
@@ -68,36 +79,31 @@ internal sealed class NoteSource
     public string CreateNote(string directory)
     {
         if (!cli) return NoteStore.Create(directory);
-        var path = Path.Combine(directory, L10n.Format("NoteStore.Text04", DateTime.Now, Guid.NewGuid().ToString("N")[..6]));
-        var relative = ObsidianTasksClient.RelativeNotePath(Root, path);
+        var name = L10n.Format("NoteStore.Text04", DateTime.Now, Guid.NewGuid().ToString("N")[..6]);
         var text = NoteStore.InitialText();
         return Task.Run(async () =>
         {
-            using var result = await Request(new { mode = "create", root = Root, path = relative, text }, CancellationToken.None).ConfigureAwait(false);
+            using var result = await Request(new { mode = "create", root = Root, name, text }, CancellationToken.None).ConfigureAwait(false);
+            var path = Path.GetFullPath(Path.Combine(Root, result.RootElement.GetProperty("path").GetString()!));
+            _ = ObsidianTasksClient.RelativeNotePath(Root, path);
             return DecodeSnapshot(path, result.RootElement).Path;
         }).GetAwaiter().GetResult();
     }
 
-    public async Task<string[]> MarkdownPathsAsync(CancellationToken token = default)
+    public async Task<ObsidianDailyNotes> GetDailyNotesAsync(DateTime today, CancellationToken token = default)
     {
-        if (!cli) throw new InvalidOperationException("CLI file listing only");
-        using var result = await Request(new { mode = "list", root = Root }, token).ConfigureAwait(false);
-        var paths = result.RootElement.GetProperty("paths").Deserialize<string[]>() ?? throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
-        return paths.Select(relative =>
-        {
-            var path = Path.GetFullPath(Path.Combine(Root, relative));
-            _ = ObsidianTasksClient.RelativeNotePath(Root, path);
-            return path;
-        }).ToArray();
+        if (!cli) throw new InvalidOperationException("Obsidian daily settings require CLI mode.");
+        var code = ObsidianTasksClient.BuildDailyCode(new { root = Root,
+            dates = new[] { ObsidianDailyNotes.DateKey(today), ObsidianDailyNotes.DateKey(today.AddDays(-1)) } });
+        using var result = ObsidianTasksClient.ParseEnvelope(await execute(settings, code, token).ConfigureAwait(false));
+        return ObsidianDailyNotes.Decode(result.RootElement, Root, today);
     }
 
-    public async Task<string> ResolveDailyAsync(string folder, string pattern, DateTime date, CancellationToken token = default)
+    public async Task<string> ResolveDailyAsync(DateTime date, CancellationToken token = default)
     {
-        if (!cli) return DailyNoteResolver.Resolve(folder, pattern, date, token);
-        _ = ObsidianTasksClient.RelativeNotePath(Root, Path.Combine(folder, "validation.md"));
-        return DailyNoteResolver.ResolveFromPaths(folder, pattern, date, await MarkdownPathsAsync(token).ConfigureAwait(false), token);
+        if (!cli) return DailyNoteResolver.Resolve(settings.DailyFolder, settings.DailyPattern, date, token);
+        return (await GetDailyNotesAsync(date, token).ConfigureAwait(false)).Resolve(date);
     }
-
     public NotePlacement PrepareLink(FileSnapshot source, string heading, bool daily, string backup)
     {
         heading = heading.Trim();

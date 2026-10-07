@@ -88,6 +88,8 @@ The app saves note positions, sizes, and always-on-top settings as notes move an
 
 ## Storage and Obsidian
 
+The current local build defaults to [CLI mode](TASKS-CLI-PREVIEW.md#english): Obsidian determines new-note locations and Daily notes settings. The manual folders and migration described below apply only to local mode with CLI disabled (and published v0.0.6). Switching CLI mode does not migrate files; explicit existing local settings are preserved.
+
 New notes are saved in `Documents/StickyNotesData` by default. Open `… → Settings` (Settings) to select a folder in your Obsidian vault, such as `Vault/Sticky Notes`.
 
 When you save a folder change, the app asks whether to migrate existing note files. Choose **Yes** to move every `.md` file in the old folder, including subfolders and closed notes; **No** changes only the folder for new notes; **Cancel** leaves settings unchanged.
@@ -126,7 +128,7 @@ Use `… → Tags, title, status, and color` (Tags, title, status, and color) to
 
 Copy [StickyNotes.base](../examples/StickyNotes.base) into your vault to list notes with `type: sticky`. To exclude sticky notes from other Bases, use a condition such as `type != "sticky"`, or exclude their folder with `!file.inFolder("Sticky Notes")`.
 
-App layout and authentication data are kept outside the vault in `%LOCALAPPDATA%/StickyNotes`. The app checks for external file changes about every two seconds. When you are editing a note, it reports a conflict instead of replacing your edits automatically.
+App layout and authentication data are kept outside the vault in `%LOCALAPPDATA%/StickyNotes`. The app checks for external file changes about every 30 seconds in CLI mode or two seconds in local mode. When you are editing a note, it reports a conflict instead of replacing your edits automatically.
 
 References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases syntax](https://obsidian.md/help/bases/syntax).
 
@@ -134,12 +136,14 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 
 ## Daily notes
 
-1. In Settings, configure your daily notes folder and tagged regular expression, check the matching filename, then select `Save and close`.
+1. In CLI mode, configure Obsidian's core Daily notes plugin, then check its folder, format, template and today's path in Sticky Notes Settings. In local mode, configure the folder and tagged regex, check the matching filename, then select `Save and close`.
 2. Select `… → Display a daily note…` (Display a daily note). The app loads today's file from Settings; no absolute-path input or daily-mode switch is needed.
 3. In the shared heading selector, choose an existing heading or type a new name without `#`. Leave it blank to display the entire body.
 4. Select `Display`. A new name creates a `## Heading` at the end of the original file after making a backup. Typing or cancelling does not write anything. Clicking a task checkbox updates the corresponding source line.
 
 ### Filename patterns
+
+This subsection applies only to local mode. CLI mode resolves today and yesterday using Obsidian's native settings, without scanning the vault or matching a regex. Configure its date format in Obsidian; the waiting/retention options below apply to both modes.
 
 Daily-note filenames use **date tags + a regular expression** only. There is no date-format mode or mode checkbox. The tags are the named groups `year`, `month`, and `day`. For names such as `2026-10-05(月).md`, choose the folder containing the notes and use:
 
@@ -164,7 +168,7 @@ The search includes subfolders but skips symbolic links and junctions; the selec
 
 ### When today is missing
 
-When the date changes, the app switches to today's file. If it has not been created, existing daily sticky notes show guidance in the body area: creating today's note in Obsidian will display it automatically, and Settings can keep yesterday's note visible. The app checks about every two seconds.
+When the date changes, the app switches to today's file. If it has not been created, existing daily sticky notes show guidance in the body area: creating today's note in Obsidian will display it automatically, and Settings can keep yesterday's note visible. The app checks about every 30 seconds in CLI mode or two seconds in local mode.
 
 Settings offers three choices under `When today's daily note is missing`:
 

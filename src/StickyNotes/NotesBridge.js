@@ -5,17 +5,18 @@ async function stickyTasksPreview(request) {
     const normalize = value => value.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase();
     if (normalize(app.vault.adapter.getBasePath()) !== normalize(request.root))
         fail('The selected Obsidian vault does not match the configured vault folder.');
-    if (request.mode === 'list') {
-        const paths = app.vault.getMarkdownFiles().map(file => file.path);
-        if (paths.length > 10000) fail('Vault file limit exceeded (10,000).');
-        return { paths };
-    }
     const fingerprint = text => 'cli:' + require('crypto').createHash('sha256').update(text, 'utf8').digest('hex');
     const snapshot = text => ({ text, hash: fingerprint(text) });
     if (request.mode === 'create') {
+        if (request.name) {
+            if (/[\\/]/.test(request.name) || !request.name.endsWith('.md')) fail('Invalid note name.');
+            const parent = app.fileManager.getNewFileParent('');
+            const prefix = parent.path.replace(/^\/+|\/+$/g, '');
+            request.path = (prefix ? prefix + '/' : '') + request.name;
+        }
         if (app.vault.getAbstractFileByPath(request.path)) fail('The new note already exists.');
         await app.vault.create(request.path, request.text);
-        return snapshot(request.text);
+        return { ...snapshot(request.text), path: request.path };
     }
     const file = app.vault.getAbstractFileByPath(request.path);
     if (!file || file.extension !== 'md') fail('The source Markdown note is not in this vault.');

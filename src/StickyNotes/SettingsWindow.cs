@@ -46,7 +46,8 @@ public sealed class SettingsWindow : Window
             var input = new TextBox { Text = value }; target.Children.Add(input); return input;
         }
         var notes = Add(L10n.Text("SettingsWindow.Text08"), app.Config.NotesFolder);
-        var tasksEnabled = new CheckBox { Content = L10n.Text("TasksPreview.Enable"), IsChecked = app.Config.ObsidianTasksEnabled };
+        var notesLabel = panel.Children[panel.Children.IndexOf(notes) - 1];
+        var tasksEnabled = new CheckBox { Name = "UseObsidianCli", Content = L10n.Text("TasksPreview.Enable"), IsChecked = app.Config.ObsidianTasksEnabled };
         var tasksPanel = new StackPanel();
         tasksPanel.Children.Add(tasksEnabled);
         tasksPanel.Children.Add(new TextBlock { Text = L10n.Text("TasksPreview.Help"), TextWrapping = TextWrapping.Wrap });
@@ -54,8 +55,12 @@ public sealed class SettingsWindow : Window
         var tasksVault = Add(L10n.Text("TasksPreview.Vault"), app.Config.ObsidianVaultFolder, tasksPanel);
         tasksPanel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(tasksVault)));
         var tasksId = Add(L10n.Text("TasksPreview.VaultId"), app.Config.ObsidianVaultId, tasksPanel);
-        panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian Tasks — CLI Preview", IsExpanded = true, Content = tasksPanel });
-        panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(notes)));
+        var detectVault = new Button { Name = "DetectObsidianVault", Content = L10n.Text("CliDaily.Detect") };
+        tasksPanel.Children.Add(detectVault);
+        panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian CLI", IsExpanded = true, Content = tasksPanel });
+        var notesBrowse = Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(notes));
+        panel.Children.Add(notesBrowse);
+        var manualDailyStart = panel.Children.Count;
         var daily = Add(L10n.Text("SettingsWindow.Text10"), app.Config.DailyFolder);
         panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text11"), () => PickFolder(daily)));
         var pattern = Add(L10n.Text("SettingsWindow.Text12"), app.Config.DailyPattern);
@@ -68,10 +73,12 @@ public sealed class SettingsWindow : Window
         }
         panel.Children.Add(new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray,
             Text = L10n.Text("SettingsWindow.Text13") + DailyNoteResolver.RegexExample });
+        var manualDailyControls = panel.Children.Cast<UIElement>().Skip(manualDailyStart).ToArray();
         var previewStatus = new TextBlock { Name = "DailyPreviewStatus", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 4) };
         var previewPanel = new StackPanel();
         previewPanel.Children.Add(previewStatus);
-        previewPanel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text14"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        var dailyHelp = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray };
+        previewPanel.Children.Add(dailyHelp);
         panel.Children.Add(previewPanel);
         panel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text15"), TextWrapping = TextWrapping.Wrap });
         var retention = new ComboBox { Name = "DailyRetention", ItemsSource = new[] {
@@ -105,17 +112,30 @@ public sealed class SettingsWindow : Window
             try
             {
                 await previewGate.WaitAsync(cancellation.Token);
-                string path;
+                string description;
                 try
                 {
                     var selected = new Settings { ObsidianTasksEnabled = tasksEnabled.IsChecked == true, ObsidianCli = tasksCli.Text.Trim(),
-                        ObsidianVaultFolder = tasksVault.Text.Trim(), ObsidianVaultId = tasksId.Text.Trim() };
-                    path = await Task.Run(() => app.NoteSources(selected).ResolveDailyAsync(folder, expression, today, cancellation.Token));
+                        ObsidianVaultFolder = tasksVault.Text.Trim(), ObsidianVaultId = tasksId.Text.Trim(), DailyFolder = folder, DailyPattern = expression };
+                    var access = app.NoteSources(selected);
+                    if (access.IsCli)
+                    {
+                        var native = await access.GetDailyNotesAsync(today, cancellation.Token);
+                        var target = native.Targets.Single(t => t.Date == ObsidianDailyNotes.DateKey(today));
+                        description = L10n.Format("CliDaily.Summary", native.Folder.Length == 0 ? L10n.Text("CliDaily.Default") : native.Folder,
+                            native.Format, native.Template.Length == 0 ? L10n.Text("CliDaily.None") : native.Template,
+                            Path.GetRelativePath(selected.ObsidianVaultFolder, target.Path), target.Exists ? L10n.Text("CliDaily.Exists") : L10n.Text("CliDaily.Missing"));
+                    }
+                    else
+                    {
+                        var path = await Task.Run(() => access.ResolveDailyAsync(today, cancellation.Token));
+                        description = L10n.Text("SettingsWindow.Text21") + Path.GetRelativePath(folder, path);
+                    }
                 }
                 finally { previewGate.Release(); }
                 if (previewClosed || version != previewVersion) return;
                 previewStatus.Foreground = Brushes.DarkGreen;
-                previewStatus.Text = L10n.Text("SettingsWindow.Text21") + System.IO.Path.GetRelativePath(folder, path);
+                previewStatus.Text = description;
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
@@ -130,8 +150,6 @@ public sealed class SettingsWindow : Window
             }
         };
         daily.TextChanged += (_, _) => SchedulePreview();
-        tasksEnabled.Checked += (_, _) => SchedulePreview();
-        tasksEnabled.Unchecked += (_, _) => SchedulePreview();
         tasksCli.TextChanged += (_, _) => SchedulePreview();
         tasksVault.TextChanged += (_, _) => SchedulePreview();
         tasksId.TextChanged += (_, _) => SchedulePreview();
@@ -151,6 +169,32 @@ public sealed class SettingsWindow : Window
             SchedulePreview();
         });
         panel.Children.Insert(panel.Children.IndexOf(previewPanel), insertTags);
+        void UpdateSourceMode()
+        {
+            var cli = tasksEnabled.IsChecked == true;
+            var visibility = cli ? Visibility.Collapsed : Visibility.Visible;
+            foreach (var control in manualDailyControls) control.Visibility = visibility;
+            notes.Visibility = notesLabel.Visibility = notesBrowse.Visibility = insertTags.Visibility = visibility;
+            dailyHelp.Text = L10n.Text(cli ? "CliDaily.Help" : "SettingsWindow.Text14");
+            SchedulePreview();
+        }
+        tasksEnabled.Checked += (_, _) => UpdateSourceMode();
+        tasksEnabled.Unchecked += (_, _) => UpdateSourceMode();
+        UpdateSourceMode();
+        detectVault.Click += async (_, _) =>
+        {
+            detectVault.IsEnabled = false;
+            var selectedCli = tasksCli.Text;
+            var previousVault = tasksVault.Text; var previousId = tasksId.Text;
+            try
+            {
+                var connection = await app.NoteSources(new Settings { ObsidianCli = selectedCli }).DiscoverVaultAsync();
+                if (previewClosed || tasksCli.Text != selectedCli || tasksVault.Text != previousVault || tasksId.Text != previousId) return;
+                tasksVault.Text = connection.Root; tasksId.Text = connection.Name;
+            }
+            catch (Exception ex) { if (!previewClosed) { previewStatus.Foreground = Brushes.DarkRed; previewStatus.Text = ex.Message; } }
+            finally { if (!previewClosed) detectVault.IsEnabled = true; }
+        };
         Loaded += (_, _) => SchedulePreview();
         Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
         googlePanel.Children.Add(new TextBlock { Text = "Google Calendar / Tasks", FontSize = 24,
@@ -244,13 +288,22 @@ public sealed class SettingsWindow : Window
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 10) };
         bool Save()
         {
-            if (!Path.IsPathFullyQualified(notes.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text60"));
-            if (daily.Text.Length > 0 && !Path.IsPathFullyQualified(daily.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text61"));
-            DailyNoteResolver.Validate(pattern.Text);
+            var cli = tasksEnabled.IsChecked == true;
+            if (cli)
+            {
+                if (!Path.IsPathFullyQualified(tasksVault.Text.Trim())) throw new InvalidOperationException(L10n.Text("TasksPreview.VaultRequired"));
+                if (!Path.IsPathFullyQualified(tasksCli.Text.Trim())) throw new InvalidOperationException(L10n.Text("TasksPreview.CliRequired"));
+            }
+            else
+            {
+                if (!Path.IsPathFullyQualified(notes.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text60"));
+                if (daily.Text.Length > 0 && !Path.IsPathFullyQualified(daily.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text61"));
+                DailyNoteResolver.Validate(pattern.Text);
+            }
             if (string.IsNullOrWhiteSpace(calendar.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text62"));
-            var folder = NoteFolderMigration.Normalize(notes.Text);
+            var folder = cli ? app.Config.NotesFolder : NoteFolderMigration.Normalize(notes.Text);
             var migrate = false;
-            if (!NoteFolderMigration.SameFolder(app.Config.NotesFolder, folder))
+            if (!cli && !NoteFolderMigration.SameFolder(app.Config.NotesFolder, folder))
             {
                 var answer = MessageBox.Show(this,
                     L10n.Format("SettingsWindow.Text63", app.Config.NotesFolder, folder),
@@ -261,7 +314,7 @@ public sealed class SettingsWindow : Window
             app.ApplySettings(new Settings
             {
                 Language = languageCodes[Math.Max(0, language.SelectedIndex)],
-                NotesFolder = folder, DailyFolder = daily.Text, DailyPattern = pattern.Text,
+                NotesFolder = folder, DailyFolder = cli ? app.Config.DailyFolder : daily.Text, DailyPattern = cli ? app.Config.DailyPattern : pattern.Text,
                 DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 TitleButtonOverlay = overlay.IsChecked == true,

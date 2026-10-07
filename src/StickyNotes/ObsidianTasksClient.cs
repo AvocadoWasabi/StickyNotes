@@ -16,6 +16,7 @@ internal static class ObsidianTasksClient
     private const string Marker = "STICKY_TASKS_PREVIEW:";
     private static readonly string Script = Compress(ReadScript("TasksBridge"));
     private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
+    private static readonly string DailyScript = Compress(ReadScript("DailyBridge"));
     private static string Compress(string value)
     {
         using var output = new MemoryStream();
@@ -51,11 +52,16 @@ internal static class ObsidianTasksClient
     }
 
     internal static string BuildRequestCode(object request, bool notes = false)
+        => BuildRequestCode(request, notes ? NotesScript : Script);
+
+    internal static string BuildDailyCode(object request) => BuildRequestCode(request, DailyScript);
+
+    private static string BuildRequestCode(object request, string script)
     {
         var payload = Compress(JsonSerializer.Serialize(request));
         // Only the shipped adapter is evaluated as code. Note text stays compressed JSON data.
         var code = "(async()=>{try{const request=JSON.parse(require('zlib').inflateSync(Buffer.from('" + payload +
-            "','base64')).toString('utf8'));const run=eval(require('zlib').inflateSync(Buffer.from('" + (notes ? NotesScript : Script) +
+            "','base64')).toString('utf8'));const run=eval(require('zlib').inflateSync(Buffer.from('" + script +
             "','base64')).toString('utf8')+';stickyTasksPreview');return '" + Marker + "'+JSON.stringify(await run(request));}" +
             "catch(e){return '" + Marker + "'+JSON.stringify({error:String(e.message||e)});}})()";
         if (code.Length > 3500) throw new InvalidOperationException(L10n.Text("CliNote.CommandLimit"));
@@ -92,6 +98,8 @@ internal static class ObsidianTasksClient
         {
             var message = error.GetString(); doc.Dispose();
             if (message == "STICKY_CONFLICT") throw new ConflictException(L10n.Text("NoteStore.Text01"));
+            if (message is "STICKY_DAILY_DISABLED" or "STICKY_DAILY_UNSUPPORTED" or "STICKY_DAILY_PATH")
+                throw new InvalidOperationException(L10n.Text("CliDaily." + message[13..]));
             throw new InvalidOperationException(message);
         }
         return doc;
@@ -107,9 +115,9 @@ internal static class ObsidianTasksClient
 
     internal static async Task<string> ExecuteAsync(Settings settings, string code, CancellationToken token)
     {
-        var root = Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
+        var root = string.IsNullOrWhiteSpace(settings.ObsidianVaultFolder) ? "" : Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
         var cli = settings.ObsidianCli.Trim();
-        var vault = string.IsNullOrWhiteSpace(settings.ObsidianVaultId) ? new DirectoryInfo(root).Name : settings.ObsidianVaultId.Trim();
+        var vault = string.IsNullOrWhiteSpace(settings.ObsidianVaultId) ? (root.Length == 0 ? "" : new DirectoryInfo(root).Name) : settings.ObsidianVaultId.Trim();
         ValidateCommand(vault, code);
         if (!Path.IsPathFullyQualified(cli) || !File.Exists(cli) ||
             !Path.GetFileName(cli).Equals("Obsidian.com", StringComparison.OrdinalIgnoreCase))
@@ -126,7 +134,7 @@ internal static class ObsidianTasksClient
             var start = new ProcessStartInfo(cli) { UseShellExecute = false, CreateNoWindow = true,
                 RedirectStandardOutput = true, RedirectStandardError = true,
                 StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8 };
-            start.ArgumentList.Add("vault=" + vault);
+            if (vault.Length > 0) start.ArgumentList.Add("vault=" + vault);
             start.ArgumentList.Add("eval");
             start.ArgumentList.Add("code=" + code);
             using var child = Process.Start(start) ?? throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));

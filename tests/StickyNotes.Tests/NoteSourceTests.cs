@@ -21,10 +21,17 @@ internal static partial class Program
         try
         {
             var original = "\uFEFF" + RenderingCorpus.Replace("\n", "\r\n");
-            var code = ObsidianTasksClient.BuildRequestCode(new { mode = "create", root = settings.ObsidianVaultFolder, path = relative, text = original }, notes: true);
+            var code = ObsidianTasksClient.BuildRequestCode(new { mode = "create", root = settings.ObsidianVaultFolder, name = relative, text = original }, notes: true);
             var creationOutput = await ObsidianTasksClient.ExecuteAsync(settings, code, timeout.Token);
             using var creation = ObsidianTasksClient.ParseEnvelope(creationOutput);
+            relative = creation.RootElement.GetProperty("path").GetString()!;
+            path = Path.GetFullPath(Path.Combine(settings.ObsidianVaultFolder, relative));
+            _ = ObsidianTasksClient.RelativeNotePath(settings.ObsidianVaultFolder, path);
             created = true;
+            using var parent = ObsidianTasksClient.ParseEnvelope(await ObsidianTasksClient.ExecuteAsync(settings,
+                "'STICKY_TASKS_PREVIEW:'+JSON.stringify({path:app.fileManager.getNewFileParent('').path})", timeout.Token));
+            var parentPath = parent.RootElement.GetProperty("path").GetString()!.Trim('/');
+            Check(relative == (parentPath.Length == 0 ? "" : parentPath + "/") + Path.GetFileName(path), "CLI desktop fixture: new note uses Obsidian's configured new-note folder");
             var access = new NoteSource(settings, true);
             var remote = await access.ReadAsync(path, timeout.Token);
             var local = NoteStore.Read(path); // Test reference only; production CLI mode never does this.
@@ -41,7 +48,6 @@ internal static partial class Program
             });
             renderThread.SetApartmentState(System.Threading.ApartmentState.STA); renderThread.Start(); renderThread.Join();
             if (renderingError is not null) throw renderingError;
-            Check((await access.MarkdownPathsAsync(timeout.Token)).Contains(path), "CLI desktop fixture: daily-note discovery can see native vault file list");
             var before = File.ReadAllBytes(path);
             Check(remote.Hash == "cli:" + Convert.ToHexString(SHA256.HashData(before)).ToLowerInvariant(), "CLI desktop fixture: snapshot hash matches exact on-disk UTF-8 bytes before save");
             var updated = remote.Text.Replace("- [ ] normal task", "- [x] normal task");
@@ -112,9 +118,7 @@ internal static partial class Program
             var failing = new NoteSource(settings, true, (_, _, _) => throw new IOException("CLI disconnected"));
             Throws<IOException>(() => failing.Read(path), "Note source: CLI failure never falls back to local reading");
         }
-        var paths = new[] { Path.Combine(folder, "2026-10-07.md"), Path.Combine(folder + "-outside", "2026-10-07.md") };
-        Check(DailyNoteResolver.ResolveFromPaths(folder, DailyNoteResolver.RegexExample, new DateTime(2026, 10, 7), paths) == paths[0], "CLI daily discovery: uses provided list and excludes sibling folders");
-        Throws<DailyNoteMissingException>(() => DailyNoteResolver.ResolveFromPaths(folder, DailyNoteResolver.RegexExample, new DateTime(2026, 10, 8), paths), "CLI daily discovery: missing date fails without a disk scan");
+        ObsidianDailyTests(root);
         CliNoteWindowTests(root);
     }
 

@@ -5,17 +5,19 @@ public enum DailyNoteRetention { ShowWaitingMessage = 0, UntilCreated = 1, Until
 // State belongs to one sticky note; a manual refresh releases its fallback for this day.
 public sealed class DailyNoteDisplay
 {
-    private (string Folder, string Pattern, DailyNoteRetention Mode)? configuration;
+    private (string Source, DailyNoteRetention Mode)? configuration;
     private DateTime? heldOn, refreshedOn;
     public DateTime TargetDate { get; private set; }
 
     public void Refresh(DateTime today) { refreshedOn = today.Date; heldOn = null; }
 
-    public string Resolve(string folder, string pattern, DateTime today, DailyNoteRetention mode, Func<DateTime, string>? resolve = null)
+    public string Resolve(string folder, string pattern, DateTime today, DailyNoteRetention mode) =>
+        Resolve(folder + "\0" + pattern, today, mode, date => DailyNoteResolver.Resolve(folder, pattern, date));
+
+    public string Resolve(string source, DateTime today, DailyNoteRetention mode, Func<DateTime, string> resolve)
     {
-        resolve ??= date => DailyNoteResolver.Resolve(folder, pattern, date);
         today = today.Date;
-        var next = (folder, pattern, mode);
+        var next = (source, mode);
         if (configuration.HasValue && configuration != next) { heldOn = null; refreshedOn = null; }
         configuration = next;
         TargetDate = today;

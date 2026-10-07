@@ -32,7 +32,7 @@ internal static partial class Program
         var before = File.ReadAllBytes(preserved);
         try
         {
-            App.Current.ApplySettings(new Settings { NotesFolder = Path.Combine(root, "localized-notes") }, false);
+            App.Current.ApplySettings(new Settings { ObsidianTasksEnabled = false, NotesFolder = Path.Combine(root, "localized-notes") }, false);
             App.Current.Resources.MergedDictionaries.Add(new ResourceDictionary {
                 Source = new Uri("/StickyNotes;component/AppStyles.xaml", UriKind.Relative) });
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ar-SA");
@@ -60,9 +60,9 @@ internal static partial class Program
                     code + ": calendar completion explains keyword-free search");
                 var settings = new SettingsWindow();
                 var general = SettingsPanel(settings);
-                var cliPanel = general.Children.OfType<Expander>().Single(p => (string)p.Header == "Obsidian Tasks — CLI Preview");
+                var cliPanel = general.Children.OfType<Expander>().Single(p => (string)p.Header == "Obsidian CLI");
                 Check(((StackPanel)cliPanel.Content).Children.OfType<CheckBox>().Single().IsChecked == false,
-                    code + ": CLI integration settings are visible and opt-in in the standard build");
+                    code + ": CLI integration settings preserve the explicitly selected local mode");
                 var selector = general.Children.OfType<StackPanel>().SelectMany(p => p.Children.OfType<ComboBox>()).Single(c => c.Name == "DisplayLanguage");
                 var layout = (Grid)settings.Content;
                 layout.Measure(new Size(1100, 700)); layout.Arrange(new Rect(0, 0, 1100, 700)); layout.UpdateLayout();
