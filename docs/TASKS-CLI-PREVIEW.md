@@ -8,8 +8,8 @@ This separate Windows x64 test build displays the installed Obsidian Tasks plugi
 
 ### Install and try
 
-1. Build with `./build.ps1 -Publish -TasksPreview`. Output: `artifact/tasks-cli-preview/app` and `artifact/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip` (with SHA-256).
-2. Extract the whole ZIP, then run `Install.cmd`. From the repository you can run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\artifact\tasks-cli-preview\app\Install.ps1 -Preview`. Alternatively, launch the folder's `StickyNotes.exe` directly.
+1. Build with `./build.ps1 -Publish -TasksPreview`. Output: `artifacts/tasks-cli-preview/app` and `artifacts/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip` (with SHA-256).
+2. Extract the whole ZIP, then run `Install.cmd`. From the repository you can run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\artifacts\tasks-cli-preview\app\Install.ps1 -Preview`. Alternatively, launch the folder's `StickyNotes.exe` directly.
 3. Start **Markdown Sticky Notes - Tasks Preview**. The installer uses `%LOCALAPPDATA%\Programs\MarkdownStickyNotes-TasksPreview`; settings, new notes and backups use `%LOCALAPPDATA%\StickyNotes-TasksPreview`. The normal app can run alongside it. Existing settings are not copied.
 4. Start Obsidian, open the target vault, enable Tasks, and enable **Settings → General → Command line interface**. Wait for Tasks to finish loading. The installed Obsidian 1.14.4 / Tasks 7.23.1 combination was used to inspect the adapter; other versions require testing.
 5. In the preview app's Settings, expand **Obsidian Tasks — CLI Preview**, enable the integration, enter the absolute path to `Obsidian.com` and the vault folder. Set vault name/ID only if the folder name does not identify the correct vault. Save.
@@ -41,8 +41,8 @@ Windows x64向けの独立した試験版です。インストール済みObsidi
 
 ### インストールと確認
 
-1. `./build.ps1 -Publish -TasksPreview`でビルドします。出力は`artifact/tasks-cli-preview/app`と`artifact/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip`（SHA-256付き）です。
-2. ZIP全体を展開し、`Install.cmd`を実行します。リポジトリからは`powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\artifact\tasks-cli-preview\app\Install.ps1 -Preview`でも導入できます。フォルダ内の`StickyNotes.exe`の直接起動も可能です。
+1. `./build.ps1 -Publish -TasksPreview`でビルドします。出力は`artifacts/tasks-cli-preview/app`と`artifacts/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip`（SHA-256付き）です。
+2. ZIP全体を展開し、`Install.cmd`を実行します。リポジトリからは`powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\artifacts\tasks-cli-preview\app\Install.ps1 -Preview`でも導入できます。フォルダ内の`StickyNotes.exe`の直接起動も可能です。
 3. **Markdown Sticky Notes - Tasks Preview**を起動します。導入先は`%LOCALAPPDATA%\Programs\MarkdownStickyNotes-TasksPreview`、設定・新規ノート・バックアップは`%LOCALAPPDATA%\StickyNotes-TasksPreview`です。通常版と同時起動でき、既存設定はコピーしません。
 4. Obsidianで対象Vaultを開き、Tasksと **設定 → 一般 → コマンドラインインターフェース** を有効にして、Tasksの読み込みを待ちます。呼び出し口の調査には導入済みのObsidian 1.14.4／Tasks 7.23.1を使用しました。他の版は動作確認が必要です。
 5. 試験版の設定の **Obsidian Tasks — CLI Preview** で連携を有効にし、`Obsidian.com`の絶対パスとVaultフォルダを指定して保存します。フォルダ名で対象Vaultを特定できない場合はVault名／IDも指定します。
@@ -74,8 +74,8 @@ Windows x64向けの独立した試験版です。インストール済みObsidi
 
 ### 安装与试用
 
-1. 运行`./build.ps1 -Publish -TasksPreview`。输出为`artifact/tasks-cli-preview/app`及`artifact/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip`（含 SHA-256）。
-2. 解压整个 ZIP 并运行`Install.cmd`。也可从仓库运行`powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\artifact\tasks-cli-preview\app\Install.ps1 -Preview`。还可直接启动文件夹中的`StickyNotes.exe`。
+1. 运行`./build.ps1 -Publish -TasksPreview`。输出为`artifacts/tasks-cli-preview/app`及`artifacts/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip`（含 SHA-256）。
+2. 解压整个 ZIP 并运行`Install.cmd`。也可从仓库运行`powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\artifacts\tasks-cli-preview\app\Install.ps1 -Preview`。还可直接启动文件夹中的`StickyNotes.exe`。
 3. 启动 **Markdown Sticky Notes - Tasks Preview**。安装目录为`%LOCALAPPDATA%\Programs\MarkdownStickyNotes-TasksPreview`；设置、新建笔记及备份保存在`%LOCALAPPDATA%\StickyNotes-TasksPreview`。可与普通版同时运行，不复制已有设置。
 4. 在 Obsidian 打开目标仓库，启用 Tasks 及 **设置 → 常规 → 命令行界面**，等待 Tasks 完成加载。调用接口的检查使用已安装的 Obsidian 1.14.4／Tasks 7.23.1；其他版本需要测试。
 5. 在试验版设置的 **Obsidian Tasks — CLI Preview** 中启用集成，填写`Obsidian.com`绝对路径及仓库文件夹后保存。若文件夹名无法识别目标仓库，请填写仓库名称／ID。

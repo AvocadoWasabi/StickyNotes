@@ -10,7 +10,7 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 - Unify note reads, heading previews, daily-note discovery, creation and saving through Obsidian CLI when the preview integration is enabled; no local-read fallback. Preserve original access when disabled. Verify identical non-query WPF rendering across both sources, including BOM/CRLF/Unicode, and preserve backups/conflict checks on CLI saves. Compress and separate CLI bridges and reject oversized requests before launch to mitigate Obsidian 1.14.4's JSON parsing error on long requests.
 
-- Add an opt-in, separately packaged Tasks CLI preview under `artifact/tasks-cli-preview`, with its own installer, profile and process identity. Display installed Obsidian Tasks' native Markdown query output alongside regular note content; read-only results, 30-second refresh and explicit errors. No extra Obsidian plugin. See the [trial guide](docs/TASKS-CLI-PREVIEW.md#english) for internal-API dependencies and limits.
+- Add an opt-in, separately packaged Tasks CLI preview under `artifacts/tasks-cli-preview`, with its own installer, profile and process identity. Display installed Obsidian Tasks' native Markdown query output alongside regular note content; read-only results, 30-second refresh and explicit errors. No extra Obsidian plugin. See the [trial guide](docs/TASKS-CLI-PREVIEW.md#english) for internal-API dependencies and limits.
 
 ## [0.0.6](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) — 2026-10-07
 

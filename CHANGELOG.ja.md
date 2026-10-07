@@ -10,7 +10,7 @@
 
 - 試験版連携の有効時は本文取得・見出しプレビュー・デイリー検索・作成・保存をObsidian CLIへ統一し、ローカル読込にフォールバックしない。無効時は従来方式を維持。BOM・CRLF・Unicodeを含め両経路の通常本文のWPF描画一致を検証し、CLI保存でもバックアップと競合検出を保持。長い要求で起きるObsidian 1.14.4のJSON解析エラーを抑えるため、CLIブリッジを圧縮・分離し、上限超過は起動前に拒否。
 
-- `artifact/tasks-cli-preview`に専用インストーラー・設定・プロセス識別を持つ任意のTasks CLI試験版を追加。本家Obsidian TasksのMarkdown検索出力を通常本文と同居表示し、結果は読み取り専用・30秒更新・エラー明示とする。追加のObsidianプラグインは不要。内部APIへの依存と制約は[試用ガイド](docs/TASKS-CLI-PREVIEW.md#日本語)を参照。
+- `artifacts/tasks-cli-preview`に専用インストーラー・設定・プロセス識別を持つ任意のTasks CLI試験版を追加。本家Obsidian TasksのMarkdown検索出力を通常本文と同居表示し、結果は読み取り専用・30秒更新・エラー明示とする。追加のObsidianプラグインは不要。内部APIへの依存と制約は[試用ガイド](docs/TASKS-CLI-PREVIEW.md#日本語)を参照。
 
 ## [0.0.6](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.6) — 2026-10-07
 

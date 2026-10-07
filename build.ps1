@@ -13,7 +13,7 @@ $flavor = "-p:TasksPreviewBuild=$($TasksPreview.IsPresent.ToString().ToLowerInva
 if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
 & $dotnet run --project tests/StickyNotes.Tests -c Release --no-build --no-restore
 if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
-$appOutput = if ($TasksPreview) { 'artifact/tasks-cli-preview/app' } else { 'artifacts/app' }
+$appOutput = if ($TasksPreview) { 'artifacts/tasks-cli-preview/app' } else { 'artifacts/app' }
 & $dotnet publish src/StickyNotes/StickyNotes.csproj -c Release -r win-x64 --self-contained true -o $appOutput --configfile NuGet.Config $flavor
 if ($LASTEXITCODE -ne 0) { throw 'Publish failed' }
 Copy-Item README.md,README.ja.md,README.zh-CN.md,CHANGELOG.md,CHANGELOG.ja.md,CHANGELOG.zh-CN.md,THIRD-PARTY-NOTICES.txt -Destination $appOutput
@@ -28,7 +28,7 @@ Copy-Item (Join-Path $runtime.FullName 'LICENSE.TXT') -Destination (Join-Path $a
 Copy-Item (Join-Path $runtime.FullName 'THIRD-PARTY-NOTICES.TXT') -Destination (Join-Path $appOutput 'licenses/dotnet-THIRD-PARTY-NOTICES.txt')
 Copy-Item (Join-Path $desktop.FullName 'LICENSE') -Destination (Join-Path $appOutput 'licenses/windowsdesktop-LICENSE.txt')
 if ($Publish) {
-    $archiveName = if ($TasksPreview) { 'artifact/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip' } else { 'artifacts/StickyNotes-win-x64.zip' }
+    $archiveName = if ($TasksPreview) { 'artifacts/tasks-cli-preview/StickyNotes-TasksPreview-win-x64.zip' } else { 'artifacts/StickyNotes-win-x64.zip' }
     $archive = Join-Path $PSScriptRoot $archiveName
     Compress-Archive -Path (Join-Path $PSScriptRoot "$appOutput/*") -DestinationPath $archive -Force
     $hash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
