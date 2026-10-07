@@ -2,6 +2,8 @@
 
 # Usage reference
 
+Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results are read-only and refresh about every 30 seconds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+
 [Back to basic usage](../README.md)
 
 Choose the section you need.
@@ -32,7 +34,7 @@ Available from v0.0.5. Control names below follow the English UI.
 | `×` | Close this note without deleting its Markdown file |
 | `… → Exit app (save layout)`, or notification-area `Exit` | Exit the app |
 
-In Settings, **Start editing body text with → Single click / Double click** selects the gesture for body text or blank space. The default remains single click, including existing settings; saving the setting applies it to open notes immediately. The editor places its caret at the corresponding Markdown source position and scrolls that line into view. Generated Tasks results lead to their source query. Checkboxes, links, and scrollbars keep their usual actions. Selecting Edit again keeps your draft; saving returns to reading mode.
+In Settings, **Start editing body text with → Single click / Double click** selects the gesture for body text or blank space. The default remains single click, including existing settings; saving the setting applies it to open notes immediately. The editor places its caret at the corresponding Markdown source position and scrolls that line into view. Generated Tasks/Dataview results lead to their source query. Checkboxes, links, and scrollbars keep their usual actions. Selecting Edit again keeps your draft; saving returns to reading mode.
 
 `Esc` saves and finishes editing without a confirmation, independently of the focus-loss setting. An unchanged note simply returns to reading; a save failure or conflict keeps the draft open. When a completion suggestion is open, the first `Esc` dismisses it and the next saves and finishes editing. IME composition and the editor context menu retain their own Escape handling.
 
@@ -198,7 +200,7 @@ If the source changes externally before Display, the app asks you to reload with
 
 - Renders headings, bold, italic, strikethrough, ordered and unordered lists, checklists, quotes, code, tables, and links.
 - Displays HTML as text rather than executing it. Images currently appear as their alternative text.
-- Obsidian `[[wikilinks]]`, embeds, Dataview, math rendering, and dedicated callout styling are not supported; their text is preserved.
+- Obsidian `[[wikilinks]]`, embeds, math rendering, and dedicated callout styling are not supported; their text is preserved. Dataview LIST/TABLE/TASK is supported through CLI in current source builds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview](DATAVIEW.md#english).
 - Reads UTF-8 with or without a BOM and preserves that choice. Body edits follow the file's existing line endings.
 - Editing properties reserializes YAML, so comments or formatting may change. Unknown property values and the note body are retained.
 - Checks the whole file's hash before writing. External changes block stale writes; you can copy or save your edits elsewhere before reloading.

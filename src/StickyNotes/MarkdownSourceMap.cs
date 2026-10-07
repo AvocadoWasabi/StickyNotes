@@ -38,7 +38,7 @@ internal static class MarkdownSourceMap
     internal static int? Position(TextPointer? position)
     {
         if (position is null) return null;
-        // Generated Tasks results have their own render mappings; the enclosing query
+        // Generated Tasks/Dataview results have their own render mappings; the enclosing query
         // anchor takes precedence so clicking a result edits the source query, not its output.
         for (var parent = position.Parent as FrameworkContentElement; parent is not null; parent = parent.Parent as FrameworkContentElement)
             if (parent is TextElement element && Mappings.TryGetValue(element, out var map) && map.Anchor) return map.Start;

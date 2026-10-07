@@ -312,7 +312,7 @@ public sealed partial class NoteWindow : Window
 
     private void ShowReadError(Exception error)
     {
-        CancelTasksPreview();
+        CancelQueryPreviews();
         calendarRefreshCancellation?.Cancel();
         snapshot = null; content = ""; activeCommand = null;
         dirty = false; SetEditing(false);
@@ -338,7 +338,7 @@ public sealed partial class NoteWindow : Window
         title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? L10n.Text("NoteWindow.Text24") : L10n.Text("NoteWindow.Text25")) : L10n.Text("NoteWindow.Text26")) + Placement.Heading : metadata.Title;
         Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
-        RenderTasksPreview();
+        RenderQueryPreviews();
         var command = MarkdownView.FindCalendarCommand(content);
         if (activeCommand != command) { calendarRefreshCancellation?.Cancel(); activeCommand = command; eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null; }
     }
@@ -499,7 +499,7 @@ public sealed partial class NoteWindow : Window
         {
             if (dirty && MessageBox.Show(this, L10n.Text("NoteWindow.Text35"), L10n.Text("NoteWindow.Text36"), MessageBoxButton.OKCancel) != MessageBoxResult.OK) return;
             dailyDisplay.Refresh(today());
-            lastTasksCheck = null;
+            ResetQueryRefresh();
             Reload();
         }
         finally { decisionInProgress = false; }
@@ -516,7 +516,7 @@ public sealed partial class NoteWindow : Window
                 await ReloadCliNoteAsync(false);
                 if (!editing && snapshot is not null && cliNoteError is null)
                 {
-                    await RefreshTasksPreview();
+                    await RefreshQueryPreviews();
                     if (lastCalendarCheck is null || Environment.TickCount64 - lastCalendarCheck.Value >= 60_000) await RefreshCalendar();
                 }
                 return;
@@ -533,7 +533,7 @@ public sealed partial class NoteWindow : Window
             // A monotonic interval keeps refreshing even when the PC clock is moved backwards.
             if (!editing && snapshot is not null &&
                 (lastCalendarCheck is null || Environment.TickCount64 - lastCalendarCheck.Value >= 60_000)) await RefreshCalendar();
-            if (!editing && snapshot is not null) await RefreshTasksPreview();
+            if (!editing && snapshot is not null) await RefreshQueryPreviews();
         }
         catch (Exception ex)
         {
@@ -632,7 +632,7 @@ public sealed partial class NoteWindow : Window
         menu.Items.Add(ContentScaleMenu());
         Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
         Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); });
-        if (app.Config.ObsidianTasksEnabled) Add(L10n.Text("TasksPreview.Refresh"), () => { lastTasksCheck = null; _ = RefreshTasksPreview(); });
+        if (app.Config.ObsidianTasksEnabled) Add(L10n.Text("QueryPreview.Refresh"), () => { ResetQueryRefresh(); _ = RefreshQueryPreviews(); });
         Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
         Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
@@ -678,7 +678,7 @@ public sealed partial class NoteWindow : Window
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
         calendarRefreshCancellation?.Cancel();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
-        CancelTasksPreview();
+        CancelQueryPreviews();
         CancelCliRead();
         if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
     }

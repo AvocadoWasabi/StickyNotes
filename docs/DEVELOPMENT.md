@@ -27,6 +27,8 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 通常ローカルビルドはObsidian CLIを既定とし、既存の明示的なローカル設定は維持します。「設定 → Obsidian CLI」で接続します。Daily notes設定はObsidianを参照します。付箋保存先の上書き指定は`FoldersBridge`で一覧・作成・移動を扱い、移行制御はCLI／ローカル共通です。`DailyBridge`がVaultを列挙せず今日・昨日を解決、保持処理は両取得方式で共用します。通常プロファイルと、`./build.ps1 -Publish -TasksPreview`による`artifacts/tasks-cli-preview`の独立プロファイルは分離したままです。[CLI手順・構成・制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
 
+`DataviewBridge.js`は元ノートのパスを渡して本家の`queryMarkdown` APIを呼びます。TasksとDataviewは描画・ライフサイクル処理を共用し、状態とエラーは独立しています。通常テストで表示と古い応答を検証し、任意のNode.js `--dataview-bridge-smoke`で生成した実際のCLIコードを合成APIデータで検証できます。[Dataviewの構成・制限・検証状況](DATAVIEW.md#日本語)を参照してください。
+
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 
 Google Tasksは同じOAuthクライアント・トークンに `tasks.readonly` スコープを追加して利用します。`GoogleTasks.cs` は固定HTTPSエンドポイントにGETのみを送り、ページ送りと予定日の「日付」としての処理（UTCからローカル時刻への変換なし）を行います。1回の取得上限は一致する100件・20リクエスト・30秒です。ページ送り、日付境界、絞り込み、キャンセル、片方だけの失敗、日付変更を実認証情報なしでテストします。

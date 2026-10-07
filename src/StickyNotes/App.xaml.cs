@@ -20,6 +20,7 @@ public partial class App : Application
     internal bool IsChangingFolder { get; private set; }
     internal Func<Settings, NoteSource> NoteSources { get; set; } = NoteSource.Create;
     internal Func<Settings, string, string[], CancellationToken, Task<TasksResponse>> TasksQueries { get; set; } = ObsidianTasksClient.QueryAsync;
+    internal Func<Settings, string, string[], CancellationToken, Task<TasksResponse>> DataviewQueries { get; set; } = ObsidianTasksClient.QueryDataviewAsync;
     private Forms.NotifyIcon? tray;
     private System.Drawing.Icon? trayIcon;
     private Mutex? mutex;

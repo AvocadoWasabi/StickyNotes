@@ -835,7 +835,7 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>Use Obsidian CLI (default)</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>Start Obsidian and select its vault. CLI handles note text, saving and daily settings. Tasks queries require the Tasks plugin. Failures never fall back to local reads. Disable CLI to show the legacy local settings. Use trusted queries: query JavaScript executes inside Obsidian.</value>
+    <value>Start Obsidian and select its vault. CLI handles note text, saving and daily settings. Tasks / Dataview queries require their respective plugins. Dataview supports LIST, TABLE and TASK. Failures never fall back to local reads. Disable CLI to show the legacy local settings. Use trusted Tasks queries: their JavaScript executes inside Obsidian.</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Absolute path to Obsidian.com</value>
@@ -979,4 +979,43 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="Editing.Activation" xml:space="preserve"><value>Start editing body text with</value></data>
   <data name="Editing.SingleClick" xml:space="preserve"><value>Single click</value></data>
   <data name="Editing.DoubleClick" xml:space="preserve"><value>Double click</value></data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>Refresh Tasks / Dataview</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — waiting / read-only</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — fetched {1} / read-only</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Dataview fetch error (displayed results are not current): </value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>No displayed results</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Dataview request timed out. Work inside Obsidian may still be running.</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>Enable the Dataview plugin in the selected vault.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>This Dataview API is unsupported. Update the plugin.</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataview is indexing. The next refresh will retry.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDAR cannot be exported to Markdown. Use LIST, TABLE or TASK.</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataview returned an invalid response.</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Dataview output exceeds 200,000 characters per block. Narrow the query with LIMIT.</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>Dataview queries are limited to 20 blocks and 8,000 total characters per note.</value>
+  </data>
 </root>

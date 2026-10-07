@@ -27,6 +27,8 @@ Both commands restore, build Release, run tests, and generate a self-contained a
 
 Standard local builds default to Obsidian CLI; existing explicit local-mode settings are preserved. Configure **Settings → Obsidian CLI**. Obsidian supplies Daily notes settings; an optional sticky-folder override uses `FoldersBridge` for folder listing, creation and moves, with a shared local/CLI migration coordinator; `DailyBridge` resolves today/yesterday without listing the vault, and both sources share retention logic. The standard profile remains separate from the optional `./build.ps1 -Publish -TasksPreview` output in `artifacts/tasks-cli-preview`. See [CLI setup, architecture and limitations](TASKS-CLI-PREVIEW.md#english).
 
+`DataviewBridge.js` uses the installed plugin's `queryMarkdown` API with the source-note path. Tasks and Dataview share rendering/lifecycle code but keep independent state and errors. Normal tests cover rendering and stale responses; the optional Node.js `--dataview-bridge-smoke` executes the actual generated CLI code with synthetic API data. See [Dataview architecture, limits and validation status](DATAVIEW.md#english).
+
 `src/StickyNotes.Core` handles storage, section editing, and Calendar integration; `src/StickyNotes` contains the WPF UI; `tests` covers data protection, rendering, and APIs.
 
 Google Tasks uses the same OAuth client/token with the additional `tasks.readonly` scope. `GoogleTasks.cs` performs GET-only, paginated reads from a fixed HTTPS endpoint, treats scheduled dates as date labels rather than UTC instants, and caps each refresh at 100 matching tasks / 20 requests / 30 seconds. Tests cover pagination, bounds, filters, cancellation, partial failures, and rollover without real credentials.

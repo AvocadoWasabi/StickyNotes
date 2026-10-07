@@ -23,16 +23,16 @@ public static class MarkdownView
     }
 
     public static FlowDocument Render(string markdown, Action<int, bool> toggle,
-        Func<FencedCodeBlock, Section>? tasksPreview = null, bool readOnly = false)
+        Func<FencedCodeBlock, Section>? queryPreview = null, bool readOnly = false)
     {
         var result = new FlowDocument { FontFamily = new FontFamily("Yu Gothic UI"), FontSize = 14,
             PagePadding = new Thickness(5), Background = Brushes.Transparent, Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(52, 48, 35)) };
-        foreach (var block in Markdown.Parse(markdown, Pipeline)) AddBlock(result.Blocks, block, markdown, toggle, tasksPreview, readOnly);
+        foreach (var block in Markdown.Parse(markdown, Pipeline)) AddBlock(result.Blocks, block, markdown, toggle, queryPreview, readOnly);
         return result;
     }
 
     private static void AddBlock(BlockCollection output, Markdig.Syntax.Block block, string source, Action<int, bool> toggle,
-        Func<FencedCodeBlock, Section>? tasksPreview = null, bool readOnly = false)
+        Func<FencedCodeBlock, Section>? queryPreview = null, bool readOnly = false)
     {
         var previous = output.LastBlock;
         switch (block)
@@ -48,17 +48,17 @@ public static class MarkdownView
                 foreach (ListItemBlock item in list)
                 {
                     var li = new ListItem();
-                    foreach (var child in item) AddBlock(li.Blocks, child, source, toggle, tasksPreview, readOnly);
+                    foreach (var child in item) AddBlock(li.Blocks, child, source, toggle, queryPreview, readOnly);
                     rendered.ListItems.Add(li);
                 }
                 output.Add(rendered); break;
             case QuoteBlock quote:
                 var section = new Section { BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(177, 161, 107)), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(12, 0, 0, 0), Margin = new Thickness(0, 6, 0, 10) };
-                foreach (var child in quote) AddBlock(section.Blocks, child, source, toggle, tasksPreview, readOnly);
+                foreach (var child in quote) AddBlock(section.Blocks, child, source, toggle, queryPreview, readOnly);
                 output.Add(section); break;
-            case FencedCodeBlock tasks when tasks.Info == "tasks" && tasksPreview is not null:
-                var results = tasksPreview(tasks);
-                MarkdownSourceMap.Track(results, tasks.Span.Start, tasks.Span.End, anchor: true);
+            case FencedCodeBlock query when query.Info is "tasks" or "dataview" && queryPreview is not null:
+                var results = queryPreview(query);
+                MarkdownSourceMap.Track(results, query.Span.Start, query.Span.End, anchor: true);
                 output.Add(results); break;
             case CodeBlock code:
                 var codeText = new Run(code.Lines.ToString());
@@ -76,7 +76,7 @@ public static class MarkdownView
                     foreach (Markdig.Extensions.Tables.TableCell cell in row)
                     {
                         var tc = new System.Windows.Documents.TableCell { Padding = new Thickness(5), BorderThickness = new Thickness(0.5), BorderBrush = Brushes.DarkGray, FontWeight = row.IsHeader ? FontWeights.Bold : FontWeights.Normal };
-                        foreach (var child in cell) AddBlock(tc.Blocks, child, source, toggle, tasksPreview, readOnly);
+                        foreach (var child in cell) AddBlock(tc.Blocks, child, source, toggle, queryPreview, readOnly);
                         tr.Cells.Add(tc);
                     }
                     group.Rows.Add(tr);
@@ -87,7 +87,7 @@ public static class MarkdownView
                 MarkdownSourceMap.Track(htmlText, source, html.Span.Start, html.Span.End);
                 output.Add(new Paragraph(htmlText) { FontFamily = new FontFamily("Consolas"), FontSize = 12 }); break;
             case ContainerBlock container:
-                foreach (var child in container) AddBlock(output, child, source, toggle, tasksPreview, readOnly); break;
+                foreach (var child in container) AddBlock(output, child, source, toggle, queryPreview, readOnly); break;
             case LeafBlock leaf:
                 var fallback = new Paragraph(); AddInlines(fallback.Inlines, leaf.Inline, source, toggle, leaf.Line, readOnly); output.Add(fallback); break;
         }

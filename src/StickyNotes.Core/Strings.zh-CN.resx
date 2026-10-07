@@ -835,7 +835,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>使用 Obsidian CLI（默认）</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>启动 Obsidian 并指定仓库。正文、保存及日记设置均通过 CLI。Tasks 查询需要 Tasks 插件。失败时不回退到本地读取。禁用 CLI 后显示原有本地设置。查询内的 JavaScript 在 Obsidian 中执行，请仅使用可信查询。</value>
+    <value>启动 Obsidian 并指定仓库。正文、保存及日记设置均通过 CLI。Tasks / Dataview 查询需要各自的插件。Dataview 支持 LIST、TABLE 和 TASK。失败时不回退到本地读取。禁用 CLI 后显示原有本地设置。Tasks 中的 JavaScript 在 Obsidian 中执行，请仅使用可信查询。</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Obsidian.com 的绝对路径</value>
@@ -979,4 +979,43 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="Editing.Activation" xml:space="preserve"><value>开始编辑正文的操作</value></data>
   <data name="Editing.SingleClick" xml:space="preserve"><value>单击</value></data>
   <data name="Editing.DoubleClick" xml:space="preserve"><value>双击</value></data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>刷新 Tasks / Dataview</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — 等待获取 / 只读</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — 获取于 {1} / 只读</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Dataview 获取失败（显示结果不是最新的）：</value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>没有显示结果</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Dataview 请求超时。Obsidian 内的处理可能仍在运行。</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>请在所选仓库中启用 Dataview 插件。</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>不支持此 Dataview API。请更新插件。</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataview 正在建立索引。将在下次刷新时重试。</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDAR 无法导出为 Markdown。请使用 LIST、TABLE 或 TASK。</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataview 返回了无效响应。</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Dataview 结果超过每块 200,000 字符的限制。请用 LIMIT 缩小查询范围。</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>每篇笔记的 Dataview 查询最多为 20 块、合计 8,000 字符。</value>
+  </data>
 </root>

@@ -27,6 +27,8 @@
 
 普通本地构建默认使用 Obsidian CLI，保留已有的明确本地模式设置。在 **设置 → Obsidian CLI** 配置连接。Daily notes设置由Obsidian管理；显式便签目录通过`FoldersBridge`列举／创建／移动，并与本地模式共用迁移控制；`DailyBridge`仅解析今天、昨天，不列举仓库，两种来源共用保留逻辑。普通配置与`./build.ps1 -Publish -TasksPreview`输出到`artifacts/tasks-cli-preview`的独立配置保持分离。参见 [CLI 设置、架构及限制](TASKS-CLI-PREVIEW.md#简体中文)。
 
+`DataviewBridge.js` 将原笔记路径传给已安装插件的 `queryMarkdown` API。Tasks 和 Dataview 共用渲染及生命周期代码，但独立维护状态和错误。常规测试覆盖显示及过期响应；可选的 Node.js `--dataview-bridge-smoke` 用合成 API 数据执行实际生成的 CLI 代码。参见 [Dataview 架构、限制和验证状态](DATAVIEW.md#简体中文)。
+
 `src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
 
 Google Tasks 复用同一 OAuth 客户端和令牌，增加 `tasks.readonly` 范围。`GoogleTasks.cs` 仅向固定 HTTPS 端点发送 GET，处理分页并将计划日期作为日期标签（不从 UTC 转换为本地时间）。每次最多获取100项匹配任务、20次请求、30秒。测试无需真实凭据，覆盖分页、日期边界、筛选、取消、部分失败及日期切换。

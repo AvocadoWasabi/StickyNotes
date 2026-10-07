@@ -2,4 +2,5 @@
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF></PropertyGroup>
   <ItemGroup><ProjectReference Include="../../src/StickyNotes/StickyNotes.csproj" /></ItemGroup>
   <ItemGroup><None Update="NoteTransportHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><None Update="DataviewBridgeHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
 </Project>

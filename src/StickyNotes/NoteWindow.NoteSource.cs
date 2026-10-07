@@ -11,7 +11,7 @@ public sealed partial class NoteWindow
     private string? cliNoteError;
     private int cliReadVersion;
 
-    internal void PauseFolderChange() { CancelCliRead(); CancelTasksPreview(); }
+    internal void PauseFolderChange() { CancelCliRead(); CancelQueryPreviews(); }
 
     private string ReadIdentity() => JsonSerializer.Serialize(new { Placement.Path, Placement.Daily, Placement.Heading,
         app.Config.ObsidianTasksEnabled, app.Config.ObsidianCli, app.Config.ObsidianVaultFolder, app.Config.ObsidianVaultId,
@@ -57,7 +57,7 @@ public sealed partial class NoteWindow
         // A previous direct-file snapshot must never feed CLI query evaluation.
         if (!editing && !dirty && (changed || snapshot?.Hash.StartsWith("cli:", StringComparison.Ordinal) == false))
         {
-            snapshot = null; content = ""; CancelTasksPreview(); preview.Document?.Blocks.Clear();
+            snapshot = null; content = ""; CancelQueryPreviews(); preview.Document?.Blocks.Clear();
         }
         status.Text = L10n.Text("CliNote.Loading");
         var source = app.NoteSources(app.Config);
@@ -79,7 +79,7 @@ public sealed partial class NoteWindow
             if (force || snapshot?.Path != fresh.Path || snapshot.Hash != fresh.Hash ||
                 (Placement.Daily && (renderedToday != today().Date || renderedRetention != app.Config.DailyRetention))) AcceptSnapshot(fresh);
             else status.Text = L10n.Text("CliNote.Loaded");
-            await RefreshTasksPreview();
+            await RefreshQueryPreviews();
         }
         catch (OperationCanceledException) when (cancel.IsCancellationRequested) { }
         catch (Exception ex)
@@ -87,7 +87,7 @@ public sealed partial class NoteWindow
             if (!Current()) return;
             cliNoteError = L10n.Text("CliNote.Error") + ex.Message;
             if (snapshot is null && !editing && !dirty) ShowReadError(ex);
-            else if (!editing && !dirty) { tasksError = cliNoteError; RenderTasksPreview(); }
+            else if (!editing && !dirty) { RenderQueryPreviews(); }
             status.Text = cliNoteError;
         }
         finally { if (ReferenceEquals(cliReadCancellation, cancel)) cliReadCancellation = null; }

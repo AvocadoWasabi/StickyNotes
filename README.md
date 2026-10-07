@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results are read-only and refresh about every 30 seconds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](docs/DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+
 Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Keep Obsidian running with CLI enabled. Existing settings that explicitly disable CLI remain local; you can also disable CLI in Settings to use local files without Obsidian.
 **Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
 

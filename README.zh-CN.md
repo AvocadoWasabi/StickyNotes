@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果只读，约每 30 秒刷新；不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](docs/DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。
+
 从 v0.0.7 起，新配置默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。请保持 Obsidian 运行并启用 CLI。保留已有设置中明确禁用 CLI 的选择；也可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。
 **从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
 

@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は読み取り専用・約30秒更新で、DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](docs/DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
+
 v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。CLIを有効にしたObsidianを起動しておいてください。既存設定の明示的な無効指定は維持します。設定でCLIを無効にすれば、Obsidianなしでローカルファイルを使えます。
 **v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
 

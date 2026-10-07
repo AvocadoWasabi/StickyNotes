@@ -18,6 +18,7 @@ internal static class ObsidianTasksClient
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
     private const string Marker = "STICKY_TASKS_PREVIEW:";
     private static readonly string Script = Compress(ReadScript("TasksBridge"));
+    private static readonly string DataviewScript = Compress(ReadScript("DataviewBridge"));
     private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
     private static readonly string DailyScript = Compress(ReadScript("DailyBridge"));
     private static readonly string FoldersScript = Compress(ReadScript("FoldersBridge"));
@@ -57,6 +58,39 @@ internal static class ObsidianTasksClient
 
     internal static string BuildRequestCode(object request, bool notes = false)
         => BuildRequestCode(request, notes ? NotesScript : Script);
+
+    internal static string BuildDataviewCode(string root, string path, string[] queries)
+    {
+        if (queries.Length > 20 || queries.Sum(q => q.Length) > 8000)
+            throw new InvalidOperationException(L10n.Text("DataviewPreview.QueryLimit"));
+        return BuildRequestCode(new { root, path, queries }, DataviewScript);
+    }
+
+    private static string? DataviewError(string? error) => error switch
+    {
+        "STICKY_DATAVIEW_MissingPlugin" => L10n.Text("DataviewPreview.MissingPlugin"),
+        "STICKY_DATAVIEW_UnsupportedApi" => L10n.Text("DataviewPreview.UnsupportedApi"),
+        "STICKY_DATAVIEW_Loading" => L10n.Text("DataviewPreview.Loading"),
+        "STICKY_DATAVIEW_UnsupportedQuery" => L10n.Text("DataviewPreview.UnsupportedQuery"),
+        "STICKY_DATAVIEW_InvalidResponse" => L10n.Text("DataviewPreview.InvalidResponse"),
+        "STICKY_DATAVIEW_OutputLimit" => L10n.Text("DataviewPreview.OutputLimit"),
+        "STICKY_DATAVIEW_QueryLimit" => L10n.Text("DataviewPreview.QueryLimit"),
+        _ => error
+    };
+
+    internal static TasksResponse ParseDataviewResponse(string output, int count)
+    {
+        var response = ParseResponse(output, count);
+        return response with { Results = response.Results.Select(r => r with { Error = DataviewError(r.Error) }).ToArray() };
+    }
+
+    internal static async Task<TasksResponse> QueryDataviewAsync(Settings settings, string note, string[] queries, CancellationToken token)
+    {
+        var relative = RelativeNotePath(settings.ObsidianVaultFolder, note);
+        var root = Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');
+        var code = BuildDataviewCode(root, relative, queries);
+        return ParseDataviewResponse(await ExecuteAsync(settings, code, token).ConfigureAwait(false), queries.Length);
+    }
 
     internal static string BuildDailyCode(object request) => BuildRequestCode(request, DailyScript);
     internal static string BuildFoldersCode(object request) => BuildRequestCode(request, FoldersScript);
@@ -156,7 +190,7 @@ internal static class ObsidianTasksClient
             if (message == "STICKY_CONFLICT") throw new ConflictException(L10n.Text("NoteStore.Text01"));
             if (message is "STICKY_DAILY_DISABLED" or "STICKY_DAILY_UNSUPPORTED" or "STICKY_DAILY_PATH")
                 throw new InvalidOperationException(L10n.Text("CliDaily." + message[13..]));
-            throw new InvalidOperationException(message);
+            throw new InvalidOperationException(DataviewError(message));
         }
         return doc;
     }

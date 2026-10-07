@@ -835,7 +835,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>Obsidian CLIを使用する（既定）</value>
   </data>
   <data name="TasksPreview.Help" xml:space="preserve">
-    <value>Obsidianを起動し、対象Vaultを指定してください。本文・保存・デイリー設定をCLIで扱います。TasksクエリにはTasksプラグインが必要です。失敗時にローカル読込へ切り替えません。無効にすると従来のローカル設定を表示します。クエリ内のJavaScriptはObsidian内で実行されるため、信頼できるクエリを使ってください。</value>
+    <value>Obsidianを起動し、対象Vaultを指定してください。本文・保存・デイリー設定をCLIで扱います。Tasks / Dataviewクエリには各プラグインが必要です。DataviewはLIST・TABLE・TASKのみ表示します。失敗時にローカル読込へ切り替えません。無効にすると従来のローカル設定を表示します。TasksのJavaScriptはObsidian内で実行されるため、信頼できるクエリを使ってください。</value>
   </data>
   <data name="TasksPreview.Cli" xml:space="preserve">
     <value>Obsidian.com の絶対パス</value>
@@ -979,4 +979,43 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="Editing.Activation" xml:space="preserve"><value>本文の編集を始める操作</value></data>
   <data name="Editing.SingleClick" xml:space="preserve"><value>シングルクリック</value></data>
   <data name="Editing.DoubleClick" xml:space="preserve"><value>ダブルクリック</value></data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>Tasks / Dataviewを更新</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — 取得待ち / 読み取り専用</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — {1}取得 / 読み取り専用</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Dataview取得エラー（表示結果は最新ではありません）: </value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>表示結果なし</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Dataview取得がタイムアウトしました。Obsidian内の処理は続いている可能性があります。</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>対象VaultでDataviewプラグインを有効にしてください。</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>このDataviewのAPIには対応していません。プラグインを更新してください。</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataviewが索引を作成中です。次回の更新で再試行します。</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDARはMarkdown出力に対応していません。LIST・TABLE・TASKを使用してください。</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataviewからの応答が不正です。</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Dataviewの結果が1ブロック200,000文字の上限を超えました。LIMITで絞り込んでください。</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>Dataviewクエリは1ノート20ブロック・合計8,000文字までです。</value>
+  </data>
 </root>

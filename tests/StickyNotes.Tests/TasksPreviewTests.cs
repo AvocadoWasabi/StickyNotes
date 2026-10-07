@@ -112,10 +112,10 @@ internal static partial class Program
             App.Current.TasksQueries = (_, _, queries, _) => Task.FromResult(new TasksResponse("7.23.1", queries.Select(_ => new TasksOutput("", null)).ToArray()));
             window = new NoteWindow(new StickyNotes.Core.NotePlacement { Path = path, Width = 520, Height = 780 });
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
-            typeof(NoteWindow).GetField("tasksResponse", flags)!.SetValue(window,
-                new TasksResponse("7.23.1", [new TasksOutput("### Project\n- [ ] 本家の検索結果 📅 2026-10-07\n", null), new TasksOutput("- [x] 完了したタスク\n", null)]));
-            typeof(NoteWindow).GetField("tasksFetched", flags)!.SetValue(window, DateTime.Now);
-            typeof(NoteWindow).GetMethod("RenderTasksPreview", flags)!.Invoke(window, [true]);
+            var state = (QueryPreviewState)typeof(NoteWindow).GetField("tasksPreview", flags)!.GetValue(window)!;
+            state.Response = new TasksResponse("7.23.1", [new TasksOutput("### Project\n- [ ] 本家の検索結果 📅 2026-10-07\n", null), new TasksOutput("- [x] 完了したタスク\n", null)]);
+            state.Fetched = DateTime.Now;
+            typeof(NoteWindow).GetMethod("RenderQueryPreviews", flags)!.Invoke(window, [true]);
             var viewer = (FlowDocumentScrollViewer)typeof(NoteWindow).GetField("preview", flags)!.GetValue(window)!;
             var text = new TextRange(viewer.Document.ContentStart, viewer.Document.ContentEnd).Text;
             Check(text.Contains("本家の検索結果") && text.Contains("完了したタスク") && text.Contains("クエリの後の文章"), "Tasks preview window: two result blocks and prose coexist: " + ((TextBlock)typeof(NoteWindow).GetField("status", flags)!.GetValue(window)!).Text);
@@ -123,12 +123,12 @@ internal static partial class Program
             var content = (FrameworkElement)window.Content;
             content.Measure(new Size(520, 780)); content.Arrange(new Rect(0, 0, 520, 780)); content.UpdateLayout();
             RenderLocalizationPreview(content, "tasks-preview-mixed");
-            typeof(NoteWindow).GetField("tasksError", flags)!.SetValue(window, "Disconnected (test)");
-            typeof(NoteWindow).GetMethod("RenderTasksPreview", flags)!.Invoke(window, [true]);
+            state.Error = "Disconnected (test)";
+            typeof(NoteWindow).GetMethod("RenderQueryPreviews", flags)!.Invoke(window, [true]);
             text = new TextRange(viewer.Document.ContentStart, viewer.Document.ContentEnd).Text;
             Check(text.Contains("Disconnected (test)") && text.Contains("本家の検索結果"), "Tasks preview window: stale result retained with failure notice");
             settings.ObsidianTasksEnabled = false;
-            typeof(NoteWindow).GetMethod("RenderTasksPreview", flags)!.Invoke(window, [false]);
+            typeof(NoteWindow).GetMethod("RenderQueryPreviews", flags)!.Invoke(window, [false]);
             text = new TextRange(viewer.Document.ContentStart, viewer.Document.ContentEnd).Text;
             Check(text.Contains("not done") && !text.Contains("本家の検索結果"), "Tasks preview window: disabling restores source and clears cache");
         }

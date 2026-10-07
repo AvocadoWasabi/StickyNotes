@@ -4,6 +4,8 @@
 
 ## English
 
+Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results are read-only and refresh about every 30 seconds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+
 Since v0.0.7, new settings use Obsidian CLI by default. The existing standard profile is retained; an explicitly saved local-only selection remains respected. Disable CLI in Settings to use local files without Obsidian. This integration depends on internal Obsidian/Tasks APIs; the tested versions and limits are below.
 
 **Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
@@ -42,6 +44,8 @@ References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer]
 
 ## 日本語
 
+現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は読み取り専用・約30秒更新で、DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
+
 v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プロファイルと以前に明示保存したローカル専用の選択を維持します。設定でCLIを無効にすればObsidianなしでローカルファイルを使えます。Obsidian／Tasksの内部APIに依存するため、確認済みバージョンと制限を以下に記載します。
 
 **v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
@@ -79,6 +83,8 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 参照：[公式CLI](https://obsidian.md/help/cli)、[Tasksのクエリ描画器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts)。
 
 ## 简体中文
+
+当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果只读，约每 30 秒刷新；不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。
 
 从 v0.0.7 起，新配置默认使用 Obsidian CLI。保留普通配置及以前明确保存的本地模式选择。可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。集成依赖 Obsidian／Tasks 内部 API，已验证版本和限制见下文。
 
