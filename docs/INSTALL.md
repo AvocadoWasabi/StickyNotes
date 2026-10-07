@@ -4,7 +4,7 @@
 
 ## 必要な環境
 
-Windows 10 / 11の64bit（x64）環境向けです。.NETの追加インストール・管理者権限は不要です。ローカルモードではObsidianプラグインも不要です。v0.0.7の新規設定はCLIが既定で、CLIを有効にしたObsidianの起動が必要です。デイリーにはコアDaily notes、TasksクエリにはTasksプラグインを使います。[CLI設定手順](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
+Windows 10 / 11の64bit（x64）環境向けです。.NETの追加インストール・管理者権限は不要です。ローカルモードではObsidianプラグインも不要です。v0.0.7以降の新規設定はCLIが既定で、CLIを有効にしたObsidianの起動が必要です。デイリーにはコアDaily notes、TasksクエリにはTasks、DataviewクエリにはDataviewプラグインを使います。タスク補完は既定で自動とし、Tasksが有効でなければ手動ONまで停止します。[CLI設定手順](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
 
 **v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
 

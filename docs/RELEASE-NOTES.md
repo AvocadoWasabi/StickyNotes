@@ -1,78 +1,75 @@
 [English](#english) | [日本語](#日本語) | [简体中文](#简体中文)
 
-# Markdown Sticky Notes v0.0.7
+# Markdown Sticky Notes v0.0.8
 
 ## 日本語
 
-Windows 10 / 11（x64）向け。Obsidian CLI連携と、付箋の保存フォルダ選択・移行を通常配布版に追加しました。
+Windows 10 / 11（x64）向け。長文保存の修正、Tasksに沿った入力補完、Dataview表示、検索結果のチェック操作、閉じた付箋の再表示を追加しました。
 
-- **ObsidianのTasksを利用**：インストール済みTasksの本家クエリ結果を通常本文と同居表示。結果は読み取り専用・約30秒更新で、クエリ原文を上書きしません。通常の本文・チェックボックスは編集できます。
-- **本文・デイリー設定の取得を統一**：CLI有効時は読込・見出し・作成・保存をObsidian経由に統一し、ローカル読込へフォールバックしません。コアDaily notesのフォルダ・日付書式・テンプレートを取得し、Vault全件検索なしで今日・昨日を解決。未作成時の待機・前日保持を選べます。
-- **付箋保存先を選択・作成**：Vaultまたはローカル基準フォルダの決定後、既存フォルダを選ぶか、新しい相対パスを入力。「決定」後に既存のアプリ作成付箋を移行するか「はい／いいえ／キャンセル」で選びます。下書き・配置を保持し、同名上書きを防止。移動・設定保存の失敗時は巻き戻します。
-- **取得経路と配布を整理**：通常本文の描画・バックアップ・競合検出を維持。長いCLI要求を制限してObsidianのJSON解析エラーを抑えます。独立試験版はソースから任意に作成でき、通常版と設定を分離します。
+- **長文保存**：編集後のCLIコマンド長エラーを修正。長い要求を現在のWindowsユーザーだけが読める一時ファイルで転送・検証・削除し、Obsidian APIによる保存・バックアップ・競合検出・Unicode・改行を保持します。ノート上限は2 MBです。
+- **編集操作**：シングル／ダブルクリックを選択し、クリック位置に対応するソースへカーソルを移動。Escで保存して終了します。候補表示中の最初のEscは候補を閉じ、保存失敗時は下書きを保持します。
+- **Tasks入力**：本文＋スペースで候補表示。先頭の「⏎」でEnterは次項目へ、↓で選択してEnterは挿入、Tabは字下げ。本家ソースをclone・解析し、既定の候補順・部分一致・日付／繰り返し候補を合わせました。補完は既定で自動とし、Tasks未導入・無効・確認失敗・ローカル方式では手動ONまで停止します。
+- **Dataviewとチェック操作**：LIST／TABLE／TASKをCLI経由で表示し、Tasksと個別に約30秒更新。照合済みのTasks／Dataview TASKチェックボックスから元ノートを更新できます。Tasksは本家の状態・繰り返し処理、Dataviewは選択したチェック記号を更新し、バックアップと競合検出を通します。
+- **付箋の再表示**：「…」・常駐・タスクバーメニューの「付箋フォルダから開く…」で検索し、通常Markdownの本文／YAMLプレビューから開き直せます。選択画面ではクエリを実行しません。
 
-### インストール・更新と初期設定
+### インストール・更新
 
-アプリを終了し、Assetsの **StickyNotes-win-x64.zip** を別フォルダへ全体展開して **Install.cmd** を実行してください。ノート・設定・バックアップは保持します。管理者権限や.NETの追加インストールは不要です。未署名です。SHA256は `.zip.sha256` で確認できます。
+アプリを終了し、Assetsの **StickyNotes-win-x64.zip** を別フォルダへ全体展開して **Install.cmd** を実行します。ノート・設定・バックアップは保持します。管理者権限や.NETの追加インストールは不要です。未署名です。SHA256は `.zip.sha256` で確認できます。
 
-新規設定はCLIが既定です。Obsidianで **設定 → 一般 → コマンドラインインターフェース** を有効にし、対象Vaultを開いて起動状態を保ちます。付箋の **設定 → Obsidian CLI → 開いているVaultをObsidianから取得** で接続後、**付箋の保存フォルダを選択…** を使います。デイリーにはコアDaily notes、クエリにはTasksが必要です。既存の明示的なCLI無効設定は保持し、設定で無効にすればObsidianなしでローカルファイルを使えます。
-
-**v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
+CLIを有効にしたObsidianで対象Vaultを開き、起動状態を保ってください。付箋の「設定 → Obsidian CLI」で接続し、TasksクエリにはTasks、DataviewクエリにはDataview、デイリーにはコアDaily notesを有効にします。CLIを無効にすればローカルファイルを使えます。v0.0.6以前のCLI選択がない旧設定もCLIが既定になるため、ローカル方式を続ける場合は「Obsidian CLIを使用する」を無効にして保存します。既存ファイルは自動移行しません。
 
 ### 制限と検証
 
-Obsidian 1.14.4／Tasks 7.23.1で確認。内部API依存のため他バージョンでは動作が変わる可能性があります。付箋側のWPF描画であり、ObsidianのHTML/CSS・操作部品の完全再現ではありません。長い編集はCLI上限によりObsidianでの保存が必要な場合があります。移行は旧保存先配下の`type: sticky`とUUIDの`id`を持つ付箋が対象。別Vault／取得方式間の移行と相対リンクの書換えは未対応。強制終了時には復旧記録の手動確認が必要です。
+補完は既定の絵文字メニュー・通常キー操作の再現です。Tasks独自設定・カスタム状態・依存関係／ID編集・自然言語日付や繰り返し規則の全解釈は未対応です。DataviewJS・インライン式・CALENDAR、ObsidianのHTML/CSSの完全再現も未対応です。元ノートを照合できないチェックボックスは無効です。
 
-自動検証759件に加え、合成データで本家CLIの読込・保存・フォルダ移行・巻き戻しを検証しました。既知の低影響事項として、一時的なハッシュ不一致／保存競合をまれに観測しています。上書きは拒否され、再試行は通過しましたが原因未特定です。下書きを控え、再読込後に再試行してください。
+957件の自動テストと配布ビルド、コード／セキュリティレビューを実施。今回追加したDataview・チェック連携と補完は模擬API・WPF・本家テスト資料で検証し、起動中のObsidianや物理IMEでの実機検証は未実施です。内部APIの変更で動作が変わる場合があります。以前のCLI実機検証で観測した一時的なハッシュ不一致／保存競合は原因未特定です。上書きは拒否されます。下書きを控え、再読込して再試行してください。
 
-[使い方](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/README.ja.md) · [CLI設定・制限](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/docs/TASKS-CLI-PREVIEW.md#日本語) · [保存先・移行・復旧](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/docs/STICKY-FOLDERS.md#日本語) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/CHANGELOG.ja.md)
+[使い方](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/README.ja.md) · [入力補完](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/TASK-EDITING.md#日本語) · [Dataview](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/DATAVIEW.md#日本語) · [チェック操作・付箋一覧](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/QUERY-EDITING-AND-BROWSER.md#日本語) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/CHANGELOG.ja.md)
 
 ## English
 
-For Windows 10 / 11 (x64). The standard release now includes Obsidian CLI integration and sticky-note folder selection and migration.
+For Windows 10 / 11 (x64). This release fixes long-note saves and adds Tasks-style completion, Dataview output, editable query checkboxes and a browser for closed notes.
 
-- **Use Obsidian Tasks:** Show native query output from the installed Tasks plugin alongside ordinary text. Results are read-only, refresh about every 30 seconds and never overwrite query source. Ordinary text and checkboxes remain editable.
-- **Unify text and daily settings:** With CLI enabled, reads, headings, creation and saves all go through Obsidian, without local-read fallback. Obtain core Daily notes folder, date format and template; resolve today/yesterday without searching the whole vault. Choose to wait or retain yesterday when today is missing.
-- **Select or create a sticky-note folder:** After choosing a vault or local base, select an existing folder or enter a new relative path. Confirm asks Yes/No/Cancel about moving existing app-created sticky notes. Preserve drafts and positions, prevent same-name overwrites and roll back move/settings-save failures.
-- **Consolidate access and packaging:** Retain ordinary-text rendering, backups and conflict checks. Bound long CLI requests to mitigate Obsidian JSON parsing errors. An optional isolated preview can still be built from source with a separate profile.
+- **Long-note saves:** Fix the CLI command-length error after editing. Oversized requests use a verified temporary transfer restricted to the current Windows user, then delete it. Saves still use Obsidian APIs with backups, conflict checks, Unicode and newline preservation. The note limit remains 2 MB.
+- **Editing controls:** Choose single or double click to edit, position the caret at the corresponding source, and press Esc to save and exit. The first Esc dismisses an open menu; failed saves preserve the draft.
+- **Tasks input:** A space after task text opens suggestions. Enter on the first “⏎” continues the checklist; ↓ then Enter inserts; Tab indents. Cloned upstream source and fixtures inform default order, substring matching, date and recurrence menus. Automatic is the default: missing/disabled/unreachable Tasks and local mode keep completion off until manual ON.
+- **Dataview and checkboxes:** Display LIST/TABLE/TASK through CLI, refreshing independently of Tasks about every 30 seconds. Verified Tasks and Dataview TASK checkboxes update their source notes. Tasks uses native status/recurrence behavior; Dataview changes the selected checkbox only. Both retain backups and conflict checks.
+- **Reopen notes:** Use “Browse sticky-note folder…” from “…” menus, tray or taskbar. Filter files and inspect ordinary Markdown body/YAML previews before reopening. The picker does not run queries.
 
-### Installation, updates and setup
+### Installation and updates
 
 Exit the app, extract all of **StickyNotes-win-x64.zip** from Assets into a separate folder, and run **Install.cmd**. Notes, settings and backups are retained. No administrator privileges or separate .NET installation are required. The app is unsigned; verify SHA256 with `.zip.sha256`.
 
-New settings default to CLI. In Obsidian, enable **Settings → General → Command line interface**, open the intended vault and keep Obsidian running. In the sticky app, use **Settings → Obsidian CLI → Get open vault from Obsidian**, then **Select sticky-note folder…**. Daily notes require the core Daily notes plugin; queries require Tasks. Existing explicit CLI opt-outs are preserved. Disable CLI in Settings to use local files without Obsidian.
-
-**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
+Enable Obsidian CLI, open the intended vault and keep Obsidian running. Connect through “Settings → Obsidian CLI” in Sticky Notes. Enable Tasks for Tasks queries, Dataview for Dataview queries, and core Daily notes for daily notes. Disable CLI to use local files. Settings from v0.0.6 or earlier without a CLI selection also default to CLI; to keep using local files, uncheck “Use Obsidian CLI” and save. Existing files are not moved automatically.
 
 ### Limits and validation
 
-Verified with Obsidian 1.14.4 / Tasks 7.23.1. Internal APIs may change in other versions. The sticky app uses WPF rendering; it does not fully reproduce Obsidian HTML/CSS or interactive controls. Large edits may exceed CLI limits and need saving in Obsidian. Migration covers notes under the previous save folder with `type: sticky` and a UUID `id`. Cross-vault/access-mode migration and relative-link rewriting are unsupported. Abrupt interruption may require manually checking the recovery record.
+Completion reproduces the default emoji menu and ordinary keys. Tasks preferences, custom statuses, dependency/ID edits and full natural-language date/recurrence parsing are unsupported. DataviewJS, inline expressions, CALENDAR and full Obsidian HTML/CSS rendering are unsupported. Checkboxes without verified source mappings stay disabled.
 
-759 automated checks, plus native CLI read/save and folder move/rollback checks on synthetic data. Known low-impact issue: occasional transient hash mismatches/save conflicts in live tests. Overwrites were refused and retries passed, but the cause remains unisolated. Preserve draft text and reload before retrying.
+957 automated tests, a distribution build, and code/security reviews completed. New Dataview, checkbox integration and completion were checked with mocked APIs, WPF and upstream fixtures; they have not been tested with live Obsidian or physical IME input. Internal API changes may affect compatibility. Earlier live CLI tests occasionally showed transient hash mismatches/save conflicts with an unisolated cause. Overwrites are refused; preserve draft text, reload and retry.
 
-[User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/README.md) · [CLI setup and limits](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/docs/TASKS-CLI-PREVIEW.md#english) · [Folders, migration and recovery](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/docs/STICKY-FOLDERS.md#english) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/CHANGELOG.md)
+[User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/README.md) · [Completion](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/TASK-EDITING.md#english) · [Dataview](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/DATAVIEW.md#english) · [Checkboxes and note browser](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/QUERY-EDITING-AND-BROWSER.md#english) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/CHANGELOG.md)
 
 ## 简体中文
 
-支持 Windows 10 / 11（x64）。普通发布版新增 Obsidian CLI 集成，以及便签保存目录选择和迁移。
+支持 Windows 10 / 11（x64）。本版修复长笔记保存，新增 Tasks 风格补全、Dataview 显示、查询复选框编辑及关闭便签的浏览器。
 
-- **使用 Obsidian Tasks**：在普通正文中显示已安装 Tasks 插件的原生查询结果。结果只读、约30秒刷新，不覆盖查询原文。普通正文和复选框仍可编辑。
-- **统一正文与日记设置**：启用 CLI 时，读取、标题、新建及保存均通过 Obsidian，不回退到本地读取。获取核心 Daily notes 的目录、日期格式及模板，无需搜索整个仓库即可解析今天、昨天。今日缺失时可等待或保留昨天。
-- **选择或创建便签目录**：确定仓库或本地基准后，选择已有目录或输入新相对路径。确认后通过是／否／取消决定是否迁移已有应用便签。保留草稿和布局，防止同名覆盖，移动或保存设置失败时回滚。
-- **统一访问和打包**：保留普通正文渲染、备份和冲突检查，限制长 CLI 请求以缓解 Obsidian JSON 解析错误。仍可从源码构建使用独立配置的可选试验版。
+- **长笔记保存**：修复编辑后 CLI 命令长度超限。长请求通过仅当前 Windows 用户可读的临时文件传递、验证并删除。仍使用 Obsidian API 保存，保留备份、冲突检查、Unicode 和换行；笔记上限仍为 2 MB。
+- **编辑操作**：设置单击／双击编辑，光标定位到对应源码，Esc 保存并退出。候选打开时第一次 Esc 关闭候选；保存失败保留草稿。
+- **Tasks 输入**：任务正文后空格显示候选，首项“⏎”上 Enter 继续列表；↓选择后 Enter 插入，Tab 缩进。克隆分析上游源码并使用其测试资料，对齐默认顺序、子串匹配、日期和重复候选。默认自动，Tasks 未安装／禁用／无法确认及本地模式下，手动 ON 前保持关闭。
+- **Dataview 和复选框**：通过 CLI 显示 LIST／TABLE／TASK，与 Tasks 独立约每30秒刷新。已验证的 Tasks 和 Dataview TASK 复选框可更新原笔记。Tasks 使用原生状态／重复逻辑；Dataview 只修改选定复选框。两者保留备份和冲突检查。
+- **重新打开便签**：在“…”、通知区域或任务栏菜单选择“从便签文件夹打开…”，筛选并预览普通 Markdown 正文／YAML 后打开。选择器不运行查询。
 
-### 安装、更新及设置
+### 安装和更新
 
 退出应用，将 Assets 的 **StickyNotes-win-x64.zip** 全部解压到另一目录，运行 **Install.cmd**。保留笔记、设置和备份。无需管理员权限或另装 .NET。应用未签名，可通过 `.zip.sha256` 验证 SHA256。
 
-新配置默认使用 CLI。在 Obsidian 启用 **设置 → 常规 → 命令行界面**，打开目标仓库并保持运行。在便签中通过 **设置 → Obsidian CLI → 从 Obsidian 获取当前仓库** 连接，再点击 **选择便签保存文件夹…**。日记需要核心 Daily notes 插件，查询需要 Tasks。保留已有明确禁用 CLI 的选择；也可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。
-
-**从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
+启用 Obsidian CLI，打开目标仓库并保持运行。在便签“设置 → Obsidian CLI”连接。Tasks 查询需启用 Tasks，Dataview 查询需 Dataview，日记需核心 Daily notes。禁用 CLI 可使用本地文件。v0.0.6 或更早且无 CLI 选项的旧配置也默认启用 CLI；继续本地模式时，取消“使用 Obsidian CLI”并保存。已有文件不会自动迁移。
 
 ### 限制与验证
 
-已验证 Obsidian 1.14.4／Tasks 7.23.1；内部 API 在其他版本中可能变化。便签使用 WPF 渲染，不完全重现 Obsidian HTML/CSS 和交互控件。长编辑可能超出 CLI 限制，需在 Obsidian 保存。迁移仅包含旧目录下具有`type: sticky`和 UUID `id`的便签。不支持跨仓库／访问模式迁移，也不改写相对链接。强制中断后可能需手动核对恢复记录。
+补全仅复现默认表情菜单和常用按键。不支持 Tasks 自定义设置／状态、依赖／ID 编辑及完整自然语言日期／重复规则解析。不支持 DataviewJS、内联表达式、CALENDAR 及完整 Obsidian HTML/CSS 渲染；缺少已验证来源的复选框保持禁用。
 
-通过759项自动检查，并以合成数据验证原生 CLI 读写、目录迁移和回滚。已知低影响问题：实机偶尔出现临时哈希不一致／保存冲突。覆盖被拒绝，重试通过，但原因仍未确定。请保留草稿，重新加载后重试。
+已完成957项自动测试、分发构建和代码／安全审查。新增 Dataview、复选框集成及补全使用模拟 API、WPF 和上游测试资料验证，尚未实测运行中的 Obsidian 及物理输入法。内部 API 变化可能影响兼容性。此前 CLI 实机测试偶尔出现临时哈希不一致／保存冲突，原因未明；覆盖会被拒绝，请保留草稿后重新加载并重试。
 
-[使用指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/README.zh-CN.md) · [CLI 设置与限制](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/docs/TASKS-CLI-PREVIEW.md#简体中文) · [目录、迁移及恢复](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/docs/STICKY-FOLDERS.md#简体中文) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.7/CHANGELOG.zh-CN.md)
+[使用指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/README.zh-CN.md) · [输入补全](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/TASK-EDITING.md#简体中文) · [Dataview](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/DATAVIEW.md#简体中文) · [复选框及便签列表](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/QUERY-EDITING-AND-BROWSER.md#简体中文) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/CHANGELOG.zh-CN.md)

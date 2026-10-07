@@ -4,7 +4,7 @@
 
 ## 环境要求
 
-Windows 10 / 11 64 位（x64）。无需单独安装 .NET 或管理员权限。本地模式无需 Obsidian 插件。v0.0.7 的新配置默认使用 CLI：Obsidian 必须运行并启用 CLI；日记需要核心 Daily notes 插件，Tasks 查询需要 Tasks。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。
+Windows 10 / 11 64 位（x64）。无需单独安装 .NET 或管理员权限。本地模式无需 Obsidian 插件。v0.0.7 起的新配置默认使用 CLI：Obsidian 必须运行并启用 CLI；日记需要核心 Daily notes 插件，Tasks 查询需要 Tasks，Dataview 查询需要 Dataview。任务补全默认自动，未启用 Tasks 时须手动 ON 才会工作。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。
 
 **从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
 

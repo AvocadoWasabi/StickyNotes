@@ -8,7 +8,7 @@
 
 通过 **…**、通知区域或任务栏菜单的 **从便签文件夹打开…**，查看正文／YAML 并重新打开已关闭便签。参见 [查询复选框与文件夹列表](QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
-当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。
+v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](DATAVIEW.md#简体中文)。
 
 [返回基本操作](../README.zh-CN.md)
 
@@ -192,7 +192,7 @@ updated: 2026-10-05T09:00:00+09:00
 
 - 显示标题、粗体、斜体、删除线、有序和无序列表、清单、引用、代码、表格和链接。
 - HTML 作为文字显示，不执行；图片目前显示替代文字。
-- 不支持 Obsidian `[[wikilinks]]`、嵌入、数学公式渲染或专用 callout 样式；原文本保留。当前源码构建通过 CLI 支持 Dataview LIST／TABLE／TASK，不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview](DATAVIEW.md#简体中文)。
+- 不支持 Obsidian `[[wikilinks]]`、嵌入、数学公式渲染或专用 callout 样式；原文本保留。v0.0.8通过 CLI 支持 Dataview LIST／TABLE／TASK，不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview](DATAVIEW.md#简体中文)。
 - 读取有或无 BOM 的 UTF-8，并保持原选择；正文编辑遵循文件现有换行。
 - 属性编辑会重新序列化 YAML，注释或格式可能变化；未知属性值及正文保留。
 - 写入前检查整个文件的哈希。外部修改会阻止过期写入；重新加载前可复制输入或另存。

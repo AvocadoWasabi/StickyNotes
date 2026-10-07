@@ -8,6 +8,8 @@
 
 ## 未发布
 
+## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
+
 - 克隆并固定上游Tasks版本，分析后对齐标准表情补全：空格后候选菜单及默认换行项、子串匹配与整词替换、日期候选选择、候选顺序及Tab缩进。使用上游批准的候选资料比较，保留无Tasks时须手动ON的限制。参见[范围及剩余差异](docs/TASK-EDITING.md#简体中文)。
 
 - 任务补全默认自动，仅在Obsidian检测到Tasks时启用；未安装、禁用、无法确认及本地模式下，手动ON前保持关闭，并保存自动／ON／OFF选择。
@@ -16,11 +18,11 @@
 
 - 支持修改 Tasks 和 Dataview TASK 结果中已验证原任务的复选框，保留备份和整篇笔记冲突检查。Tasks 使用状态循环／重复任务逻辑，Dataview 仅修改选中复选框。便签、通知区域和任务栏菜单新增 **从便签文件夹打开…**，支持文件名筛选、正文渲染／YAML 预览并重新打开已关闭便签。参见 [行为及限制](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
-- 新增通过 Obsidian CLI 显示 Dataview LIST／TABLE／TASK，传入原笔记上下文，独立刷新和报告 Tasks／Dataview 错误，并丢弃过期响应。结果只读，保留查询原文。不支持 DataviewJS、内联表达式或 CALENDAR，参见 [Dataview 指南](docs/DATAVIEW.md#简体中文)。已发布的 v0.0.7 包保持不变。
+- 新增通过 Obsidian CLI 显示 Dataview LIST／TABLE／TASK，传入原笔记上下文，独立刷新和报告 Tasks／Dataview 错误，并丢弃过期响应。已验证原任务的TASK复选框可修改，保留查询原文。不支持 DataviewJS、内联表达式或 CALENDAR，参见 [Dataview 指南](docs/DATAVIEW.md#简体中文)。
 
 - 新增单击／双击开始编辑的设置，默认仍为单击。光标定位到点击处对应的 Markdown 源文本并滚动显示。Esc 保存并结束编辑，失败时保留草稿；有补全候选时先关闭候选。保留复选框、链接、滚动条及输入法操作。
 
-- 修复编辑便签后保存时出现 CLI 命令长度超限的问题。较长的笔记请求通过仅当前用户可读的临时文件传递，执行前校验，操作结束时删除；仍由 Obsidian 保存，并保留备份及冲突检查。保留 Unicode、BOM 和换行。超过已有 2 MB 笔记限制的保存会在写入前被拒绝。已发布的 v0.0.7 包保持不变。
+- 修复编辑便签后保存时出现 CLI 命令长度超限的问题。较长的笔记请求通过仅当前用户可读的临时文件传递，执行前校验，操作结束时删除；仍由 Obsidian 保存，并保留备份及冲突检查。保留 Unicode、BOM 和换行。超过已有 2 MB 笔记限制的保存会在写入前被拒绝。
 
 ## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 

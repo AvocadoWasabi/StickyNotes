@@ -8,7 +8,7 @@
 
 **…**・常駐・タスクバーの **付箋フォルダから開く…** で、閉じた付箋の本文／YAMLを確認して開き直せます。[検索結果のチェック操作とフォルダ一覧](QUERY-EDITING-AND-BROWSER.md#日本語)。
 
-現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
+v0.0.8は、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](DATAVIEW.md#日本語)を参照してください。
 
 [基本操作に戻る](../README.ja.md)
 
@@ -204,7 +204,7 @@ updated: 2026-10-05T09:00:00+09:00
 
 - 見出し、太字、斜体、取り消し線、通常・番号付きリスト、チェックリスト、引用、コード、表、リンクを描画します。
 - HTMLは実行せず文字列として表示します。画像は現状では代替テキスト表示です。
-- Obsidianの `[[wikilink]]`、埋め込み、数式、コールアウト専用装飾は未対応で、文字として保持します。現在のソースビルドはCLI経由のDataview LIST・TABLE・TASKに対応し、DataviewJS・インライン式・CALENDARは未対応です。[Dataview](DATAVIEW.md#日本語)を参照してください。
+- Obsidianの `[[wikilink]]`、埋め込み、数式、コールアウト専用装飾は未対応で、文字として保持します。v0.0.8はCLI経由のDataview LIST・TABLE・TASKに対応し、DataviewJS・インライン式・CALENDARは未対応です。[Dataview](DATAVIEW.md#日本語)を参照してください。
 - 入力はUTF-8（BOM有無を保持）。本文編集時は既存の改行形式に合わせます。
 - プロパティ編集時はYAMLを再シリアライズするため、コメントや書式は変化する場合があります。未知のプロパティ値と本文は維持します。
 - 書込み前にファイル全体のハッシュを照合します。編集中に外部変更があれば上書きせず、編集内容をコピー・退避してから再読込できます。

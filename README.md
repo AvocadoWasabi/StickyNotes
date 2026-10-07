@@ -4,11 +4,11 @@
 
 Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
 
-Current source builds add task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
+v0.0.8 adds task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
 
 Browse closed notes from **… → Browse sticky-note folder…**, the tray menu, or the taskbar menu, with body and YAML previews. [Checkbox updates and note browser](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
-Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](docs/DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](docs/DATAVIEW.md#english).
 
 Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Keep Obsidian running with CLI enabled. Existing settings that explicitly disable CLI remain local; you can also disable CLI in Settings to use local files without Obsidian.
 **Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
@@ -38,7 +38,7 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 
 ## Download and install
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.7 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) and extract it.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.8 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) and extract it.
 2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
 3. Open `Settings` from the notification-area icon. In **Obsidian CLI**, get the open vault, then select a sticky-note folder. To use local files, disable CLI and choose a base folder first. [Connection and plugin setup](docs/TASKS-CLI-PREVIEW.md#english).
 

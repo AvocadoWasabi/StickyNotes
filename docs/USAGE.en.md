@@ -8,7 +8,7 @@ For task keyword/date completion, Enter-to-continue checklists and native Tasks 
 
 Use **Browse sticky-note folder…** from **…**, the tray menu or the taskbar menu to reopen closed notes with body/YAML previews. [Query checkbox updates and folder browsing](QUERY-EDITING-AND-BROWSER.md#english).
 
-Current source builds also display Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english). This is not included in the published v0.0.7 ZIP.
+v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english).
 
 [Back to basic usage](../README.md)
 
@@ -206,7 +206,7 @@ If the source changes externally before Display, the app asks you to reload with
 
 - Renders headings, bold, italic, strikethrough, ordered and unordered lists, checklists, quotes, code, tables, and links.
 - Displays HTML as text rather than executing it. Images currently appear as their alternative text.
-- Obsidian `[[wikilinks]]`, embeds, math rendering, and dedicated callout styling are not supported; their text is preserved. Dataview LIST/TABLE/TASK is supported through CLI in current source builds; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview](DATAVIEW.md#english).
+- Obsidian `[[wikilinks]]`, embeds, math rendering, and dedicated callout styling are not supported; their text is preserved. Dataview LIST/TABLE/TASK is supported through CLI in v0.0.8; DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview](DATAVIEW.md#english).
 - Reads UTF-8 with or without a BOM and preserves that choice. Body edits follow the file's existing line endings.
 - Editing properties reserializes YAML, so comments or formatting may change. Unknown property values and the note body are retained.
 - Checks the whole file's hash before writing. External changes block stale writes; you can copy or save your edits elsewhere before reloading.

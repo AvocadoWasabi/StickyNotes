@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
+
 - Analyze a pinned upstream Tasks clone and align the standard emoji completion workflow: show a default menu after a space with a selected newline entry, use substring matching and whole-word replacement, select contextual dates, preserve field ordering, and indent with Tab. Compare the upstream approved default-menu fixture; retain plugin-gated activation. See [scope and remaining differences](docs/TASK-EDITING.md#english).
 
 - Default task completion to Automatic: enable only when Tasks is detected in Obsidian. Missing/disabled/unreachable Tasks and local mode stay off until manual ON; add persistent Automatic / ON / OFF settings.
@@ -16,11 +18,11 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 - Enable source-verified checkboxes in Tasks and Dataview TASK results, with backups and whole-note conflict checks. Preserve Tasks status/recurrence behavior; Dataview updates the selected checkbox only. Add **Browse sticky-note folder…** to note, tray and taskbar menus, with filename filtering, rendered body/YAML previews, and reopening of closed notes. See [behavior and limits](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
-- Add read-only Dataview LIST/TABLE/TASK previews through Obsidian CLI, with source-note context, independent Tasks/Dataview refresh and errors, and stale-response protection. Preserve query source. DataviewJS, inline expressions and CALENDAR are unsupported; see the [Dataview guide](docs/DATAVIEW.md#english). Published v0.0.7 packages are unchanged.
+- Add Dataview LIST/TABLE/TASK previews through Obsidian CLI, with source-note context, independent Tasks/Dataview refresh and errors, and stale-response protection. Allow verified TASK checkboxes to update their source notes; preserve query source. DataviewJS, inline expressions and CALENDAR are unsupported; see the [Dataview guide](docs/DATAVIEW.md#english).
 
 - Add a Settings choice between single-click and double-click editing, retaining single click by default. Place the caret at the clicked Markdown source position and scroll it into view. Esc saves and finishes editing, preserving drafts on failure; dismiss completion suggestions before saving. Keep checkbox, link, scrollbar and IME behavior.
 
-- Fix the CLI command-length error when saving edited sticky notes. Oversized note requests use a current-user-only temporary transfer, verified before execution and deleted when the operation ends; note writes still use Obsidian with backups and conflict checks. Preserve Unicode, BOM and newlines. Reject saves exceeding the existing 2 MB note limit before writing. Published v0.0.7 packages are unchanged.
+- Fix the CLI command-length error when saving edited sticky notes. Oversized note requests use a current-user-only temporary transfer, verified before execution and deleted when the operation ends; note writes still use Obsidian with backups and conflict checks. Preserve Unicode, BOM and newlines. Reject saves exceeding the existing 2 MB note limit before writing.
 
 ## [0.0.7](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) — 2026-10-07
 

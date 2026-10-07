@@ -4,7 +4,7 @@
 
 ## Requirements
 
-Windows 10 / 11 (x64). No separate .NET installation or administrator privileges are required. Local mode needs no Obsidian plugins. New settings in v0.0.7 default to CLI mode: Obsidian must be running with CLI enabled; daily notes require its core Daily notes plugin and Tasks queries require Tasks. See [CLI setup](TASKS-CLI-PREVIEW.md#english).
+Windows 10 / 11 (x64). No separate .NET installation or administrator privileges are required. Local mode needs no Obsidian plugins. New settings since v0.0.7 default to CLI mode: Obsidian must be running with CLI enabled; daily notes require its core Daily notes plugin, Tasks queries require Tasks, and Dataview queries require Dataview. Task completion defaults to Automatic and stays off without enabled Tasks until you select ON manually. See [CLI setup](TASKS-CLI-PREVIEW.md#english).
 
 **Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
 

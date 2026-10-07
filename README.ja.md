@@ -4,11 +4,11 @@
 
 タスク本文の後のスペースで本家に沿った候補一覧を表示します。先頭の **⏎** でEnterは次項目へ、↓で選んでEnterは候補挿入、Tabは字下げです。[解析元と対応範囲](docs/TASK-EDITING.md#日本語)を参照してください。
 
-現在のソースビルドは、タスクのキーワード・日付補完とEnterでのチェックリスト継続に対応し、通常のCLIチェック操作にもTasks本家の完了処理を利用します。[タスク入力と制約](docs/TASK-EDITING.md#日本語)を参照してください。
+v0.0.8は、タスクのキーワード・日付補完とEnterでのチェックリスト継続に対応し、通常のCLIチェック操作にもTasks本家の完了処理を利用します。[タスク入力と制約](docs/TASK-EDITING.md#日本語)を参照してください。
 
 閉じた付箋は **… → 付箋フォルダから開く…**・常駐メニュー・タスクバーメニューから、本文／YAMLを確認して開き直せます。[チェック操作と付箋一覧](docs/QUERY-EDITING-AND-BROWSER.md#日本語)。
 
-現在のソースビルドは、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](docs/DATAVIEW.md#日本語)を参照してください。公開済みv0.0.7 ZIPには含まれません。
+v0.0.8は、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](docs/DATAVIEW.md#日本語)を参照してください。
 
 v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。CLIを有効にしたObsidianを起動しておいてください。既存設定の明示的な無効指定は維持します。設定でCLIを無効にすれば、Obsidianなしでローカルファイルを使えます。
 **v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
@@ -38,7 +38,7 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## ダウンロードとインストール
 
-1. [v0.0.7の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+1. [v0.0.8の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
 3. 通知領域アイコンの「設定 → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
 

@@ -4,7 +4,7 @@
 
 ## English
 
-Current source builds display fenced `dataview` **LIST, TABLE and TASK** queries through Obsidian CLI. This addition is not in the published v0.0.7 ZIP. Build with `./build.ps1 -Publish` and install with `artifacts/app/Install.cmd`.
+v0.0.8 displays fenced `dataview` **LIST, TABLE and TASK** queries through Obsidian CLI. Download the [v0.0.8 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8), extract it and run `Install.cmd`. For a source build, use `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`.
 
 Start Obsidian with CLI enabled, enable **Dataview** in the selected vault, and configure **Settings → Obsidian CLI** in Sticky Notes. Tasks is required only for `tasks` blocks. See [CLI setup](TASKS-CLI-PREVIEW.md#english). For example:
 
@@ -27,7 +27,7 @@ Normal tests use synthetic note sources and verify mixed rendering, mapped check
 
 ## 日本語
 
-現在のソースビルドは、`dataview`コードブロックの **LIST・TABLE・TASK** をObsidian CLI経由で表示します。公開済みv0.0.7 ZIPには含まれません。`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`で導入してください。
+v0.0.8は、`dataview`コードブロックの **LIST・TABLE・TASK** をObsidian CLI経由で表示します。[v0.0.8のZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8)を展開して`Install.cmd`で導入してください。ソースからの場合は`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`を実行します。
 
 CLIを有効にしたObsidianを起動し、対象Vaultで **Dataview** を有効にして、付箋の **設定 → Obsidian CLI** で接続します。Tasksは`tasks`ブロックだけに必要です。[CLI設定](TASKS-CLI-PREVIEW.md#日本語)も参照してください。例：
 
@@ -50,7 +50,7 @@ LIMIT 10
 
 ## 简体中文
 
-当前源码构建通过 Obsidian CLI 显示 `dataview` 代码块中的 **LIST、TABLE 和 TASK** 查询。已发布的 v0.0.7 ZIP 不包含此功能。请运行 `./build.ps1 -Publish` 构建，再用 `artifacts/app/Install.cmd` 安装。
+v0.0.8 通过 Obsidian CLI 显示 `dataview` 代码块中的 **LIST、TABLE 和 TASK** 查询。下载并解压 [v0.0.8 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8)，运行 `Install.cmd` 安装。从源码构建时，运行 `./build.ps1 -Publish`，再用 `artifacts/app/Install.cmd` 安装。
 
 启动已启用 CLI 的 Obsidian，在目标仓库启用 **Dataview**，并在便签的 **设置 → Obsidian CLI** 中配置连接。只有 `tasks` 块需要 Tasks 插件。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。例如：
 

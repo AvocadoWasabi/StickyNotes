@@ -20,7 +20,7 @@ Ordinary CLI checkboxes still use Tasks' public toggle API (7.2+) for completion
 
 Analysis: cloned upstream revision [`a01526153c71ce0faf72ad5dd42675f722502c50`](https://github.com/obsidian-tasks-group/obsidian-tasks/tree/a01526153c71ce0faf72ad5dd42675f722502c50) (manifest 8.4.0); inspected [`Suggestor.ts`](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/a01526153c71ce0faf72ad5dd42675f722502c50/src/Suggestor/Suggestor.ts), [`EditorSuggestorPopup.ts`](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/a01526153c71ce0faf72ad5dd42675f722502c50/src/Suggestor/EditorSuggestorPopup.ts), date helpers and approved tests. The default-menu fixture is compared directly after excluding the two dependency fields (the upstream external-editor limitation). MIT attribution is in `THIRD-PARTY-NOTICES.txt`; the clone stays outside distribution.
 
-All rules, local dates, popup/IME/keys, activation policy and checkbox adapter remain under `src/StickyNotes/TaskEditing/`. Automated checks cover source fixtures, space/Enter/Tab/mouse, replacement spans, IME, undo, activation and save conflicts. Live Obsidian and physical IME testing remain unverified. `./build.ps1 -Publish` bundles this guide and notices; install via `artifacts/app/Install.cmd`. Published v0.0.7 assets are unchanged.
+All rules, local dates, popup/IME/keys, activation policy and checkbox adapter remain under `src/StickyNotes/TaskEditing/`. Automated checks cover source fixtures, space/Enter/Tab/mouse, replacement spans, IME, undo, activation and save conflicts. Live Obsidian and physical IME testing remain unverified. `./build.ps1 -Publish` bundles this guide and notices; install via `artifacts/app/Install.cmd`.
 
 ## 日本語
 
@@ -40,7 +40,7 @@ All rules, local dates, popup/IME/keys, activation policy and checkbox adapter r
 
 解析元：本家をcloneした[`a01526153c71ce0faf72ad5dd42675f722502c50`](https://github.com/obsidian-tasks-group/obsidian-tasks/tree/a01526153c71ce0faf72ad5dd42675f722502c50)（manifest 8.4.0）。[`Suggestor.ts`](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/a01526153c71ce0faf72ad5dd42675f722502c50/src/Suggestor/Suggestor.ts)、[`EditorSuggestorPopup.ts`](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/a01526153c71ce0faf72ad5dd42675f722502c50/src/Suggestor/EditorSuggestorPopup.ts)、日付補助処理・承認済みテストを確認しました。本家の一般候補テストデータから依存関係2項目（本家の外部エディター制限）を除いて直接照合します。MIT表記は`THIRD-PARTY-NOTICES.txt`へ追加し、cloneは配布対象外です。
 
-入力規則・日付・候補UI／IME／キー・有効化判定・チェック連携は`src/StickyNotes/TaskEditing/`に集約しています。自動検証では本家資料との照合、Space／Enter／Tab／クリック、置換範囲、IME、Undo、有効化条件、保存競合を確認します。起動中のObsidianと物理IMEでの実機検証は未実施です。`./build.ps1 -Publish`で本資料・ライセンスを同梱し、`artifacts/app/Install.cmd`で導入できます。公開済みv0.0.7は変更しません。
+入力規則・日付・候補UI／IME／キー・有効化判定・チェック連携は`src/StickyNotes/TaskEditing/`に集約しています。自動検証では本家資料との照合、Space／Enter／Tab／クリック、置換範囲、IME、Undo、有効化条件、保存競合を確認します。起動中のObsidianと物理IMEでの実機検証は未実施です。`./build.ps1 -Publish`で本資料・ライセンスを同梱し、`artifacts/app/Install.cmd`で導入できます。
 
 ## 简体中文
 
@@ -60,4 +60,4 @@ All rules, local dates, popup/IME/keys, activation policy and checkbox adapter r
 
 分析来源：克隆的上游[`a01526153c71ce0faf72ad5dd42675f722502c50`](https://github.com/obsidian-tasks-group/obsidian-tasks/tree/a01526153c71ce0faf72ad5dd42675f722502c50)（manifest 8.4.0）。检查了[`Suggestor.ts`](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/a01526153c71ce0faf72ad5dd42675f722502c50/src/Suggestor/Suggestor.ts)、[`EditorSuggestorPopup.ts`](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/a01526153c71ce0faf72ad5dd42675f722502c50/src/Suggestor/EditorSuggestorPopup.ts)、日期辅助逻辑及批准测试。直接比较上游通用菜单测试资料，排除两个依赖字段（上游外部编辑器限制）。MIT声明加入`THIRD-PARTY-NOTICES.txt`，克隆不进入分发包。
 
-规则、日期、候选界面／输入法／按键、启用策略及复选框适配均集中于`src/StickyNotes/TaskEditing/`。自动验证覆盖上游资料、Space／Enter／Tab／点击、替换范围、输入法、Undo、启用条件和保存冲突。尚未实测运行中的Obsidian及物理输入法。`./build.ps1 -Publish`打包本指南和许可证，使用`artifacts/app/Install.cmd`安装。已发布v0.0.7资源不变。
+规则、日期、候选界面／输入法／按键、启用策略及复选框适配均集中于`src/StickyNotes/TaskEditing/`。自动验证覆盖上游资料、Space／Enter／Tab／点击、替换范围、输入法、Undo、启用条件和保存冲突。尚未实测运行中的Obsidian及物理输入法。`./build.ps1 -Publish`打包本指南和许可证，使用`artifacts/app/Install.cmd`安装。

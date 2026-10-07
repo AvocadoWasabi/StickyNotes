@@ -4,11 +4,11 @@
 
 任务正文后输入空格显示上游默认候选菜单：**⏎** 上Enter继续列表，↓选择后Enter插入字段，Tab缩进。参见[分析来源与兼容范围](docs/TASK-EDITING.md#简体中文)。
 
-当前源码构建新增任务关键字／日期补全及Enter继续检查列表；普通CLI复选框使用Tasks原生完成逻辑。参见[任务输入与限制](docs/TASK-EDITING.md#简体中文)。
+v0.0.8新增任务关键字／日期补全及Enter继续检查列表；普通CLI复选框使用Tasks原生完成逻辑。参见[任务输入与限制](docs/TASK-EDITING.md#简体中文)。
 
 可从 **… → 从便签文件夹打开…**、通知区域菜单或任务栏菜单，通过正文／YAML 预览重新打开已关闭便签。参见 [复选框及便签列表](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
-当前源码构建支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](docs/DATAVIEW.md#简体中文)。已发布的 v0.0.7 ZIP 不包含此功能。
+v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](docs/DATAVIEW.md#简体中文)。
 
 从 v0.0.7 起，新配置默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。请保持 Obsidian 运行并启用 CLI。保留已有设置中明确禁用 CLI 的选择；也可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。
 **从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
@@ -38,7 +38,7 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 下载与安装
 
-1. 从 [v0.0.7 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.7) 下载 `StickyNotes-win-x64.zip` 并解压。
+1. 从 [v0.0.8 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
 3. 在通知区域图标的 **设置 → Obsidian CLI** 获取当前仓库，再选择便签保存目录。使用本地文件时，先禁用 CLI 并选择基准目录。参见[连接及插件设置](docs/TASKS-CLI-PREVIEW.md#简体中文)。
 
