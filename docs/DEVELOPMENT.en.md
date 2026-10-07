@@ -2,6 +2,8 @@
 
 # Development and releases
 
+Completion is compared against a pinned Tasks upstream approved fixture. All changes stay in TaskEditing, including the bounded local date helper. The clone is excluded; MIT notices are bundled. See [source revision, tests and parity limits](TASK-EDITING.md#english).
+
 Task input rules, popup/IME behavior and the public Tasks checkbox adapter are grouped in `src/StickyNotes/TaskEditing/`. The window delegates to this module, sharing existing CLI transport and conflict-safe saves. See [architecture and validation](TASK-EDITING.md#english).
 
 ## Branch workflow

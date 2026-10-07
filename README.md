@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
+
 Current source builds add task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
 
 Browse closed notes from **… → Browse sticky-note folder…**, the tray menu, or the taskbar menu, with body and YAML previews. [Checkbox updates and note browser](docs/QUERY-EDITING-AND-BROWSER.md#english).

@@ -2,6 +2,8 @@
 
 # 开发与发布
 
+补全对照固定版本的Tasks上游批准测试资料，有限日期辅助逻辑也集中于TaskEditing。克隆不分发，MIT声明随包附带。参见[参考版本、验证及兼容范围](TASK-EDITING.md#简体中文)。
+
 任务输入规则、候选界面／输入法和Tasks公开复选框API适配集中在`src/StickyNotes/TaskEditing/`，窗口委托该模块，复用已有CLI传输及冲突保护保存。参见[设计和验证](TASK-EDITING.md#简体中文)。
 
 ## 分支流程

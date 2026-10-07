@@ -4,4 +4,5 @@
   <ItemGroup><None Update="NoteTransportHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><None Update="DataviewBridgeHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><None Update="QueryTaskHarness.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><None Update="Fixtures/TasksDefaultSuggestions.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
 </Project>

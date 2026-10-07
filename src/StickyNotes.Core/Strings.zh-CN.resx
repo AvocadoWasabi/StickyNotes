@@ -1027,7 +1027,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="NoteBrowser.Refresh" xml:space="preserve"><value>刷新列表</value></data>
   <data name="NoteBrowser.Count" xml:space="preserve"><value>{0} 篇 Markdown 笔记</value></data>
   <data name="NoteBrowser.Truncated" xml:space="preserve"><value>（显示前 50,000 字符）</value></data>
-  <data name="TaskEditing.Keys" xml:space="preserve"><value>↑↓ 选择 · Enter/Tab 插入 · Esc 关闭</value></data>
+  <data name="TaskEditing.Keys" xml:space="preserve"><value>↑↓ 选择 · Enter 插入 · Tab 缩进 · Esc 关闭</value></data>
   <data name="TaskEditing.Label" xml:space="preserve"><value>任务输入补全</value></data>
   <data name="TaskEditing.Automatic" xml:space="preserve"><value>自动（仅在 Obsidian 已启用 Tasks 时）</value></data>
   <data name="TaskEditing.On" xml:space="preserve"><value>ON（没有 Tasks 也提供补全）</value></data>

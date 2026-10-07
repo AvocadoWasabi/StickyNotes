@@ -11,38 +11,7 @@ internal static partial class Program
     private static void TaskEditingTests(string root)
     {
         var today = new DateTime(2026, 12, 31);
-        TaskSuggestions Suggest(string text, int? caret = null, int selection = 0) => TaskInput.Suggest(text, caret ?? text.Length, selection, today);
-        string Apply(string text, TaskTextEdit edit) => text[..edit.Start] + edit.Text + text[(edit.Start + edit.Length)..];
-        const string due = "- [ ] 日本語 😀 du";
-        Check(Apply(due, Suggest(due).Items.Single().Edit) == "- [ ] 日本語 😀 📅 ", "Task completion: replaces keyword and preserves Unicode description");
-        const string dated = "- [ ] Work 📅 tomorrow";
-        Check(Apply(dated, Suggest(dated).Items.Single().Edit).EndsWith("📅 2027-01-01 "), "Task completion: relative date handles year rollover");
-        Check(Suggest("- [ ] Work 📅 ").Items.Length == 5 && !Suggest("- [ ] Work 📅 ").SelectFirst,
-            "Task completion: date choices have no implicit selection on empty input");
-        Check(Suggest("- [ ] Work 🔁 every w").Items.Length == 2 && Suggest("- [ ] Work every w").Items.Single().Edit.Text == "🔁 every week ",
-            "Task completion: recurrence with and without existing emoji");
-        Check(Suggest("- [ ] Work high").Items[0].Edit.Text == "⏫ " && Suggest("- [ ] Work highest").Items.Single().Edit.Text == "🔺 ",
-            "Task completion: exact priority keyword is first");
-        Check(Suggest("- [ ] Work 🔁 every week due").Items.Single().Edit.Text == "📅 " && !Suggest("- [ ] Work 🔁 every week ").SelectFirst,
-            "Task completion: following fields still complete; finished recurrence does not select when-done automatically");
-        Check(Suggest("- [ ] Work 📅 2026-12-31 due").Items.Length == 0 && Suggest("- [ ] Work 🔺 low").Items.Length == 0,
-            "Task completion: existing date and priority are not duplicated");
-        foreach (var text in new[] { "ordinary due", "- [x] Done due", "```md\n- [ ] due\n```", "    - [ ] due", "<!--\n- [ ] due\n-->", "- [ ] `due`" })
-        {
-            var caret = text.IndexOf("due", StringComparison.Ordinal) + 3;
-            Check(Suggest(text, caret).Items.Length == 0, "Task completion: avoids non-task/completed/code context " + text.Replace('\n', ' '));
-        }
-        Check(Suggest(due, due.Length, 1).Items.Length == 0 && Suggest("- [ ] dueXYZ", 9).Items.Length == 0,
-            "Task completion: selection and middle-of-word positions are untouched");
-        const string list = "- [ ] first\r\n  * [x] finished";
-        Check(Apply(list, TaskInput.ContinueList(list, list.Length, 0)!) == list + "\r\n  * [ ] ",
-            "Task Enter: keeps indentation, bullet and CRLF; resets checked state");
-        Check(Apply("12. [ ] abc", TaskInput.ContinueList("12. [ ] abc", 9, 0)!) == "12. [ ] a\n13. [ ] bc",
-            "Task Enter: splits text at caret and increments ordered list");
-        Check(Apply("- [ ] first\n- [ ] \nnext", TaskInput.ContinueList("- [ ] first\n- [ ] \nnext", 18, 0)!) == "- [ ] first\n\nnext",
-            "Task Enter: empty item ends list without consuming next line");
-        Check(TaskInput.ContinueList("```\n- [ ] text\n```", 14, 0) is null && TaskInput.ContinueList(due, due.Length, 1) is null,
-            "Task Enter: code and selected text retain default behavior");
+        TaskInputCompatibilityTests();
         TaskEditorWindowTests(today);
         TaskCheckboxTests(root);
         TaskCheckboxWindowTests(root);
@@ -66,11 +35,14 @@ internal static partial class Program
             Check(behavior.IsOpen && behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] Work 📅 ",
                 "Task editor: Enter accepts concrete suggestion without newline");
             editor.Undo(); Check(editor.Text == "- [ ] Work du", "Task editor: suggestion is one undo step");
-            Set("- [ ] Work 📅 ");
-            Check(behavior.IsOpen && behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] Work 📅 \n- [ ] ",
-                "Task editor: unselected contextual menu allows Enter to continue list");
-            Set("- [ ] Work 📅 ");
+            Set("- [ ] Work ");
+            Check(behavior.IsOpen && behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] Work \n- [ ] ",
+                "Task editor: space opens default menu with newline selected; Enter continues list");
+            Set("- [ ] Work ");
             behavior.HandleKey(Key.Down, ModifierKeys.None); behavior.HandleKey(Key.Enter, ModifierKeys.None);
+            Check(editor.Text == "- [ ] Work 📅 ", "Task editor: Down from newline chooses due date");
+            Set("- [ ] Work 📅 ");
+            behavior.HandleKey(Key.Enter, ModifierKeys.None);
             Check(editor.Text == "- [ ] Work 📅 2026-12-31 ", "Task editor: arrow keys select date candidate");
             Set("- [ ] Work 📅 ");
             var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
@@ -83,6 +55,8 @@ internal static partial class Program
             item.RaiseEvent(click);
             Check(click.Handled && editor.IsKeyboardFocusWithin && editor.Text == "- [ ] Work 📅 2027-01-01 ",
                 "Task editor: mouse candidate insertion keeps editing focus");
+            Set("- [ ] Work "); choices.UpdateLayout();
+            RenderLocalizationPreview((FrameworkElement)popup.Child, "task-editor-space-menu");
             Set("- [ ] Work du");
             Check(behavior.HandleKey(Key.Escape, ModifierKeys.None) && !behavior.IsOpen && editor.Text == "- [ ] Work du",
                 "Task editor: first Escape dismisses without changing draft");
@@ -93,13 +67,17 @@ internal static partial class Program
             behavior.SetComposing(false); behavior.Update();
             Check(behavior.IsOpen && !behavior.HandleKey(Key.Enter, ModifierKeys.Shift) && !behavior.HandleKey(Key.ImeProcessed, ModifierKeys.None),
                 "Task editor: modified and IME keys remain native");
-            behavior.HandleKey(Key.Tab, ModifierKeys.None); Check(editor.Text == "- [ ] Work 📅 ", "Task editor: Tab accepts candidate");
+            behavior.HandleKey(Key.Tab, ModifierKeys.None); Check(editor.Text == "\t- [ ] Work due" && editor.CaretIndex == editor.Text.Length,
+                "Task editor: Tab indents task while preserving draft and caret");
+            editor.Undo(); Check(editor.Text == "- [ ] Work due", "Task editor: indentation is one undo step");
+            editor.Redo();
+            behavior.HandleKey(Key.Tab, ModifierKeys.Shift); Check(editor.Text == "- [ ] Work due", "Task editor: Shift+Tab removes indentation");
             Set("- [ ] abc");
             Check(behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] abc\n- [ ] ", "Task editor: ordinary task Enter continues list");
             Check(behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] abc\n", "Task editor: next Enter ends empty list");
             Check(probes == initialProbes && initialProbes > 0, "Task completion detection: typing does not make additional plugin requests");
-            probe = _ => Task.FromResult(false); behavior.RefreshAvailability().GetAwaiter().GetResult(); Set("- [ ] Work du");
-            Check(!behavior.IsOpen && behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] Work du\n- [ ] ",
+            probe = _ => Task.FromResult(false); behavior.RefreshAvailability().GetAwaiter().GetResult(); Set("- [ ] Work ");
+            Check(!behavior.IsOpen && behavior.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] Work \n- [ ] ",
                 "Task completion detection: absent plugin disables suggestions but keeps list continuation");
             var pending = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             probe = _ => pending.Task; var oldProbe = behavior.RefreshAvailability();

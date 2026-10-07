@@ -2,6 +2,8 @@
 
 # 開発と公開
 
+補完は版固定した本家Tasksの承認済みテスト資料と照合します。限定した日付補助処理を含めTaskEditingへ集約し、cloneは配布対象外、MIT表記は同梱します。[参照版・検証・互換範囲](TASK-EDITING.md#日本語)を参照してください。
+
 タスク入力規則・候補UI／IME・Tasks公開チェックAPI連携は`src/StickyNotes/TaskEditing/`に集約します。ウィンドウから委譲し、既存のCLI転送と競合検出付き保存を共用します。[設計と検証](TASK-EDITING.md#日本語)を参照してください。
 
 ## ブランチ運用

@@ -2,6 +2,8 @@
 
 # Usage reference
 
+After a task and a space, the generic menu starts with **⏎** (Enter continues the checklist). Use ↓ then Enter or a click to insert a field; Tab indents. Date-field menus select the first date instead. See [exact behavior and limits](TASK-EDITING.md#english).
+
 For task keyword/date completion, Enter-to-continue checklists and native Tasks checkbox behavior, see [task editing](TASK-EDITING.md#english).
 
 Use **Browse sticky-note folder…** from **…**, the tray menu or the taskbar menu to reopen closed notes with body/YAML previews. [Query checkbox updates and folder browsing](QUERY-EDITING-AND-BROWSER.md#english).

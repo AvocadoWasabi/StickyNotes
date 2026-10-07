@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Analyze a pinned upstream Tasks clone and align the standard emoji completion workflow: show a default menu after a space with a selected newline entry, use substring matching and whole-word replacement, select contextual dates, preserve field ordering, and indent with Tab. Compare the upstream approved default-menu fixture; retain plugin-gated activation. See [scope and remaining differences](docs/TASK-EDITING.md#english).
+
 - Default task completion to Automatic: enable only when Tasks is detected in Obsidian. Missing/disabled/unreachable Tasks and local mode stay off until manual ON; add persistent Automatic / ON / OFF settings.
 
 - Group task editing in one module: local keyword/date/recurrence suggestions, IME-aware keyboard handling, one-step undo and Enter checklist continuation. Ordinary CLI checkboxes use the Tasks public toggle API, retaining backups, linked sections and conflict checks. See [behavior and limits](docs/TASK-EDITING.md#english).

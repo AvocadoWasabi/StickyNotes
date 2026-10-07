@@ -8,7 +8,7 @@ namespace StickyNotes;
 
 // Pure editing rules. No WPF state, CLI calls or writes; each edit is one undo unit.
 internal sealed record TaskTextEdit(int Start, int Length, string Text);
-internal sealed record TaskSuggestion(string Label, TaskTextEdit Edit);
+internal sealed record TaskSuggestion(string Label, TaskTextEdit Edit, bool ContinueList = false);
 internal sealed record TaskSuggestions(TaskSuggestion[] Items, bool SelectFirst);
 
 internal static class TaskInput
@@ -35,60 +35,83 @@ internal static class TaskInput
     internal static TaskSuggestions Suggest(string text, int caret, int selection, DateTime today)
     {
         var context = Context(text, caret, selection);
-        if (context is not { } c || c.Match.Groups["box"].Value != "[ ]" ||
-            (caret < c.End && !char.IsWhiteSpace(text[caret]))) return new([], false);
-        var bodyStart = c.Start + c.Match.Groups["body"].Index;
-        var prefix = text[bodyStart..caret];
-        var body = c.Match.Groups["body"].Value;
+        if (context is not { } c) return new([], false);
+        var line = text[c.Start..c.End]; var column = caret - c.Start;
+        // Adapted from Tasks Suggestor.ts, a01526153c71ce0faf72ad5dd42675f722502c50 (MIT).
+        // Follow the default emoji-format menu with canSaveEdits=false (no dependency writes).
         var items = new List<TaskSuggestion>();
-        var dates = new (string Key, DateTime Date)[] { ("today", today), ("tomorrow", today.AddDays(1)),
-            ("next week", today.AddDays(7)), ("next month", today.AddMonths(1)), ("next year", today.AddYears(1)) };
-        // Emoji may contain surrogate pairs; use literal alternatives instead of a character class.
-        var date = Regex.Match(prefix, @"(?:📅|⏳|🛫|➕) (?<query>[a-zA-Z ]*)$", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100));
-        if (date.Success)
+        var hasMatch = false;
+        Match? AtCursor(string pattern) => Regex.Matches(line, pattern, RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100))
+            .Cast<Match>().FirstOrDefault(m => m.Index > 0 && m.Index < column && column <= m.Index + m.Length);
+        void AddFieldValue(Match match, string label, string value)
         {
-            var query = date.Groups["query"];
-            foreach (var candidate in dates.Where(d => d.Key.StartsWith(query.Value, StringComparison.OrdinalIgnoreCase)))
+            items.Add(new(label, new(c.Start + match.Index, match.Length, match.Groups[1].Value + " " + value + " ")));
+            hasMatch = true;
+        }
+        string[] Filter(string[] candidates, string query, int max, bool fallback)
+        {
+            var matches = candidates.Where(s => query.Length > 0 && s.Contains(query, StringComparison.OrdinalIgnoreCase)).Take(max).ToArray();
+            return matches.Length == 0 && fallback ? candidates.Take(max).ToArray() : matches;
+        }
+        var dates = new[] { "today", "tomorrow", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "next week", "next month", "next year" };
+        if (AtCursor(@"(📅|⏳|🛫)\s*([0-9a-zA-Z ]*)") is { } date)
+        {
+            var query = date.Groups[2].Value;
+            if (query.Length > 1 && TaskSuggestionDates.Parse(query, today) is { } parsed)
             {
-                var formatted = candidate.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                items.Add(new(candidate.Key + " → " + formatted, new(bodyStart + query.Index, query.Length, formatted + " ")));
+                var formatted = parsed.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                AddFieldValue(date, formatted, formatted);
             }
-            if (items.Count > 0) return new(items.ToArray(), query.Length > 0 && !query.Value.EndsWith(' '));
-        }
-        var recurring = Regex.Match(prefix, @"🔁 (?<query>[a-zA-Z ]*)$", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100));
-        if (recurring.Success)
-        {
-            var query = recurring.Groups["query"];
-            foreach (var key in new[] { "every day", "every week", "every month", "every year", "every week when done" })
-                if (key.StartsWith(query.Value, StringComparison.OrdinalIgnoreCase))
-                    items.Add(new(key, new(bodyStart + query.Index, query.Length, key + " ")));
-            if (items.Count > 0) return new(items.ToArray(), query.Length > 0 && !query.Value.EndsWith(' '));
-        }
-        var word = Regex.Match(prefix, @"(?:^|\s)(?<query>[a-zA-Z]+(?: [a-zA-Z]+)?)$", RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100));
-        if (!word.Success) return new([], false);
-        var token = word.Groups["query"];
-        // Prefer a phrase ("every w"); otherwise match the final word in a description.
-        void Add(string key, string value, string? absent = null)
-        {
-            if (absent is not null && absent.Split('|').Any(body.Contains)) return;
-            var query = token.Value; var start = bodyStart + token.Index;
-            if (!key.StartsWith(query, StringComparison.OrdinalIgnoreCase))
+            foreach (var key in Filter(dates, query, 5, true))
             {
-                var space = query.LastIndexOf(' '); if (space < 0) return;
-                start += space + 1; query = query[(space + 1)..];
-                if (!key.StartsWith(query, StringComparison.OrdinalIgnoreCase)) return;
+                var formatted = TaskSuggestionDates.Parse(key, today)!.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                AddFieldValue(date, key + " (" + formatted + ")", formatted);
             }
-            items.Add(new(key + " → " + value, new(start, query.Length, value + " ")));
         }
-        Add("due", "📅", "📅"); Add("scheduled", "⏳", "⏳"); Add("start", "🛫", "🛫");
-        Add("created", "➕ " + today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), "➕");
-        const string priorities = "🔺|⏫|🔼|🔽|⏬";
-        Add("high", "⏫", priorities); Add("highest", "🔺", priorities); Add("medium", "🔼", priorities);
-        Add("low", "🔽", priorities); Add("lowest", "⏬", priorities);
-        Add("repeat", "🔁", "🔁"); Add("recurring", "🔁", "🔁");
-        foreach (var key in new[] { "every day", "every week", "every month", "every year" }) Add(key, "🔁 " + key, "🔁");
-        foreach (var candidate in dates) Add(candidate.Key, "📅 " + candidate.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), "📅");
-        return new(items.ToArray(), true);
+        if (AtCursor(@"(🔁)\s*([0-9a-zA-Z ]*)") is { } recurrence)
+        {
+            var query = recurrence.Groups[2].Value;
+            var valid = Regex.IsMatch(query.Trim(), @"^every (?:[1-9][0-9]* )?(?:day|week|month|year)s?(?: when done)?$",
+                RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100));
+            // A complete recurrence followed by its trailing space leaves the field menu.
+            if (!(valid && recurrence.Value == "🔁 " + query.Trim() + " "))
+            {
+                if (valid) AddFieldValue(recurrence, "✅ " + query.Trim(), query.Trim());
+                var rules = new[] { "every", "every day", "every week", "every month", "every month on the", "every year",
+                    "every week on Sunday", "every week on Monday", "every week on Tuesday", "every week on Wednesday",
+                    "every week on Thursday", "every week on Friday", "every week on Saturday" };
+                foreach (var rule in Filter(rules, query, 10, string.IsNullOrWhiteSpace(query))) AddFieldValue(recurrence, rule, rule);
+            }
+        }
+        if (AtCursor(@"(🏁)\s*([0-9a-zA-Z ]*)") is { } completion)
+            foreach (var action in Filter(["delete", "keep"], completion.Groups[2].Value, 5, true)) AddFieldValue(completion, action, action);
+
+        var generic = new List<(string Label, string Text, string Search)>();
+        void Add(string symbol, string label)
+        { if (!line.Contains(symbol)) generic.Add((symbol + " " + label, symbol + " ", symbol + " " + label)); }
+        Add("📅", "due date"); Add("🛫", "start date"); Add("⏳", "scheduled date");
+        if (!new[] { "⏫", "🔼", "🔽", "🔺", "⏬" }.Any(line.Contains))
+        {
+            Add("⏫", "high priority"); Add("🔼", "medium priority"); Add("🔽", "low priority");
+            Add("🔺", "highest priority"); Add("⏬", "lowest priority");
+        }
+        Add("🔁", "recurring (repeat)");
+        if (!line.Contains("➕"))
+        {
+            var formatted = today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            generic.Add(("➕ created today (" + formatted + ")", "➕ " + formatted + " ", "➕ created"));
+        }
+        Add("🏁", "on completion");
+        var word = AtCursor(@"[a-zA-Z'_-]+");
+        var matching = word is null ? [] : generic.Where(s => s.Search.Contains(word.Value, StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (matching.Length > 0)
+        {
+            hasMatch = true;
+            items.AddRange(matching.Select(s => new TaskSuggestion(s.Label, new(c.Start + word!.Index, word.Length, s.Text))));
+        }
+        else items.AddRange(generic.Select(s => new TaskSuggestion(s.Label, new(caret, 0, s.Text))));
+        if (items.Count > 0 && !hasMatch) items.Insert(0, new("⏎", new(caret, 0, ""), ContinueList: true));
+        return new(items.Take(20).ToArray(), true);
     }
 
     internal static TaskTextEdit? ContinueList(string text, int caret, int selection)
@@ -100,5 +123,17 @@ internal static class TaskInput
         if (bullet.Length > 1) bullet = (int.Parse(bullet[..^1], CultureInfo.InvariantCulture) + 1).ToString(CultureInfo.InvariantCulture) + bullet[^1];
         var newline = text.Contains("\r\n") ? "\r\n" : "\n";
         return new(caret, 0, newline + c.Match.Groups["indent"].Value + bullet + " [ ] ");
+    }
+
+    internal static TaskTextEdit? Indent(string text, int caret, int selection, bool unindent)
+    {
+        if (selection != 0 || caret < 0 || caret > text.Length) return null;
+        var start = caret == 0 ? 0 : text.LastIndexOf('\n', caret - 1) + 1;
+        var end = text.IndexOf('\n', caret); if (end < 0) end = text.Length;
+        var match = TaskLine.Match(text[start..end].TrimEnd('\r'));
+        if (!match.Success) return null;
+        var indent = match.Groups["indent"].Value;
+        var count = indent.StartsWith('\t') ? 1 : indent.TakeWhile(ch => ch == ' ').Take(4).Count();
+        return unindent ? new(start, count, "") : new(start, 0, "\t");
     }
 }

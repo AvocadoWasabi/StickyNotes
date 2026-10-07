@@ -96,6 +96,15 @@ internal sealed class TaskEditorBehavior
 
     internal bool HandleKey(Key key, ModifierKeys modifiers)
     {
+        if (!IsComposing && key == Key.Tab && modifiers is ModifierKeys.None or ModifierKeys.Shift)
+        {
+            try
+            {
+                if (TaskInput.Indent(editor.Text, editor.CaretIndex, editor.SelectionLength, modifiers == ModifierKeys.Shift) is { } indent)
+                { Apply(indent, Math.Max(indent.Start, editor.CaretIndex + indent.Text.Length - indent.Length)); return true; }
+            }
+            catch (RegexMatchTimeoutException) { return false; }
+        }
         if (IsComposing || modifiers != ModifierKeys.None) return false;
         // Resolve pending local suggestions before Enter/Tab, even during fast typing.
         if (delay.IsEnabled && key is Key.Enter or Key.Tab or Key.Down or Key.Up or Key.Escape) Update();
@@ -109,16 +118,20 @@ internal sealed class TaskEditorBehavior
                     (choices.SelectedIndex <= 0 ? choices.Items.Count - 1 : choices.SelectedIndex - 1);
                 choices.ScrollIntoView(choices.SelectedItem); return true;
             }
-            if (key == Key.Tab || (key == Key.Enter && choices.SelectedIndex >= 0))
+            if (key == Key.Enter && choices.SelectedIndex >= 0)
             { ApplySuggestion((TaskSuggestion)choices.Items[Math.Max(0, choices.SelectedIndex)]); return true; }
         }
-        if (key == Key.Enter)
+        return key == Key.Enter && ContinueTaskList();
+    }
+
+    private bool ContinueTaskList()
+    {
+        try
         {
-            TaskTextEdit? edit;
-            try { edit = TaskInput.ContinueList(editor.Text, editor.CaretIndex, editor.SelectionLength); }
-            catch (RegexMatchTimeoutException) { return false; }
-            if (edit is not null) { Apply(edit); return true; }
+            if (TaskInput.ContinueList(editor.Text, editor.CaretIndex, editor.SelectionLength) is { } edit)
+            { Apply(edit); return true; }
         }
+        catch (RegexMatchTimeoutException) { }
         return false;
     }
 
@@ -126,16 +139,20 @@ internal sealed class TaskEditorBehavior
     {
         if (!IsOpen || IsComposing || offeredText != editor.Text || offeredCaret != editor.CaretIndex || editor.SelectionLength != 0)
         { Close(); return; }
-        Apply(suggestion.Edit);
+        if (suggestion.ContinueList)
+        {
+            if (!ContinueTaskList()) Close();
+        }
+        else Apply(suggestion.Edit);
     }
 
-    private void Apply(TaskTextEdit edit)
+    private void Apply(TaskTextEdit edit, int? nextCaret = null)
     {
         inserting = true;
         try
         {
             editor.BeginChange();
-            try { editor.Select(edit.Start, edit.Length); editor.SelectedText = edit.Text; editor.Select(edit.Start + edit.Text.Length, 0); }
+            try { editor.Select(edit.Start, edit.Length); editor.SelectedText = edit.Text; editor.Select(nextCaret ?? edit.Start + edit.Text.Length, 0); }
             finally { editor.EndChange(); }
             Close();
         }

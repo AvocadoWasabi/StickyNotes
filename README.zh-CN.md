@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+任务正文后输入空格显示上游默认候选菜单：**⏎** 上Enter继续列表，↓选择后Enter插入字段，Tab缩进。参见[分析来源与兼容范围](docs/TASK-EDITING.md#简体中文)。
+
 当前源码构建新增任务关键字／日期补全及Enter继续检查列表；普通CLI复选框使用Tasks原生完成逻辑。参见[任务输入与限制](docs/TASK-EDITING.md#简体中文)。
 
 可从 **… → 从便签文件夹打开…**、通知区域菜单或任务栏菜单，通过正文／YAML 预览重新打开已关闭便签。参见 [复选框及便签列表](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
