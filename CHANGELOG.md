@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Make the optional Obsidian Tasks CLI integration available in standard local builds under `artifacts/app`, including Settings and query refresh. Keep it disabled by default and retain the standard installer, profile and note folders; do not copy settings from the isolated preview. Run CLI note-source and rendering tests in both builds.
+
 - Unify note reads, heading previews, daily-note discovery, creation and saving through Obsidian CLI when the preview integration is enabled; no local-read fallback. Preserve original access when disabled. Verify identical non-query WPF rendering across both sources, including BOM/CRLF/Unicode, and preserve backups/conflict checks on CLI saves. Compress and separate CLI bridges and reject oversized requests before launch to mitigate Obsidian 1.14.4's JSON parsing error on long requests.
 
 - Add an opt-in, separately packaged Tasks CLI preview under `artifacts/tasks-cli-preview`, with its own installer, profile and process identity. Display installed Obsidian Tasks' native Markdown query output alongside regular note content; read-only results, 30-second refresh and explicit errors. No extra Obsidian plugin. See the [trial guide](docs/TASKS-CLI-PREVIEW.md#english) for internal-API dependencies and limits.

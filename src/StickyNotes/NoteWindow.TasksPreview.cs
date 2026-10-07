@@ -31,7 +31,7 @@ public sealed partial class NoteWindow
 
     private void RenderTasksPreview(bool force = true)
     {
-        if (!BuildFlavor.TasksPreview || !app.Config.ObsidianTasksEnabled)
+        if (!app.Config.ObsidianTasksEnabled)
         {
             if (force || tasksIdentity.Length > 0)
             {
@@ -76,7 +76,7 @@ public sealed partial class NoteWindow
 
     private async Task RefreshTasksPreview()
     {
-        if (closed || editing || snapshot is null || !BuildFlavor.TasksPreview || cliNoteError is not null) return;
+        if (closed || editing || snapshot is null || cliNoteError is not null) return;
         if (NoteSource.UsesCli(app.Config) && !snapshot.Hash.StartsWith("cli:", StringComparison.Ordinal))
         { await ReloadCliNoteAsync(true); return; }
         // Settings may change without the note text changing.

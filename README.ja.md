@@ -2,7 +2,7 @@
 
 # Markdown Sticky Notes
 
-試験機能：[Tasks CLIの独立テスト版・導入手順](docs/TASKS-CLI-PREVIEW.md#日本語)（`./build.ps1 -Publish -TasksPreview`）。
+未リリースの試験機能：[Obsidian Tasks CLI連携](docs/TASKS-CLI-PREVIEW.md#日本語)を通常のローカルビルド（`./build.ps1`）でも利用できます。初期状態では無効です。独立設定の試験版も`./build.ps1 -Publish -TasksPreview`で作成できます。
 連携を有効にすると、本文取得・デイリーノート検索をObsidian CLIへ統一し、ローカル読込にはフォールバックしません。無効時は従来のファイルアクセスを維持します。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">

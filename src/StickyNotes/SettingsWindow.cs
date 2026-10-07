@@ -54,8 +54,7 @@ public sealed class SettingsWindow : Window
         var tasksVault = Add(L10n.Text("TasksPreview.Vault"), app.Config.ObsidianVaultFolder, tasksPanel);
         tasksPanel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(tasksVault)));
         var tasksId = Add(L10n.Text("TasksPreview.VaultId"), app.Config.ObsidianVaultId, tasksPanel);
-        if (BuildFlavor.TasksPreview)
-            panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian Tasks — CLI Preview", IsExpanded = true, Content = tasksPanel });
+        panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian Tasks — CLI Preview", IsExpanded = true, Content = tasksPanel });
         panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(notes)));
         var daily = Add(L10n.Text("SettingsWindow.Text10"), app.Config.DailyFolder);
         panel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text11"), () => PickFolder(daily)));

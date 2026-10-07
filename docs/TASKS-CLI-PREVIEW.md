@@ -4,7 +4,9 @@
 
 ## English
 
-This separate Windows x64 test build displays the installed Obsidian Tasks plugin's own **Copy results → Markdown** output in place of `tasks` code blocks. Regular Markdown, local checkboxes and multiple query blocks coexist. It does not implement a substitute query engine and requires no additional Obsidian plugin.
+This experimental Windows x64 integration displays the installed Obsidian Tasks plugin's own **Copy results → Markdown** output in place of `tasks` code blocks. Regular Markdown, local checkboxes and multiple query blocks coexist. It does not implement a substitute query engine and requires no additional Obsidian plugin.
+
+**Standard local build:** run `./build.ps1 -Publish`, then install with `artifacts/app/Install.cmd` and start **Markdown Sticky Notes**. CLI integration is available in **Settings → Obsidian Tasks — CLI Preview**, disabled by default. It retains the standard install location, profile and note folders; isolated preview settings are not imported. Follow steps 4–7 below to configure Obsidian and the connection. This is an unreleased local change, not a replacement for the published v0.0.6 ZIP. The following build/install steps retain the optional isolated preview.
 
 ### Install and try
 
@@ -37,7 +39,9 @@ Remaining trial finding (low impact): one live save reported a conflict during U
 
 ## 日本語
 
-Windows x64向けの独立した試験版です。インストール済みObsidian Tasksの **Copy results（結果コピー）のMarkdown出力**を、付箋の`tasks`コードブロックの位置に表示します。通常のMarkdown、通常のチェックボックス、複数のクエリが同居できます。独自の互換検索エンジンや追加のObsidianプラグインは使いません。
+Windows x64向けの試験機能です。インストール済みObsidian Tasksの **Copy results（結果コピー）のMarkdown出力**を、付箋の`tasks`コードブロックの位置に表示します。通常のMarkdown、通常のチェックボックス、複数のクエリが同居できます。独自の互換検索エンジンや追加のObsidianプラグインは使いません。
+
+**通常のローカル版：** `./build.ps1 -Publish`を実行し、`artifacts/app/Install.cmd`で導入して **Markdown Sticky Notes** を起動します。**設定 → Obsidian Tasks — CLI Preview**でCLI連携を有効にできます。既定では無効です。通常のインストール先・設定・保存先を維持し、独立試験版の設定はコピーしません。Obsidianと連携の設定は以下の手順4〜7を参照してください。未リリースのローカル変更であり、公開済みv0.0.6のZIPは差し替えません。以下のビルド・導入手順では任意の独立試験版も作成できます。
 
 ### インストールと確認
 
@@ -70,7 +74,9 @@ Windows x64向けの独立した試験版です。インストール済みObsidi
 
 ## 简体中文
 
-这是独立的 Windows x64 试验版。它将已安装的 Obsidian Tasks 的 **Copy results（复制结果）Markdown 输出**显示在便签的`tasks`代码块位置。普通 Markdown、普通复选框及多个查询可以共存。不使用替代查询引擎，也不需要额外的 Obsidian 插件。
+这是 Windows x64 实验功能。它将已安装的 Obsidian Tasks 的 **Copy results（复制结果）Markdown 输出**显示在便签的`tasks`代码块位置。普通 Markdown、普通复选框及多个查询可以共存。不使用替代查询引擎，也不需要额外的 Obsidian 插件。
+
+**普通本地版：** 运行`./build.ps1 -Publish`，用`artifacts/app/Install.cmd`安装并启动 **Markdown Sticky Notes**。可在 **设置 → Obsidian Tasks — CLI Preview** 启用 CLI 集成，默认禁用。保留普通安装位置、配置及笔记目录，不复制独立试验版设置。Obsidian 及连接配置见下方步骤4–7。这是未发布的本地修改，不替换已发布的 v0.0.6 ZIP。以下构建／安装步骤仍可生成可选的独立试验版。
 
 ### 安装与试用
 

@@ -48,6 +48,8 @@ internal static partial class Program
 
     private static void TasksPreviewTests(string root)
     {
+        Check(!NoteSource.UsesCli(new StickyNotes.Core.Settings()), "CLI integration: disabled by default in every build");
+        Check(NoteSource.UsesCli(new StickyNotes.Core.Settings { ObsidianTasksEnabled = true }), "CLI integration: settings enable it in the standard build too");
         var vault = Path.Combine(root, "vault");
         Check(ObsidianTasksClient.RelativeNotePath(vault, Path.Combine(vault, "日本語", "note.md")) == "日本語/note.md", "Tasks: vault relative Unicode path");
         Throws<InvalidOperationException>(() => ObsidianTasksClient.RelativeNotePath(vault, Path.Combine(root, "vault-other", "note.md")), "Tasks: sibling vault rejected");
@@ -84,7 +86,7 @@ internal static partial class Program
         var readonlyCheck = (CheckBox)readonlyList.ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single().Inlines.OfType<InlineUIContainer>().Single().Child;
         readonlyCheck.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         Check(!readonlyCheck.IsEnabled, "Tasks: native result has no write callback");
-        if (BuildFlavor.TasksPreview) TasksPreviewWindowTests(root);
+        TasksPreviewWindowTests(root);
     }
 
     private static void TasksPreviewWindowTests(string root)

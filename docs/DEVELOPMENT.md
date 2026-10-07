@@ -25,6 +25,8 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 `-Publish` は追加で `artifacts/StickyNotes-win-x64.zip` とSHA256チェックサムを生成・更新します。通常のビルドでは既存ZIPは更新しないため、ZIPを配布する場合は `-Publish` を使用してください。
 
+通常のローカルビルドには、既定で無効のObsidian Tasks CLI連携も含まれます。「設定 → Obsidian Tasks — CLI Preview」で有効にします。通常の設定・保存先を使用し、独立試験版の設定は引き継ぎません。設定を分離して検証する場合は`./build.ps1 -Publish -TasksPreview`で`artifacts/tasks-cli-preview`へ出力できます。[CLI連携の手順と制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
+
 `src/StickyNotes.Core` は保存・見出し編集・Calendar連携、`src/StickyNotes` はWPF UI、`tests` はデータ保護・描画・APIのテストです。
 
 Google Tasksは同じOAuthクライアント・トークンに `tasks.readonly` スコープを追加して利用します。`GoogleTasks.cs` は固定HTTPSエンドポイントにGETのみを送り、ページ送りと予定日の「日付」としての処理（UTCからローカル時刻への変換なし）を行います。1回の取得上限は一致する100件・20リクエスト・30秒です。ページ送り、日付境界、絞り込み、キャンセル、片方だけの失敗、日付変更を実認証情報なしでテストします。

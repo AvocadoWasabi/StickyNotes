@@ -25,6 +25,8 @@
 
 `-Publish` 额外生成或更新 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。普通构建不会更新已有 ZIP；分发 ZIP 时请使用 `-Publish`。
 
+普通本地构建包含默认禁用的 Obsidian Tasks CLI 集成，可在 **设置 → Obsidian Tasks — CLI Preview** 启用。使用普通配置及笔记目录，不导入独立试验版设置。需要独立配置时，可用`./build.ps1 -Publish -TasksPreview`输出到`artifacts/tasks-cli-preview`。请参阅 [CLI 设置及限制](TASKS-CLI-PREVIEW.md#简体中文)。
+
 `src/StickyNotes.Core` 负责存储、标题部分编辑和 Calendar 集成；`src/StickyNotes` 为 WPF UI；`tests` 覆盖数据保护、渲染和 API。
 
 Google Tasks 复用同一 OAuth 客户端和令牌，增加 `tasks.readonly` 范围。`GoogleTasks.cs` 仅向固定 HTTPS 端点发送 GET，处理分页并将计划日期作为日期标签（不从 UTC 转换为本地时间）。每次最多获取100项匹配任务、20次请求、30秒。测试无需真实凭据，覆盖分页、日期边界、筛选、取消、部分失败及日期切换。

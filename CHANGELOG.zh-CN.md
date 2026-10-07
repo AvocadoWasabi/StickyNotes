@@ -8,6 +8,8 @@
 
 ## 未发布 / Unreleased
 
+- 将可选的 Obsidian Tasks CLI 集成加入`artifacts/app`普通本地构建，包括设置和查询刷新。默认禁用，保留普通安装目录、配置和笔记目录，不复制独立试验版设置。两种构建均执行 CLI 正文来源及渲染测试。
+
 - 试验版集成启用时，将正文读取、标题预览、日记查找、新建及保存统一通过 Obsidian CLI，失败时不回退到本地读取；禁用时保持原方式。验证两种来源的普通正文 WPF 渲染一致，包括 BOM、CRLF 和 Unicode；CLI 保存保留备份及冲突检查。压缩并分离 CLI 桥接，在启动前拒绝超长请求，以缓解 Obsidian 1.14.4 长请求引发的 JSON 解析错误。
 
 - 在`artifacts/tasks-cli-preview`添加可选的 Tasks CLI 独立试验版，包含专用安装程序、设置及进程标识。在普通正文中显示已安装 Obsidian Tasks 的原生 Markdown 查询输出；结果只读、30秒刷新并明确显示错误，无需额外 Obsidian 插件。内部 API 依赖及限制见[试用指南](docs/TASKS-CLI-PREVIEW.md#简体中文)。

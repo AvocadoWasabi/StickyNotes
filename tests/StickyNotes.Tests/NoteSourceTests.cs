@@ -115,7 +115,7 @@ internal static partial class Program
         var paths = new[] { Path.Combine(folder, "2026-10-07.md"), Path.Combine(folder + "-outside", "2026-10-07.md") };
         Check(DailyNoteResolver.ResolveFromPaths(folder, DailyNoteResolver.RegexExample, new DateTime(2026, 10, 7), paths) == paths[0], "CLI daily discovery: uses provided list and excludes sibling folders");
         Throws<DailyNoteMissingException>(() => DailyNoteResolver.ResolveFromPaths(folder, DailyNoteResolver.RegexExample, new DateTime(2026, 10, 8), paths), "CLI daily discovery: missing date fails without a disk scan");
-        if (BuildFlavor.TasksPreview) CliNoteWindowTests(root);
+        CliNoteWindowTests(root);
     }
 
     private static void CliNoteWindowTests(string root)

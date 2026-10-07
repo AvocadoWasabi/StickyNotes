@@ -2,7 +2,7 @@
 
 # Markdown Sticky Notes
 
-实验功能：[Tasks CLI 独立试验版与安装说明](docs/TASKS-CLI-PREVIEW.md#简体中文)（`./build.ps1 -Publish -TasksPreview`）。
+未发布的实验功能：普通本地构建（`./build.ps1`）现已包含 [Obsidian Tasks CLI 集成](docs/TASKS-CLI-PREVIEW.md#简体中文)，默认禁用。仍可使用`./build.ps1 -Publish -TasksPreview`生成独立配置的试验版。
 启用后，所有正文读取及日记查找均通过 Obsidian CLI，失败时不回退到本地读取。禁用时保持原有文件访问方式。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes 图标" width="112">

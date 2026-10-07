@@ -20,7 +20,7 @@ internal sealed class NoteSource
     }
 
     internal bool IsCli => cli;
-    internal static bool UsesCli(Settings settings) => BuildFlavor.TasksPreview && settings.ObsidianTasksEnabled;
+    internal static bool UsesCli(Settings settings) => settings.ObsidianTasksEnabled;
     internal static NoteSource Create(Settings settings) => new(settings, UsesCli(settings));
 
     private string Root => Path.GetFullPath(settings.ObsidianVaultFolder).TrimEnd('\\', '/');

@@ -595,7 +595,7 @@ public sealed partial class NoteWindow : Window
         menu.Items.Add(ContentScaleMenu());
         Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
         Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); });
-        if (BuildFlavor.TasksPreview) Add(L10n.Text("TasksPreview.Refresh"), () => { lastTasksCheck = null; _ = RefreshTasksPreview(); });
+        if (app.Config.ObsidianTasksEnabled) Add(L10n.Text("TasksPreview.Refresh"), () => { lastTasksCheck = null; _ = RefreshTasksPreview(); });
         Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
         Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
