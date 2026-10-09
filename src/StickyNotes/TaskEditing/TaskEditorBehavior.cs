@@ -124,6 +124,15 @@ internal sealed class TaskEditorBehavior
         return key == Key.Enter && ContinueTaskList();
     }
 
+    internal bool ToggleCheckbox()
+    {
+        if (IsComposing || closed) return false;
+        if (TaskInput.ToggleCheckbox(editor.Text, editor.CaretIndex, editor.SelectionLength) is not { } edit) return false;
+        Apply(edit, editor.CaretIndex);
+        Close();
+        return true;
+    }
+
     private bool ContinueTaskList()
     {
         try

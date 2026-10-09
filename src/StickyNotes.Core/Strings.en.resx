@@ -1033,4 +1033,8 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="TaskEditing.On" xml:space="preserve"><value>ON (suggest even without Tasks)</value></data>
   <data name="TaskEditing.Off" xml:space="preserve"><value>OFF (no suggestions)</value></data>
   <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>Automatic is the default. If Tasks is missing, disabled or unreachable, or you use local mode, suggestions stay off until you select ON manually. Enter checklist continuation and checkbox operations remain available separately.</value></data>
+  <data name="TaskEditing.ToggleShortcut" xml:space="preserve"><value>Toggle checkbox shortcut</value></data>
+  <data name="TaskEditing.ShortcutHelp" xml:space="preserve"><value>Focus the field and press Ctrl or Alt with a letter, digit, Enter, Space or F1–F12 (Shift is optional), e.g. Ctrl+Enter. Unassigned by default. Toggles the checkbox on the caret line while editing. Delete/Backspace or Clear disables it.</value></data>
+  <data name="TaskEditing.ShortcutInvalid" xml:space="preserve"><value>This key combination is unavailable. Include Ctrl or Alt. Save, edit, standard copy/paste/undo and other reserved commands cannot be assigned.</value></data>
+  <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>Clear shortcut</value></data>
 </root>

@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Markdig;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
+using Markdig.Extensions.TaskLists;
 
 namespace StickyNotes;
 
@@ -13,6 +14,27 @@ internal sealed record TaskSuggestions(TaskSuggestion[] Items, bool SelectFirst)
 
 internal static class TaskInput
 {
+    internal static TaskTextEdit? ToggleCheckbox(string text, int caret, int selection)
+    {
+        if (selection != 0 || caret < 0 || caret > text.Length) return null;
+        var start = caret == 0 ? 0 : text.LastIndexOf('\n', caret - 1) + 1;
+        var end = text.IndexOf('\n', caret); if (end < 0) end = text.Length;
+        // Use the rendered Markdown structure so task-like code and query source stay untouched.
+        var document = Markdown.Parse(text, MarkdownView.Pipeline);
+        foreach (var paragraph in document.Descendants<ParagraphBlock>())
+        {
+            if (paragraph.Inline is null) continue;
+            foreach (var task in paragraph.Inline.Descendants<TaskList>())
+            {
+                var index = task.Span.Start;
+                if (index < start || index + 2 >= end || text[index] != '[' || text[index + 2] != ']' ||
+                    text[index + 1] is not (' ' or 'x' or 'X')) continue;
+                return new(index + 1, 1, text[index + 1] == ' ' ? "x" : " ");
+            }
+        }
+        return null;
+    }
+
     private static readonly Regex TaskLine = new(@"^(?<indent>[ \t]*)(?<bullet>[-+*]|[0-9]{1,9}[.)]) (?<box>\[[ xX]\]) (?<body>.*)$",
         RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(100));
 

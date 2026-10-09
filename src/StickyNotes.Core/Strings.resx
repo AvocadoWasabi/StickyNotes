@@ -1033,4 +1033,8 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="TaskEditing.On" xml:space="preserve"><value>ON（Tasksがなくても補完する）</value></data>
   <data name="TaskEditing.Off" xml:space="preserve"><value>OFF（補完しない）</value></data>
   <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>既定は自動です。Tasks未導入・無効・接続確認失敗・ローカル方式では、手動でONにするまで候補を表示しません。Enterでのチェックリスト継続とチェック操作は別に利用できます。</value></data>
+  <data name="TaskEditing.ToggleShortcut" xml:space="preserve"><value>チェックON・OFFのショートカット</value></data>
+  <data name="TaskEditing.ShortcutHelp" xml:space="preserve"><value>欄を選び、CtrlまたはAltと英字・数字・Enter・Space・F1〜F12の組み合わせを押して登録します（Shift併用可）。例：Ctrl+Enter。既定は未設定です。編集カーソル行のチェックを切り替えます。Delete／Backspaceまたは解除ボタンで無効にします。</value></data>
+  <data name="TaskEditing.ShortcutInvalid" xml:space="preserve"><value>このキーは使用できません。CtrlまたはAltを含む組み合わせにしてください。保存・編集開始・標準のコピー／貼り付け／Undoなどのキーは登録できません。</value></data>
+  <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>ショートカットを解除</value></data>
 </root>

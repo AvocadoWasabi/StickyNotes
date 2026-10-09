@@ -30,6 +30,8 @@ Available from v0.0.5. Control names below follow the English UI.
 
 ## Editing and saving
 
+Assign a key (for example, `Ctrl+Enter`) under **Settings → Toggle checkbox shortcut** and save settings to toggle the checkbox on the caret line while editing. It is unassigned by default and can be cleared. Undo is supported; the usual save workflow writes changes. See [key registration, supported lines and limits](TASK-EDITING.md#english).
+
 | Control | Action |
 | --- | --- |
 | `＋` | Create a note |

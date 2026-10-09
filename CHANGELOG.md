@@ -8,6 +8,8 @@ See the [README](README.md) for usage and [GitHub Releases](https://github.com/A
 
 ## Unreleased
 
+- Add an optional, configurable shortcut to toggle the checkbox on the current editing line. Preserve the caret, one-step undo and normal save/conflict handling. Configure or clear it in Settings; unassigned by default. See [task editing](docs/TASK-EDITING.md#english).
+
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
 
 - Analyze a pinned upstream Tasks clone and align the standard emoji completion workflow: show a default menu after a space with a selected newline entry, use substring matching and whole-word replacement, select contextual dates, preserve field ordering, and indent with Tab. Compare the upstream approved default-menu fixture; retain plugin-gated activation. See [scope and remaining differences](docs/TASK-EDITING.md#english).

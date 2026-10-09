@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace StickyNotes;
 
@@ -42,6 +43,31 @@ public sealed class SettingsWindow : Window
             Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(taskCompletion);
         panel.Children.Add(new TextBlock { Text = L10n.Text("TaskEditing.PolicyHelp"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        panel.Children.Add(new TextBlock { Text = L10n.Text("TaskEditing.ToggleShortcut") });
+        var taskToggleShortcut = new TextBox { Name = "TaskToggleShortcut", IsReadOnly = true,
+            Text = TaskToggleShortcut.Parse(app.Config.TaskToggleShortcut) is { } shortcut
+                ? TaskToggleShortcut.Format(shortcut.Key, shortcut.Modifiers) : "" };
+        var shortcutHelp = new TextBlock { Text = L10n.Text("TaskEditing.ShortcutHelp"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray };
+        taskToggleShortcut.PreviewKeyDown += (_, e) =>
+        {
+            var key = e.Key == Key.System ? e.SystemKey : e.Key;
+            var modifiers = Keyboard.Modifiers;
+            if (key == Key.Tab) return;
+            e.Handled = true;
+            if (key is Key.LeftCtrl or Key.RightCtrl or Key.LeftAlt or Key.RightAlt or Key.LeftShift or Key.RightShift or Key.ImeProcessed) return;
+            if (modifiers == ModifierKeys.None && key is Key.Delete or Key.Back)
+                taskToggleShortcut.Text = "";
+            else if (TaskToggleShortcut.IsAllowed(key, modifiers))
+                taskToggleShortcut.Text = TaskToggleShortcut.Format(key, modifiers);
+            else { shortcutHelp.Text = L10n.Text("TaskEditing.ShortcutInvalid"); return; }
+            shortcutHelp.Text = L10n.Text("TaskEditing.ShortcutHelp");
+        };
+        var shortcutPanel = new StackPanel();
+        shortcutPanel.Children.Add(taskToggleShortcut);
+        panel.Children.Add(shortcutPanel);
+        panel.Children.Add(Ui.Button(L10n.Text("TaskEditing.ShortcutClear"), () =>
+        { taskToggleShortcut.Text = ""; shortcutHelp.Text = L10n.Text("TaskEditing.ShortcutHelp"); }));
+        panel.Children.Add(shortcutHelp);
         var autoSave = new CheckBox { Name = "AutoSaveOnFocusLoss", Content = L10n.Text("SettingsWindow.Text02"), IsChecked = app.Config.AutoSaveOnFocusLoss, Margin = new Thickness(0, 0, 0, 8) };
         panel.Children.Add(autoSave);
         panel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text03"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
@@ -339,6 +365,7 @@ public sealed class SettingsWindow : Window
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 DoubleClickToEdit = editGesture.SelectedIndex == 1,
                 TaskCompletion = (TaskCompletionMode)Math.Max(0, taskCompletion.SelectedIndex),
+                TaskToggleShortcut = taskToggleShortcut.Text,
                 TitleButtonOverlay = overlay.IsChecked == true,
                 ShowInTaskbar = taskbar.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text,
