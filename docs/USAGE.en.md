@@ -10,7 +10,7 @@ Use **Browse sticky-note folder…** from **…**, the tray menu or the taskbar 
 
 v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english).
 
-[Back to basic usage](../README.md)
+[Back to basic usage](../README.en.md)
 
 Choose the section you need.
 

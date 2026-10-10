@@ -4,9 +4,11 @@
 
 User-facing changes are recorded here, newest releases first. Development commits are listed separately below.
 
-See the [README](README.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
+See the [README](README.en.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
 ## Unreleased
+
+- Make the default GitHub README Japanese, keep English in `README.en.md`, and retain Simplified Chinese and existing Japanese links. Update language navigation and include all README files in distribution packages.
 
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
 

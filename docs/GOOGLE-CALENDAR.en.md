@@ -4,7 +4,7 @@
 
 # Google Calendar usage and setup
 
-[Back to basic usage](../README.md)
+[Back to basic usage](../README.en.md)
 
 [Search and edit](#usage) · [Initial authentication](#setup) · [Delete imported JSON](#json) · [Troubleshooting](#troubleshooting)
 

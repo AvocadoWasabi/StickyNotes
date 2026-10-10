@@ -8,6 +8,8 @@
 
 ## 未发布
 
+- 将 GitHub 默认 README 改为日语，英语版移至 `README.en.md`。保留简体中文版和现有日语链接，更新语言切换，并在分发包中包含所有 README 文件。
+
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
 
 - 克隆并固定上游Tasks版本，分析后对齐标准表情补全：空格后候选菜单及默认换行项、子串匹配与整词替换、日期候选选择、候选顺序及Tab缩进。使用上游批准的候选资料比较，保留无Tasks时须手动ON的限制。参见[范围及剩余差异](docs/TASK-EDITING.md#简体中文)。

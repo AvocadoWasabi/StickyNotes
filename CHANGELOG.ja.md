@@ -8,6 +8,8 @@
 
 ## 未リリース
 
+- GitHubの既定READMEを日本語に変更し、英語版を `README.en.md` に配置。簡体字中国語版と既存の日本語リンクを維持し、言語切り替え・配布物への全README同梱を更新。
+
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
 
 - 本家Tasksをclone・版固定して解析し、絵文字形式の標準補完を修正。スペース後の候補一覧と先頭の改行項目、部分一致・単語全体の置換、日付候補の選択、候補順、Tab字下げを本家に合わせ、本家の承認済み候補データで照合。Tasks未導入時の手動ON制約を維持。[対応範囲と残る差](docs/TASK-EDITING.md#日本語)を参照。

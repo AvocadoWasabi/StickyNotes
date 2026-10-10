@@ -16,7 +16,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
 $appOutput = if ($TasksPreview) { 'artifacts/tasks-cli-preview/app' } else { 'artifacts/app' }
 & $dotnet publish src/StickyNotes/StickyNotes.csproj -c Release -r win-x64 --self-contained true -o $appOutput --configfile NuGet.Config $flavor
 if ($LASTEXITCODE -ne 0) { throw 'Publish failed' }
-Copy-Item README.md,README.ja.md,README.zh-CN.md,CHANGELOG.md,CHANGELOG.ja.md,CHANGELOG.zh-CN.md,THIRD-PARTY-NOTICES.txt -Destination $appOutput
+Copy-Item README.md,README.en.md,README.ja.md,README.zh-CN.md,CHANGELOG.md,CHANGELOG.ja.md,CHANGELOG.zh-CN.md,THIRD-PARTY-NOTICES.txt -Destination $appOutput
 Copy-Item examples -Destination $appOutput -Recurse -Force
 Copy-Item docs -Destination $appOutput -Recurse -Force
 Copy-Item packaging/Install.cmd,packaging/Install.ps1 -Destination $appOutput

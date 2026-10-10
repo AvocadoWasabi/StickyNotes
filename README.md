@@ -1,118 +1,118 @@
-[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md)
 
 # Markdown Sticky Notes
 
-Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
+タスク本文の後のスペースで本家に沿った候補一覧を表示します。先頭の **⏎** でEnterは次項目へ、↓で選んでEnterは候補挿入、Tabは字下げです。[解析元と対応範囲](docs/TASK-EDITING.md#日本語)を参照してください。
 
-v0.0.8 adds task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
+v0.0.8は、タスクのキーワード・日付補完とEnterでのチェックリスト継続に対応し、通常のCLIチェック操作にもTasks本家の完了処理を利用します。[タスク入力と制約](docs/TASK-EDITING.md#日本語)を参照してください。
 
-Browse closed notes from **… → Browse sticky-note folder…**, the tray menu, or the taskbar menu, with body and YAML previews. [Checkbox updates and note browser](docs/QUERY-EDITING-AND-BROWSER.md#english).
+閉じた付箋は **… → 付箋フォルダから開く…**・常駐メニュー・タスクバーメニューから、本文／YAMLを確認して開き直せます。[チェック操作と付箋一覧](docs/QUERY-EDITING-AND-BROWSER.md#日本語)。
 
-v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](docs/DATAVIEW.md#english).
+v0.0.8は、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](docs/DATAVIEW.md#日本語)を参照してください。
 
-Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Keep Obsidian running with CLI enabled. Existing settings that explicitly disable CLI remain local; you can also disable CLI in Settings to use local files without Obsidian.
-**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
+v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。CLIを有効にしたObsidianを起動しておいてください。既存設定の明示的な無効指定は維持します。設定でCLIを無効にすれば、Obsidianなしでローカルファイルを使えます。
+**v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
 
-CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
+CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
 
-<img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
+<img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
 
-A Markdown sticky-note app for Windows. Edit Obsidian notes and daily notes directly, and display Google Calendar events alongside them. Obsidian is optional.
+Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリーノートを直接編集し、Google Calendarの予定を並べて表示できます。Obsidianなしでも使えます。
 
-**Windows 10 / 11 (x64).** The UI and documentation support English, Japanese, and Simplified Chinese. [Display language](docs/USAGE.en.md#language).  Google integration is optional and requires your own OAuth setup.
+**Windows 10 / 11（x64）対応。** 画面・資料ともに英語・日本語・簡体字中国語に対応しています。 [表示言語](docs/USAGE.md#language)。Google連携は任意で、利用者自身のOAuth設定が必要です。
 
-[Download](#download-and-install) · [Basic usage](#basic-usage) · [Google Calendar](#google-calendar) · [Further reading](#further-reading)
+[ダウンロード](#ダウンロードとインストール) · [基本操作](#基本操作) · [Google Calendar](#google-calendar) · [補足資料](#補足資料)
 
 <details>
-<summary>Screenshots (expand to view)</summary>
+<summary>スクリーンショット（クリックで展開）</summary>
 
-Version 0.0.2 note views rendered with the app's WPF controls and English sample notes. The controls in these older images are Japanese. Click an image to view it at full size.
+バージョン0.0.2のWPFコントロールで、紹介用サンプルを描画した付箋画面です。画像をクリックすると元のサイズで表示できます。
 
-| Checklists at hand | Markdown notes | Linked daily notes |
+| 手元にチェックリスト | Markdownでメモ | デイリーノートと連動 |
 | :---: | :---: | :---: |
-| [<img src="docs/images/sticky-tasks-en.jpg" alt="Yellow sticky note with an English checklist and checked tasks" width="300">](docs/images/sticky-tasks-en.jpg) | [<img src="docs/images/sticky-markdown-en.jpg" alt="Blue sticky note displaying English Markdown headings, a numbered list, and a table" width="300">](docs/images/sticky-markdown-en.jpg) | [<img src="docs/images/sticky-daily-en.jpg" alt="Green sticky note linked to the Tasks section of a daily note, with English sample tasks" width="300">](docs/images/sticky-daily-en.jpg) |
+| [<img src="docs/images/sticky-tasks-ja.jpg" alt="日本語のチェックリストと完了済みタスクを表示した黄色の付箋" width="300">](docs/images/sticky-tasks-ja.jpg) | [<img src="docs/images/sticky-markdown-ja.jpg" alt="日本語の見出し・番号付きリスト・表をMarkdownで表示した青い付箋" width="300">](docs/images/sticky-markdown-ja.jpg) | [<img src="docs/images/sticky-daily-ja.jpg" alt="今日のデイリーノートのTasks見出しと連動する緑の付箋" width="300">](docs/images/sticky-daily-ja.jpg) |
 
-The screenshots use fictional sample content. [Sample files and capture instructions](docs/SCREENSHOTS.md) are included for reproduction.
+撮影用の架空データを使用しています。[サンプルファイルと撮影手順](docs/SCREENSHOTS.md)も同梱しています。
 
 </details>
 
-## Download and install
+## ダウンロードとインストール
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.8 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) and extract it.
-2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
-3. Open `Settings` from the notification-area icon. In **Obsidian CLI**, get the open vault, then select a sticky-note folder. To use local files, disable CLI and choose a base folder first. [Connection and plugin setup](docs/TASKS-CLI-PREVIEW.md#english).
+1. [v0.0.8の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
+3. 通知領域アイコンの「設定 → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
 
-No administrator privileges or separate .NET installation are required. The app is unsigned, so Windows may ask for confirmation. See the [installation guide](docs/INSTALL.en.md) for updates, removal, and portable use.
+管理者権限や.NETの追加インストールは不要です。未署名のためWindowsの確認が出る場合があります。更新・削除・インストールせず使う方法は[導入ガイド](docs/INSTALL.md)を参照してください。
 
-<a id="using-the-app"></a>
+<a id="起動"></a>
 
-## Basic usage
+## 基本操作
 
-| Action | Control |
+| 操作 | 方法 |
 | --- | --- |
-| Create a note | `＋`, or `New note` in the notification-area menu |
-| Edit and save | Click the body (single/double click in Settings) / `Ctrl+E` → edit → `Ctrl+S` or `Esc` |
-| Complete a task | Click its checkbox to update the source Markdown |
-| Move or resize | Drag the top / an edge or the bottom-right corner |
-| Keep on top | `○ / ●`; the `…` menu can bring all notes to the top for 10 seconds |
-| Scale content | `… → Display scale` (50–200%) |
-| Close or exit | `×` closes a note; notification-area `Exit` exits the app |
+| 新しい付箋 | `＋`、または通知領域の「新しい付箋」 |
+| 編集・保存 | 本文をクリック（設定でシングル／ダブルを選択）／`Ctrl+E` → 編集 → `Ctrl+S` または `Esc` |
+| タスクの完了 | チェックボックスをクリックして元のMarkdownへ保存 |
+| 移動・サイズ変更 | 上部をドラッグ／端や右下をドラッグ |
+| 最前面表示 | `○ / ●`。全付箋の10秒間の一時表示は `…` メニュー |
+| 表示サイズ | `… → 表示スケール`（50～200%） |
+| 閉じる・終了 | `×` は付箋だけ閉じる。アプリ終了は通知領域の「終了」 |
 
-Clicking starts editing at the corresponding source position. `Esc` saves and finishes editing; if a completion suggestion is open, the first `Esc` dismisses it. Leaving the editor prompts to save changed text. Settings can enable saving without confirmation. Closing a note does not delete its Markdown file.
+クリックした位置に対応する本文から編集できます。`Esc`で保存して編集終了します。補完候補が開いている場合は最初の`Esc`で候補を閉じます。編集欄からフォーカスが外れると、変更の保存を確認します。確認なしの自動保存は設定で有効にできます。閉じてもMarkdownは削除されません。
 
-See the [usage reference](docs/USAGE.en.md#editing) for taskbar icons, button visibility, and shortcuts.
+タスクバー表示、操作ボタンの表示方法、ショートカットの詳細は[操作・設定の補足](docs/USAGE.md#editing)へ。
 
-## Storage and Obsidian
+## 保存先とObsidian
 
-After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](docs/STICKY-FOLDERS.md#english) for scope, rollback and recovery.
+Vault（CLI）またはローカルの基準フォルダを決めたら、**付箋の保存フォルダを選択…**を押します。一覧選択または新しい相対パスの入力後、**決定**で既存のアプリ作成付箋も移行するか選びます。**はい**は移行、**いいえ**は今後の保存先だけ変更、**キャンセル**は変更しません。対象範囲・巻き戻し・復旧については[保存先と移行のガイド](docs/STICKY-FOLDERS.md#日本語)を参照してください。
 
-An explicit sticky folder takes precedence over Obsidian's general new-note location. Without a selection, CLI mode retains Obsidian's default; local mode retains its saved folder (initially `Documents/StickyNotesData`). Daily-note settings remain independent.
+指定した付箋フォルダをObsidian全般の新規保存先より優先します。未指定ならCLIはObsidianの既定、ローカル方式は保存済みフォルダ（初期値`Documents/StickyNotesData`）を維持します。デイリー設定は独立しています。
 
-## Display and edit a daily note section
+## デイリーノートの特定箇所を常に表示・編集
 
-1. In CLI mode, configure Obsidian's core Daily notes plugin and check the retrieved settings in Sticky Notes. In local mode, choose the daily-note folder and tagged regular expression, check the matching filename, then save.
-2. Use `… → Display a daily note…`, choose a heading, and select `Display`. A blank heading shows the whole body.
-3. Edit text or check tasks in the sticky note to update the source note.
+1. CLIモードではObsidianのコアDaily notesプラグインを設定し、付箋の設定画面で取得結果を確認します。ローカルモードではフォルダと日時タグ付き正規表現を指定し、一致ファイル名を確認して保存します。
+2. `… → デイリーノートを表示…` から見出しを選び、「表示」を押します。空欄なら本文全体を表示します。
+3. 付箋で本文を編集したり、タスクをチェックしたりすると元のノートに反映されます。
 
-The first addition requires today's file. Later, missing daily notes can show a waiting message or retain yesterday according to Settings. See [filename examples and switching options](docs/USAGE.en.md#daily).
+初回追加には今日のファイルが必要です。以降、今日の分が未作成なら待機するか、設定で昨日の分を表示できます。[ファイル名の例と切替設定](docs/USAGE.md#daily)を参照してください。
 
-For a fixed note, use `… → Link part of a note…`. See [heading selection](docs/USAGE.en.md#headings).
+固定ノートの一部分を表示するには `… → ノートの一部分を付箋にする…` を使います。[見出しの選択](docs/USAGE.md#headings)へ。
 
 ## Google Calendar
 
-<a id="initial-authentication"></a>
+<a id="初回認証"></a>
 
-First authenticate using the [connection guide](docs/GOOGLE-CALENDAR.en.md#setup) in the right pane of Settings. Then save this line in a separate paragraph:
+最初に設定画面の右ペインで[接続ガイド](docs/GOOGLE-CALENDAR.md#setup)に従って認証します。その後、独立した段落に次の行を書いて保存します。
 
 ```text
 @calendar 2026-10-06T09:00
 ```
 
-**Scheduled times cannot be retrieved through the Google Tasks API.** Even when a time is set in Google, the API provides only the date, so this app displays “no time”.
+**Google Tasksの予定時刻はAPIの仕様上取得できません。** Google側で時刻を設定していても、APIから取得できるのは日付のみのため、このアプリでは「時刻なし」と表示します。
 
-Google Tasks is also displayed as read-only. `@calendar today` includes today's dated, incomplete tasks. Existing users must enable the Tasks API and sign in again with Tasks read access; see the [Tasks setup guide](docs/GOOGLE-CALENDAR.en.md#tasks).
+Google Tasksも読み取り専用で表示します。`@calendar today` では当日の日付が付いた未完了タスクを取得します。既存ユーザーはTasks APIの有効化とTasks読み取りを許可する再認証が必要です。[Tasksの設定手順](docs/GOOGLE-CALENDAR.md#tasks)を参照してください。
 
-Use `@calendar today` to follow the PC's current day automatically (local midnight to the next midnight). `@calendar today meeting` filters by keyword. The date is checked and events are refreshed about every 60 seconds while viewing the note, including after waking from sleep; automatic refresh pauses while editing.
+`@calendar today` はPCの当日（ローカル時刻の0時から翌日0時まで）に自動で追従します。`@calendar today 会議` のように絞り込みもできます。付箋の表示中は約60秒ごとに日付確認と予定取得を行い、スリープ復帰後も追従します。編集中は自動更新を一時停止します。
 
-**Keywords and time zone offsets are optional.** Without an offset, the app uses Windows local time. Append a keyword such as `meeting` to filter results.
+**キーワード・タイムゾーンなしで検索できます。** 省略時はWindowsのローカル時刻を使用します。絞り込む場合は末尾に `会議` などを追加します。
 
-While editing, type `@` in a separate paragraph to show a suggestion and examples. Tab, Enter, or a click inserts today's date at `00:00` and selects the date and time for editing. The inserted date stays fixed.
+編集中に独立した段落で `@` を入力すると、補完候補と入力例が表示されます。Tab・Enter・クリックで今日の `00:00` を挿入し、選択された日時を変更できます。挿入した日付は固定です。
 
-Click an event to edit its title or description, then confirm to send changes to Google. Creating events and automatically syncing Markdown tasks are unsupported. See [search rules, JSON management, and troubleshooting](docs/GOOGLE-CALENDAR.en.md).
+予定の件名・説明はクリックして編集し、確認後にGoogleへ反映できます。Markdownタスクとの自動同期や予定の作成には対応していません。[検索条件・JSON管理・トラブル対処](docs/GOOGLE-CALENDAR.md)へ。
 
-## Markdown support and data protection
+## Markdown対応範囲・データ保護
 
-Headings, lists, tasks, tables, code, and links are supported. Images display as alternative text; some Obsidian-specific syntax is unsupported.
+見出し・リスト・タスク・表・コード・リンクに対応します。画像は代替テキストで表示し、Obsidian固有の記法には未対応のものがあります。
 
-Conflicting external changes block overwrites. Pre-write backups are saved under `%LOCALAPPDATA%/StickyNotes/backups`. See [supported syntax and recovery details](docs/USAGE.en.md#data).
+外部変更との競合時は上書きを止め、書込み前の内容を `%LOCALAPPDATA%/StickyNotes/backups` に保存します。[対応範囲と復旧の補足](docs/USAGE.md#data)へ。
 
-## Further reading
+## 補足資料
 
-| Topic | Guide |
+| 調べたいこと | 資料 |
 | --- | --- |
-| Install, update, or remove | [Installation](docs/INSTALL.en.md) |
-| Controls, storage, and daily notes | [Usage reference](docs/USAGE.en.md) |
-| Google authentication and events | [Google Calendar](docs/GOOGLE-CALENDAR.en.md) |
-| Changes by version | [Changelog](CHANGELOG.md) |
-| Build, test, and release | [Development](docs/DEVELOPMENT.en.md) |
-| Examples and licenses | [Daily note](examples/Daily.md) · [Obsidian Bases](examples/StickyNotes.base) · [Licenses](THIRD-PARTY-NOTICES.txt) |
+| インストール・更新・削除 | [導入ガイド](docs/INSTALL.md) |
+| 操作・保存先・デイリーノート | [操作・設定の補足](docs/USAGE.md) |
+| Googleの認証・予定検索 | [Google Calendarガイド](docs/GOOGLE-CALENDAR.md) |
+| バージョンごとの変更 | [変更履歴](CHANGELOG.ja.md) |
+| ビルド・検証・公開 | [開発ガイド](docs/DEVELOPMENT.md) |
+| サンプル・ライセンス | [デイリーノート](examples/Daily.md) · [Obsidian Bases](examples/StickyNotes.base) · [ライセンス](THIRD-PARTY-NOTICES.txt) |
