@@ -54,7 +54,7 @@ No administrator privileges or separate .NET installation are required. The app 
 | Edit and save | Click the body (single/double click in Settings) / `Ctrl+E` → edit → `Ctrl+S` or `Esc` |
 | Complete a task | Click its checkbox to update the source Markdown |
 | Move or resize | Drag the top / an edge or the bottom-right corner |
-| Keep on top | `○ / ●`; the `…` menu can bring all notes to the top for 10 seconds |
+| Keep on top | `○ / ●`; `Alt + Z` or the `…` menu brings all notes to the top for 10 seconds |
 | Scale content | `… → Display scale` (50–200%) |
 | Close or exit | `×` closes a note; notification-area `Exit` exits the app |
 

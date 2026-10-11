@@ -29,7 +29,9 @@ internal static class AppCommands
         foreach (var command in All)
         {
             if (command.SeparatorBefore) menu.Items.Add(new Forms.ToolStripSeparator());
-            menu.Items.Add(command.Title, null, (_, _) => execute(command));
+            var item = new Forms.ToolStripMenuItem(command.Title, null, (_, _) => execute(command));
+            if (command.Id == "temporary-front") item.ShortcutKeyDisplayString = TemporaryFrontHotkey.Gesture;
+            menu.Items.Add(item);
         }
         return menu;
     }

@@ -1033,4 +1033,5 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="TaskEditing.On" xml:space="preserve"><value>ON (suggest even without Tasks)</value></data>
   <data name="TaskEditing.Off" xml:space="preserve"><value>OFF (no suggestions)</value></data>
   <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>Automatic is the default. If Tasks is missing, disabled or unreachable, or you use local mode, suggestions stay off until you select ON manually. Enter checklist continuation and checkbox operations remain available separately.</value></data>
+  <data name="Hotkey.Unavailable" xml:space="preserve"><value>Alt + Z could not be registered. Another app may be using it. Temporary always-on-top display is still available from the tray or note menu. Resolve the conflict and restart the app.</value></data>
 </root>

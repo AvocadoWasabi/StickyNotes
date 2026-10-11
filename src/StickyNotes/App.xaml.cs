@@ -26,6 +26,7 @@ public partial class App : Application
     private Mutex? mutex;
     private bool ownsMutex;
     private AppCommandPipe? commandPipe;
+    private TemporaryFrontHotkey? temporaryFrontHotkey;
     private static string CommandPipeName
     {
         get
@@ -90,6 +91,17 @@ public partial class App : Application
             trayIcon = new System.Drawing.Icon(iconStream, System.Windows.Forms.SystemInformation.SmallIconSize);
         tray = new Forms.NotifyIcon { Icon = trayIcon, Text = BuildFlavor.TasksPreview ? "Sticky Notes — Tasks CLI Preview" : "Markdown Sticky Notes", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => { if (Notes.Count == 0) Safe(NewNote); else { Notes[0].Show(); Notes[0].Activate(); } };
+        try
+        {
+            temporaryFrontHotkey = new TemporaryFrontHotkey(() =>
+            {
+                if (!Exiting) Safe(BringNotesToFrontTemporarily);
+            });
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            tray.ShowBalloonTip(10000, "Sticky Notes", L10n.Text("Hotkey.Unavailable"), Forms.ToolTipIcon.Warning);
+        }
         var needsCliSetup = NoteSource.UsesCli(Config) && string.IsNullOrWhiteSpace(Config.ObsidianVaultFolder);
         foreach (var placement in Config.Windows.ToArray()) Safe(() => ShowNote(placement));
         if (needsCliSetup) Dispatcher.BeginInvoke(new Action(() => Safe(() => new SettingsWindow().ShowDialog())));
@@ -250,6 +262,7 @@ public partial class App : Application
     public void Quit() { if (PrepareExit()) Shutdown(); }
     protected override void OnExit(ExitEventArgs e)
     {
+        temporaryFrontHotkey?.Dispose();
         commandPipe?.Dispose();
         tray?.Dispose();
         trayIcon?.Dispose();

@@ -74,6 +74,8 @@ The isolated `--data-dir` test mode does not register or replace the taskbar men
 
 ### Temporary always-on-top display
 
+`Alt + Z` is a fixed global shortcut that also works while another app has focus. It is active while Sticky Notes is running; holding the keys does not repeatedly trigger it. Registration conflicts with other apps produce a notification. Resolve the conflict and restart, or use the menu action below.
+
 Choose `Bring all notes to the top (10 seconds)` from the notification-area or `…` menu to restore minimized notes and bring all notes to the top for 10 seconds. Repeat to extend the interval.
 
 Each note then returns to its pin setting; the previous stacking order is not restored. Temporary display is not saved. Pressing `○ / ●` during the interval immediately applies a new permanent setting to that note.

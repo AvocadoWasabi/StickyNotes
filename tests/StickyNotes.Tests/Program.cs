@@ -211,6 +211,7 @@ internal static partial class Program
 
     private static void TaskbarAndTemporaryFrontTests(string root)
     {
+        TemporaryFrontHotkeyTests();
         Check(!JsonSerializer.Deserialize<Settings>("{}")!.ShowInTaskbar, "older settings retain tray-only notes");
         var app = App.Current;
         var previous = app.Config;
@@ -304,6 +305,34 @@ internal static partial class Program
             note.Close(); pinned.Close(); app.ApplySettings(previous, false);
         }
         Check(!timer.IsEnabled && !pinnedTimer.IsEnabled, "closing notes stops temporary timers");
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern IntPtr SendMessage(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
+
+    private static void TemporaryFrontHotkeyTests()
+    {
+        var calls = 0;
+        // Reserve an uncommon test gesture instead of interfering with the user's Alt+Z.
+        using (var hotkey = new TemporaryFrontHotkey(() => calls++, 0x0007, 0x87))
+        {
+            SendMessage(hotkey.Handle, 0x0312, new IntPtr(2), IntPtr.Zero);
+            Check(calls == 0, "global shortcut ignores unrelated hotkey identifiers");
+            SendMessage(hotkey.Handle, 0x0312, new IntPtr(1), IntPtr.Zero);
+            Check(calls == 1, "global shortcut dispatches the registered action");
+            Throws<System.ComponentModel.Win32Exception>(() =>
+            {
+                using var duplicate = new TemporaryFrontHotkey(() => calls++, 0x0007, 0x87);
+            }, "global shortcut reports registration conflicts safely");
+            hotkey.Dispose();
+            hotkey.Dispose();
+        }
+        using var replacement = new TemporaryFrontHotkey(() => calls++, 0x0007, 0x87);
+        SendMessage(replacement.Handle, 0x0312, new IntPtr(1), IntPtr.Zero);
+        Check(calls == 2, "global shortcut releases registration on disposal");
+        using var menu = AppCommands.CreateTrayMenu(_ => { });
+        Check(menu.Items.OfType<System.Windows.Forms.ToolStripMenuItem>().Any(x => x.ShortcutKeyDisplayString == "Alt + Z"),
+            "tray menu advertises global shortcut");
     }
 
     private static void TitleButtonOverlayTests(string root)

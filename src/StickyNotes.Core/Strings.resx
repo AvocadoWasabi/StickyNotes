@@ -1033,4 +1033,5 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="TaskEditing.On" xml:space="preserve"><value>ON（Tasksがなくても補完する）</value></data>
   <data name="TaskEditing.Off" xml:space="preserve"><value>OFF（補完しない）</value></data>
   <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>既定は自動です。Tasks未導入・無効・接続確認失敗・ローカル方式では、手動でONにするまで候補を表示しません。Enterでのチェックリスト継続とチェック操作は別に利用できます。</value></data>
+  <data name="Hotkey.Unavailable" xml:space="preserve"><value>Alt + Z を登録できませんでした。他のアプリが使用している可能性があります。通知領域または付箋のメニューから一時的な最前面表示を利用できます。競合を解消してアプリを再起動してください。</value></data>
 </root>

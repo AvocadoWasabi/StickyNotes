@@ -8,6 +8,8 @@
 
 ## 未发布
 
+- 新增全局快捷键 Alt + Z，将全部便签置顶10秒，再次按下可延长时间。注册冲突时显示通知，菜单操作仍可使用。
+
 - 将 GitHub 默认 README 改为日语，英语版移至 `README.en.md`。保留简体中文版和现有日语链接，更新语言切换，并在分发包中包含所有 README 文件。
 
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
