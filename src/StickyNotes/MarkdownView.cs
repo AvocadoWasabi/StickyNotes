@@ -12,10 +12,11 @@ public static class MarkdownView
 {
     internal static readonly MarkdownPipeline Pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UsePreciseSourceLocation().Build();
 
-    public static string FindCalendarCommand(string markdown)
+    public static string FindCalendarCommand(string markdown, Func<int, bool>? include = null)
     {
         foreach (var paragraph in Markdown.Parse(markdown, Pipeline).OfType<ParagraphBlock>())
         {
+            if (include is not null && !include(paragraph.Span.Start)) continue;
             var line = markdown[paragraph.Span.Start..(paragraph.Span.End + 1)].Split('\n')[0].TrimEnd('\r');
             if (line.StartsWith("@calendar ", StringComparison.OrdinalIgnoreCase)) return line;
         }
@@ -23,11 +24,13 @@ public static class MarkdownView
     }
 
     public static FlowDocument Render(string markdown, Action<int, bool> toggle,
-        Func<FencedCodeBlock, Section>? queryPreview = null, bool readOnly = false, Func<int, bool>? canToggle = null)
+        Func<FencedCodeBlock, Section>? queryPreview = null, bool readOnly = false, Func<int, bool>? canToggle = null,
+        Func<int, bool>? include = null)
     {
         var result = new FlowDocument { FontFamily = new FontFamily("Yu Gothic UI"), FontSize = 14,
             PagePadding = new Thickness(5), Background = Brushes.Transparent, Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(52, 48, 35)) };
-        foreach (var block in Markdown.Parse(markdown, Pipeline)) AddBlock(result.Blocks, block, markdown, toggle, queryPreview, readOnly, canToggle);
+        foreach (var block in Markdown.Parse(markdown, Pipeline))
+            if (include is null || include(block.Span.Start)) AddBlock(result.Blocks, block, markdown, toggle, queryPreview, readOnly, canToggle);
         return result;
     }
 

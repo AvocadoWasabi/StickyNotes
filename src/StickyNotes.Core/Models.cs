@@ -38,6 +38,8 @@ public sealed class NotePlacement
     public int ContentScale { get => contentScale; set => contentScale = Math.Clamp(value, MinContentScale, MaxContentScale); }
     public string Path { get; set; } = "";
     public string Heading { get; set; } = "";
+    private List<string> headingFilters = [];
+    public List<string> HeadingFilters { get => headingFilters; set => headingFilters = value ?? []; }
     public bool Daily { get; set; }
     public double Left { get; set; } = 100;
     public double Top { get; set; } = 100;

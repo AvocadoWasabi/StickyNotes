@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Add a persistent per-note heading filter with hierarchical search, multiple selections, immediate preview and one-click reset. Preserve source editing/task positions and report missing or ambiguous headings. See [usage](docs/USAGE.en.md#heading-filter).
+
 - Add the global Alt + Z shortcut to bring all notes to the top for 10 seconds. Repeating extends the interval; registration conflicts show a notification and leave menu actions available.
 
 - Make the default GitHub README Japanese, keep English in `README.en.md`, and retain Simplified Chinese and existing Japanese links. Update language navigation and include all README files in distribution packages.

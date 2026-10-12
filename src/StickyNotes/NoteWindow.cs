@@ -92,6 +92,12 @@ public sealed partial class NoteWindow : Window
         Control(L10n.Text("NoteWindow.Text05"), () => Save(), 40, "#DCEEDC", L10n.Text("NoteWindow.Text06"));
         Control(L10n.Text("NoteWindow.Text07"), ReloadAsked, 58, "#FFF0CC");
         Control("…", Menu, 30, "#E9E0F2", L10n.Text("NoteWindow.Text08"));
+        headingFilterButton = Control("≡", OpenHeadingFilter, 28, "#F3F1EB", L10n.Text("HeadingFilter.Title"));
+        NoteControls.Children.Remove(headingFilterButton);
+        controlWidths.Remove(headingFilterButton);
+        headingFilterButton.HorizontalAlignment = HorizontalAlignment.Right;
+        title.Margin = new Thickness(12, 0, 34, 0);
+        header.Children.Add(headingFilterButton);
         Control("＋", app.NewNote, 28, "#F3F1EB", L10n.Text("NoteWindow.Text09"));
         var pin = Control(placement.Pinned ? "●" : "○", () => { Placement.Pinned = !Placement.Pinned; EndTemporaryFront(); app.SaveConfig(); }, 28, "#F3F1EB", L10n.Text("NoteWindow.Text10"));
         pin.Click += (_, _) => pin.Content = Placement.Pinned ? "●" : "○";
@@ -99,6 +105,7 @@ public sealed partial class NoteWindow : Window
         var controlsRow = new DockPanel();
         DockPanel.SetDock(dragHandle, Dock.Left); controlsRow.Children.Add(dragHandle); controlsRow.Children.Add(NoteControls);
         controlsHost.Child = controlsRow; header.Children.Add(controlsHost);
+        Panel.SetZIndex(headingFilterButton, 1);
         header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource == title || e.OriginalSource == header || e.OriginalSource == dragHandle) { DragMove(); e.Handled = true; } };
         header.MouseEnter += (_, _) => { headerHovered = true; UpdateButtonOverlay(); };
         header.MouseLeave += (_, _) => { headerHovered = false; UpdateButtonOverlay(); };
@@ -194,7 +201,8 @@ public sealed partial class NoteWindow : Window
         Grid.SetRow(controlsHost, overlay ? 0 : 1);
         NoteHeader.RowDefinitions[0].MinHeight = overlay ? 33 : 27;
         dragHandle.Visibility = overlay ? Visibility.Visible : Visibility.Collapsed;
-        foreach (var (button, width) in controlWidths) button.Width = overlay ? width - 3 : width;
+        controlsHost.Margin = new Thickness(0, 0, overlay ? 31 : 0, 0);
+        foreach (var (button, width) in controlWidths) button.Width = overlay ? width - 8 : width;
         if (overlay) controlsHost.SetBinding(Border.BackgroundProperty, new System.Windows.Data.Binding(nameof(Background)) { Source = this });
         else { controlsHost.ClearValue(Border.BackgroundProperty); controlsHost.Background = Brushes.Transparent; }
         UpdateButtonOverlay();
@@ -342,7 +350,8 @@ public sealed partial class NoteWindow : Window
         Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
         RenderQueryPreviews();
-        var command = MarkdownView.FindCalendarCommand(content);
+        UpdateHeadingFilterStatus();
+        var command = MarkdownView.FindCalendarCommand(content, new HeadingFilter(content, Placement.HeadingFilters).Includes);
         if (activeCommand != command) { calendarRefreshCancellation?.Cancel(); activeCommand = command; eventsPanel.Children.Clear(); displayedCalendarQuery = null; lastCalendarCheck = null; }
     }
 
@@ -354,6 +363,14 @@ public sealed partial class NoteWindow : Window
         {
             loading = true; editor.Text = content; loading = false;
             SetEditing(true);
+            var selected = new HeadingFilter(content, Placement.HeadingFilters).Selected.FirstOrDefault();
+            if (selected is not null)
+            {
+                editor.Select(selected.Start, 0);
+                editor.UpdateLayout();
+                var line = editor.GetLineIndexFromCharacterIndex(selected.Start);
+                if (line >= 0) editor.ScrollToLine(line);
+            }
         }
         editor.Focus();
         // Focus again after layout so a just-revealed editor can receive keyboard/IME input.
@@ -400,6 +417,8 @@ public sealed partial class NoteWindow : Window
     {
         focusLossTimer.Stop();
         editing = value;
+        if (value && headingFilterPopup is not null) headingFilterPopup.IsOpen = false;
+        UpdateHeadingFilterStatus();
         firstClickDocument = null; firstClickCaret = null;
         reading.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
         editor.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
@@ -684,6 +703,7 @@ public sealed partial class NoteWindow : Window
     {
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
+        if (headingFilterPopup is not null) headingFilterPopup.IsOpen = false;
         calendarRefreshCancellation?.Cancel();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
         CancelQueryPreviews();

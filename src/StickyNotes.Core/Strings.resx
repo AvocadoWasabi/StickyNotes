@@ -1034,4 +1034,9 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="TaskEditing.Off" xml:space="preserve"><value>OFF（補完しない）</value></data>
   <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>既定は自動です。Tasks未導入・無効・接続確認失敗・ローカル方式では、手動でONにするまで候補を表示しません。Enterでのチェックリスト継続とチェック操作は別に利用できます。</value></data>
   <data name="Hotkey.Unavailable" xml:space="preserve"><value>Alt + Z を登録できませんでした。他のアプリが使用している可能性があります。通知領域または付箋のメニューから一時的な最前面表示を利用できます。競合を解消してアプリを再起動してください。</value></data>
+  <data name="HeadingFilter.Title" xml:space="preserve"><value>見出しフィルター</value></data>
+  <data name="HeadingFilter.Search" xml:space="preserve"><value>見出しを検索</value></data>
+  <data name="HeadingFilter.Clear" xml:space="preserve"><value>すべて表示</value></data>
+  <data name="HeadingFilter.Empty" xml:space="preserve"><value>見出しがありません。</value></data>
+  <data name="HeadingFilter.Missing" xml:space="preserve"><value>選択した見出しが見つからないか、同じ階層で重複しています。≡ から「すべて表示」で解除して選び直してください。</value></data>
 </root>

@@ -37,7 +37,7 @@ public sealed partial class NoteWindow
 
     internal static FencedCodeBlock[] FindTasksBlocks(string markdown) => FindQueryBlocks(markdown, "tasks");
 
-    private string QueryIdentity() => JsonSerializer.Serialize(new { snapshot?.Path, content, app.Config.ObsidianCli,
+    private string QueryIdentity() => JsonSerializer.Serialize(new { snapshot?.Path, content, Placement.HeadingFilters, app.Config.ObsidianCli,
         app.Config.ObsidianVaultFolder, app.Config.ObsidianVaultId });
 
     private void CancelQueryPreviews()
@@ -49,12 +49,19 @@ public sealed partial class NoteWindow
 
     private void RenderQueryPreviews(bool force = true)
     {
+        var filter = new HeadingFilter(content, Placement.HeadingFilters);
+        void MissingNotice()
+        {
+            if (filter.Missing.Length > 0)
+                preview.Document.Blocks.Add(new Paragraph(new Run(L10n.Text("HeadingFilter.Missing"))));
+        }
         if (!app.Config.ObsidianTasksEnabled)
         {
             if (force || queryIdentity.Length > 0)
             {
                 CancelQueryPreviews();
-                preview.Document = MarkdownView.Render(content, ToggleTask);
+                preview.Document = MarkdownView.Render(content, ToggleTask, include: filter.Includes);
+                MissingNotice();
             }
             return;
         }
@@ -63,7 +70,7 @@ public sealed partial class NoteWindow
         if (changed)
         {
             CancelQueryPreviews(); queryIdentity = identity;
-            var blocks = Markdown.Parse(content, MarkdownView.Pipeline).Descendants<FencedCodeBlock>().ToArray();
+            var blocks = Markdown.Parse(content, MarkdownView.Pipeline).Descendants<FencedCodeBlock>().Where(b => filter.Includes(b.Span.Start)).ToArray();
             foreach (var state in new[] { tasksPreview, dataviewPreview })
             {
                 var matching = blocks.Where(b => b.Info == state.Language).ToArray();
@@ -96,7 +103,8 @@ public sealed partial class NoteWindow
                 if (string.IsNullOrWhiteSpace(markdown)) section.Blocks.Add(new Paragraph(new Run(L10n.Text(state.ResourcePrefix + ".Empty"))));
             }
             return section;
-        });
+        }, include: filter.Includes);
+        MissingNotice();
     }
 
     private async Task ToggleQueryTask(QueryPreviewState state, QueryTaskTarget target, bool value)

@@ -57,6 +57,7 @@ internal static partial class Program
         var backups = Path.Combine(root, "backups");
         try
         {
+            HeadingFilterTests();
             const string original = "---\r\ntags: [daily]\r\ncustom: keep\r\n---\r\n# Journal\r\nintro\r\n## Tasks\r\n- [ ] One\r\n### Sub\r\n- [x] Two\r\n```md\r\n## fake\r\n```\r\n## Log\r\nuntouched\r\n";
             var span = SectionEditor.Find(original, "Tasks");
             Check(span.Content.Contains("## fake") && !span.Content.Contains("untouched"), "section includes children and ignores fenced headings");
@@ -513,6 +514,7 @@ internal static partial class Program
         note.NoteControls.Measure(new Size(278, 100));
         Check(note.NoteControls.DesiredSize.Width <= 278, "action row fits the minimum 280-pixel note width");
         Check(buttons.Take(4).Select(b => b.Background.ToString()).Distinct().Count() == 4 && buttons.Take(4).All(b => b.Background.ToString() != buttons[4].Background.ToString()), "edit/save/reload/menu use distinct backgrounds from other controls");
+        HeadingFilterWindowTests(note, path);
         note.Close();
     }
 

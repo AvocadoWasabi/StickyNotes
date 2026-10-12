@@ -214,3 +214,11 @@ If the source changes externally before Display, the app asks you to reload with
 - Checks the whole file's hash before writing. External changes block stale writes; you can copy or save your edits elsewhere before reloading.
 - Backs up pre-write contents in `%LOCALAPPDATA%/StickyNotes/backups`. Files include a date and GUID and can be restored manually. Backups are not automatically deleted.
 - Uses exclusive file access while writing and attempts to restore content if a write fails. Keep your normal vault backups as well, including protection against power loss.
+
+## Heading filter
+
+Click **≡** on a note to search hierarchical headings and select multiple sections. Changes apply immediately and persist per note. Blue **≡count** indicates an active filter. **Show all** clears it in one click; Esc closes the picker. Parents include children, with no duplicates and in source order.
+
+Only top-level Markdown headings (ATX and Setext) are candidates; headings inside quotes, lists or code blocks are excluded. Parent paths distinguish identical names. Duplicate paths cannot be selected. Renaming, deleting or moving a heading can make a selection unavailable: a notice appears without falling back to other content. Clear the filter and select again.
+
+Filtering only affects display. Editing shows the unfiltered body and moves to the first selected heading. Existing heading-linked notes stay within their linked section. Task operations retain original source lines; hidden Tasks, Dataview and calendar content is excluded from display. Headings remain visible in the body.

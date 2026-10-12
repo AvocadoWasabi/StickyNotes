@@ -1034,4 +1034,9 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="TaskEditing.Off" xml:space="preserve"><value>OFF (no suggestions)</value></data>
   <data name="TaskEditing.PolicyHelp" xml:space="preserve"><value>Automatic is the default. If Tasks is missing, disabled or unreachable, or you use local mode, suggestions stay off until you select ON manually. Enter checklist continuation and checkbox operations remain available separately.</value></data>
   <data name="Hotkey.Unavailable" xml:space="preserve"><value>Alt + Z could not be registered. Another app may be using it. Temporary always-on-top display is still available from the tray or note menu. Resolve the conflict and restart the app.</value></data>
+  <data name="HeadingFilter.Title" xml:space="preserve"><value>Heading filter</value></data>
+  <data name="HeadingFilter.Search" xml:space="preserve"><value>Search headings</value></data>
+  <data name="HeadingFilter.Clear" xml:space="preserve"><value>Show all</value></data>
+  <data name="HeadingFilter.Empty" xml:space="preserve"><value>No headings found.</value></data>
+  <data name="HeadingFilter.Missing" xml:space="preserve"><value>A selected heading is missing or ambiguous. Open ≡, choose Show all, and select again.</value></data>
 </root>
