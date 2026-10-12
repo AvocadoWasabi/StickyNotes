@@ -58,6 +58,7 @@ internal static partial class Program
         try
         {
             HeadingFilterTests();
+            CompactRenderingTests();
             const string original = "---\r\ntags: [daily]\r\ncustom: keep\r\n---\r\n# Journal\r\nintro\r\n## Tasks\r\n- [ ] One\r\n### Sub\r\n- [x] Two\r\n```md\r\n## fake\r\n```\r\n## Log\r\nuntouched\r\n";
             var span = SectionEditor.Find(original, "Tasks");
             Check(span.Content.Contains("## fake") && !span.Content.Contains("untouched"), "section includes children and ignores fenced headings");
@@ -136,7 +137,7 @@ internal static partial class Program
 
             var toggledLine = -1;
             var doc = MarkdownView.Render("# Title\n\n- [ ] task\n\n```md\n- [ ] example\n```\n\n| A | B |\n|---|---|\n| x | y |", (line, _) => toggledLine = line);
-            Check(doc.Blocks.OfType<Paragraph>().Any(p => p.FontSize == 25), "Markdown heading rendered");
+            Check(doc.Blocks.OfType<Paragraph>().Any(p => p.FontSize == 20), "Markdown heading rendered");
             Check(doc.Blocks.OfType<Table>().Count() == 1, "Markdown table rendered");
             var list = doc.Blocks.OfType<System.Windows.Documents.List>().Single();
             var paragraph = list.ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single();
@@ -226,7 +227,7 @@ internal static partial class Program
         T Field<T>(NoteWindow window, string name) => (T)typeof(NoteWindow).GetField(name, flags)!.GetValue(window)!;
         var timer = Field<System.Windows.Threading.DispatcherTimer>(note, "temporaryFrontTimer");
         var pinnedTimer = Field<System.Windows.Threading.DispatcherTimer>(pinned, "temporaryFrontTimer");
-        void ClickPin(NoteWindow window) => window.NoteControls.Children.OfType<Button>().Single(x => (string)x.Content is "○" or "●")
+        void ClickPin(NoteWindow window) => window.NoteControls.Children.OfType<Button>().Single(x => x.Content is "○" or "●")
             .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         try
         {
@@ -283,8 +284,7 @@ internal static partial class Program
             Check(note.Placement.Pinned && note.Topmost && !timer.IsEnabled, "pinning during temporary front becomes permanent");
             pinned.BringToFrontTemporarily(); ClickPin(pinned);
             Check(!pinned.Placement.Pinned && !pinned.Topmost && !pinnedTimer.IsEnabled, "unpinning during temporary front takes effect immediately");
-            note.NoteControls.Children.OfType<Button>().Single(x => (string)x.Content == "編集")
-                .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(note, null);
             var editor = Field<TextBox>(note, "editor"); editor.Text = "unsaved temporary-front draft";
             foreach (var show in new[] { true, false })
             {
@@ -352,13 +352,13 @@ internal static partial class Program
         void Reload() => typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(note, null);
         void Hover(bool value) => note.NoteHeader.RaiseEvent(new System.Windows.Input.MouseEventArgs(System.Windows.Input.Mouse.PrimaryDevice, Environment.TickCount)
             { RoutedEvent = value ? System.Windows.Input.Mouse.MouseEnterEvent : System.Windows.Input.Mouse.MouseLeaveEvent });
-        void Click(string label) => note.NoteControls.Children.OfType<Button>().Single(x => (string)x.Content == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        void Click(string label) { if (label == "編集") typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(note, null); else note.NoteControls.Children.OfType<Button>().Single(x => x.Content is string value && value == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent)); }
         void Measure() { note.NoteHeader.Measure(new Size(278, 200)); note.NoteHeader.Arrange(new Rect(0, 0, 278, note.NoteHeader.DesiredSize.Height)); }
         try
         {
             Reload();
             var host = Field<Border>(note, "controlsHost");
-            Check(host.Visibility == Visibility.Visible && Grid.GetRow(host) == 1, "default controls remain visible below the title");
+            Check(host.Visibility == Visibility.Visible && Grid.GetRow(host) == 0, "compact controls remain visible beside the title");
             Measure(); var normalHeight = note.NoteHeader.DesiredSize.Height;
             var before = File.ReadAllBytes(Path.Combine(App.DataDirectory, "settings.json"));
             var settings = new SettingsWindow();
@@ -372,7 +372,7 @@ internal static partial class Program
             Check(Grid.GetRow(host) == 0 && host.Visibility == Visibility.Collapsed && Grid.GetRow(Field<Border>(other, "controlsHost")) == 0, "saving applies hidden title overlays immediately to all open notes");
             Measure(); var hiddenHeight = note.NoteHeader.DesiredSize.Height;
             Hover(true); Measure();
-            Check(host.Visibility == Visibility.Visible && hiddenHeight == note.NoteHeader.DesiredSize.Height && hiddenHeight < normalHeight, "title hover reveals an overlay without shifting the body or reserving a second row");
+            Check(host.Visibility == Visibility.Visible && hiddenHeight == note.NoteHeader.DesiredSize.Height && hiddenHeight == normalHeight, "title hover reveals an overlay without shifting the body or reserving a second row");
             Check(host.Child.DesiredSize.Width <= 278 && Field<TextBlock>(note, "dragHandle").Visibility == Visibility.Visible && Field<TextBlock>(note, "dragHandle").Width == 24, "overlay buttons and a dedicated drag handle fit the minimum note width");
             Check(host.Background.ToString() == note.Background.ToString(), "overlay background covers the title using the note color");
             Hover(false);
@@ -392,8 +392,8 @@ internal static partial class Program
             checkbox.IsChecked = false;
             panel.Children.OfType<Button>().Single(x => (string)x.Content == "保存して閉じる").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             Hover(false); Measure();
-            Check(host.Visibility == Visibility.Visible && Grid.GetRow(host) == 1 && note.NoteHeader.DesiredSize.Height == normalHeight &&
-                note.NoteControls.Children.OfType<Button>().First().Width == 40, "disabling overlay restores the original always-visible row and button sizes");
+            Check(host.Visibility == Visibility.Visible && Grid.GetRow(host) == 0 && note.NoteHeader.DesiredSize.Height == normalHeight &&
+                note.NoteControls.Children.OfType<Button>().First().Width == 42, "disabling overlay restores the compact always-visible controls");
             Check(Field<TextBlock>(note, "dragHandle").Visibility == Visibility.Collapsed && !app.Config.TitleButtonOverlay, "normal mode removes the overlay-only drag handle");
         }
         finally { Reload(); note.Close(); other.Close(); app.ApplySettings(previous, false); }
@@ -423,7 +423,7 @@ internal static partial class Program
             var menu = note.ContentScaleMenu();
             menu.Items.OfType<MenuItem>().Single(x => (string)x.Header == "150%").RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
             Check(note.Placement.ContentScale == 150 && preview.Zoom == 150 && ReferenceEquals(document, preview.Document), "scale menu zooms the complete document without replacing content or task callbacks");
-            Check(document.Blocks.OfType<Paragraph>().Any(p => p.FontSize == 25) && document.Blocks.OfType<Table>().Single().FontSize == 12, "zoom preserves relative heading and table font sizes");
+            Check(document.Blocks.OfType<Paragraph>().Any(p => p.FontSize == 20) && document.Blocks.OfType<Table>().Single().FontSize == 12, "zoom preserves relative heading and table font sizes");
             Check(((System.Windows.Media.ScaleTransform)Field<StackPanel>(note, "eventsPanel").LayoutTransform).ScaleX == 1.5 &&
                 ((System.Windows.Media.ScaleTransform)Field<TextBlock>(note, "dailyNotice").LayoutTransform).ScaleY == 1.5, "calendar results and daily guidance share the content scale");
             Check(note.NoteControls.Children.OfType<Button>().First().FontSize == toolbarSize && Field<TextBox>(note, "editor").FontSize == 14 &&
@@ -510,10 +510,10 @@ internal static partial class Program
 
         var note = new NoteWindow(new NotePlacement { Path = path });
         var buttons = note.NoteControls.Children.OfType<Button>().ToArray();
-        Check(buttons.Select(b => (string)b.Content).SequenceEqual(new[] { "編集", "保存", "再読込", "…", "＋", "○", "×" }), "all note actions share one horizontal row");
+        Check(buttons.Length == 4 && buttons[0].Visibility == Visibility.Collapsed && (string)buttons[2].Content == "○" && (string)buttons[3].Content == "…", "compact header keeps filter pin and menu with save hidden while reading");
         note.NoteControls.Measure(new Size(278, 100));
         Check(note.NoteControls.DesiredSize.Width <= 278, "action row fits the minimum 280-pixel note width");
-        Check(buttons.Take(4).Select(b => b.Background.ToString()).Distinct().Count() == 4 && buttons.Take(4).All(b => b.Background.ToString() != buttons[4].Background.ToString()), "edit/save/reload/menu use distinct backgrounds from other controls");
+        Check(buttons.All(b => b.BorderBrush == System.Windows.Media.Brushes.Transparent), "compact controls use quiet borders");
         HeadingFilterWindowTests(note, path);
         note.Close();
     }
@@ -586,7 +586,7 @@ internal static partial class Program
         ClickBody(); editor.Text = "explicit save";
         typeof(NoteWindow).GetMethod("ScheduleFocusLoss", flags)!.Invoke(window, null);
         var toolbar = window.NoteControls;
-        toolbar.Children.OfType<Button>().Single(x => (string)x.Content == "保存").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+        toolbar.Children.OfType<Button>().Single(x => x.Content is string text && text == "保存").RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
         var settle = System.Diagnostics.Stopwatch.StartNew();
         WaitFor(() => settle.ElapsedMilliseconds >= 250, "queued focus handling settles after explicit Save");
         Check(confirmations == beforeAuto && File.ReadAllText(path) == "explicit save", "explicit Save cancels the pending blur confirmation");
@@ -633,7 +633,7 @@ internal static partial class Program
             var body = dock.Children.OfType<Grid>().Single(x => x.Children.OfType<TextBox>().Any());
             var reading = body.Children.OfType<DockPanel>().Single();
             var editor = body.Children.OfType<TextBox>().Single();
-            void Click(string label) => toolbar.Children.OfType<Button>().Single(x => (string)x.Content == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            void Click(string label) { if (label == "編集") typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(window, null); else if (label == "再読込") typeof(NoteWindow).GetMethod("ReloadAsked", flags)!.Invoke(window, null); else toolbar.Children.OfType<Button>().Single(x => x.Content is string value && value == label).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent)); }
             Check(reading.Visibility == Visibility.Visible && editor.Visibility == Visibility.Collapsed, mode + ": opens in reading mode");
             Click("編集");
             Check(editor.Visibility == Visibility.Visible && reading.Visibility == Visibility.Collapsed && !editor.IsReadOnly, mode + ": Edit replaces preview with writable Markdown input");

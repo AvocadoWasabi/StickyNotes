@@ -5,7 +5,7 @@ using Markdig.Syntax.Inlines;
 
 namespace StickyNotes;
 
-internal sealed record FilterHeading(string Key, string Label, int Level, int Start, int End);
+internal sealed record FilterHeading(string Key, string Label, string Title, int Level, int Start, int End);
 
 internal sealed class HeadingFilter
 {
@@ -27,7 +27,7 @@ internal sealed class HeadingFilter
             ancestors.Add((block.Level, text));
             var key = JsonSerializer.Serialize(ancestors.Select(a => new { a.Level, a.Title }));
             var end = blocks.Skip(i + 1).FirstOrDefault(b => b.Level <= block.Level)?.Span.Start ?? markdown.Length;
-            headings.Add(new(key, string.Join(" › ", ancestors.Select(a => a.Title)), block.Level, block.Span.Start, end));
+            headings.Add(new(key, string.Join(" › ", ancestors.Select(a => a.Title)), text, block.Level, block.Span.Start, end));
         }
         Headings = headings.ToArray();
         var keys = (selection ?? []).Distinct(StringComparer.Ordinal).ToArray();

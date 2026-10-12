@@ -1038,5 +1038,8 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="HeadingFilter.Search" xml:space="preserve"><value>見出しを検索</value></data>
   <data name="HeadingFilter.Clear" xml:space="preserve"><value>すべて表示</value></data>
   <data name="HeadingFilter.Empty" xml:space="preserve"><value>見出しがありません。</value></data>
-  <data name="HeadingFilter.Missing" xml:space="preserve"><value>選択した見出しが見つからないか、同じ階層で重複しています。≡ から「すべて表示」で解除して選び直してください。</value></data>
+  <data name="HeadingFilter.Missing" xml:space="preserve"><value>選択した見出しが見つからないか、同じ階層で重複しています。見出しメニューから「すべて表示」で解除して選び直してください。</value></data>
+  <data name="NoteWindow.Details" xml:space="preserve"><value>詳細情報を表示／非表示</value></data>
+  <data name="HeadingFilter.Short" xml:space="preserve"><value>見出し</value></data>
+  <data name="HeadingFilter.Count" xml:space="preserve"><value>{0}件</value></data>
 </root>

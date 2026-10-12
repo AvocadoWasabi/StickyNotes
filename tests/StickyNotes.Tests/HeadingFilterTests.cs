@@ -50,7 +50,24 @@ internal static partial class Program
         Call("Reload");
         var preview = Field<FlowDocumentScrollViewer>("preview");
         var text = new TextRange(preview.Document.ContentStart, preview.Document.ContentEnd).Text;
-        Check(text.Contains("shown") && !text.Contains("hidden") && Field<Button>("headingFilterButton").Content.ToString() == "≡1", "heading filter: window preview and active badge reflect saved filter");
+        Check(text.Contains("shown") && !text.Contains("hidden") && Field<Button>("headingFilterButton").Content is DockPanel caption && caption.Children.OfType<TextBlock>().Single().Text == "Second", "heading filter: window preview and active badge reflect saved filter");
+        if (Environment.GetEnvironmentVariable("STICKYNOTES_RENDER_DIR") is { Length: > 0 } output)
+        {
+            var surface = (System.Windows.FrameworkElement)note.Content;
+            surface.Measure(new System.Windows.Size(280, 320));
+            surface.Arrange(new System.Windows.Rect(0, 0, 280, 320)); surface.UpdateLayout();
+            var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap(280, 320, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+            var visual = new System.Windows.Media.DrawingVisual();
+            using (var drawing = visual.RenderOpen())
+            {
+                drawing.DrawRectangle(note.Background, null, new System.Windows.Rect(0, 0, 280, 320));
+                drawing.DrawRectangle(new System.Windows.Media.VisualBrush(surface), null, new System.Windows.Rect(0, 0, 280, 320));
+            }
+            bitmap.Render(visual);
+            var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmap));
+            using var stream = System.IO.File.Create(System.IO.Path.Combine(output, "compact-header.png")); encoder.Save(stream);
+        }
         Call("BeginEdit");
         Check(Field<TextBox>("editor").Text == markdown && !Field<Button>("headingFilterButton").IsEnabled, "heading filter: editing keeps complete source and disables picker");
         note.FinishFocusEditing();

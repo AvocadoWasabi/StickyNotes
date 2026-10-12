@@ -1038,5 +1038,8 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="HeadingFilter.Search" xml:space="preserve"><value>搜索标题</value></data>
   <data name="HeadingFilter.Clear" xml:space="preserve"><value>显示全部</value></data>
   <data name="HeadingFilter.Empty" xml:space="preserve"><value>未找到标题。</value></data>
-  <data name="HeadingFilter.Missing" xml:space="preserve"><value>所选标题不存在或在同一层级重复。打开 ≡，选择“显示全部”后重新选择。</value></data>
+  <data name="HeadingFilter.Missing" xml:space="preserve"><value>所选标题不存在或在同一层级重复。打开标题菜单，选择“显示全部”后重新选择。</value></data>
+  <data name="NoteWindow.Details" xml:space="preserve"><value>显示/隐藏详细信息</value></data>
+  <data name="HeadingFilter.Short" xml:space="preserve"><value>标题</value></data>
+  <data name="HeadingFilter.Count" xml:space="preserve"><value>{0}个章节</value></data>
 </root>

@@ -32,12 +32,12 @@ Available from v0.0.5. Control names below follow the English UI.
 
 | Control | Action |
 | --- | --- |
-| `＋` | Create a note |
-| `Edit` / `Ctrl+E` | Edit the Markdown source |
+| `… → New note` | Create a note |
+| `… → Edit` / `Ctrl+E` | Edit the Markdown source |
 | `Save` / `Ctrl+S` / `Esc` | Save the file and return to reading mode |
-| `Reload` | Reload the source file, with confirmation if edits are unsaved |
+| `… → Reload` | Reload the source file, with confirmation if edits are unsaved |
 | `…` | Open properties, fetch events, open existing files, link a section, access settings, or exit |
-| `×` | Close this note without deleting its Markdown file |
+| `… → Close this note` | Close this note without deleting its Markdown file |
 | `… → Exit app (save layout)`, or notification-area `Exit` | Exit the app |
 
 In Settings, **Start editing body text with → Single click / Double click** selects the gesture for body text or blank space. The default remains single click, including existing settings; saving the setting applies it to open notes immediately. The editor places its caret at the corresponding Markdown source position and scrolls that line into view. Generated Tasks/Dataview results lead to their source query. Checkboxes, links, and scrollbars keep their usual actions. Selecting Edit again keeps your draft; saving returns to reading mode.
@@ -82,9 +82,9 @@ Each note then returns to its pin setting; the previous stacking order is not re
 
 ### Button visibility
 
-By default, Edit, Save, Reload, More, New, Pin, and Close are always visible in one row below the title. Edit has a blue background, Save green, Reload yellow, and More purple.
+The title and controls share one row with Headings, Pin and More. Edit, Reload, New and Close are in More; Save appears only while editing. Show/hide details in More toggles tags/status, also available in the title tooltip. Successful save/read notices disappear after four seconds; errors remain visible.
 
-Enable `Show buttons when hovering over the title` in Settings to overlay buttons on the title. This removes the second row without shifting the body when buttons appear or disappear. Disable it to restore always-visible controls.
+Enable `Show buttons when hovering over the title` to reveal controls on hover without shifting the body. Save remains available while editing. Disable it to restore always-visible controls.
 
 Use the left-edge handle to move the note, or `F6` then `Tab` for keyboard access. Buttons also remain visible while the title has focus or the More menu is open. The setting applies immediately to all notes and persists after restarting.
 
@@ -217,8 +217,12 @@ If the source changes externally before Display, the app asks you to reload with
 
 ## Heading filter
 
-Click **≡** on a note to search hierarchical headings and select multiple sections. Changes apply immediately and persist per note. Blue **≡count** indicates an active filter. **Show all** clears it in one click; Esc closes the picker. Parents include children, with no duplicates and in source order.
+Click **Headings** to search and select sections. A single selection shows its name; multiple selections show a count with a pale blue background. Changes apply immediately and persist per note. **Show all** clears the filter; Esc closes it. The picker aligns to the right edge of the note, using short names normally and parent paths for search results or duplicate names. Parents include children in source order without duplication.
 
 Only top-level Markdown headings (ATX and Setext) are candidates; headings inside quotes, lists or code blocks are excluded. Parent paths distinguish identical names. Duplicate paths cannot be selected. Renaming, deleting or moving a heading can make a selection unavailable: a notice appears without falling back to other content. Clear the filter and select again.
 
 Filtering only affects display. Editing shows the unfiltered body and moves to the first selected heading. Existing heading-linked notes stay within their linked section. Task operations retain original source lines; hidden Tasks, Dataview and calendar content is excluded from display. Headings remain visible in the body.
+
+### Compact body rendering
+
+Body text uses size 14 and line height 21, with two units between tight list items and five additional units for loose lists. Tasks omit redundant bullets and align wrapped lines to the text column. Nested lists indent by 18; table paragraphs have no extra margins. Heading sizes are 20/18/16 and note colors are pale. Values are WPF logical units at 100% zoom. Existing soft-line-break behavior, source text, task updates and editing positions are preserved.

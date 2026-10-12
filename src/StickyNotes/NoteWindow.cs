@@ -14,6 +14,9 @@ public sealed partial class NoteWindow : Window
     internal StackPanel NoteControls { get; } = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(4, 0, 4, 3) };
     internal Grid NoteHeader { get; } = new() { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)), Focusable = true };
     private readonly Border controlsHost = new();
+    private readonly Button saveButton;
+    private readonly DispatcherTimer statusNoticeTimer = new() { Interval = TimeSpan.FromSeconds(4) };
+    private static readonly DependencyPropertyDescriptor StatusText = DependencyPropertyDescriptor.FromProperty(TextBlock.TextProperty, typeof(TextBlock));
     private readonly TextBlock dragHandle = new() { Text = "⠿", Width = 24, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Stretch, Padding = new Thickness(0, 5, 0, 0), Cursor = Cursors.SizeAll, ToolTip = L10n.Text("NoteWindow.Text01"), Background = Brushes.Transparent };
     private readonly Dictionary<Button, double> controlWidths = new();
     private bool toolbarMenuOpen, headerHovered;
@@ -74,38 +77,33 @@ public sealed partial class NoteWindow : Window
         var header = NoteHeader;
         header.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         header.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        title.Height = 27;
+        title.Height = 34;
+        header.ColumnDefinitions.Add(new ColumnDefinition());
+        header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         header.Children.Add(title);
-        Button Control(string label, Action action, double width, string color, string? tooltip = null)
+        Button Control(string label, Action action, double width, string? tooltip = null)
         {
             var button = Ui.Button(label, action, tooltip);
             button.Width = width; button.Height = 28; button.FontSize = 12;
             button.Padding = new Thickness(0); button.Margin = new Thickness(1);
-            button.Background = (Brush)new BrushConverter().ConvertFromString(color)!;
+            button.Background = Brushes.Transparent;
             button.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(37, 52, 69));
-            button.BorderBrush = Brushes.SlateGray;
+            button.BorderBrush = Brushes.Transparent;
             NoteControls.Children.Add(button);
             controlWidths[button] = width;
             return button;
         }
-        Control(L10n.Text("NoteWindow.Text03"), BeginEdit, 40, "#DFEAF7", L10n.Text("NoteWindow.Text04"));
-        Control(L10n.Text("NoteWindow.Text05"), () => Save(), 40, "#DCEEDC", L10n.Text("NoteWindow.Text06"));
-        Control(L10n.Text("NoteWindow.Text07"), ReloadAsked, 58, "#FFF0CC");
-        Control("…", Menu, 30, "#E9E0F2", L10n.Text("NoteWindow.Text08"));
-        headingFilterButton = Control("≡", OpenHeadingFilter, 28, "#F3F1EB", L10n.Text("HeadingFilter.Title"));
-        NoteControls.Children.Remove(headingFilterButton);
-        controlWidths.Remove(headingFilterButton);
-        headingFilterButton.HorizontalAlignment = HorizontalAlignment.Right;
-        title.Margin = new Thickness(12, 0, 34, 0);
-        header.Children.Add(headingFilterButton);
-        Control("＋", app.NewNote, 28, "#F3F1EB", L10n.Text("NoteWindow.Text09"));
-        var pin = Control(placement.Pinned ? "●" : "○", () => { Placement.Pinned = !Placement.Pinned; EndTemporaryFront(); app.SaveConfig(); }, 28, "#F3F1EB", L10n.Text("NoteWindow.Text10"));
+        saveButton = Control(L10n.Text("NoteWindow.Text05"), () => Save(), 42, L10n.Text("NoteWindow.Text06"));
+        saveButton.Visibility = Visibility.Collapsed;
+        headingFilterButton = Control("", OpenHeadingFilter, 88, L10n.Text("HeadingFilter.Title"));
+        headingFilterButton.ClearValue(ContentControl.ContentTemplateProperty);
+        var pin = Control(placement.Pinned ? "●" : "○", () => { Placement.Pinned = !Placement.Pinned; EndTemporaryFront(); app.SaveConfig(); }, 26, L10n.Text("NoteWindow.Text10"));
         pin.Click += (_, _) => pin.Content = Placement.Pinned ? "●" : "○";
-        Control("×", Close, 28, "#F3F1EB", L10n.Text("NoteWindow.Text11"));
+        Control("…", Menu, 26, L10n.Text("NoteWindow.Text08"));
         var controlsRow = new DockPanel();
         DockPanel.SetDock(dragHandle, Dock.Left); controlsRow.Children.Add(dragHandle); controlsRow.Children.Add(NoteControls);
         controlsHost.Child = controlsRow; header.Children.Add(controlsHost);
-        Panel.SetZIndex(headingFilterButton, 1);
+        Grid.SetColumn(controlsHost, 1);
         header.MouseLeftButtonDown += (_, e) => { if (e.OriginalSource == title || e.OriginalSource == header || e.OriginalSource == dragHandle) { DragMove(); e.Handled = true; } };
         header.MouseEnter += (_, _) => { headerHovered = true; UpdateButtonOverlay(); };
         header.MouseLeave += (_, _) => { headerHovered = false; UpdateButtonOverlay(); };
@@ -113,7 +111,11 @@ public sealed partial class NoteWindow : Window
         ApplyButtonDisplay();
         DockPanel.SetDock(header, Dock.Top); dock.Children.Add(header);
         DockPanel.SetDock(tags, Dock.Top); dock.Children.Add(tags);
+        tags.Visibility = Visibility.Collapsed;
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
+        status.Visibility = Visibility.Collapsed;
+        StatusText.AddValueChanged(status, OnStatusTextChanged);
+        statusNoticeTimer.Tick += (_, _) => { statusNoticeTimer.Stop(); status.Visibility = Visibility.Collapsed; };
         var grid = new Grid();
         var eventScroll = new ScrollViewer { Content = eventsPanel, MaxHeight = 210, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         var noticeScroll = new ScrollViewer { Content = dailyNotice, MaxHeight = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
@@ -198,11 +200,11 @@ public sealed partial class NoteWindow : Window
     {
         var overlay = app.Config.TitleButtonOverlay;
         headerHovered = NoteHeader.IsMouseOver;
-        Grid.SetRow(controlsHost, overlay ? 0 : 1);
-        NoteHeader.RowDefinitions[0].MinHeight = overlay ? 33 : 27;
+        Grid.SetRow(controlsHost, 0);
+        NoteHeader.RowDefinitions[0].MinHeight = 34;
         dragHandle.Visibility = overlay ? Visibility.Visible : Visibility.Collapsed;
-        controlsHost.Margin = new Thickness(0, 0, overlay ? 31 : 0, 0);
-        foreach (var (button, width) in controlWidths) button.Width = overlay ? width - 8 : width;
+        controlsHost.Margin = new Thickness(0);
+        foreach (var (button, width) in controlWidths) button.Width = width;
         if (overlay) controlsHost.SetBinding(Border.BackgroundProperty, new System.Windows.Data.Binding(nameof(Background)) { Source = this });
         else { controlsHost.ClearValue(Border.BackgroundProperty); controlsHost.Background = Brushes.Transparent; }
         UpdateButtonOverlay();
@@ -210,8 +212,17 @@ public sealed partial class NoteWindow : Window
 
     private void UpdateButtonOverlay()
     {
-        controlsHost.Visibility = !app.Config.TitleButtonOverlay || headerHovered || NoteHeader.IsKeyboardFocusWithin || toolbarMenuOpen
+        controlsHost.Visibility = !app.Config.TitleButtonOverlay || editing || headerHovered || NoteHeader.IsKeyboardFocusWithin || toolbarMenuOpen
             ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void OnStatusTextChanged(object? sender, EventArgs e)
+    {
+        statusNoticeTimer.Stop();
+        status.Visibility = string.IsNullOrWhiteSpace(status.Text) ? Visibility.Collapsed : Visibility.Visible;
+        // Only known successful save/read messages expire; errors remain visible.
+        if (new[] { "NoteWindow.Text17", "NoteWindow.Text18", "NoteWindow.Text28", "NoteWindow.Text34", "NoteWindow.Text41" }
+            .Any(key => status.Text.StartsWith(L10n.Text(key), StringComparison.Ordinal))) statusNoticeTimer.Start();
     }
 
     private void ApplyContentScale()
@@ -349,6 +360,7 @@ public sealed partial class NoteWindow : Window
         title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? L10n.Text("NoteWindow.Text24") : L10n.Text("NoteWindow.Text25")) : L10n.Text("NoteWindow.Text26")) + Placement.Heading : metadata.Title;
         Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
+        title.ToolTip = title.Text + "\n" + tags.Text + "\n" + snapshot.Path;
         RenderQueryPreviews();
         UpdateHeadingFilterStatus();
         var command = MarkdownView.FindCalendarCommand(content, new HeadingFilter(content, Placement.HeadingFilters).Includes);
@@ -417,6 +429,9 @@ public sealed partial class NoteWindow : Window
     {
         focusLossTimer.Stop();
         editing = value;
+        saveButton.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        headingFilterButton.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+        UpdateButtonOverlay();
         if (value && headingFilterPopup is not null) headingFilterPopup.IsOpen = false;
         UpdateHeadingFilterStatus();
         firstClickDocument = null; firstClickCaret = null;
@@ -654,6 +669,12 @@ public sealed partial class NoteWindow : Window
         toolbarMenuOpen = true; UpdateButtonOverlay();
         menu.Closed += (_, _) => { toolbarMenuOpen = false; UpdateButtonOverlay(); };
         void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
+        Add(L10n.Text("NoteWindow.Text03"), BeginEdit);
+        Add(L10n.Text("NoteWindow.Text07"), ReloadAsked);
+        Add(L10n.Text("NoteWindow.Text09"), app.NewNote);
+        Add(L10n.Text("NoteWindow.Text11"), Close);
+        menu.Items.Add(new Separator());
+        Add(L10n.Text("NoteWindow.Details"), () => tags.Visibility = tags.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible);
         Add(L10n.Text("NoteWindow.Text49"), EditMetadata);
         menu.Items.Add(ContentScaleMenu());
         Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
@@ -703,6 +724,7 @@ public sealed partial class NoteWindow : Window
     {
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
+        statusNoticeTimer.Stop(); StatusText.RemoveValueChanged(status, OnStatusTextChanged);
         if (headingFilterPopup is not null) headingFilterPopup.IsOpen = false;
         calendarRefreshCancellation?.Cancel();
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);

@@ -1038,5 +1038,8 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="HeadingFilter.Search" xml:space="preserve"><value>Search headings</value></data>
   <data name="HeadingFilter.Clear" xml:space="preserve"><value>Show all</value></data>
   <data name="HeadingFilter.Empty" xml:space="preserve"><value>No headings found.</value></data>
-  <data name="HeadingFilter.Missing" xml:space="preserve"><value>A selected heading is missing or ambiguous. Open ≡, choose Show all, and select again.</value></data>
+  <data name="HeadingFilter.Missing" xml:space="preserve"><value>A selected heading is missing or ambiguous. Open Headings, choose Show all, and select again.</value></data>
+  <data name="NoteWindow.Details" xml:space="preserve"><value>Show/hide details</value></data>
+  <data name="HeadingFilter.Short" xml:space="preserve"><value>Headings</value></data>
+  <data name="HeadingFilter.Count" xml:space="preserve"><value>{0} sections</value></data>
 </root>

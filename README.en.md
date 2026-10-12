@@ -50,13 +50,13 @@ No administrator privileges or separate .NET installation are required. The app 
 
 | Action | Control |
 | --- | --- |
-| Create a note | `＋`, or `New note` in the notification-area menu |
+| Create a note | `… → New note`, or `New note` in the notification-area menu |
 | Edit and save | Click the body (single/double click in Settings) / `Ctrl+E` → edit → `Ctrl+S` or `Esc` |
 | Complete a task | Click its checkbox to update the source Markdown |
 | Move or resize | Drag the top / an edge or the bottom-right corner |
 | Keep on top | `○ / ●`; `Alt + Z` or the `…` menu brings all notes to the top for 10 seconds |
 | Scale content | `… → Display scale` (50–200%) |
-| Close or exit | `×` closes a note; notification-area `Exit` exits the app |
+| Close or exit | `… → Close this note` closes a note; notification-area `Exit` exits the app |
 
 Clicking starts editing at the corresponding source position. `Esc` saves and finishes editing; if a completion suggestion is open, the first `Esc` dismisses it. Leaving the editor prompts to save changed text. Settings can enable saving without confirmation. Closing a note does not delete its Markdown file.
 

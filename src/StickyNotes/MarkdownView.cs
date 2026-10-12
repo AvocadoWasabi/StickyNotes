@@ -28,7 +28,7 @@ public static class MarkdownView
         Func<int, bool>? include = null)
     {
         var result = new FlowDocument { FontFamily = new FontFamily("Yu Gothic UI"), FontSize = 14,
-            PagePadding = new Thickness(5), Background = Brushes.Transparent, Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(52, 48, 35)) };
+            PagePadding = new Thickness(12, 4, 12, 8), Background = Brushes.Transparent, Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(52, 48, 35)) };
         foreach (var block in Markdown.Parse(markdown, Pipeline))
             if (include is null || include(block.Span.Start)) AddBlock(result.Blocks, block, markdown, toggle, queryPreview, readOnly, canToggle);
         return result;
@@ -41,20 +41,35 @@ public static class MarkdownView
         switch (block)
         {
             case HeadingBlock heading:
-                var title = new Paragraph { FontSize = heading.Level switch { 1 => 25, 2 => 21, _ => 17 }, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 12, 0, 7) };
+                var title = new Paragraph { FontSize = heading.Level switch { 1 => 20, 2 => 18, _ => 16 }, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, previous is null ? 4 : 12, 0, 5) };
                 AddInlines(title.Inlines, heading.Inline, source, toggle, heading.Line, readOnly, canToggle); output.Add(title); break;
             case ParagraphBlock paragraph:
-                var p = new Paragraph { Margin = new Thickness(0, 3, 0, 9), LineHeight = 23 };
+                var inList = paragraph.Parent is ListItemBlock;
+                var inCell = paragraph.Parent is Markdig.Extensions.Tables.TableCell;
+                var taskParagraph = paragraph.Inline?.FirstChild is TaskList;
+                var p = new Paragraph { Margin = new Thickness(taskParagraph ? 20 : 0, 0, 0, inCell ? 0 : inList ? 2 : 7),
+                    TextIndent = taskParagraph ? -20 : 0, LineHeight = 21 };
                 AddInlines(p.Inlines, paragraph.Inline, source, toggle, paragraph.Line, readOnly, canToggle); output.Add(p); break;
             case ListBlock list:
-                var rendered = new System.Windows.Documents.List { MarkerStyle = list.IsOrdered ? TextMarkerStyle.Decimal : TextMarkerStyle.Disc, Padding = new Thickness(22, 0, 0, 0), Margin = new Thickness(0, 2, 0, 8) };
+                System.Windows.Documents.List? rendered = null;
+                bool? previousTask = null;
+                var itemIndex = 0;
                 foreach (ListItemBlock item in list)
                 {
-                    var li = new ListItem();
+                    var isTask = !list.IsOrdered && item.FirstOrDefault() is ParagraphBlock first && first.Inline?.FirstChild is TaskList;
+                    if (rendered is null || previousTask != isTask)
+                    {
+                        rendered = new System.Windows.Documents.List { MarkerStyle = isTask ? TextMarkerStyle.None : list.IsOrdered ? TextMarkerStyle.Decimal : TextMarkerStyle.Disc,
+                            Padding = new Thickness(isTask ? 0 : 18, 0, 0, 0), Margin = new Thickness(list.Parent is ListItemBlock ? 18 : 0, 2, 0, 4) };
+                        if (list.IsOrdered && int.TryParse(list.OrderedStart, out var start) && start > 0 && start <= int.MaxValue - itemIndex) rendered.StartIndex = start + itemIndex;
+                        MarkdownSourceMap.Track(rendered, item.Span.Start, list.Span.End);
+                        output.Add(rendered); previousTask = isTask;
+                    }
+                    var li = new ListItem { Margin = new Thickness(0, 0, 0, list.IsLoose ? 5 : 0) };
                     foreach (var child in item) AddBlock(li.Blocks, child, source, toggle, queryPreview, readOnly, canToggle);
-                    rendered.ListItems.Add(li);
+                    rendered.ListItems.Add(li); itemIndex++;
                 }
-                output.Add(rendered); break;
+                break;
             case QuoteBlock quote:
                 var section = new Section { BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(177, 161, 107)), BorderThickness = new Thickness(3, 0, 0, 0), Padding = new Thickness(12, 0, 0, 0), Margin = new Thickness(0, 6, 0, 10) };
                 foreach (var child in quote) AddBlock(section.Blocks, child, source, toggle, queryPreview, readOnly, canToggle);
@@ -105,11 +120,11 @@ public static class MarkdownView
             var previous = output.LastInline;
             switch (inline)
             {
-                case LiteralInline literal: output.Add(new Run(literal.Content.ToString())); break;
+                case LiteralInline literal: output.Add(new Run(literal.PreviousSibling is TaskList ? literal.Content.ToString().TrimStart(' ', '\t') : literal.Content.ToString())); break;
                 case CodeInline code: output.Add(new Run(code.Content) { FontFamily = new FontFamily("Consolas"), Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 0, 0, 0)) }); break;
                 case LineBreakInline: output.Add(new LineBreak()); break;
                 case TaskList task:
-                    var checkbox = new CheckBox { IsChecked = task.Checked, IsEnabled = !readOnly && (canToggle?.Invoke(line) ?? true), Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center };
+                    var checkbox = new CheckBox { IsChecked = task.Checked, IsEnabled = !readOnly && (canToggle?.Invoke(line) ?? true), Width = 13, Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center };
                     if (checkbox.IsEnabled) checkbox.Click += (_, _) => toggle(line, checkbox.IsChecked == true);
                     output.Add(new InlineUIContainer(checkbox) { BaselineAlignment = BaselineAlignment.Center }); break;
                 case EmphasisInline emphasis:

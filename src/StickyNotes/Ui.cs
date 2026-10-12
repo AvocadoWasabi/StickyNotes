@@ -36,6 +36,6 @@ public static class Ui
 
     public static Brush Color(string name) => (Brush)new BrushConverter().ConvertFromString(name switch
     {
-        "green" => "#E2F2DC", "blue" => "#DFEDF9", "pink" => "#F9E1E7", "gray" => "#EBE9E3", _ => "#FFF0B3"
+        "green" => "#EDF4E8", "blue" => "#EDF3F9", "pink" => "#FAEEF1", "gray" => "#F1F0ED", _ => "#FFF8DE"
     })!;
 }
