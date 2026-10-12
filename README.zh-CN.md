@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+v0.0.9新增标题筛选、紧凑标题栏、更紧凑的任务行距、Alt+Z临时置顶及可配置的编辑复选框快捷键。参见[更新内容及升级步骤](docs/RELEASE-NOTES.md#简体中文)。
+
 任务正文后输入空格显示上游默认候选菜单：**⏎** 上Enter继续列表，↓选择后Enter插入字段，Tab缩进。参见[分析来源与兼容范围](docs/TASK-EDITING.md#简体中文)。
 
 v0.0.8新增任务关键字／日期补全及Enter继续检查列表；普通CLI复选框使用Tasks原生完成逻辑。参见[任务输入与限制](docs/TASK-EDITING.md#简体中文)。
@@ -14,6 +16,8 @@ v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Mark
 **从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
 
 CLI 模式从 Obsidian 获取正文及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
+
+[v0.0.9正文渲染示例](docs/images/compact-body-v0.0.9.png)，由WPF生成。下方整窗截图为旧版界面。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes 图标" width="112">
 

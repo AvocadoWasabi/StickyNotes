@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+v0.0.9：見出しフィルター、1行の操作欄、読みやすいタスク行間、Alt+Zの一時最前面表示、設定可能なチェック切替ショートカットを追加しました。[今回の変更・更新手順](docs/RELEASE-NOTES.md#日本語)。
+
 タスク本文の後のスペースで本家に沿った候補一覧を表示します。先頭の **⏎** でEnterは次項目へ、↓で選んでEnterは候補挿入、Tabは字下げです。[解析元と対応範囲](docs/TASK-EDITING.md#日本語)を参照してください。
 
 v0.0.8は、タスクのキーワード・日付補完とEnterでのチェックリスト継続に対応し、通常のCLIチェック操作にもTasks本家の完了処理を利用します。[タスク入力と制約](docs/TASK-EDITING.md#日本語)を参照してください。
@@ -14,6 +16,8 @@ v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本
 **v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
 
 CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
+
+[v0.0.9の本文描画例](docs/images/compact-body-v0.0.9.png)（WPFで生成）。下の全画面スクリーンショットは以前のUIです。
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
 

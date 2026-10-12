@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+v0.0.9 adds heading filters, a compact header, tighter task spacing, temporary foreground display with Alt+Z, and a configurable editing checkbox shortcut. See [changes and upgrade steps](docs/RELEASE-NOTES.md#english).
+
 Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
 
 v0.0.8 adds task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
@@ -14,6 +16,8 @@ Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#e
 **Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
 
 CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
+
+[v0.0.9 body rendering sample](docs/images/compact-body-v0.0.9.png), generated with WPF. The full-window screenshots below show an earlier UI.
 
 <img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
 

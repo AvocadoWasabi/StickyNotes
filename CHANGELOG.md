@@ -6,7 +6,7 @@ User-facing changes are recorded here, newest releases first. Development commit
 
 See the [README](README.en.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
-## Unreleased
+## [0.0.9](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9) — 2026-10-12
 
 - Fix clipped task checkboxes by using the native theme width and matching the wrapped-text indent to the measured checkbox column.
 
@@ -17,6 +17,7 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 - Add the global Alt + Z shortcut to bring all notes to the top for 10 seconds. Repeating extends the interval; registration conflicts show a notification and leave menu actions available.
 
 - Make the default GitHub README Japanese, keep English in `README.en.md`, and retain Simplified Chinese and existing Japanese links. Update language navigation and include all README files in distribution packages.
+- Add an optional, configurable shortcut to toggle the checkbox on the current editing line. Preserve the caret, one-step undo and normal save/conflict handling. Configure or clear it in Settings; unassigned by default. See [task editing](docs/TASK-EDITING.md#english).
 
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
 

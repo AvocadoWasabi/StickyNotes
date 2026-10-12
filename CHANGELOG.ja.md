@@ -6,7 +6,7 @@
 
 使い方は [日本語README](README.ja.md)、公開後の配布ファイルは [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) を参照してください。
 
-## 未リリース
+## [0.0.9](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9) — 2026-10-12
 
 - タスクのチェックボックス右端の見切れを修正。Windowsテーマの自然な幅を確保し、実測した幅に本文の折り返し位置を合わせます。
 
@@ -17,6 +17,7 @@
 - Alt + Z のグローバルショートカットで全付箋を10秒間最前面に表示。再入力で延長し、キー登録が競合した場合は通知します。メニューからの操作も引き続き利用できます。
 
 - GitHubの既定READMEを日本語に変更し、英語版を `README.en.md` に配置。簡体字中国語版と既存の日本語リンクを維持し、言語切り替え・配布物への全README同梱を更新。
+- 編集中のカーソル行のチェックON・OFFを切り替える、任意設定のショートカットを追加。カーソル位置・1回のUndo・通常の保存と競合検出を維持します。設定で登録・解除でき、既定は未設定です。[タスク入力](docs/TASK-EDITING.md#日本語)を参照。
 
 ## [0.0.8](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) — 2026-10-08
 

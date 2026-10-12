@@ -12,6 +12,7 @@ internal static partial class Program
     {
         var today = new DateTime(2026, 12, 31);
         TaskInputCompatibilityTests();
+        TaskToggleShortcutTests(root);
         TaskEditorWindowTests(today);
         TaskCheckboxTests(root);
         TaskCheckboxWindowTests(root);

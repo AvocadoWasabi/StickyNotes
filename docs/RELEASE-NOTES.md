@@ -1,75 +1,60 @@
-[English](#english) | [日本語](#日本語) | [简体中文](#简体中文)
+# Markdown Sticky Notes v0.0.9
 
-# Markdown Sticky Notes v0.0.8
+[日本語](#日本語) | [English](#english) | [简体中文](#简体中文)
 
 ## 日本語
 
-Windows 10 / 11（x64）向け。長文保存の修正、Tasksに沿った入力補完、Dataview表示、検索結果のチェック操作、閉じた付箋の再表示を追加しました。
+Windows 10 / 11（x64）向け。v0.0.8以降の変更をまとめ、別作業ブランチのチェック切替ショートカットも統合しました。
 
-- **長文保存**：編集後のCLIコマンド長エラーを修正。長い要求を現在のWindowsユーザーだけが読める一時ファイルで転送・検証・削除し、Obsidian APIによる保存・バックアップ・競合検出・Unicode・改行を保持します。ノート上限は2 MBです。
-- **編集操作**：シングル／ダブルクリックを選択し、クリック位置に対応するソースへカーソルを移動。Escで保存して終了します。候補表示中の最初のEscは候補を閉じ、保存失敗時は下書きを保持します。
-- **Tasks入力**：本文＋スペースで候補表示。先頭の「⏎」でEnterは次項目へ、↓で選択してEnterは挿入、Tabは字下げ。本家ソースをclone・解析し、既定の候補順・部分一致・日付／繰り返し候補を合わせました。補完は既定で自動とし、Tasks未導入・無効・確認失敗・ローカル方式では手動ONまで停止します。
-- **Dataviewとチェック操作**：LIST／TABLE／TASKをCLI経由で表示し、Tasksと個別に約30秒更新。照合済みのTasks／Dataview TASKチェックボックスから元ノートを更新できます。Tasksは本家の状態・繰り返し処理、Dataviewは選択したチェック記号を更新し、バックアップと競合検出を通します。
-- **付箋の再表示**：「…」・常駐・タスクバーメニューの「付箋フォルダから開く…」で検索し、通常Markdownの本文／YAMLプレビューから開き直せます。選択画面ではクエリを実行しません。
+- **見出しフィルター**：付箋ごとに見出しを検索・複数選択して保存。子見出しを含め原文順に表示し、原文は変更しません。単一選択は見出し名、複数は件数を表示。改名・削除・重複時は通知し、別の内容へ自動で切り替えません。
+- **コンパクトな表示**：操作欄をタイトルと同じ1行へ整理。編集・再読込・新規・閉じるは「…」、保存は編集中だけ表示します。淡い配色、詳細情報の開閉、成功通知の一時表示、右揃えの見出し選択画面を追加。
+- **タスクの読みやすさ**：行間を縮め、折り返しを本文の左端に整列。重複する箇条書きの点を除去し、空行付きリスト・子リスト・表の余白を調整。チェックボックスはWindowsテーマの自然幅を使い、右端の見切れを修正しました。
+- **Alt+Z**：全付箋を10秒間最前面へ。再入力で延長し、終了後は各付箋の固定設定へ戻ります。他アプリとのキー登録競合は通知します。
+- **編集時のチェック切替**：設定で任意のショートカット（例：Ctrl+Enter）を登録できます。既定は未設定。カーソル行の通常チェックだけを切り替え、Undo・通常保存に対応します。Alt+Zと標準編集キーは予約済みです。Tasksの繰り返し・完了日処理は行いません。
+- **資料**：GitHubの既定READMEを日本語にし、英語・簡体字中国語と利用手順を同期しました。
 
-### インストール・更新
+### 更新と確認範囲
 
-アプリを終了し、Assetsの **StickyNotes-win-x64.zip** を別フォルダへ全体展開して **Install.cmd** を実行します。ノート・設定・バックアップは保持します。管理者権限や.NETの追加インストールは不要です。未署名です。SHA256は `.zip.sha256` で確認できます。
+アプリを終了し、Assetsの **StickyNotes-win-x64.zip** を新しいフォルダへ全展開して **Install.cmd** を実行してください。ノート・設定・バックアップは保持されます。管理者権限や別途.NET導入は不要です。未署名のため、必要に応じて **StickyNotes-win-x64.zip.sha256** で照合できます。
 
-CLIを有効にしたObsidianで対象Vaultを開き、起動状態を保ってください。付箋の「設定 → Obsidian CLI」で接続し、TasksクエリにはTasks、DataviewクエリにはDataview、デイリーにはコアDaily notesを有効にします。CLIを無効にすればローカルファイルを使えます。v0.0.6以前のCLI選択がない旧設定もCLIが既定になるため、ローカル方式を続ける場合は「Obsidian CLIを使用する」を無効にして保存します。既存ファイルは自動移行しません。
+自動テスト、配布ビルド、ZIP内容・ハッシュ、コード／セキュリティレビューを実施。280／360幅のWPF描画画像で本文を確認しました。デスクトップ画面取得の不具合により、最終版の全画面・ポップアップの実機目視確認には制限があります。実環境のObsidian・物理IME・別Windowsテーマは今回再検証していません。CLIの既知の制約と以前観測された一時的な保存競合は継続し、競合時は上書きを拒否します。フィルターは文書直下の見出しを対象とし、既存の見出しリンク付き付箋ではリンク範囲内に適用します。
 
-### 制限と検証
-
-補完は既定の絵文字メニュー・通常キー操作の再現です。Tasks独自設定・カスタム状態・依存関係／ID編集・自然言語日付や繰り返し規則の全解釈は未対応です。DataviewJS・インライン式・CALENDAR、ObsidianのHTML/CSSの完全再現も未対応です。元ノートを照合できないチェックボックスは無効です。
-
-957件の自動テストと配布ビルド、コード／セキュリティレビューを実施。今回追加したDataview・チェック連携と補完は模擬API・WPF・本家テスト資料で検証し、起動中のObsidianや物理IMEでの実機検証は未実施です。内部APIの変更で動作が変わる場合があります。以前のCLI実機検証で観測した一時的なハッシュ不一致／保存競合は原因未特定です。上書きは拒否されます。下書きを控え、再読込して再試行してください。
-
-[使い方](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/README.ja.md) · [入力補完](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/TASK-EDITING.md#日本語) · [Dataview](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/DATAVIEW.md#日本語) · [チェック操作・付箋一覧](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/QUERY-EDITING-AND-BROWSER.md#日本語) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/CHANGELOG.ja.md)
+[利用手順](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/docs/USAGE.md) · [チェック切替と制限](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/docs/TASK-EDITING.md#日本語) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/CHANGELOG.ja.md)
 
 ## English
 
-For Windows 10 / 11 (x64). This release fixes long-note saves and adds Tasks-style completion, Dataview output, editable query checkboxes and a browser for closed notes.
+For Windows 10 / 11 (x64). Includes all changes since v0.0.8 and the editing checkbox shortcut from a separate development branch.
 
-- **Long-note saves:** Fix the CLI command-length error after editing. Oversized requests use a verified temporary transfer restricted to the current Windows user, then delete it. Saves still use Obsidian APIs with backups, conflict checks, Unicode and newline preservation. The note limit remains 2 MB.
-- **Editing controls:** Choose single or double click to edit, position the caret at the corresponding source, and press Esc to save and exit. The first Esc dismisses an open menu; failed saves preserve the draft.
-- **Tasks input:** A space after task text opens suggestions. Enter on the first “⏎” continues the checklist; ↓ then Enter inserts; Tab indents. Cloned upstream source and fixtures inform default order, substring matching, date and recurrence menus. Automatic is the default: missing/disabled/unreachable Tasks and local mode keep completion off until manual ON.
-- **Dataview and checkboxes:** Display LIST/TABLE/TASK through CLI, refreshing independently of Tasks about every 30 seconds. Verified Tasks and Dataview TASK checkboxes update their source notes. Tasks uses native status/recurrence behavior; Dataview changes the selected checkbox only. Both retain backups and conflict checks.
-- **Reopen notes:** Use “Browse sticky-note folder…” from “…” menus, tray or taskbar. Filter files and inspect ordinary Markdown body/YAML previews before reopening. The picker does not run queries.
+- **Heading filters:** Search, select multiple headings and persist the selection per note. Include child sections in source order without modifying Markdown. Show the selected name or count. Missing, renamed or ambiguous headings show a notice instead of falling back to other content.
+- **Compact controls:** Place controls on one title row. Edit, Reload, New and Close move into More; Save appears while editing. Add pale colors, collapsible details, transient success notices and a right-aligned heading picker.
+- **Readable tasks:** Tighten spacing, align wrapped text, remove redundant task bullets and adjust loose lists, nesting and tables. Native Windows checkbox sizing fixes clipped right edges.
+- **Alt+Z:** Bring all notes to the foreground for ten seconds; repeat to extend. Restore each pin setting afterward. Notify on registration conflicts with other apps.
+- **Editing checkbox shortcut:** Assign a shortcut such as Ctrl+Enter in Settings; unassigned by default. Toggle an ordinary checkbox on the caret line with undo and normal saving. Alt+Z and standard editing keys are reserved. This action does not process Tasks recurrence or completion dates.
+- **Documentation:** Make Japanese the default GitHub README and synchronize English, Japanese and Simplified Chinese guides.
 
-### Installation and updates
+### Updating and validation
 
-Exit the app, extract all of **StickyNotes-win-x64.zip** from Assets into a separate folder, and run **Install.cmd**. Notes, settings and backups are retained. No administrator privileges or separate .NET installation are required. The app is unsigned; verify SHA256 with `.zip.sha256`.
+Exit the app, extract the complete **StickyNotes-win-x64.zip** from Assets into a new folder and run **Install.cmd**. Notes, settings and backups are retained. No administrator privileges or separate .NET installation are required. The app is unsigned; verify with **StickyNotes-win-x64.zip.sha256** when needed.
 
-Enable Obsidian CLI, open the intended vault and keep Obsidian running. Connect through “Settings → Obsidian CLI” in Sticky Notes. Enable Tasks for Tasks queries, Dataview for Dataview queries, and core Daily notes for daily notes. Disable CLI to use local files. Settings from v0.0.6 or earlier without a CLI selection also default to CLI; to keep using local files, uncheck “Use Obsidian CLI” and save. Existing files are not moved automatically.
+Validation covers automated tests, the distribution build, ZIP contents/checksum, and code/security reviews. WPF-generated images verify body layout at widths 280/360. Desktop capture failures limited final live-screen and popup visual checks. Live Obsidian, physical IME input and other Windows themes were not revalidated. Existing CLI limits and previously observed transient save conflicts remain; conflicting writes are refused. Filters target document-level headings and remain within the existing section for heading-linked notes.
 
-### Limits and validation
-
-Completion reproduces the default emoji menu and ordinary keys. Tasks preferences, custom statuses, dependency/ID edits and full natural-language date/recurrence parsing are unsupported. DataviewJS, inline expressions, CALENDAR and full Obsidian HTML/CSS rendering are unsupported. Checkboxes without verified source mappings stay disabled.
-
-957 automated tests, a distribution build, and code/security reviews completed. New Dataview, checkbox integration and completion were checked with mocked APIs, WPF and upstream fixtures; they have not been tested with live Obsidian or physical IME input. Internal API changes may affect compatibility. Earlier live CLI tests occasionally showed transient hash mismatches/save conflicts with an unisolated cause. Overwrites are refused; preserve draft text, reload and retry.
-
-[User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/README.md) · [Completion](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/TASK-EDITING.md#english) · [Dataview](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/DATAVIEW.md#english) · [Checkboxes and note browser](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/QUERY-EDITING-AND-BROWSER.md#english) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/CHANGELOG.md)
+[User guide](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/docs/USAGE.en.md) · [Checkbox shortcut and limits](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/docs/TASK-EDITING.md#english) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/CHANGELOG.md)
 
 ## 简体中文
 
-支持 Windows 10 / 11（x64）。本版修复长笔记保存，新增 Tasks 风格补全、Dataview 显示、查询复选框编辑及关闭便签的浏览器。
+适用于 Windows 10 / 11（x64）。汇总 v0.0.8 之后的更新，并整合另一开发分支中的编辑复选框快捷键。
 
-- **长笔记保存**：修复编辑后 CLI 命令长度超限。长请求通过仅当前 Windows 用户可读的临时文件传递、验证并删除。仍使用 Obsidian API 保存，保留备份、冲突检查、Unicode 和换行；笔记上限仍为 2 MB。
-- **编辑操作**：设置单击／双击编辑，光标定位到对应源码，Esc 保存并退出。候选打开时第一次 Esc 关闭候选；保存失败保留草稿。
-- **Tasks 输入**：任务正文后空格显示候选，首项“⏎”上 Enter 继续列表；↓选择后 Enter 插入，Tab 缩进。克隆分析上游源码并使用其测试资料，对齐默认顺序、子串匹配、日期和重复候选。默认自动，Tasks 未安装／禁用／无法确认及本地模式下，手动 ON 前保持关闭。
-- **Dataview 和复选框**：通过 CLI 显示 LIST／TABLE／TASK，与 Tasks 独立约每30秒刷新。已验证的 Tasks 和 Dataview TASK 复选框可更新原笔记。Tasks 使用原生状态／重复逻辑；Dataview 只修改选定复选框。两者保留备份和冲突检查。
-- **重新打开便签**：在“…”、通知区域或任务栏菜单选择“从便签文件夹打开…”，筛选并预览普通 Markdown 正文／YAML 后打开。选择器不运行查询。
+- **标题筛选**：搜索、多选标题并按便签保存。按原文顺序包含子章节，不修改 Markdown。显示选定名称或数量；标题改名、删除或重复时提示，不自动显示其他内容。
+- **紧凑控件**：控件与标题共用一行。编辑、重新加载、新建、关闭移到更多菜单，保存仅在编辑时显示。新增淡色、可折叠详情、临时成功提示及右对齐标题面板。
+- **任务可读性**：缩小行距、对齐折行、移除多余圆点，并调整空行列表、嵌套及表格间距。使用 Windows 主题的自然复选框宽度，修复右侧裁切。
+- **Alt+Z**：将所有便签置顶十秒，再按可延长，之后恢复各自置顶设置。与其他应用注册冲突时提示。
+- **编辑复选框快捷键**：在设置中指定如 Ctrl+Enter 的按键，默认未设置。切换光标行的普通复选框，支持撤销和正常保存。Alt+Z及标准编辑键保留。此操作不处理 Tasks 重复任务或完成日期。
+- **文档**：GitHub 默认 README 改为日语，并同步日语、英语及简体中文指南。
 
-### 安装和更新
+### 更新与验证
 
-退出应用，将 Assets 的 **StickyNotes-win-x64.zip** 全部解压到另一目录，运行 **Install.cmd**。保留笔记、设置和备份。无需管理员权限或另装 .NET。应用未签名，可通过 `.zip.sha256` 验证 SHA256。
+退出应用，将 Assets 中的 **StickyNotes-win-x64.zip** 全部解压到新目录并运行 **Install.cmd**。保留笔记、设置和备份，无需管理员权限或另装.NET。应用未签名，可通过 **StickyNotes-win-x64.zip.sha256** 校验。
 
-启用 Obsidian CLI，打开目标仓库并保持运行。在便签“设置 → Obsidian CLI”连接。Tasks 查询需启用 Tasks，Dataview 查询需 Dataview，日记需核心 Daily notes。禁用 CLI 可使用本地文件。v0.0.6 或更早且无 CLI 选项的旧配置也默认启用 CLI；继续本地模式时，取消“使用 Obsidian CLI”并保存。已有文件不会自动迁移。
+验证涵盖自动测试、分发构建、ZIP内容与校验和、代码及安全审查。使用WPF生成图像检查280／360宽度的正文布局。桌面截图故障限制了最终实机整窗和弹出面板的目视检查。本次未重新验证真实Obsidian、物理输入法及其他Windows主题。现有CLI限制和此前观察到的临时保存冲突仍存在，冲突写入会被拒绝。筛选仅针对文档顶层标题，已有标题链接便签仍限于其链接章节。
 
-### 限制与验证
-
-补全仅复现默认表情菜单和常用按键。不支持 Tasks 自定义设置／状态、依赖／ID 编辑及完整自然语言日期／重复规则解析。不支持 DataviewJS、内联表达式、CALENDAR 及完整 Obsidian HTML/CSS 渲染；缺少已验证来源的复选框保持禁用。
-
-已完成957项自动测试、分发构建和代码／安全审查。新增 Dataview、复选框集成及补全使用模拟 API、WPF 和上游测试资料验证，尚未实测运行中的 Obsidian 及物理输入法。内部 API 变化可能影响兼容性。此前 CLI 实机测试偶尔出现临时哈希不一致／保存冲突，原因未明；覆盖会被拒绝，请保留草稿后重新加载并重试。
-
-[使用指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/README.zh-CN.md) · [输入补全](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/TASK-EDITING.md#简体中文) · [Dataview](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/DATAVIEW.md#简体中文) · [复选框及便签列表](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/docs/QUERY-EDITING-AND-BROWSER.md#简体中文) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.8/CHANGELOG.zh-CN.md)
+[使用指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/docs/USAGE.zh-CN.md) · [快捷键及限制](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/docs/TASK-EDITING.md#简体中文) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.9/CHANGELOG.zh-CN.md)

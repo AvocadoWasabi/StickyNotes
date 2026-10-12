@@ -17,6 +17,7 @@ public sealed class Settings : IJsonOnDeserialized
     public bool AutoSaveOnFocusLoss { get; set; }
     public bool DoubleClickToEdit { get; set; }
     public TaskCompletionMode TaskCompletion { get; set; } = TaskCompletionMode.Automatic;
+    public string TaskToggleShortcut { get; set; } = "";
     public bool TitleButtonOverlay { get; set; }
     public bool ShowInTaskbar { get; set; }
     public string GoogleCredentialsFile { get; set; } = "";

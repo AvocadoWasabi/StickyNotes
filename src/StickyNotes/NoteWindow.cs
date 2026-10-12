@@ -155,7 +155,8 @@ public sealed partial class NoteWindow : Window
         };
         PreviewKeyDown += (_, e) =>
         {
-            if (HandleEditingKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
+            var editingKey = e.Key == Key.System ? e.SystemKey : e.Key;
+            if (HandleEditingKey(editingKey, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (e.Key == Key.F6 && Keyboard.Modifiers == ModifierKeys.None) { NoteHeader.Focus(); e.Handled = true; return; }
             if (HandleScaleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; }
@@ -417,6 +418,8 @@ public sealed partial class NoteWindow : Window
     {
         if (!editing || decisionInProgress || editorContextMenuOpen) return false;
         if (taskEditor.IsComposing) return false;
+        if (editor.IsKeyboardFocusWithin && TaskToggleShortcut.Matches(app.Config.TaskToggleShortcut, key, modifiers))
+            return taskEditor.ToggleCheckbox();
         if (editor.IsKeyboardFocusWithin && calendarCompletion.HandleKey(key, modifiers)) return true;
         if (editor.IsKeyboardFocusWithin && taskEditor.HandleKey(key, modifiers)) return true;
         // IME-owned keys arrive as ImeProcessed, so only a plain Escape saves.

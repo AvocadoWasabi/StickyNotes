@@ -4,6 +4,10 @@
 
 ## English
 
+**Settings → Toggle checkbox shortcut** assigns a key to toggle `[ ]` ↔ `[x]` on the caret line while editing (`[X]` also unchecks). Focus the field and press Ctrl or Alt plus a letter, digit, Enter, Space or F1–F12; Shift is optional (example: `Ctrl+Enter`). Reserved save/edit, copy/paste/select-all/undo/redo and Alt+F4 / Alt+Z bindings are rejected. Delete/Backspace or **Clear shortcut** removes the binding; save settings to apply it immediately to open notes. New and existing settings default to unassigned.
+
+The shortcut works independently of task completion and the Tasks plugin. It updates only the checkbox character in the draft, retains the caret and supports Undo/Redo. Use the usual Save/Esc or focus-loss save workflow to write it. There is no completion-date, custom-status or recurrence processing for this editing shortcut. Selections, IME composition, ordinary text, code/HTML blocks, query source and continuation lines are unchanged. Nested, numbered and quoted Markdown task lines are supported; generated query results are not edited.
+
 **Settings → Task input completion → Automatic / ON / OFF** is unchanged. Automatic is the default for new and existing settings: the selected Obsidian vault must have Tasks enabled. Missing/disabled/unreachable Tasks and local mode keep suggestions off until manual ON. OFF always hides them. Detection is asynchronous on editor focus; obsolete responses cannot enable a newer session. Candidates are generated locally, without per-keystroke CLI calls. Checkbox operations and Enter checklist continuation remain separate from this setting.
 
 The standard emoji-format menu now follows the analyzed Tasks source, including these behaviors:
@@ -24,6 +28,10 @@ All rules, local dates, popup/IME/keys, activation policy and checkbox adapter r
 
 ## 日本語
 
+**設定 → チェックON・OFFのショートカット**で、編集中のカーソル行の`[ ]` ↔ `[x]`を切り替えるキーを登録できます（`[X]`もOFFにできます）。欄を選び、CtrlまたはAltと英字・数字・Enter・Space・F1〜F12を組み合わせて押します。Shiftも併用できます（例：`Ctrl+Enter`）。保存・編集開始・コピー／貼り付け／全選択／Undo／Redo・Alt+F4／Alt+Zの予約キーは登録できません。Delete／Backspaceまたは**ショートカットを解除**で解除し、設定を保存すると開いている付箋にも即時反映します。新規・既存設定とも既定は未設定です。
+
+タスク入力補完やTasksプラグインの有無とは独立して動作します。下書きのチェック文字だけを変更し、カーソル位置を保持してUndo／Redoに対応します。ファイルへの書き込みは通常の保存／Esc／フォーカス喪失時の保存で行います。この編集用ショートカットでは完了日・カスタム状態・繰り返し処理は行いません。選択範囲がある場合、IME変換中、通常文・コード／HTMLブロック・クエリソース・継続行は変更しません。入れ子・番号付き・引用内のMarkdownタスク行にも対応し、生成されたクエリ結果は編集しません。
+
 **設定 → タスク入力補完 → 自動／ON／OFF**は維持します。新規・既存設定の既定は自動で、対象Obsidian VaultのTasksが有効な場合のみ補完します。未導入・無効・接続確認失敗・ローカル方式では手動ONまで停止し、OFFでは常に非表示です。フォーカス時に非同期確認し、古い応答は破棄します。候補はローカル生成し、入力ごとのCLI通信はありません。チェック操作・Enterでのリスト継続はこの設定と独立しています。
 
 解析したTasks本家のソースに合わせ、絵文字形式の標準操作を次のように修正しました。
@@ -43,6 +51,10 @@ All rules, local dates, popup/IME/keys, activation policy and checkbox adapter r
 入力規則・日付・候補UI／IME／キー・有効化判定・チェック連携は`src/StickyNotes/TaskEditing/`に集約しています。自動検証では本家資料との照合、Space／Enter／Tab／クリック、置換範囲、IME、Undo、有効化条件、保存競合を確認します。起動中のObsidianと物理IMEでの実機検証は未実施です。`./build.ps1 -Publish`で本資料・ライセンスを同梱し、`artifacts/app/Install.cmd`で導入できます。
 
 ## 简体中文
+
+**设置 → 切换复选框的快捷键**可设置编辑时切换光标所在行`[ ]` ↔ `[x]`的按键（`[X]`也可取消勾选）。选中输入框，按Ctrl或Alt加字母、数字、Enter、Space或F1–F12，可同时按Shift（例如`Ctrl+Enter`）。保存、开始编辑、复制／粘贴／全选／撤销／重做和Alt+F4／Alt+Z保留组合不可设置。Delete／Backspace或**清除快捷键**移除绑定；保存设置后立即应用于打开的便签。新旧配置默认均未设置。
+
+快捷键独立于任务输入补全和Tasks插件。仅修改草稿的复选框字符，保留光标并支持撤销／重做。通过正常的保存／Esc／失去焦点时保存流程写入文件。此编辑快捷键不处理完成日期、自定义状态或重复任务。有选择范围、输入法组合输入时，以及普通文本、代码／HTML块、查询源码和续行均不修改。支持嵌套、编号和引用中的Markdown任务行，不编辑生成的查询结果。
 
 保留 **设置 → 任务输入补全 → 自动／ON／OFF**。新旧配置均默认自动，仅在目标Obsidian仓库已启用Tasks时显示候选。未安装、禁用、无法确认及本地模式下，手动ON前保持关闭；OFF始终关闭。获得焦点时异步检查，丢弃过期结果。候选在本地生成，不逐键调用CLI。复选框操作及Enter继续列表与此设置独立。
 
