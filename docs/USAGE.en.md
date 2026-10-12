@@ -226,3 +226,5 @@ Filtering only affects display. Editing shows the unfiltered body and moves to t
 ### Compact body rendering
 
 Body text uses size 14 and line height 21, with two units between tight list items and five additional units for loose lists. Tasks omit redundant bullets and align wrapped lines to the text column. Nested lists indent by 18; table paragraphs have no extra margins. Heading sizes are 20/18/16 and note colors are pale. Values are WPF logical units at 100% zoom. Existing soft-line-break behavior, source text, task updates and editing positions are preserved.
+
+Checkboxes use their native Windows theme width; wrapped text aligns to the measured checkbox width plus the text gap.

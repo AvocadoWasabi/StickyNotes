@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Fix clipped task checkboxes by using the native theme width and matching the wrapped-text indent to the measured checkbox column.
+
 - Simplify notes to one header row with contextual Save, short heading labels and an aligned picker. Add pale colors, collapsible metadata and transient success notices. Compact list spacing and align wrapped tasks while preserving loose lists and original source positions.
 
 - Add a persistent per-note heading filter with hierarchical search, multiple selections, immediate preview and one-click reset. Preserve source editing/task positions and report missing or ambiguous headings. See [usage](docs/USAGE.en.md#heading-filter).

@@ -46,10 +46,18 @@ public static class MarkdownView
             case ParagraphBlock paragraph:
                 var inList = paragraph.Parent is ListItemBlock;
                 var inCell = paragraph.Parent is Markdig.Extensions.Tables.TableCell;
-                var taskParagraph = paragraph.Inline?.FirstChild is TaskList;
-                var p = new Paragraph { Margin = new Thickness(taskParagraph ? 20 : 0, 0, 0, inCell ? 0 : inList ? 2 : 7),
-                    TextIndent = taskParagraph ? -20 : 0, LineHeight = 21 };
-                AddInlines(p.Inlines, paragraph.Inline, source, toggle, paragraph.Line, readOnly, canToggle); output.Add(p); break;
+                var p = new Paragraph { Margin = new Thickness(0, 0, 0, inCell ? 0 : inList ? 2 : 7), LineHeight = 21 };
+                AddInlines(p.Inlines, paragraph.Inline, source, toggle, paragraph.Line, readOnly, canToggle);
+                if (p.Inlines.FirstInline is InlineUIContainer { Child: CheckBox taskBox })
+                {
+                    // Native themes determine the glyph size. Reserve its natural width,
+                    // including the text gap, instead of clipping it to a fixed 13 DIP.
+                    taskBox.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    var column = taskBox.DesiredSize.Width;
+                    p.Margin = new Thickness(column, 0, 0, p.Margin.Bottom);
+                    p.TextIndent = -column;
+                }
+                output.Add(p); break;
             case ListBlock list:
                 System.Windows.Documents.List? rendered = null;
                 bool? previousTask = null;
@@ -124,7 +132,7 @@ public static class MarkdownView
                 case CodeInline code: output.Add(new Run(code.Content) { FontFamily = new FontFamily("Consolas"), Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 0, 0, 0)) }); break;
                 case LineBreakInline: output.Add(new LineBreak()); break;
                 case TaskList task:
-                    var checkbox = new CheckBox { IsChecked = task.Checked, IsEnabled = !readOnly && (canToggle?.Invoke(line) ?? true), Width = 13, Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center };
+                    var checkbox = new CheckBox { IsChecked = task.Checked, IsEnabled = !readOnly && (canToggle?.Invoke(line) ?? true), Margin = new Thickness(0, 0, 7, 0), VerticalAlignment = VerticalAlignment.Center };
                     if (checkbox.IsEnabled) checkbox.Click += (_, _) => toggle(line, checkbox.IsChecked == true);
                     output.Add(new InlineUIContainer(checkbox) { BaselineAlignment = BaselineAlignment.Center }); break;
                 case EmphasisInline emphasis:

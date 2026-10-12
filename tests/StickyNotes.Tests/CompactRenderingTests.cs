@@ -11,8 +11,13 @@ internal static partial class Program
         var list = tight.Blocks.OfType<System.Windows.Documents.List>().Single();
         Check(list.MarkerStyle == TextMarkerStyle.None, "compact tasks omit redundant bullets");
         var paragraph = list.ListItems.FirstListItem.Blocks.OfType<Paragraph>().Single();
-        Check(paragraph.LineHeight == 21 && paragraph.Margin.Bottom == 2 && paragraph.Margin.Left == 20 && paragraph.TextIndent == -20,
+        var taskBox = (CheckBox)paragraph.Inlines.OfType<InlineUIContainer>().First().Child;
+        Check(paragraph.LineHeight == 21 && paragraph.Margin.Bottom == 2 && paragraph.Margin.Left == taskBox.DesiredSize.Width && paragraph.TextIndent == -taskBox.DesiredSize.Width,
             "compact tasks reserve a checkbox column and align wrapped text");
+        var nativeBox = new CheckBox { Margin = taskBox.Margin };
+        nativeBox.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+        Check(double.IsNaN(taskBox.Width) && taskBox.DesiredSize.Width >= nativeBox.DesiredSize.Width,
+            "task checkbox retains the full native theme width without clipping");
         Check(paragraph.Inlines.OfType<Run>().First().Text == "one", "task marker whitespace does not misalign the first line");
         var loose = MarkdownView.Render("- [ ] one\n\n- [ ] two\n", (_, _) => { }).Blocks.OfType<System.Windows.Documents.List>().Single();
         Check(loose.ListItems.FirstListItem.Margin.Bottom > list.ListItems.FirstListItem.Margin.Bottom, "intentional blank lines keep a looser list rhythm");
