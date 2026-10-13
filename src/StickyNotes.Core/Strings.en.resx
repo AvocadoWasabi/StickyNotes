@@ -1046,4 +1046,5 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="TaskEditing.ShortcutHelp" xml:space="preserve"><value>Focus the field and press Ctrl or Alt with a letter, digit, Enter, Space or F1–F12 (Shift is optional), e.g. Ctrl+Enter. Unassigned by default. Toggles the checkbox on the caret line while editing. Delete/Backspace or Clear disables it.</value></data>
   <data name="TaskEditing.ShortcutInvalid" xml:space="preserve"><value>This key combination is unavailable. Include Ctrl or Alt. Save, edit, standard copy/paste/undo and other reserved commands cannot be assigned.</value></data>
   <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>Clear shortcut</value></data>
+  <data name="AppCommands.RestoreClosed" xml:space="preserve"><value>Reopen recently closed notes</value></data>
 </root>

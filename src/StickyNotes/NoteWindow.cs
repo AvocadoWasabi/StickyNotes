@@ -39,6 +39,7 @@ public sealed partial class NoteWindow : Window
     private readonly Func<MessageBoxResult>? confirmFocusSave;
     private readonly Action<Exception>? reportSaveError;
     private bool decisionInProgress, editorContextMenuOpen;
+    private long closeRequested;
     private FileSnapshot? snapshot;
     private string content = "";
     private bool editing, dirty, loading, initialized, busy, closed;
@@ -167,6 +168,7 @@ public sealed partial class NoteWindow : Window
         geometrySave.Tick += (_, _) => { geometrySave.Stop(); if (initialized && !closed) app.Safe(() => { MonitorLayout.Capture(this, Placement); app.SaveConfig(); }); };
         poll.Tick += async (_, _) => await Tick();
         Closing += OnClosing;
+        Closed += OnClosed;
         Background = Ui.Color(placement.Color);
     }
 
@@ -686,6 +688,7 @@ public sealed partial class NoteWindow : Window
         Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
         Add(L10n.Text("NoteBrowser.Title"), app.BrowseNotes);
+        Add(L10n.Text("AppCommands.RestoreClosed"), app.RestoreRecentlyClosedNotes);
         Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
         Add(L10n.Text("NoteWindow.Text55"), app.LinkDaily);
         Add(L10n.Text("NoteWindow.Text56"), () => new SettingsWindow().ShowDialog());
@@ -725,7 +728,13 @@ public sealed partial class NoteWindow : Window
 
     private void OnClosing(object? sender, CancelEventArgs e)
     {
+        closeRequested = app.CloseClock();
         if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
+        if (initialized) MonitorLayout.Capture(this, Placement);
+    }
+
+    private void OnClosed(object? sender, EventArgs e)
+    {
         closed = true; poll.Stop(); geometrySave.Stop(); focusLossTimer.Stop(); temporaryFrontTimer.Stop();
         statusNoticeTimer.Stop(); StatusText.RemoveValueChanged(status, OnStatusTextChanged);
         if (headingFilterPopup is not null) headingFilterPopup.IsOpen = false;
@@ -733,6 +742,6 @@ public sealed partial class NoteWindow : Window
         PreviewZoom.RemoveValueChanged(preview, OnPreviewZoomChanged);
         CancelQueryPreviews();
         CancelCliRead();
-        if (!app.Exiting) { app.Notes.Remove(this); app.SaveConfig(); }
+        app.NoteClosed(this, closeRequested);
     }
 }

@@ -15,6 +15,7 @@ internal static class AppCommands
         new AppCommand(3, "link-section", L10n.Text("AppCommands.Text03")),
         new AppCommand(4, "link-daily", L10n.Text("AppCommands.Text04")),
         new AppCommand(5, "show-all", L10n.Text("AppCommands.Text05")),
+        new AppCommand(10, "restore-closed", L10n.Text("AppCommands.RestoreClosed")),
         new AppCommand(6, "temporary-front", L10n.Text("AppCommands.Text06")),
         new AppCommand(7, "settings", L10n.Text("AppCommands.Text07")),
         new AppCommand(8, "exit", L10n.Text("AppCommands.Text08"), true)

@@ -6,6 +6,10 @@
 
 使い方は [日本語README](README.ja.md)、公開後の配布ファイルは [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) を参照してください。
 
+## 未リリース
+
+- 通知領域・タスクバー・付箋メニューに「直前に閉じた付箋を再表示」を追加。「すべてのウィンドウを閉じる」など連続する閉じる操作を1組として記録し、位置・サイズ・見出しフィルターなどをまとめて復元。最新の履歴は再起動後も保持。[使い方と制約](docs/USAGE.md#display)。
+
 ## [0.0.9](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9) — 2026-10-12
 
 - タスクのチェックボックス右端の見切れを修正。Windowsテーマの自然な幅を確保し、実測した幅に本文の折り返し位置を合わせます。

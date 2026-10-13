@@ -62,6 +62,14 @@ Enable `Save automatically when the editor loses focus` to skip this prompt (off
 
 Drag the top of a note to move it, or drag an edge or the bottom-right corner to resize it. Use `○ / ●` to toggle always-on-top mode. Notes have no standard title bar and normally stay out of the taskbar; the app runs in the notification area.
 
+### Reopen recently closed notes together
+
+If you accidentally select **Close all windows** on the Windows taskbar, choose **Reopen recently closed notes** from the tray icon, taskbar menu, or a note’s **…** menu. The most recent group reopens with its position, size, pinning, zoom, linked heading, and heading filters. Already open notes are not duplicated. The existing **Show all** command shows or restores minimized windows that are still open.
+
+Closes belong to the same group when the next close request arrives within two seconds of the previous close completing. Quickly closing notes manually also groups them; longer gaps start a new group. Opening a note, reopening the group, or saving settings ends the group. Only the latest group is stored in settings, including across restarts; restored entries are removed. **Exit** still saves the open layout without replacing this history.
+
+Canceled closes are excluded. Reopening restores display settings and saved files, not discarded edits or deleted files. A missing source file produces a read error on the note. Changing the note source mode or Obsidian connection clears history to avoid opening notes from the wrong source. Starting with all notes closed and history available leaves the app in the tray, where you can reopen the group.
+
 ### Taskbar and menus
 
 Enable `Show note icons in the taskbar` in Settings to show note icons in the taskbar (off by default). It applies to all notes and persists after restarting. The notification-area icon remains available.

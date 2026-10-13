@@ -6,6 +6,10 @@
 
 使用方法见 [README](README.zh-CN.md)，发布包见 [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases)。
 
+## 未发布
+
+- 在通知区域、任务栏和便签菜单中新增“重新显示最近关闭的便签”。连续关闭操作（包括“关闭所有窗口”）记录为一组，可批量恢复位置、尺寸、标题筛选等显示设置。最近一组记录在重启后仍保留。[用法与限制](docs/USAGE.zh-CN.md#display)。
+
 ## [0.0.9](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9) — 2026-10-12
 
 - 修复任务复选框右侧被裁切的问题。保留 Windows 主题的自然宽度，并按实测宽度对齐正文折行。

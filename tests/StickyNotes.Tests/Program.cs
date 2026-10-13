@@ -106,6 +106,7 @@ internal static partial class Program
             ContentScaleTests(root);
             TitleButtonOverlayTests(root);
             TaskbarAndTemporaryFrontTests(root);
+            RecentlyClosedNotesTests(root);
             AppCommandMenuTests();
             Task.Run(AppCommandPipeTests).GetAwaiter().GetResult();
 
@@ -162,8 +163,8 @@ internal static partial class Program
         var executable = @"C:\A folder\日本語\StickyNotes.exe";
         var jump = AppCommands.CreateJumpList(executable);
         var tasks = jump.JumpItems.OfType<System.Windows.Shell.JumpTask>().Where(task => !string.IsNullOrEmpty(task.Title)).ToArray();
-        Check(tasks.Length == 9 && tasks.Select(task => task.Title).SequenceEqual(AppCommands.All.Select(command => command.Title)), "taskbar includes every tray operation in the same order");
-        Check(tray.Items.Count == jump.JumpItems.Count && tray.Items.Count == 10, "tray and taskbar include the same separator before Exit");
+        Check(tasks.Length == 10 && tasks.Select(task => task.Title).SequenceEqual(AppCommands.All.Select(command => command.Title)), "taskbar includes every tray operation in the same order");
+        Check(tray.Items.Count == jump.JumpItems.Count && tray.Items.Count == 11, "tray and taskbar include the same separator before Exit");
         for (var index = 0; index < AppCommands.All.Count; index++)
         {
             var command = AppCommands.All[index];

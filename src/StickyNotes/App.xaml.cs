@@ -107,7 +107,7 @@ public partial class App : Application
         if (needsCliSetup) Dispatcher.BeginInvoke(new Action(() => Safe(() => new SettingsWindow().ShowDialog())));
         else
         {
-            if (Notes.Count == 0 && command?.Id != "new") Safe(NewNote);
+            if (Notes.Count == 0 && Config.RecentlyClosedWindows.Count == 0 && command?.Id is not ("new" or "restore-closed")) Safe(NewNote);
             if (command is not null) Dispatcher.BeginInvoke(new Action(() => ExecuteCommand(command)));
         }
         SessionEnding += (_, args) => { if (!PrepareExit()) args.Cancel = true; };
@@ -151,6 +151,7 @@ public partial class App : Application
 
     public void ShowNote(NotePlacement placement)
     {
+        lastCloseCompleted = null;
         var existing = Notes.FirstOrDefault(n => n.Placement.Daily == placement.Daily &&
             n.Placement.Heading == placement.Heading && string.Equals(n.Placement.Path, placement.Path, StringComparison.OrdinalIgnoreCase));
         if (existing is not null) { existing.Show(); if (existing.WindowState == WindowState.Minimized) existing.WindowState = WindowState.Normal; existing.Activate(); return; }
@@ -193,6 +194,7 @@ public partial class App : Application
                 }
                 break;
             case "temporary-front": BringNotesToFrontTemporarily(); break;
+            case "restore-closed": RestoreRecentlyClosedNotes(); break;
             case "settings": new SettingsWindow().ShowDialog(); break;
             case "exit": Quit(); break;
         }
@@ -228,10 +230,12 @@ public partial class App : Application
         var restore = new List<Action>();
         try
         {
+            next.RecentlyClosedWindows = CopyClosedNotesForSettings(next, paths);
             if (paths.Count > 0)
                 foreach (var note in Notes) restore.Add(note.Relocate(paths));
             Config = next;
             SaveConfig();
+            lastCloseCompleted = null;
         }
         catch
         {

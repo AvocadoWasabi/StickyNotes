@@ -6,6 +6,10 @@ User-facing changes are recorded here, newest releases first. Development commit
 
 See the [README](README.en.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
+## Unreleased
+
+- Added “Reopen recently closed notes” to tray, taskbar, and note menus. Consecutive closes, including “Close all windows,” are recorded as one group and reopened with positions, sizes, heading filters, and other display settings. The latest group persists across restarts. [Usage and limits](docs/USAGE.en.md#display).
+
 ## [0.0.9](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9) — 2026-10-12
 
 - Fix clipped task checkboxes by using the native theme width and matching the wrapped-text indent to the measured checkbox column.

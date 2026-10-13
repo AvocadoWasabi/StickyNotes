@@ -1046,4 +1046,5 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="TaskEditing.ShortcutHelp" xml:space="preserve"><value>选中输入框，按Ctrl或Alt加字母、数字、Enter、Space或F1–F12（可同时按Shift）设置，例如Ctrl+Enter。默认未设置。编辑时切换光标所在行的复选框。Delete／Backspace或清除按钮可禁用。</value></data>
   <data name="TaskEditing.ShortcutInvalid" xml:space="preserve"><value>此组合键不可用。请包含Ctrl或Alt。保存、开始编辑、标准复制／粘贴／撤销等保留命令不可设置。</value></data>
   <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>清除快捷键</value></data>
+  <data name="AppCommands.RestoreClosed" xml:space="preserve"><value>重新显示最近关闭的便签</value></data>
 </root>

@@ -27,6 +27,8 @@ public sealed class Settings : IJsonOnDeserialized
     public string ObsidianVaultFolder { get; set; } = "";
     public string ObsidianVaultId { get; set; } = "";
     public List<NotePlacement> Windows { get; set; } = [];
+    private List<NotePlacement> recentlyClosedWindows = [];
+    public List<NotePlacement> RecentlyClosedWindows { get => recentlyClosedWindows; set => recentlyClosedWindows = value ?? []; }
 
     void IJsonOnDeserialized.OnDeserialized() => DailyPattern = DailyNotePatternMigration.Upgrade(DailyPattern);
 }
@@ -52,6 +54,13 @@ public sealed class NotePlacement
     public int PixelLeft { get; set; }
     public int PixelTop { get; set; }
     public bool HasPixelPosition { get; set; }
+
+    public NotePlacement Copy()
+    {
+        var copy = (NotePlacement)MemberwiseClone();
+        copy.HeadingFilters = [.. HeadingFilters];
+        return copy;
+    }
 }
 
 public sealed record NoteMetadata(string Title, string[] Tags, string Status, string Color);
