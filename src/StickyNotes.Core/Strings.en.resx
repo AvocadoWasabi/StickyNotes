@@ -1048,4 +1048,11 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>Clear shortcut</value></data>
   <data name="AppCommands.RestoreClosed" xml:space="preserve"><value>Reopen recently closed notes</value></data>
   <data name="NoteWindow.Saving" xml:space="preserve"><value>Saving. Please wait until the save finishes.</value></data>
+  <data name="Rename.Menu" xml:space="preserve"><value>Rename file…</value></data>
+  <data name="Rename.Hint" xml:space="preserve"><value>Double-click to rename the file</value></data>
+  <data name="Rename.Daily" xml:space="preserve"><value>Daily note files cannot be renamed here.</value></data>
+  <data name="Rename.Label" xml:space="preserve"><value>New file name (without extension). The display title will not change.</value></data>
+  <data name="Rename.Invalid" xml:space="preserve"><value>Enter a valid file name. Blank names, path separators, reserved names, and trailing spaces or periods are not allowed.</value></data>
+  <data name="Rename.Draft" xml:space="preserve"><value>Save unsaved changes in other sticky notes displaying this file, then try again.</value></data>
+  <data name="Rename.Recovery" xml:space="preserve"><value>Could not confirm the rename or save settings. Check the original/destination files and recovery record below. If the file has moved, reopen the destination.</value></data>
 </root>

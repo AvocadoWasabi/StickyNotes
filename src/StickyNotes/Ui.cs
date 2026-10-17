@@ -11,7 +11,7 @@ public static class Ui
         return button;
     }
 
-    public static Dictionary<string, string>? Prompt(string title, IEnumerable<Field> fields, Window? owner = null)
+    public static Dictionary<string, string>? Prompt(string title, IEnumerable<Field> fields, Window? owner = null, bool singleLineSubmit = false)
     {
         var window = new Window { Title = title, Width = 540, SizeToContent = SizeToContent.Height, MaxHeight = 760,
             WindowStartupLocation = owner is null ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner, Owner = owner,
@@ -29,6 +29,12 @@ public static class Ui
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
         buttons.Children.Add(Button(L10n.Text("Ui.Text01"), () => window.DialogResult = false));
         buttons.Children.Add(Button("OK", () => window.DialogResult = true));
+        if (singleLineSubmit)
+        {
+            ((Button)buttons.Children[0]).IsCancel = true;
+            ((Button)buttons.Children[1]).IsDefault = true;
+            window.Loaded += (_, _) => { var first = inputs.Values.First(); first.Focus(); first.SelectAll(); };
+        }
         panel.Children.Add(buttons);
         window.Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         return window.ShowDialog() == true ? inputs.ToDictionary(p => p.Key, p => p.Value.Text) : null;

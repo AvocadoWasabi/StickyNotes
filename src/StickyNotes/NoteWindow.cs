@@ -84,6 +84,7 @@ public sealed partial class NoteWindow : Window
         header.ColumnDefinitions.Add(new ColumnDefinition());
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         header.Children.Add(title);
+        ConfigureTitleRename();
         Button Control(string label, Action action, double width, string? tooltip = null)
         {
             var button = Ui.Button(label, action, tooltip);
@@ -734,6 +735,7 @@ public sealed partial class NoteWindow : Window
         Add(L10n.Text("NoteWindow.Text03"), BeginEdit);
         Add(L10n.Text("NoteWindow.Text07"), ReloadAsked);
         Add(L10n.Text("NoteWindow.Text09"), app.NewNote);
+        menu.Items.Add(RenameMenuItem());
         Add(L10n.Text("NoteWindow.Text11"), Close);
         menu.Items.Add(new Separator());
         Add(L10n.Text("NoteWindow.Details"), () => tags.Visibility = tags.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible);
@@ -769,6 +771,7 @@ public sealed partial class NoteWindow : Window
 
     public bool CanClose()
     {
+        if (app.IsChangingFolder) return false;
         if (decisionInProgress) return false;
         focusLossTimer.Stop();
         decisionInProgress = true;

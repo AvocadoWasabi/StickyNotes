@@ -2,6 +2,8 @@
 
 # Usage reference
 
+**Rename a file:** Use `… → Rename file…` or double-click the sticky note title. The current name without its extension is selected; Enter submits and Esc cancels. The `.md` extension, directory, display title, position, size, color, and heading selection are retained. Other windows referencing the file and recently closed history are updated. Dragging the title still moves the window. Regular and fixed-heading notes are supported; daily notes are excluded. Unsaved text is saved first. Save any drafts in other windows displaying the same file before renaming. Duplicate/invalid names and case-only changes are rejected (use an intermediate name for case-only changes). Obsidian CLI mode follows Obsidian's link-update preferences; local mode does not rewrite links in other notes. On failure, check both paths and reopen the destination if the file has moved. Recovery records remain in `note-renames` under the application data directory.
+
 After a task and a space, the generic menu starts with **⏎** (Enter continues the checklist). Use ↓ then Enter or a click to insert a field; Tab indents. Date-field menus select the first date instead. See [exact behavior and limits](TASK-EDITING.md#english).
 
 For task keyword/date completion, Enter-to-continue checklists and native Tasks checkbox behavior, see [task editing](TASK-EDITING.md#english).

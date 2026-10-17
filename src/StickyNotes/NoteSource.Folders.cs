@@ -13,6 +13,27 @@ internal sealed partial class NoteSource
     private async Task<JsonDocument> FolderRequest(object data, CancellationToken token = default) =>
         ObsidianTasksClient.ParseEnvelope(await execute(settings, ObsidianTasksClient.BuildFoldersCode(data), token).ConfigureAwait(false));
 
+    internal async Task RenameAsync(FileSnapshot expected, string target, string operation)
+    {
+        if (!cli)
+        {
+            NoteFolderMigration.CheckPath(expected.Path); NoteFolderMigration.CheckPath(target);
+            if (NoteStore.Read(expected.Path).Hash != expected.Hash) throw new ConflictException(L10n.Text("StickyFolder.Conflict"));
+            File.Move(expected.Path, target); // Never overwrite an existing file.
+            return;
+        }
+        var request = new { mode = "rename", root = Root,
+            path = ObsidianTasksClient.RelativeNotePath(Root, expected.Path),
+            target = ObsidianTasksClient.RelativeNotePath(Root, target), hash = expected.Hash, operation };
+        try { using var result = await FolderRequest(request).ConfigureAwait(false); }
+        catch
+        {
+            // The bridge serializes requests and remembers the exact operation result.
+            // A lost response must not rename twice or mistake an unrelated target for success.
+            using var result = await FolderRequest(request).ConfigureAwait(false);
+        }
+    }
+
     internal async Task<StickyFolderCatalog> GetFoldersAsync(CancellationToken token = default)
     {
         if (cli)

@@ -29,6 +29,28 @@ async function stickyFolderOperation(q) {
         return { folders: ['.', ...folders], defaultFolder: parent === '/' || !parent ? '.' : parent };
     }
     const path = clean(q.path);
+    if (q.mode === 'rename') {
+        const target = clean(q.target);
+        if (!/^[0-9a-f]{32}$/.test(q.operation) || target.split('/').slice(0, -1).join('/') !== path.split('/').slice(0, -1).join('/')) fail('Invalid rename request.');
+        const operations = window.__stickyNotesRenames ||= new Map();
+        const identity = JSON.stringify([q.root, path, target, q.hash]);
+        if (operations.has(q.operation)) {
+            const previous = operations.get(q.operation);
+            if (previous.identity !== identity) fail('Rename operation conflict.');
+            if (previous.error) fail(previous.error);
+            return {};
+        }
+        const file = get(path);
+        if (!file || file.extension !== 'md' || get(target) || hash(await read(file)) !== q.hash) fail('Rename conflict; no overwrite.');
+        try {
+            await app.fileManager.renameFile(file, target);
+            operations.set(q.operation, {identity});
+        } catch (error) {
+            operations.set(q.operation, {identity, error: String(error)});
+            throw error;
+        }
+        return {};
+    }
     if (q.mode === 'ensure') { await ensure(path); return {}; }
     if (q.mode === 'exists') return { exists: !!get(path) };
     if (q.mode === 'browse') {

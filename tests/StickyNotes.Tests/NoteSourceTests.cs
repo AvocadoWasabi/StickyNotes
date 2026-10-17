@@ -121,6 +121,7 @@ internal static partial class Program
         }
         ObsidianDailyTests(root);
         StickyFolderTests(root);
+        NoteRenameTests(root);
         CliNoteWindowTests(root);
     }
 
