@@ -81,7 +81,7 @@ internal sealed class TaskEditorBehavior
     internal void Update()
     {
         delay.Stop();
-        if (closed || !completionEnabled || inserting || IsComposing || !owner.IsActive || !editor.IsVisible || !editor.IsKeyboardFocusWithin ||
+        if (closed || editor.IsReadOnly || !completionEnabled || inserting || IsComposing || !owner.IsActive || !editor.IsVisible || !editor.IsKeyboardFocusWithin ||
             (dismissedText == editor.Text && dismissedCaret == editor.CaretIndex)) { Close(); return; }
         TaskSuggestions candidates;
         try { candidates = TaskInput.Suggest(editor.Text, editor.CaretIndex, editor.SelectionLength, today()); }
@@ -96,6 +96,7 @@ internal sealed class TaskEditorBehavior
 
     internal bool HandleKey(Key key, ModifierKeys modifiers)
     {
+        if (editor.IsReadOnly) return false;
         if (!IsComposing && key == Key.Tab && modifiers is ModifierKeys.None or ModifierKeys.Shift)
         {
             try
@@ -126,7 +127,7 @@ internal sealed class TaskEditorBehavior
 
     internal bool ToggleCheckbox()
     {
-        if (IsComposing || closed) return false;
+        if (IsComposing || closed || editor.IsReadOnly) return false;
         if (TaskInput.ToggleCheckbox(editor.Text, editor.CaretIndex, editor.SelectionLength) is not { } edit) return false;
         Apply(edit, editor.CaretIndex);
         Close();
@@ -146,7 +147,7 @@ internal sealed class TaskEditorBehavior
 
     private void ApplySuggestion(TaskSuggestion suggestion)
     {
-        if (!IsOpen || IsComposing || offeredText != editor.Text || offeredCaret != editor.CaretIndex || editor.SelectionLength != 0)
+        if (editor.IsReadOnly || !IsOpen || IsComposing || offeredText != editor.Text || offeredCaret != editor.CaretIndex || editor.SelectionLength != 0)
         { Close(); return; }
         if (suggestion.ContinueList)
         {

@@ -1047,4 +1047,5 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="TaskEditing.ShortcutInvalid" xml:space="preserve"><value>此组合键不可用。请包含Ctrl或Alt。保存、开始编辑、标准复制／粘贴／撤销等保留命令不可设置。</value></data>
   <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>清除快捷键</value></data>
   <data name="AppCommands.RestoreClosed" xml:space="preserve"><value>重新显示最近关闭的便签</value></data>
+  <data name="NoteWindow.Saving" xml:space="preserve"><value>正在保存。请等待保存完成。</value></data>
 </root>

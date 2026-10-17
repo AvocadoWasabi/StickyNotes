@@ -52,6 +52,7 @@ internal static partial class Program
 
     private static void EditInteractionTests(string root)
     {
+        MenuSaveTests(root);
         SourcePositionTests();
         Check(!new Settings().DoubleClickToEdit && !JsonSerializer.Deserialize<Settings>("{}")!.DoubleClickToEdit,
             "Edit gesture: existing and new settings default to single click");
@@ -144,5 +145,132 @@ internal static partial class Program
             window.HandleEditingKey(Key.Escape, ModifierKeys.None);
         }
         finally { Reload(); window.Close(); app.ApplySettings(previous, false); }
+    }
+
+    private static void MenuSaveTests(string root)
+    {
+        var previousContext = System.Threading.SynchronizationContext.Current;
+        System.Threading.SynchronizationContext.SetSynchronizationContext(new System.Windows.Threading.DispatcherSynchronizationContext());
+        var app = App.Current;
+        var previousFactory = app.NoteSources;
+        var cli = app.Config.ObsidianTasksEnabled;
+        var autoSave = app.Config.AutoSaveOnFocusLoss;
+        var vault = app.Config.ObsidianVaultFolder;
+        var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        var calls = 0; var errors = 0; var confirmations = 0;
+        TaskCompletionSource<string>? response = null;
+        NoteWindow? window = null;
+        try
+        {
+            app.Config.ObsidianTasksEnabled = true;
+            app.Config.AutoSaveOnFocusLoss = true;
+            app.Config.ObsidianVaultFolder = root;
+            app.NoteSources = config => new NoteSource(config, true, (_, _, _) =>
+            {
+                if (response is null) return Task.FromResult(CliSnapshotEnvelope("original"));
+                System.Threading.Interlocked.Increment(ref calls);
+                return response.Task;
+            });
+            window = new NoteWindow(new NotePlacement { Path = Path.Combine(root, "menu-save.md") },
+                () => { confirmations++; return MessageBoxResult.Cancel; }, _ => errors++);
+            app.Notes.Add(window);
+            window.Show(); window.Activate();
+            var editor = (TextBox)typeof(NoteWindow).GetField("editor", flags)!.GetValue(window)!;
+            var menuButton = window.NoteControls.Children.OfType<Button>().Single(b => Equals(b.Content, "…"));
+            void Edit(string text)
+            {
+                typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(window, null);
+                editor.Text = text;
+                WaitFor(() => editor.IsKeyboardFocusWithin, "menu save: editor receives focus");
+            }
+            void OpenMenu()
+            {
+                menuButton.Focus();
+                menuButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+                Check(window.ToolbarMenu?.IsOpen == true, "menu save: toolbar menu opens");
+            }
+            Edit("draft");
+            response = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            OpenMenu();
+            var elapsed = System.Diagnostics.Stopwatch.StartNew();
+            WaitFor(() => elapsed.ElapsedMilliseconds >= 300, "menu save: dispatcher runs past the blur delay");
+            window.FinishFocusEditing();
+            Check(calls == 0 && !window.IsSaving && editor.Text == "draft", "menu save: open toolbar menu defers autosave and retains draft");
+            app.Config.AutoSaveOnFocusLoss = false;
+            window.FinishFocusEditing();
+            Check(confirmations == 0, "menu save: open toolbar menu also defers confirmation");
+            app.Config.AutoSaveOnFocusLoss = true;
+            window.ToolbarMenu!.IsOpen = false;
+            window.FinishFocusEditing();
+            WaitFor(() => calls == 1, "menu save: deferred save starts after menu closes");
+            Check(window.IsSaving && editor.IsReadOnly && !window.CanClose(), "menu save: pending write guards editing and close");
+            typeof(NoteWindow).GetMethod("ReloadAsked", flags)!.Invoke(window, null);
+            Check(editor.Text == "draft" && window.IsSaving, "menu save: reload cannot discard an in-flight draft");
+            Check(window.SaveEditorAsync().IsCompletedSuccessfully && calls == 1, "menu save: repeated save does not submit another write");
+            Throws<InvalidOperationException>(() => app.ApplySettings(app.Config, false), "menu save: pending write blocks source changes");
+            var folderChange = app.ApplyFolderSettingsAsync(app.Config, false);
+            Check(folderChange.IsFaulted && folderChange.Exception!.GetBaseException() is InvalidOperationException,
+                "menu save: pending write blocks folder migration");
+            OpenMenu();
+            elapsed.Restart();
+            WaitFor(() => elapsed.ElapsedMilliseconds >= 300, "menu save: dispatcher remains responsive during delayed CLI save");
+            Check(window.ToolbarMenu?.IsOpen == true && window.IsSaving, "menu save: menu remains usable while CLI save waits");
+            response.SetResult(CliSnapshotEnvelope("draft"));
+            WaitFor(() => !window.IsSaving, "menu save: successful write completes");
+            Check(!editor.IsReadOnly && editor.Visibility == Visibility.Collapsed && errors == 0,
+                "menu save: success ends editing and releases save guard");
+            window.ToolbarMenu!.IsOpen = false;
+            Edit("timeout draft");
+            response = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            var failedSave = window.SaveEditorAsync();
+            response.SetException(new TaskCanceledException("simulated CLI timeout"));
+            WaitFor(() => failedSave.IsCompleted, "menu save: timeout completes without blocking dispatcher");
+            Check(!failedSave.Result && errors == 1 && editor.Text == "timeout draft" && !editor.IsReadOnly && editor.IsVisible,
+                "menu save: timeout preserves editable draft and reports once");
+            response = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            var retry = window.SaveEditorAsync();
+            response.SetResult(CliSnapshotEnvelope("timeout draft"));
+            WaitFor(() => retry.IsCompleted, "menu save: retained draft can be retried");
+            Check(retry.Result, "menu save: retry saves successfully");
+            Edit("conflicting draft");
+            response = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            var conflict = window.SaveEditorAsync();
+            response.SetException(new ConflictException("simulated external edit"));
+            WaitFor(() => conflict.IsCompleted, "menu save: conflict returns control to editor");
+            var retained = (FileSnapshot)typeof(NoteWindow).GetField("snapshot", flags)!.GetValue(window)!;
+            Check(!conflict.Result && errors == 2 && editor.Text == "conflicting draft" && retained.Text == "timeout draft" &&
+                !File.Exists(window.Placement.Path), "menu save: conflict preserves draft and prior snapshot without disk fallback");
+            editor.Text = "@"; editor.CaretIndex = 1;
+            var calendar = (CalendarCompletion)typeof(NoteWindow).GetField("calendarCompletion", flags)!.GetValue(window)!;
+            calendar.Update();
+            Check(calendar.IsOpen, "menu save: calendar completion opens before saving");
+            response = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            var calendarSave = window.SaveEditorAsync();
+            calendar.Update(); calendar.Complete();
+            Check(!calendar.IsOpen && editor.Text == "@", "menu save: calendar completion cannot change a pending draft");
+            response.SetResult(CliSnapshotEnvelope("@"));
+            WaitFor(() => calendarSave.IsCompleted, "menu save: calendar draft save finishes");
+            Edit("- [ ] locked");
+            var tasks = (TaskEditorBehavior)typeof(NoteWindow).GetField("taskEditor", flags)!.GetValue(window)!;
+            response = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            var taskSave = window.SaveEditorAsync();
+            Check(!tasks.ToggleCheckbox() && !tasks.HandleKey(Key.Enter, ModifierKeys.None) && editor.Text == "- [ ] locked",
+                "menu save: task completion and toggle cannot change a pending draft");
+            response.SetResult(CliSnapshotEnvelope("- [ ] locked"));
+            WaitFor(() => taskSave.IsCompleted, "menu save: task draft save finishes");
+        }
+        finally
+        {
+            response?.TrySetException(new OperationCanceledException("test cleanup"));
+            if (window is not null)
+            {
+                if (window.ToolbarMenu is { } menu) menu.IsOpen = false;
+                typeof(NoteWindow).GetField("dirty", flags)!.SetValue(window, false);
+                app.Notes.Remove(window); window.Close();
+            }
+            app.NoteSources = previousFactory;
+            app.Config.ObsidianTasksEnabled = cli; app.Config.AutoSaveOnFocusLoss = autoSave; app.Config.ObsidianVaultFolder = vault;
+            System.Threading.SynchronizationContext.SetSynchronizationContext(previousContext);
+        }
     }
 }

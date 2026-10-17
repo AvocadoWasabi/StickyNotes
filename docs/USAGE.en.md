@@ -56,6 +56,8 @@ Leaving the editor prompts only when text has changed.
 
 Enable `Save automatically when the editor loses focus` to skip this prompt (off by default). Automatic saves still back up and detect conflicts; failures retain input. The context menu does not prompt. Closing a note or exiting still checks unsaved changes.
 
+Opening the More (…) menu defers focus-loss saving and prompts. After the menu closes, normal handling resumes if focus remains outside the editor. CLI editor saves triggered by autosave, Save, Ctrl+S, or Esc wait without blocking the UI. Editing and closing that note, and changing settings, are blocked during the write; failures retain the draft. Save-on-close confirmation, metadata saves, and new-note CLI creation remain synchronous.
+
 <a id="display"></a>
 
 ## Display and windows

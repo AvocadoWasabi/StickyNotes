@@ -71,7 +71,7 @@ internal sealed class CalendarCompletion
     internal void Update()
     {
         if (inserting) return;
-        if (composing || !editor.IsVisible || !editor.IsKeyboardFocusWithin || !owner.IsActive ||
+        if (editor.IsReadOnly || composing || !editor.IsVisible || !editor.IsKeyboardFocusWithin || !owner.IsActive ||
             (dismissedText == editor.Text && dismissedCaret == editor.CaretIndex) ||
             FindStart(editor.Text, editor.CaretIndex, editor.SelectionLength) < 0)
         { Close(); return; }
@@ -97,7 +97,7 @@ internal sealed class CalendarCompletion
     internal void Complete()
     {
         var start = FindStart(editor.Text, editor.CaretIndex, editor.SelectionLength);
-        if (!IsOpen || composing || start < 0) return;
+        if (editor.IsReadOnly || !IsOpen || composing || start < 0) return;
         var date = DateExample;
         inserting = true;
         try

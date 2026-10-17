@@ -207,6 +207,7 @@ public partial class App : Application
 
     public void ApplySettings(Settings next, bool migrate)
     {
+        if (Notes.Any(note => note.IsSaving)) throw new InvalidOperationException(L10n.Text("NoteWindow.Saving"));
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         if (migrate) NoteFolderMigration.Move(Config.NotesFolder, next.NotesFolder, paths => CommitSettings(next, paths));
         else CommitSettings(next, new Dictionary<string, string>());
@@ -215,6 +216,7 @@ public partial class App : Application
 
     internal async Task ApplyFolderSettingsAsync(Settings next, bool migrate)
     {
+        if (Notes.Any(note => note.IsSaving)) throw new InvalidOperationException(L10n.Text("NoteWindow.Saving"));
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         IsChangingFolder = true;
         foreach (var note in Notes) note.PauseFolderChange();

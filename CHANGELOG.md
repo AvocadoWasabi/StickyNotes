@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Fix freezes when opening the note menu with unsaved edits: defer focus-loss saving while the menu is open and run editor CLI saves without blocking the UI. Preserve drafts on timeout and prevent overlapping saves, closes, or settings changes during a write.
+
 - Added “Reopen recently closed notes” to tray, taskbar, and note menus. Consecutive closes, including “Close all windows,” are recorded as one group and reopened with positions, sizes, heading filters, and other display settings. The latest group persists across restarts. [Usage and limits](docs/USAGE.en.md#display).
 
 ## [0.0.9](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9) — 2026-10-12

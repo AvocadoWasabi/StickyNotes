@@ -1047,4 +1047,5 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="TaskEditing.ShortcutInvalid" xml:space="preserve"><value>このキーは使用できません。CtrlまたはAltを含む組み合わせにしてください。保存・編集開始・標準のコピー／貼り付け／Undoなどのキーは登録できません。</value></data>
   <data name="TaskEditing.ShortcutClear" xml:space="preserve"><value>ショートカットを解除</value></data>
   <data name="AppCommands.RestoreClosed" xml:space="preserve"><value>直前に閉じた付箋を再表示</value></data>
+  <data name="NoteWindow.Saving" xml:space="preserve"><value>保存中です。完了するまでお待ちください。</value></data>
 </root>

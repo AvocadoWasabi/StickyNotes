@@ -20,6 +20,8 @@ public sealed partial class NoteWindow : Window
     private readonly TextBlock dragHandle = new() { Text = "⠿", Width = 24, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Stretch, Padding = new Thickness(0, 5, 0, 0), Cursor = Cursors.SizeAll, ToolTip = L10n.Text("NoteWindow.Text01"), Background = Brushes.Transparent };
     private readonly Dictionary<Button, double> controlWidths = new();
     private bool toolbarMenuOpen, headerHovered;
+    internal bool IsSaving { get; private set; }
+    internal ContextMenu? ToolbarMenu { get; private set; }
     private readonly App app = App.Current;
     private readonly TextBox editor = new() { AcceptsReturn = true, AcceptsTab = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, FontFamily = new FontFamily("Cascadia Mono,Consolas"), FontSize = 14, Background = Brushes.Transparent, BorderThickness = new Thickness(0), Margin = new Thickness(8), Visibility = Visibility.Collapsed };
     private readonly CalendarCompletion calendarCompletion;
@@ -94,7 +96,7 @@ public sealed partial class NoteWindow : Window
             controlWidths[button] = width;
             return button;
         }
-        saveButton = Control(L10n.Text("NoteWindow.Text05"), () => Save(), 42, L10n.Text("NoteWindow.Text06"));
+        saveButton = Control(L10n.Text("NoteWindow.Text05"), () => { _ = SaveEditorAsync(); }, 42, L10n.Text("NoteWindow.Text06"));
         saveButton.Visibility = Visibility.Collapsed;
         headingFilterButton = Control("", OpenHeadingFilter, 88, L10n.Text("HeadingFilter.Title"));
         headingFilterButton.ClearValue(ContentControl.ContentTemplateProperty);
@@ -151,7 +153,7 @@ public sealed partial class NoteWindow : Window
             // Let toolbar mouse-up/Click run before deciding whether a blur still needs saving.
             if (Mouse.LeftButton == MouseButtonState.Pressed) return;
             focusLossTimer.Stop();
-            if (editorContextMenuOpen || (IsActive && editor.IsKeyboardFocusWithin)) return;
+            if (editorContextMenuOpen || toolbarMenuOpen || (IsActive && editor.IsKeyboardFocusWithin)) return;
             FinishFocusEditing();
         };
         PreviewKeyDown += (_, e) =>
@@ -160,7 +162,7 @@ public sealed partial class NoteWindow : Window
             if (HandleEditingKey(editingKey, Keyboard.Modifiers)) { e.Handled = true; return; }
             if (e.Key == Key.F6 && Keyboard.Modifiers == ModifierKeys.None) { NoteHeader.Focus(); e.Handled = true; return; }
             if (HandleScaleKey(e.Key, Keyboard.Modifiers)) { e.Handled = true; return; }
-            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { Save(); e.Handled = true; }
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S) { _ = SaveEditorAsync(); e.Handled = true; }
             else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.E) { BeginEdit(); e.Handled = true; }
         };
         Loaded += (_, _) => { MonitorLayout.Restore(this, Placement); initialized = true; Reload(); poll.Start(); QueueGeometry(); };
@@ -321,6 +323,7 @@ public sealed partial class NoteWindow : Window
 
     private void Reload()
     {
+        if (IsSaving) return;
         if (app.IsChangingFolder) return;
         if (NoteSource.UsesCli(app.Config))
         {
@@ -372,6 +375,7 @@ public sealed partial class NoteWindow : Window
 
     private void BeginEdit()
     {
+        if (IsSaving) return;
         focusLossTimer.Stop();
         if (snapshot is null) { Reload(); if (snapshot is null) return; }
         if (!editing)
@@ -426,7 +430,7 @@ public sealed partial class NoteWindow : Window
         if (editor.IsKeyboardFocusWithin && taskEditor.HandleKey(key, modifiers)) return true;
         // IME-owned keys arrive as ImeProcessed, so only a plain Escape saves.
         if (key != Key.Escape || modifiers != ModifierKeys.None) return false;
-        if (!Save() && IsActive) editor.Focus();
+        _ = SaveEditorAsync();
         return true;
     }
 
@@ -446,11 +450,52 @@ public sealed partial class NoteWindow : Window
 
     private bool Save()
     {
+        if (IsSaving) return false;
         focusLossTimer.Stop();
         var previousDecision = decisionInProgress;
         decisionInProgress = true;
         try { return SaveCore(); }
         finally { decisionInProgress = previousDecision; }
+    }
+
+    internal async Task<bool> SaveEditorAsync()
+    {
+        if (IsSaving || closed || app.IsChangingFolder) return false;
+        if (!NoteSource.UsesCli(app.Config) || snapshot is null || !editing || !dirty) return Save();
+        focusLossTimer.Stop();
+        var previousDecision = decisionInProgress;
+        decisionInProgress = true; IsSaving = true;
+        editor.IsReadOnly = true; saveButton.IsEnabled = false;
+        calendarCompletion.Close(); taskEditor.Update();
+        try
+        {
+            var expected = snapshot;
+            var updated = UpdatedContent(editor.Text);
+            var source = app.NoteSources(app.Config);
+            var backup = Path.Combine(App.DataDirectory, "backups");
+            CancelCliRead();
+            status.Text = L10n.Text("NoteWindow.Saving");
+            // Only transport work runs off the dispatcher. Keep the draft and snapshot
+            // unchanged until the checked write succeeds; settings/close are guarded.
+            var saved = await Task.Run(() => source.Save(expected, updated, backup));
+            snapshot = saved;
+            content = Placement.Heading.Length > 0 ? SectionEditor.Find(saved.Text, Placement.Heading).Content : NoteStore.Split(saved.Text).Body;
+            dirty = false; SetEditing(false); Render();
+            status.Text = L10n.Text("NoteWindow.Text28");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            status.Text = ex.Message;
+            if (reportSaveError is not null) reportSaveError(ex);
+            else MessageBox.Show(this, ex.Message, L10n.Text("NoteWindow.Text29"), MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+        finally
+        {
+            editor.IsReadOnly = false; saveButton.IsEnabled = true;
+            IsSaving = false; decisionInProgress = previousDecision;
+        }
     }
 
     private bool SaveCore()
@@ -484,14 +529,14 @@ public sealed partial class NoteWindow : Window
 
     private void ScheduleFocusLoss()
     {
-        if (closed || !editing || decisionInProgress || editorContextMenuOpen) return;
+        if (closed || !editing || decisionInProgress || editorContextMenuOpen || toolbarMenuOpen) return;
         focusLossTimer.Stop(); focusLossTimer.Start();
     }
 
-    internal void FinishFocusEditing()
+    internal async void FinishFocusEditing()
     {
         focusLossTimer.Stop();
-        if (closed || !editing || decisionInProgress || editorContextMenuOpen) return;
+        if (closed || !editing || decisionInProgress || editorContextMenuOpen || toolbarMenuOpen) return;
         decisionInProgress = true;
         try
         {
@@ -499,14 +544,14 @@ public sealed partial class NoteWindow : Window
             var answer = app.Config.AutoSaveOnFocusLoss ? MessageBoxResult.Yes : confirmFocusSave?.Invoke() ?? MessageBox.Show(this,
                 L10n.Text("NoteWindow.Text30"),
                 L10n.Text("NoteWindow.Text31"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
-            if (answer == MessageBoxResult.Yes) { if (!Save() && IsActive) editor.Focus(); }
+            if (answer == MessageBoxResult.Yes) { if (!await SaveEditorAsync() && IsActive && !toolbarMenuOpen) editor.Focus(); }
             else if (answer == MessageBoxResult.No) Reload();
             else if (IsActive) editor.Focus();
         }
         finally { decisionInProgress = false; }
     }
 
-    private void SaveContent(string next)
+    private string UpdatedContent(string next)
     {
         if (snapshot is null) throw new InvalidOperationException(L10n.Text("NoteWindow.Text32"));
         string updated;
@@ -520,6 +565,13 @@ public sealed partial class NoteWindow : Window
             prefix = Regex.Replace(prefix, @"(?m)^updated:[^\r\n]*", m => "updated: " + DateTimeOffset.Now.ToString("o"), RegexOptions.None, TimeSpan.FromSeconds(1));
             updated = prefix + next.Replace("\r\n", "\n").Replace("\n", newline);
         }
+        return updated;
+    }
+
+    private void SaveContent(string next)
+    {
+        if (snapshot is null) throw new InvalidOperationException(L10n.Text("NoteWindow.Text32"));
+        var updated = UpdatedContent(next);
         if (NoteSource.UsesCli(app.Config)) CancelCliRead();
         snapshot = app.NoteSources(app.Config).Save(snapshot, updated, Path.Combine(App.DataDirectory, "backups"));
         content = Placement.Heading.Length > 0 ? SectionEditor.Find(snapshot.Text, Placement.Heading).Content : NoteStore.Split(snapshot.Text).Body;
@@ -539,6 +591,7 @@ public sealed partial class NoteWindow : Window
 
     private void ReloadAsked()
     {
+        if (IsSaving) return;
         focusLossTimer.Stop();
         decisionInProgress = true;
         try
@@ -553,6 +606,7 @@ public sealed partial class NoteWindow : Window
 
     private async Task Tick()
     {
+        if (IsSaving) return;
         if (app.IsChangingFolder) return;
         if (closed) return;
         try
@@ -670,9 +724,12 @@ public sealed partial class NoteWindow : Window
 
     private void Menu()
     {
+        if (toolbarMenuOpen) return;
         var menu = new ContextMenu();
+        ToolbarMenu = menu;
+        focusLossTimer.Stop();
         toolbarMenuOpen = true; UpdateButtonOverlay();
-        menu.Closed += (_, _) => { toolbarMenuOpen = false; UpdateButtonOverlay(); };
+        menu.Closed += (_, _) => { toolbarMenuOpen = false; ToolbarMenu = null; UpdateButtonOverlay(); ScheduleFocusLoss(); };
         void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
         Add(L10n.Text("NoteWindow.Text03"), BeginEdit);
         Add(L10n.Text("NoteWindow.Text07"), ReloadAsked);
