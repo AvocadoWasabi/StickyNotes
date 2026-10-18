@@ -1055,4 +1055,5 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="Rename.Invalid" xml:space="preserve"><value>有効なファイル名を入力してください。空白のみ・パス区切り・予約名・末尾の空白やピリオドは使用できません。</value></data>
   <data name="Rename.Draft" xml:space="preserve"><value>同じファイルを表示している付箋の未保存変更を保存してから、もう一度実行してください。</value></data>
   <data name="Rename.Recovery" xml:space="preserve"><value>名前変更または設定の保存を確認できませんでした。元／変更先のファイルと下記の復旧記録を確認してください。ファイルが移動済みの場合は変更先を開き直してください。</value></data>
+  <data name="Rename.Unavailable" xml:space="preserve"><value>ノートを読み込めていないため、ファイル名を変更できません。読み込み完了後にもう一度お試しください。</value></data>
 </root>

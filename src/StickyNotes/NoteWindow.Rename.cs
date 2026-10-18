@@ -45,12 +45,19 @@ public sealed partial class NoteWindow
 
     private async Task ShowRenameDialogAsync()
     {
-        if (!CanRename) return;
+        if (closed || renameDialogOpen) return;
+        var unavailable = CanRename ? null : L10n.Text(Placement.Daily ? "Rename.Daily" :
+            IsSaving ? "NoteWindow.Saving" : app.IsChangingFolder ? "StickyFolder.Working" : "Rename.Unavailable");
         renameDialogOpen = true;
         var previousDecision = decisionInProgress;
         decisionInProgress = true; focusLossTimer.Stop();
         try
         {
+            if (unavailable is not null)
+            {
+                MessageBox.Show(this, unavailable, L10n.Text("Rename.Menu"), MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             var value = Ui.Prompt(L10n.Text("Rename.Menu"),
                 [new("name", L10n.Text("Rename.Label"), Path.GetFileNameWithoutExtension(Placement.Path))], this, singleLineSubmit: true);
             if (value is null) return;

@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Show an explanatory message when double-clicking a note title cannot rename the file, including daily notes, active saves, and notes that have not loaded.
+
 - Add file renaming from the note menu or a title double-click, preserving display settings and updating open/closed note references. Support native Obsidian link updates, conflict checks, and recovery records. Daily notes are excluded. [Usage and limits](docs/USAGE.en.md).
 
 - Fix freezes when opening the note menu with unsaved edits: defer focus-loss saving while the menu is open and run editor CLI saves without blocking the UI. Preserve drafts on timeout and prevent overlapping saves, closes, or settings changes during a write.

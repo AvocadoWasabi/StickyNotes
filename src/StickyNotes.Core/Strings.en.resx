@@ -1055,4 +1055,5 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="Rename.Invalid" xml:space="preserve"><value>Enter a valid file name. Blank names, path separators, reserved names, and trailing spaces or periods are not allowed.</value></data>
   <data name="Rename.Draft" xml:space="preserve"><value>Save unsaved changes in other sticky notes displaying this file, then try again.</value></data>
   <data name="Rename.Recovery" xml:space="preserve"><value>Could not confirm the rename or save settings. Check the original/destination files and recovery record below. If the file has moved, reopen the destination.</value></data>
+  <data name="Rename.Unavailable" xml:space="preserve"><value>The file cannot be renamed because the note has not loaded. Try again after it finishes loading.</value></data>
 </root>

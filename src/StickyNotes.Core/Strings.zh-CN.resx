@@ -1055,4 +1055,5 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="Rename.Invalid" xml:space="preserve"><value>请输入有效的文件名。不允许空白名称、路径分隔符、保留名称以及末尾的空格或句点。</value></data>
   <data name="Rename.Draft" xml:space="preserve"><value>请保存显示同一文件的其他便签中的未保存更改，然后重试。</value></data>
   <data name="Rename.Recovery" xml:space="preserve"><value>无法确认重命名或保存设置。请检查原文件、目标文件及以下恢复记录。如果文件已移动，请重新打开目标文件。</value></data>
+  <data name="Rename.Unavailable" xml:space="preserve"><value>笔记尚未加载，无法重命名文件。请在加载完成后重试。</value></data>
 </root>
