@@ -2,7 +2,7 @@
 
 # Markdown Sticky Notes
 
-v0.0.9 adds heading filters, a compact header, tighter task spacing, temporary foreground display with Alt+Z, and a configurable editing checkbox shortcut. See [changes and upgrade steps](docs/RELEASE-NOTES.md#english).
+v0.0.10 adds reopening recently closed note groups, file renaming and guidance when renaming is unavailable, and fixes menu-triggered autosave freezes. See [changes and upgrade steps](docs/RELEASE-NOTES.md#english).
 
 Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
 
@@ -42,7 +42,7 @@ The screenshots use fictional sample content. [Sample files and capture instruct
 
 ## Download and install
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.8 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) and extract it.
+1. Download `StickyNotes-win-x64.zip` from the [v0.0.10 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) and extract it.
 2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
 3. Open `Settings` from the notification-area icon. In **Obsidian CLI**, get the open vault, then select a sticky-note folder. To use local files, disable CLI and choose a base folder first. [Connection and plugin setup](docs/TASKS-CLI-PREVIEW.md#english).
 

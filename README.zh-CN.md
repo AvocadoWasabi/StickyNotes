@@ -2,7 +2,7 @@
 
 # Markdown Sticky Notes
 
-v0.0.9新增标题筛选、紧凑标题栏、更紧凑的任务行距、Alt+Z临时置顶及可配置的编辑复选框快捷键。参见[更新内容及升级步骤](docs/RELEASE-NOTES.md#简体中文)。
+v0.0.10新增成组恢复最近关闭的便签、文件重命名及无法重命名时的说明，并修复打开菜单时自动保存造成的卡顿。参见[更新内容及升级步骤](docs/RELEASE-NOTES.md#简体中文)。
 
 任务正文后输入空格显示上游默认候选菜单：**⏎** 上Enter继续列表，↓选择后Enter插入字段，Tab缩进。参见[分析来源与兼容范围](docs/TASK-EDITING.md#简体中文)。
 
@@ -42,7 +42,7 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 ## 下载与安装
 
-1. 从 [v0.0.8 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8) 下载 `StickyNotes-win-x64.zip` 并解压。
+1. 从 [v0.0.10 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
 3. 在通知区域图标的 **设置 → Obsidian CLI** 获取当前仓库，再选择便签保存目录。使用本地文件时，先禁用 CLI 并选择基准目录。参见[连接及插件设置](docs/TASKS-CLI-PREVIEW.md#简体中文)。
 

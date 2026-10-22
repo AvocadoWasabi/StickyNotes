@@ -6,7 +6,7 @@
 
 使い方は [日本語README](README.ja.md)、公開後の配布ファイルは [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) を参照してください。
 
-## 未リリース
+## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22
 
 - 名前変更できない付箋のタイトルをダブルクリックしたとき、デイリーノート・保存中・読み込み未完了などの理由をメッセージで表示。
 

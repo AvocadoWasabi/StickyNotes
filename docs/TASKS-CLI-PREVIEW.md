@@ -12,7 +12,7 @@ Since v0.0.7, new settings use Obsidian CLI by default. The existing standard pr
 
 ### Setup
 
-1. Download the [v0.0.9 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9), extract all files and run `Install.cmd`. Start **Markdown Sticky Notes**. For a source build, run `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`. The optional isolated build remains `./build.ps1 -Publish -TasksPreview`, with its installer/ZIP under `artifacts/tasks-cli-preview` and separate `StickyNotes-TasksPreview` profile.
+1. Download the [v0.0.10 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10), extract all files and run `Install.cmd`. Start **Markdown Sticky Notes**. For a source build, run `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`. The optional isolated build remains `./build.ps1 -Publish -TasksPreview`, with its installer/ZIP under `artifacts/tasks-cli-preview` and separate `StickyNotes-TasksPreview` profile.
 2. Start Obsidian, open the intended vault and enable **Settings → General → Command line interface**. For daily notes, enable the **Daily notes core plugin**; for `tasks` queries, enable **Tasks**. Tested with Obsidian 1.14.4 / Tasks 7.23.1.
 3. In sticky-note **Settings → Obsidian CLI**, leave **Use Obsidian CLI** checked, verify the absolute path to `Obsidian.com`, and click **Get open vault from Obsidian**. Review the resulting vault folder/name and save. Manual connection entry remains available. A new profile without a vault opens Settings first.
 4. Open a Markdown note inside that vault, or use **Display a daily note** and choose its heading. Missing daily files are not created automatically.
@@ -52,7 +52,7 @@ v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プ�
 
 ### 導入
 
-1. [v0.0.9のZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9)をダウンロードし、全体を展開して`Install.cmd`を実行後、**Markdown Sticky Notes** を起動します。ソースからの場合は`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`で導入します。独立試験版は引き続き`./build.ps1 -Publish -TasksPreview`で作成でき、インストーラー・ZIPは`artifacts/tasks-cli-preview`、設定は別の`StickyNotes-TasksPreview`です。
+1. [v0.0.10のZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)をダウンロードし、全体を展開して`Install.cmd`を実行後、**Markdown Sticky Notes** を起動します。ソースからの場合は`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`で導入します。独立試験版は引き続き`./build.ps1 -Publish -TasksPreview`で作成でき、インストーラー・ZIPは`artifacts/tasks-cli-preview`、設定は別の`StickyNotes-TasksPreview`です。
 2. Obsidianで対象Vaultを開き、**設定 → 一般 → コマンドラインインターフェース**を有効にします。デイリーにはコアプラグインの **デイリーノート**、`tasks`クエリには **Tasks** が必要です。Obsidian 1.14.4／Tasks 7.23.1で確認しています。
 3. 付箋の **設定 → Obsidian CLI** で **Obsidian CLIを使用する** を有効にし、`Obsidian.com`の絶対パスを確認して **開いているVaultをObsidianから取得** を押します。取得されたVaultフォルダ・名前を確認して保存します。接続先の手入力も可能です。Vault未設定の新規プロファイルでは設定画面を先に開きます。
 4. Vault内のMarkdownを開くか、**デイリーノートを表示**から見出しを選びます。未作成のデイリーノートは自動作成しません。
@@ -92,7 +92,7 @@ v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Mark
 
 ### 安装
 
-1. 下载 [v0.0.9 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.9)，解压全部文件并运行`Install.cmd`，启动 **Markdown Sticky Notes**。从源码构建时，运行`./build.ps1 -Publish`后使用`artifacts/app/Install.cmd`安装。独立试验版仍可用`./build.ps1 -Publish -TasksPreview`生成，安装程序／ZIP 位于`artifacts/tasks-cli-preview`，使用独立的`StickyNotes-TasksPreview`配置。
+1. 下载 [v0.0.10 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)，解压全部文件并运行`Install.cmd`，启动 **Markdown Sticky Notes**。从源码构建时，运行`./build.ps1 -Publish`后使用`artifacts/app/Install.cmd`安装。独立试验版仍可用`./build.ps1 -Publish -TasksPreview`生成，安装程序／ZIP 位于`artifacts/tasks-cli-preview`，使用独立的`StickyNotes-TasksPreview`配置。
 2. 在 Obsidian 打开目标仓库并启用 **设置 → 常规 → 命令行界面**。日记需要核心 **日记** 插件；`tasks`查询需要 **Tasks**。已验证 Obsidian 1.14.4／Tasks 7.23.1。
 3. 在便签 **设置 → Obsidian CLI** 中启用 **使用 Obsidian CLI**，确认`Obsidian.com`绝对路径并点击 **从 Obsidian 获取当前仓库**。检查仓库目录／名称后保存，也可手动填写连接信息。未配置仓库的新配置会先打开设置。
 4. 打开仓库内的 Markdown，或通过 **显示每日笔记** 选择标题。缺失的日记不会自动创建。

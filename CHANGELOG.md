@@ -6,7 +6,7 @@ User-facing changes are recorded here, newest releases first. Development commit
 
 See the [README](README.en.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
-## Unreleased
+## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22
 
 - Show an explanatory message when double-clicking a note title cannot rename the file, including daily notes, active saves, and notes that have not loaded.
 

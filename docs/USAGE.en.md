@@ -80,7 +80,7 @@ Canceled closes are excluded. Reopening restores display settings and saved file
 
 Enable `Show note icons in the taskbar` in Settings to show note icons in the taskbar (off by default). It applies to all notes and persists after restarting. The notification-area icon remains available.
 
-Right-click the taskbar icon to access the same eight operations as the notification-area menu: New note, Open Markdown, Link a section, Display a daily note, Show all, Temporarily bring notes to the top, Settings, and Exit. Windows displays these as Jump List tasks alongside its own pin/close commands.
+Right-click the taskbar icon to access the same ten operations as the notification-area menu: New note, Open Markdown, Browse sticky-note folder, Link a section, Display a daily note, Show all, Reopen recently closed notes, Temporarily bring notes to the top, Settings, and Exit. Windows displays these as Jump List tasks alongside its own pin/close commands.
 
 Show all also restores minimized notes. Operations are forwarded to the running app, retaining the usual save confirmation on exit.
 

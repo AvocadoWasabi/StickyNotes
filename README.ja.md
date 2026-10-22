@@ -2,7 +2,7 @@
 
 # Markdown Sticky Notes
 
-v0.0.9：見出しフィルター、1行の操作欄、読みやすいタスク行間、Alt+Zの一時最前面表示、設定可能なチェック切替ショートカットを追加しました。[今回の変更・更新手順](docs/RELEASE-NOTES.md#日本語)。
+v0.0.10：閉じた付箋の一括復元、ファイル名変更と変更できない場合の案内を追加し、メニュー表示時の自動保存によるフリーズを修正しました。[今回の変更・更新手順](docs/RELEASE-NOTES.md#日本語)。
 
 タスク本文の後のスペースで本家に沿った候補一覧を表示します。先頭の **⏎** でEnterは次項目へ、↓で選んでEnterは候補挿入、Tabは字下げです。[解析元と対応範囲](docs/TASK-EDITING.md#日本語)を参照してください。
 
@@ -42,7 +42,7 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 ## ダウンロードとインストール
 
-1. [v0.0.8の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.8)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
+1. [v0.0.10の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
 3. 通知領域アイコンの「設定 → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
 
