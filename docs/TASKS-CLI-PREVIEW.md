@@ -13,7 +13,7 @@ Since v0.0.7, new settings use Obsidian CLI by default. The existing standard pr
 ### Setup
 
 1. Download the [v0.0.10 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10), extract all files and run `Install.cmd`. Start **Markdown Sticky Notes**. For a source build, run `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`. The optional isolated build remains `./build.ps1 -Publish -TasksPreview`, with its installer/ZIP under `artifacts/tasks-cli-preview` and separate `StickyNotes-TasksPreview` profile.
-2. Start Obsidian, open the intended vault and enable **Settings → General → Command line interface**. For daily notes, enable the **Daily notes core plugin**; for `tasks` queries, enable **Tasks**. Tested with Obsidian 1.14.4 / Tasks 7.23.1.
+2. Start Obsidian, open the intended vault and enable **Settings → General → Command line interface**. For daily notes, enable the **Daily notes core plugin**; for `tasks` queries, enable **Tasks**. Tested with Obsidian 1.14.4 / Tasks 8.2.2.
 3. In sticky-note **Settings → Vaults & daily notes → Obsidian CLI**, leave **Use Obsidian CLI** checked, verify the common absolute path to `Obsidian.com` under **General**, and click **Get Vault folder via CLI**. Enter the Obsidian Vault name/ID before clicking to fetch that Vault; leave it blank for the default Obsidian selection. Typing alone does not fetch the root. Progress and the result appear beside the button; daily settings refresh after retrieval. Review the folder/name, then Save and close. See [retrieval timing and folder types](MULTIPLE-VAULTS.md#english). Manual connection entry remains available. A new profile without a vault opens Settings first.
 4. Open a Markdown note inside that vault, or use **Display a daily note** and choose its heading. Missing daily files are not created automatically.
 
@@ -25,6 +25,8 @@ Since v0.0.7, new settings use Obsidian CLI by default. The existing standard pr
 - Fixed notes, heading previews, reads, creation and saves all use CLI in this mode. There is no fallback to direct local reads. Text and query results refresh about every 30 seconds; reload retries the note immediately. CLI failures retain prior CLI content with an error and preserve drafts. Changing mode while editing requires reloading before saving.
 
 ### Tasks, preservation and limits
+
+The unreleased integration requires stable Tasks **8.2.2 or later**. Older, prerelease or unrecognized versions stop with an update error before native queries or checkbox edits. In **each affected Vault**, open Obsidian **Settings → Community plugins → Check for updates**, update Tasks, then select **Refresh linked data → Refresh Tasks / Dataview** in the sticky-note menu. The message includes the installed version. Newer versions still require the expected internal API; incompatible APIs stop safely and ask you to check both app/plugin updates. Tasks is not updated automatically.
 
 Tasks runs the installed plugin's native search and Markdown export; results never replace the query source, and verified checkboxes can update the original tasks. Ordinary text and checkboxes remain editable. The sticky app renders the returned Markdown, so Obsidian HTML/CSS, interactive controls and some layouts are not reproduced. Use trusted queries: Tasks JavaScript filters, global queries and presets execute with Obsidian's privileges.
 
@@ -40,7 +42,9 @@ Daily settings/path resolution and Tasks use internal APIs with runtime checks. 
 
 Tests cover native paths, missing dates, retention, settings changes, vault boundaries, hidden legacy-field preservation, CLI failures, obsolete responses and rendering parity. The normal build also checks temporary-transfer permissions, text preservation and cleanup on failure. With Node.js installed, `dotnet run --project tests/StickyNotes.Tests -c Release -- --note-transport-smoke` executes the generated transfer loader and bundled bridge against synthetic files and mocked Vault APIs, including 2 MB saves, BOM, backups and conflict/failure preservation; it does not require Obsidian. Optional desktop smoke: `dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`. It reads native settings and an existing note, creates a uniquely named synthetic fixture for encoding/save/backup/conflict checks, then deletes that fixture. Only assertions/version are printed.
 
-References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts).
+Read-only desktop check: set `STICKY_TASKS_TEST_VAULT` to an explicit Vault name, then run `dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-readonly-smoke`. The Vault must contain tasks. It checks grouped/tree source mappings, invalid/empty queries or the old-version update error, without writes or note-content logging.
+
+References: [Official CLI](https://obsidian.md/help/cli), [Tasks query renderer](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/8.2.2/src/Renderer/QueryResultsRenderer.ts).
 
 ## 日本語
 
@@ -53,7 +57,7 @@ v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プ�
 ### 導入
 
 1. [v0.0.10のZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)をダウンロードし、全体を展開して`Install.cmd`を実行後、**Markdown Sticky Notes** を起動します。ソースからの場合は`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`で導入します。独立試験版は引き続き`./build.ps1 -Publish -TasksPreview`で作成でき、インストーラー・ZIPは`artifacts/tasks-cli-preview`、設定は別の`StickyNotes-TasksPreview`です。
-2. Obsidianで対象Vaultを開き、**設定 → 一般 → コマンドラインインターフェース**を有効にします。デイリーにはコアプラグインの **デイリーノート**、`tasks`クエリには **Tasks** が必要です。Obsidian 1.14.4／Tasks 7.23.1で確認しています。
+2. Obsidianで対象Vaultを開き、**設定 → 一般 → コマンドラインインターフェース**を有効にします。デイリーにはコアプラグインの **デイリーノート**、`tasks`クエリには **Tasks** が必要です。Obsidian 1.14.4／Tasks 8.2.2で確認しています。
 3. 付箋の **設定 → Vault・デイリーノート → Obsidian CLI** で **Obsidian CLIを使用する** を有効にし、**一般**にある共通の`Obsidian.com`の絶対パスを確認して **Vaultの保存フォルダをCLIから取得** を押します。押す前にObsidianのVault名／IDを入力するとそのVault、空欄ならObsidianの既定選択が対象です。入力だけではルートを取得しません。ボタン付近に進捗と結果を表示し、取得後はデイリー設定を自動確認します。フォルダ・名前を確認し、「保存して閉じる」で反映します。[取得タイミングとフォルダの区別](MULTIPLE-VAULTS.md#日本語)も参照してください。接続先の手入力も可能です。Vault未設定の新規プロファイルでは設定画面を先に開きます。
 4. Vault内のMarkdownを開くか、**デイリーノートを表示**から見出しを選びます。未作成のデイリーノートは自動作成しません。
 
@@ -65,6 +69,8 @@ v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プ�
 - 固定ノート・見出しプレビュー・読込・作成・保存をCLIへ統一し、直接のローカル読込にフォールバックしません。本文・結果は約30秒ごとに更新し、再読込で本文を即時取得します。失敗時は前回CLI本文とエラーを表示し、下書きを保全します。編集中に方式を切り替えた場合は保存前に再読込が必要です。
 
 ### Tasks・データ保持・制約
+
+未リリース版の連携は、安定版のTasks **8.2.2以降**が必要です。旧版・プレリリース版・認識できない版では、本家クエリやチェック操作の前に更新エラーを表示します。**対象Vaultごとに**Obsidianの **設定 → コミュニティプラグイン → アップデートを確認** からTasksを更新し、付箋の **連携データの更新 → Tasks / Dataviewを更新** を実行してください。案内には現在のバージョンも表示します。新しい版でも必要な内部APIが異なる場合は処理を中止し、付箋アプリとTasksの更新確認を案内します。Tasksの自動更新は行いません。
 
 Tasksはインストール済み本家の検索とMarkdown出力を使います。クエリ原文を置き換えて保存せず、元ノートを照合できたタスクのチェック状態を更新できます。通常の本文・チェックボックスは編集できます。取得結果は付箋側でMarkdown描画するため、ObsidianのHTML/CSSや操作部品、一部のレイアウトは再現しません。JavaScriptフィルター・グローバルクエリ・プリセットはObsidianの権限で実行するため、信頼できるクエリを使用してください。
 
@@ -80,7 +86,9 @@ CLIは同時1要求、待機込み25秒のタイムアウトです。元ノー�
 
 テストはネイティブパス、未作成、前日保持、設定変更、Vault境界、隠れた旧設定の保全、CLI失敗、古い応答、描画一致を検証します。通常ビルドでは一時ファイルの権限・本文保持・失敗時の削除も確認します。Node.js導入済みなら`dotnet run --project tests/StickyNotes.Tests -c Release -- --note-transport-smoke`で、生成した受け渡しコードと同梱アダプターを合成ファイル・模擬Vault APIに対して実行し、2 MB保存・BOM・バックアップ・競合／失敗時の保全を検証できます。Obsidianは不要です。任意の実機テストは`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`です。本家設定と既存ノートを読み、一意な名前の合成ノートで文字コード・保存・バックアップ・競合を確認後、その合成ノートを削除します。出力は検証結果・バージョンのみです。
 
-参照：[公式CLI](https://obsidian.md/help/cli)、[Tasksのクエリ描画器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts)。
+読み取り専用の実機確認：`STICKY_TASKS_TEST_VAULT`に対象Vault名を設定し、`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-readonly-smoke`を実行します。タスクのあるVaultが必要です。グループ・ツリーの元タスク対応、無効／空クエリ、または旧版の更新エラーを確認し、書き込みやノート内容の出力はしません。
+
+参照：[公式CLI](https://obsidian.md/help/cli)、[Tasksのクエリ描画器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/8.2.2/src/Renderer/QueryResultsRenderer.ts)。
 
 ## 简体中文
 
@@ -93,7 +101,7 @@ v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Mark
 ### 安装
 
 1. 下载 [v0.0.10 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)，解压全部文件并运行`Install.cmd`，启动 **Markdown Sticky Notes**。从源码构建时，运行`./build.ps1 -Publish`后使用`artifacts/app/Install.cmd`安装。独立试验版仍可用`./build.ps1 -Publish -TasksPreview`生成，安装程序／ZIP 位于`artifacts/tasks-cli-preview`，使用独立的`StickyNotes-TasksPreview`配置。
-2. 在 Obsidian 打开目标仓库并启用 **设置 → 常规 → 命令行界面**。日记需要核心 **日记** 插件；`tasks`查询需要 **Tasks**。已验证 Obsidian 1.14.4／Tasks 7.23.1。
+2. 在 Obsidian 打开目标仓库并启用 **设置 → 常规 → 命令行界面**。日记需要核心 **日记** 插件；`tasks`查询需要 **Tasks**。已验证 Obsidian 1.14.4／Tasks 8.2.2。
 3. 在便签 **设置 → Vault 与每日笔记 → Obsidian CLI** 中启用 **使用 Obsidian CLI**，在 **常规** 确认共用的`Obsidian.com`绝对路径并点击 **通过 CLI 获取 Vault 保存目录**。点击前输入 Obsidian 的 Vault 名称／ID 可指定目标，留空则使用 Obsidian 的默认选择。仅输入不会获取根目录。按钮附近显示进度与结果，获取后自动检查每日笔记设置。检查目录／名称后点击“保存并关闭”，也可手动填写连接信息。参见[获取时机及目录区别](MULTIPLE-VAULTS.md#简体中文)。未配置仓库的新配置会先打开设置。
 4. 打开仓库内的 Markdown，或通过 **显示每日笔记** 选择标题。缺失的日记不会自动创建。
 
@@ -105,6 +113,8 @@ v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Mark
 - 固定笔记、标题预览、读取、创建和保存统一走 CLI，失败时不回退到本地读取。正文／结果约每30秒刷新，重新加载可立即取正文。失败保留上次 CLI 正文并显示错误，保护草稿。编辑期间切换模式后，保存前须重新加载。
 
 ### Tasks、数据保护与限制
+
+未发布版本的集成要求稳定版 Tasks **8.2.2 或更高版本**。旧版、预发布版或无法识别的版本会在原生查询或复选框操作之前显示更新错误。请在**每个受影响的 Vault** 中打开 Obsidian **设置 → 第三方插件 → 检查更新**，更新 Tasks 后，在便签菜单中选择 **刷新关联数据 → 刷新 Tasks / Dataview**。提示中包含当前版本。新版本仍需提供预期的内部 API；若不兼容则安全停止，并提示检查应用和插件的更新。不会自动更新 Tasks。
 
 Tasks 使用已安装原插件的查询及 Markdown 导出。结果不会覆盖查询原文，已验证的复选框可修改原任务；普通正文和复选框仍可编辑。便签使用自身 Markdown 渲染器，不重现 Obsidian HTML/CSS、交互控件及部分布局。JavaScript 筛选器、全局查询和预设以 Obsidian 权限执行，请使用可信查询。
 
@@ -120,4 +130,6 @@ CLI 串行执行，含排队25秒超时。源笔记及保存后的笔记限2 MB�
 
 测试覆盖原生路径、缺失日期、昨日保留、设置变动、仓库边界、隐藏旧设置保留、CLI 失败、过时响应及渲染一致性。普通构建还检查临时文件权限、正文保留及失败清理。安装 Node.js 后，可用`dotnet run --project tests/StickyNotes.Tests -c Release -- --note-transport-smoke`在合成文件及模拟 Vault API 上执行生成的传输代码与随附适配器，验证2 MB 保存、BOM、备份及冲突／失败时的数据保护，无需 Obsidian。可选实机测试：`dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-cli-smoke`。读取原生设置及已有笔记，创建唯一名称的合成笔记验证编码／保存／备份／冲突后删除，仅输出验证结果／版本。
 
-参考：[官方 CLI](https://obsidian.md/help/cli)、[Tasks 查询渲染器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/7.23.1/src/Renderer/QueryResultsRenderer.ts)。
+只读实机检查：将 `STICKY_TASKS_TEST_VAULT` 设为明确的 Vault 名称，再运行 `dotnet run --project tests/StickyNotes.Tests -c Release -- --tasks-readonly-smoke`。Vault 必须包含任务。检查分组／树形源位置映射、无效／空查询或旧版更新错误，不写入笔记或输出笔记内容。
+
+参考：[官方 CLI](https://obsidian.md/help/cli)、[Tasks 查询渲染器](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/8.2.2/src/Renderer/QueryResultsRenderer.ts)。

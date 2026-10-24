@@ -47,6 +47,7 @@ async function stickyTasksPreview(request) {
                 let replacement = match[1] + (request.checked ? 'x' : ' ') + match[3];
                 if (request.provider === 'tasks') {
                     const plugin = app.plugins.plugins['obsidian-tasks-plugin'];
+                    if (plugin) stickyRequireTasksVersion(plugin);
                     if (plugin?.getState?.() !== 'Warm') fail('Tasks is not ready.');
                     const matches = plugin.getTasks().filter(t => t.taskLocation?.path === file.path && t.taskLocation.lineNumber === request.line);
                     if (matches.length === 1) {

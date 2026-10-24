@@ -18,10 +18,10 @@ internal static class ObsidianTasksClient
     private static readonly SemaphoreSlim Gate = new(1, 1);
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
     private const string Marker = "STICKY_TASKS_PREVIEW:";
-    private static readonly string Script = Compress(ReadScript("QueryTaskTargets") + " " + ReadScript("TasksBridge"));
+    private static readonly string Script = Compress(ReadScript("TasksCompatibility") + " " + ReadScript("QueryTaskTargets") + " " + ReadScript("TasksBridge"));
     private static readonly string DataviewScript = Compress(ReadScript("QueryTaskTargets") + " " + ReadScript("DataviewBridge"));
-    private static readonly string NotesScript = Compress(ReadScript("NotesBridge"));
-    private static readonly string TaskCheckboxScript = Compress(ReadScript("TaskCheckboxBridge"));
+    private static readonly string NotesScript = Compress(ReadScript("TasksCompatibility") + " " + ReadScript("NotesBridge"));
+    private static readonly string TaskCheckboxScript = Compress(ReadScript("TasksCompatibility") + " " + ReadScript("TaskCheckboxBridge"));
     private static readonly string DailyScript = Compress(ReadScript("DailyBridge"));
     private static readonly string FoldersScript = Compress(ReadScript("FoldersBridge"));
     private static string Compress(string value)
@@ -199,7 +199,15 @@ internal static class ObsidianTasksClient
                 t.Hash is null || !System.Text.RegularExpressions.Regex.IsMatch(t.Hash, "^cli:[0-9a-f]{64}$"))))
                 throw new InvalidOperationException(L10n.Text("TasksPreview.NoResponse"));
         }
-        return response;
+        return response with { Results = response.Results.Select(r => r with { Error = TasksError(r.Error) }).ToArray() };
+    }
+
+    private static string? TasksError(string? error)
+    {
+        const string update = "STICKY_TASKS_UPDATE_REQUIRED:";
+        if (error?.StartsWith(update, StringComparison.Ordinal) == true)
+            return L10n.Format("TasksPreview.UpdateRequired", error[update.Length..]);
+        return error == "STICKY_TASKS_UNSUPPORTED_API" ? L10n.Text("TasksPreview.UnsupportedApi") : error;
     }
 
     internal static JsonDocument ParseEnvelope(string output)
@@ -215,7 +223,7 @@ internal static class ObsidianTasksClient
             if (message == "STICKY_CONFLICT") throw new ConflictException(L10n.Text("NoteStore.Text01"));
             if (message is "STICKY_DAILY_DISABLED" or "STICKY_DAILY_UNSUPPORTED" or "STICKY_DAILY_PATH")
                 throw new InvalidOperationException(L10n.Text("CliDaily." + message[13..]));
-            throw new InvalidOperationException(DataviewError(message));
+            throw new InvalidOperationException(TasksError(DataviewError(message)));
         }
         return doc;
     }

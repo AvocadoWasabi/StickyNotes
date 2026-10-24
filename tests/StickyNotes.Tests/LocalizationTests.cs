@@ -39,6 +39,14 @@ internal static partial class Program
             foreach (var code in new[] { "ja", "en", "zh-CN" })
             {
                 L10n.Initialize(code);
+                var updateMessage = L10n.Format("TasksPreview.UpdateRequired", "7.23.1");
+                string? actualUpdateMessage = null;
+                try { ObsidianTasksClient.ParseEnvelope("STICKY_TASKS_PREVIEW:{\"error\":\"STICKY_TASKS_UPDATE_REQUIRED:7.23.1\"}"); }
+                catch (InvalidOperationException error) { actualUpdateMessage = error.Message; }
+                Check(actualUpdateMessage == updateMessage && updateMessage.Contains("8.2.2") &&
+                    updateMessage.Contains(L10n.Text("QueryPreview.Refresh")), code + ": Tasks update error includes installed/required versions and actual refresh menu label");
+                var unsupported = ObsidianTasksClient.ParseResponse("STICKY_TASKS_PREVIEW:{\"version\":\"8.2.2\",\"results\":[{\"error\":\"STICKY_TASKS_UNSUPPORTED_API\"}]}", 1);
+                Check(unsupported.Results[0].Error == L10n.Text("TasksPreview.UnsupportedApi"), code + ": Tasks per-block API error is localized");
                 var set = manager.GetResourceSet(code == "ja" ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(code), true, false)!;
                 var values = set.Cast<DictionaryEntry>().ToDictionary(e => (string)e.Key, e => (string)e.Value!);
                 Check(values.Keys.Order().SequenceEqual(neutral.Keys.Order()) && values.Values.All(v => !string.IsNullOrWhiteSpace(v)),

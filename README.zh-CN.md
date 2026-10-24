@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+未发布：Tasks集成支持稳定版8.2.2或更高版本，并为旧版显示更新步骤。参见[Tasks设置与更新步骤](docs/TASKS-CLI-PREVIEW.md#简体中文)。
+
 未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](docs/MULTIPLE-VAULTS.md#简体中文)。
 
 v0.0.10新增成组恢复最近关闭的便签、文件重命名及无法重命名时的说明，并修复打开菜单时自动保存造成的卡顿。参见[更新内容及升级步骤](docs/RELEASE-NOTES.md#简体中文)。

@@ -18,7 +18,7 @@ Tasks uses the installed plugin's native status cycle and recurrence output, inc
 
 Lists are limited to 1,000 Markdown notes; select a smaller folder if needed. Hidden/system/link directories are skipped in local mode. Preview text is limited to 50,000 characters; opening the note uses its full contents. CLI mode lists and reads through Obsidian, with no local fallback. Changing selection or closing the picker discards late preview responses. Missing files and connection errors are shown without modifying notes.
 
-Validation: normal WPF tests cover menus, source validation, successful/failed writes, duplicate-click blocking, folder boundaries, read-only previews, YAML and stale selection responses. `dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke` additionally uses Node.js to execute generated CLI commands on synthetic notes with mocked Tasks/Dataview APIs, verifying grouped/nested mappings, duplicate descriptions, backups, conflicts and recurrence output. Internal Tasks APIs were checked against 7.23.1; Dataview APIs against upstream source. These changes have not been tested against a running Obsidian instance. Build/install: `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`.
+Validation: normal WPF tests cover menus, source validation, successful/failed writes, duplicate-click blocking, folder boundaries, read-only previews, YAML and stale selection responses. `dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke` additionally uses Node.js to execute generated CLI commands on synthetic notes with mocked Tasks/Dataview APIs, verifying grouped/nested mappings, duplicate descriptions, backups, conflicts and recurrence output. Tasks export uses detached result wrappers compatible with 8.2.2, preserving parent/child identity without modifying cached tasks or shared prototypes. The smoke harness covers the per-call Markdown renderer, sorted/grouped/tree mappings, old-version rejection, failures and native checkbox output. Read-only live query checks passed with Tasks 8.2.2 and 8.6.0; live checkbox writes were not performed. Older versions are rejected; see [update steps](TASKS-CLI-PREVIEW.md#english). Dataview APIs were checked against upstream source. Build/install: `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`.
 
 ## 日本語
 
@@ -36,7 +36,7 @@ Tasksは、本家プラグインの状態遷移と繰り返し処理を利用し
 
 一覧はMarkdown最大1,000件で、多い場合は小さいフォルダを選んでください。ローカル方式では隠し・システム・リンク先のディレクトリを除外します。本文プレビューは先頭50,000文字までですが、付箋として開くと全文を扱います。CLI方式の一覧・本文はObsidian経由で取得し、ローカルへフォールバックしません。選択変更や画面を閉じた後の古い応答は破棄します。ファイルの削除や接続エラーは、ノートを変更せず画面に表示します。
 
-検証：通常のWPFテストでメニュー、元ノート情報の検証、保存成功・失敗、連打防止、フォルダ境界、読み取り専用プレビュー、YAML、古い選択応答を確認します。`dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke`はNode.jsで生成したCLIコマンドを合成ノートと模擬Tasks／Dataview APIに対して実行し、グループ・入れ子・同名タスクの対応、バックアップ、競合、繰り返し出力を確認します。内部APIはTasks 7.23.1とDataviewの上流ソースを参照しました。今回の変更は起動中のObsidianとの実機検証は未実施です。`./build.ps1 -Publish`後に`artifacts/app/Install.cmd`で導入できます。
+検証：通常のWPFテストでメニュー、元ノート情報の検証、保存成功・失敗、連打防止、フォルダ境界、読み取り専用プレビュー、YAML、古い選択応答を確認します。`dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke`はNode.jsで生成したCLIコマンドを合成ノートと模擬Tasks／Dataview APIに対して実行し、グループ・入れ子・同名タスクの対応、バックアップ、競合、繰り返し出力を確認します。Tasksの出力は8.2.2に対応した取得結果専用のラッパーを使い、キャッシュや共有プロトタイプを変更せず親子関係を保持します。模擬テストで呼出しごとに作成される描画器、並べ替え・グループ・ツリー、旧版拒否、失敗、本家チェック出力を検証。Tasks 8.2.2／8.6.0で読み取り専用の実機検索を確認済みです。実機でのチェック書き込みは未実施。旧版は拒否し、[更新手順](TASKS-CLI-PREVIEW.md#日本語)を案内します。Dataview APIは上流ソースを参照しました。`./build.ps1 -Publish`後に`artifacts/app/Install.cmd`で導入できます。
 
 ## 简体中文
 
@@ -54,4 +54,4 @@ Tasks 使用已安装插件的原生状态循环和重复任务输出，包括�
 
 每次最多列出 1,000 篇 Markdown，超出时请选择更小的文件夹。本地模式跳过隐藏、系统及链接目录。正文预览最多 50,000 字符，作为便签打开时使用完整内容。CLI 模式通过 Obsidian 列举和读取，不回退到本地。切换选择或关闭窗口后丢弃过期响应。文件缺失及连接错误会在界面显示，不修改笔记。
 
-验证：常规 WPF 测试覆盖菜单、原任务信息验证、写入成功／失败、防止重复点击、目录边界、只读预览、YAML 及过期选择响应。`dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke` 使用 Node.js 对合成笔记和模拟 Tasks／Dataview API 执行生成的 CLI 命令，验证分组／嵌套／同名任务映射、备份、冲突及重复任务输出。内部 API 参照 Tasks 7.23.1 及 Dataview 上游源码；本次修改尚未在运行中的 Obsidian 上进行实机验证。运行 `./build.ps1 -Publish` 后使用 `artifacts/app/Install.cmd` 安装。
+验证：常规 WPF 测试覆盖菜单、原任务信息验证、写入成功／失败、防止重复点击、目录边界、只读预览、YAML 及过期选择响应。`dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke` 使用 Node.js 对合成笔记和模拟 Tasks／Dataview API 执行生成的 CLI 命令，验证分组／嵌套／同名任务映射、备份、冲突及重复任务输出。Tasks 导出使用兼容 8.2.2 的独立结果包装，在不修改缓存或共享原型的情况下保留父子关系。模拟测试覆盖每次调用创建的渲染器、排序／分组／树形映射、旧版拒绝、失败及原生复选框输出。已通过 Tasks 8.2.2／8.6.0 的只读实机查询验证；未执行实机复选框写入。拒绝旧版并显示[更新步骤](TASKS-CLI-PREVIEW.md#简体中文)。Dataview API 参照上游源码。运行 `./build.ps1 -Publish` 后使用 `artifacts/app/Install.cmd` 安装。

@@ -8,6 +8,52 @@ using StickyNotes;
 
 internal static partial class Program
 {
+    private static async Task TasksReadOnlySmoke()
+    {
+        var vault = Environment.GetEnvironmentVariable("STICKY_TASKS_TEST_VAULT");
+        if (string.IsNullOrWhiteSpace(vault)) throw new InvalidOperationException("Set STICKY_TASKS_TEST_VAULT to the explicit test Vault name.");
+        var settings = new StickyNotes.Core.Settings {
+            ObsidianCli = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Obsidian", "Obsidian.com"),
+            ObsidianVaultId = vault };
+        using var timeout = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(60));
+        var metadata = await ObsidianTasksClient.ExecuteAsync(settings,
+            "'STICKY_TASKS_PREVIEW:'+JSON.stringify({root:app.vault.adapter.getBasePath(),path:app.vault.getMarkdownFiles()[0]?.path,version:app.plugins.plugins['obsidian-tasks-plugin']?.manifest.version})", timeout.Token);
+        using var envelope = ObsidianTasksClient.ParseEnvelope(metadata);
+        settings.ObsidianVaultFolder = envelope.RootElement.GetProperty("root").GetString()!;
+        var path = Path.Combine(settings.ObsidianVaultFolder, envelope.RootElement.GetProperty("path").GetString()!);
+        var version = envelope.RootElement.GetProperty("version").GetString()!;
+        var before = File.ReadAllBytes(path);
+        try {
+            var response = await ObsidianTasksClient.QueryAsync(settings, path,
+                ["ignore global query\nlimit 3\nsort by due\ngroup by filename\nhide tree",
+                 "ignore global query\nlimit 3\nshow tree",
+                 "invalid-instruction-sticky-preview",
+                 "ignore global query\npath includes sticky-no-match-" + Guid.NewGuid().ToString("N")], timeout.Token);
+            Check(Version.Parse(version) >= new Version(8, 2, 2), "Tasks desktop: supported version accepted");
+            Check(response.Results[0].Error is null && response.Results[0].Tasks?.Length > 0,
+                "Tasks desktop: grouped flat export maps real source tasks");
+            Check(response.Results[1].Error is null && response.Results[1].Tasks?.Length > 0,
+                "Tasks desktop: tree export maps real source tasks");
+            Check(response.Results[2].Error is not null && response.Results[3].Error is null,
+                "Tasks desktop: invalid and empty queries are distinguished");
+            foreach (var result in response.Results.Take(2)) {
+                Check(!result.Markdown!.Contains("STICKY"), "Tasks desktop: private markers removed");
+                foreach (var target in result.Tasks!) {
+                    var bytes = File.ReadAllBytes(Path.Combine(settings.ObsidianVaultFolder, target.Path));
+                    var hash = "cli:" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)).ToLowerInvariant();
+                    Check(hash == target.Hash && Encoding.UTF8.GetString(bytes).Split('\n')[target.Line].Contains("["),
+                        "Tasks desktop: mapping matches unchanged source snapshot");
+                }
+            }
+        }
+        catch (InvalidOperationException error) when (Version.Parse(version) < new Version(8, 2, 2)) {
+            Check(error.Message == StickyNotes.Core.L10n.Format("TasksPreview.UpdateRequired", version),
+                "Tasks desktop: old plugin displays localized update instructions");
+        }
+        Check(File.ReadAllBytes(path).SequenceEqual(before), "Tasks desktop: query source unchanged");
+        Console.WriteLine("Tasks read-only adapter version: " + version);
+    }
+
     private static async Task TasksCliSmoke(bool foldersOnly = false)
     {
         var cli = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Obsidian", "Obsidian.com");

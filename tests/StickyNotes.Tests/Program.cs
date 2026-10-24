@@ -32,6 +32,11 @@ internal static partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--tasks-readonly-smoke")
+        {
+            TasksReadOnlySmoke().GetAwaiter().GetResult();
+            return;
+        }
         if (args.Length == 1 && args[0] == "--query-task-smoke")
         {
             QueryTaskSmoke().GetAwaiter().GetResult();

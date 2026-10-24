@@ -1142,4 +1142,10 @@ Notes displaying this file will also close. A recovery file remains in deleted-n
   <data name="NoteMenu.Open" xml:space="preserve">
     <value>Create &amp; open</value>
   </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>Tasks {0} is unsupported. Update to 8.2.2 or later. In Obsidian for this Vault, open Settings → Community plugins → Check for updates and update Tasks. Then use Refresh linked data → Refresh Tasks / Dataview in the sticky-note menu.</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>This Tasks internal API is unsupported. Check for updates to Tasks and the sticky-note app. The source tasks have not been changed.</value>
+  </data>
 </root>

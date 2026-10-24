@@ -1142,4 +1142,10 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="NoteMenu.Open" xml:space="preserve">
     <value>作成・開く</value>
   </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>Tasks {0} は非対応です。8.2.2以降に更新してください。対象VaultのObsidianで「設定 → コミュニティプラグイン → アップデートを確認」を開き、Tasksを更新後、付箋の「連携データの更新 → Tasks / Dataviewを更新」を実行してください。</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>このTasksの内部APIには対応していません。Tasksと付箋アプリの更新を確認してください。元のタスクは変更していません。</value>
+  </data>
 </root>

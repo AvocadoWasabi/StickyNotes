@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Support Tasks 8.2.2 query exports, including grouped and nested source mappings, without changing the shared Tasks cache. Tasks versions older than 8.2.2 are rejected for queries and native checkbox edits with instructions to update the plugin in the affected Vault. [Setup and limits](docs/TASKS-CLI-PREVIEW.md#english).
+
 - Add Close/Esc to folder management and wrap its footer buttons in narrow windows. Organize the note menu into common actions, Display & properties, Refresh linked data, and Create & open, separating note close from app exit. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
 - Fix the CLI command-length error when opening **Manage sticky-note folder…** by using protected temporary transfers for oversized folder requests. Keep the transport limit and add initial folder-loading retries through **Refresh list**. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).

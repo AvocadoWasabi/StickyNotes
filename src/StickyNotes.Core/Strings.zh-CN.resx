@@ -1142,4 +1142,10 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="NoteMenu.Open" xml:space="preserve">
     <value>创建与打开</value>
   </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>不支持 Tasks {0}。请更新至 8.2.2 或更高版本。在此 Vault 的 Obsidian 中打开“设置 → 第三方插件 → 检查更新”并更新 Tasks，然后在便签菜单中选择“刷新关联数据 → 刷新 Tasks / Dataview”。</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>尚不支持此 Tasks 内部 API。请检查 Tasks 和便签应用的更新。原任务未被修改。</value>
+  </data>
 </root>

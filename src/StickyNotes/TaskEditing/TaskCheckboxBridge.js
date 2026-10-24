@@ -14,8 +14,9 @@ async function stickyTasksPreview(request) {
     if ((match[2] !== ' ') === request.checked) return { text: request.line };
     const plugin = app.plugins.plugins['obsidian-tasks-plugin'];
     if (!plugin) return { text: match[1] + (request.checked ? 'x' : ' ') + match[3] };
+    stickyRequireTasksVersion(plugin);
     if (typeof plugin.apiV1?.executeToggleTaskDoneCommand !== 'function')
-        fail('Tasks 7.2 or later is required for native checkbox editing.');
+        fail('STICKY_TASKS_UNSUPPORTED_API');
     const text = plugin.apiV1.executeToggleTaskDoneCommand(request.line, file.path);
     if (typeof text !== 'string' || Buffer.byteLength(text, 'utf8') > 2000000) fail('Invalid Tasks update.');
     return { text };

@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+Unreleased: Tasks integration supports stable 8.2.2 or later and shows update instructions for older versions. See [Tasks setup and update steps](docs/TASKS-CLI-PREVIEW.md#english).
+
 Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](docs/MULTIPLE-VAULTS.md#english).
 
 v0.0.10 adds reopening recently closed note groups, file renaming and guidance when renaming is unavailable, and fixes menu-triggered autosave freezes. See [changes and upgrade steps](docs/RELEASE-NOTES.md#english).

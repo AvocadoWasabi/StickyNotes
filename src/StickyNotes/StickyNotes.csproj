@@ -11,6 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="TasksBridge.js" />
+    <EmbeddedResource Include="TasksCompatibility.js" />
     <EmbeddedResource Include="DataviewBridge.js" />
     <EmbeddedResource Include="QueryTaskTargets.js" />
     <EmbeddedResource Include="NotesBridge.js" />
