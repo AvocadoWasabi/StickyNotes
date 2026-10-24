@@ -1,10 +1,10 @@
 [日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
-# 설치와 첫 설정
+# 설치 및 초기 설정
 
 [README로 돌아가기](../README.ko.md) · [상세 사용 안내(영어)](USAGE.en.md)
 
-## 1. 앱 설치
+## 1. 설치
 
 Windows 10 / 11(x64)용입니다. 관리자 권한이나 별도의 .NET 설치가 필요하지 않습니다.
 
@@ -16,9 +16,9 @@ Windows 10 / 11(x64)용입니다. 관리자 권한이나 별도의 .NET 설치�
 
 이 문서는 v0.0.11 기준입니다. 여러 보관함, Tasks 8.2.2 지원, 9개 UI 언어 변경은 [변경 기록(영어)](../CHANGELOG.md#v0-0-11)을 참고하세요.
 
-## 2. 저장 방식 선택
+## 2. 저장 위치와 연결 방식
 
-### Obsidian 사용(새 설정의 기본값)
+### Obsidian CLI 사용(기본값)
 
 1. Obsidian **설정 → 일반 → Command line interface**를 켜고 등록 안내를 따릅니다. 항목이 없으면 [공식 CLI 안내](https://obsidian.md/help/cli)의 설치 프로그램 업데이트 조건을 확인하세요.
 2. 대상 보관함을 열고 Obsidian을 계속 실행합니다.
@@ -28,11 +28,11 @@ Windows 10 / 11(x64)용입니다. 관리자 권한이나 별도의 .NET 설치�
 
 폴더를 바꿀 때 Yes는 기존 앱 생성 메모도 이동하고, No는 이후 저장 위치만 바꾸며, Cancel은 취소합니다. [이동 범위와 복구(영어)](STICKY-FOLDERS.md#english). CLI 실패 시 로컬 읽기로 자동 전환하지 않습니다.
 
-### Obsidian 없이 사용
+### 로컬 파일 사용
 
 **Obsidian CLI 사용(기본값)**를 끄고 로컬 기준 폴더와 메모 저장 폴더를 선택한 뒤 저장합니다. 초기 위치는 `Documents/StickyNotesData`입니다. Tasks／Dataview 검색은 사용할 수 없습니다. 로컬 데일리 노트는 폴더와 날짜 캡처 정규식으로 설정할 수 있습니다. [데일리 설정 예시(영어)](USAGE.en.md#daily).
 
-## 3. 필요한 연동만 활성화
+## 3. 선택적 연동 기능
 
 | 연동 | Obsidian／Google에서 | 메모 앱에서 |
 | --- | --- | --- |
@@ -43,7 +43,7 @@ Windows 10 / 11(x64)용입니다. 관리자 권한이나 별도의 .NET 설치�
 
 일반 Markdown 체크박스에는 Tasks가 필요하지 않습니다. 할 일 자동 완성은 기본적으로 자동이며, Tasks가 꺼져 있으면 수동으로 켜야 작동합니다. Google 연동을 쓰지 않으면 Google 인증은 필요하지 않습니다.
 
-## 4. 첫 메모 사용
+## 4. 메모 생성과 편집
 
 `… → 만들기 및 열기`에서 Markdown을 만들거나 엽니다. 본문 클릭／`Ctrl+E`로 편집하고 `Ctrl+S`／`Esc`로 저장합니다. 데일리 연결은 처음에 오늘 파일이 필요하며 자동 생성하지 않습니다. 설정에서 표시 언어를 선택하고 저장한 뒤 재시작하세요. v0.0.11 UI는 README의 9개 언어를 지원하며 한국어 예시는 한국어 UI를 사용합니다.
 

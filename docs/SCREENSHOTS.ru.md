@@ -4,9 +4,9 @@
 
 Вымышленные заметки отрисованы в PNG 460 × 580 px компонентами WPF v0.0.11. Это не снимки рабочего стола и не активные сеансы Obsidian/Google. Личные заметки, настройки и учётные данные не используются.
 
-После реализации девяти языков интерфейса заново созданы 27 изображений с соответствующими текстом и интерфейсом. Тайваньский вариант китайского использует традиционные иероглифы (zh-TW). Имя ежедневного файла отражает дату генерации.
+Японские описания и примеры заметок служат оригиналом для переводов. 27 изображений показывают по три примера для каждого из девяти языков интерфейса; язык текста и интерфейса совпадает. Тайваньский вариант использует традиционный китайский (zh-TW). Имя файла ежедневной заметки содержит дату генерации.
 
-| Language | Tasks | Markdown | Daily |
+| Язык | Флажки | Markdown | Ежедневные заметки |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

@@ -4,48 +4,58 @@
 
 [README](../README.de.md) · [Usage (English)](USAGE.en.md)
 
-## 1. Erste Schritte
+## 1. Installation
 
-Windows 10 / 11 (x64). .NET ist im ZIP enthalten; keine Administratorrechte nötig. CLI ist bei neuen Einstellungen aktiviert. Für lokale Dateien ausschalten. Kein eigenes Sticky-Notes-Plugin für Obsidian erforderlich.
+Für Windows 10 / 11 (x64). Administratorrechte und eine zusätzliche .NET-Installation sind nicht erforderlich.
 
-1. `StickyNotes-win-x64.zip` aus den Releases laden, vollständig entpacken und `Install.cmd` starten.
-2. Obsidian öffnen, CLI aktivieren und den gewünschten Vault geöffnet lassen.
-3. In den App-Einstellungen den absoluten Pfad zu `Obsidian.com` und den Vault-Namen bzw. die ID prüfen. Den Vault-Ordner per CLI abrufen, Notizordner wählen und speichern.
-4. Unter `…` eine Notiz erstellen/öffnen oder eine Tagesnotiz bzw. einen Abschnitt verknüpfen.
-
-[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest)
+1. Laden Sie **StickyNotes-win-x64.zip** aus den [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest). `Source code` enthält den Quellcode.
+2. Entpacken Sie das gesamte ZIP und führen Sie `Install.cmd` aus.
+3. Starten Sie **Markdown Sticky Notes** über das Startmenü.
 
 Alternativ `StickyNotes.exe` direkt aus dem entpackten Ordner starten und alle Begleitdateien behalten. Die App ist unsigniert; Windows kann eine Bestätigung verlangen. Autostart wird nicht eingerichtet.
 
 Diese Anleitung gilt für v0.0.11. Mehrere Vaults, Tasks 8.2.2 und neun UI-Sprachen sind im [Änderungsprotokoll (Englisch)](../CHANGELOG.md#v0-0-11) beschrieben.
 
-## 2. Obsidian oder lokale Dateien
+## 2. Speicherort und Verbindung
 
-In Obsidian die CLI aktivieren und den Registrierungsanweisungen folgen. Fehlt die Einstellung, die Installer-Anforderungen im offiziellen CLI-Handbuch prüfen. In der App unter Einstellungen den absoluten Pfad prüfen (meist `C:\Program Files\Obsidian\Obsidian.com`). Unter Vaults und Tagesnotizen CLI für den Eintrag aktivieren, Vault-Namen/ID eingeben und den Abrufknopf drücken. Ein leeres Feld verwendet die Obsidian-Standardauswahl; Eingabe allein lädt nichts. Zurückgegebene Ordner prüfen, Notizordner wählen und speichern.
+### Obsidian CLI verwenden (Standard)
 
-[Obsidian CLI](https://obsidian.md/help/cli)
+1. Aktivieren Sie in Obsidian **Settings → General → Command line interface** und folgen Sie den Registrierungshinweisen. Fehlt der Eintrag, prüfen Sie die Installer-Anforderungen in der [offiziellen CLI-Anleitung](https://obsidian.md/help/cli).
+2. Öffnen Sie den gewünschten Vault und lassen Sie Obsidian laufen.
+3. Prüfen Sie in den allgemeinen App-Einstellungen den absoluten Pfad zu `Obsidian.com`, normalerweise `C:\Program Files\Obsidian\Obsidian.com`. Passen Sie ihn bei einem anderen Installationsort an.
+4. Aktivieren Sie unter Vaults und Tagesnotizen CLI für den gewünschten Eintrag. Geben Sie Vault-Name/ID ein und klicken Sie auf den Knopf zum Abrufen des Vault-Ordners per CLI. Ein leeres Feld verwendet die Obsidian-Standardauswahl; die Eingabe allein ruft den Ordner nicht ab.
+5. Prüfen Sie den abgerufenen Vault und die Tageseinstellungen, wählen Sie den Speicherordner für Haftnotizen und speichern Sie die Einstellungen.
 
-Ohne Obsidian CLI ausschalten, lokalen Basis- und Notizordner wählen und speichern. Anfangs wird `Documents/StickyNotesData` verwendet. Tasks-/Dataview-Abfragen sind dann nicht verfügbar. Lokale Tagesnotizen lassen sich über Ordner und Datums-RegEx konfigurieren.
+Beim Ordnerwechsel verschiebt „Ja“ auch vorhandene, von der App erstellte Notizen; „Nein“ ändert nur den zukünftigen Speicherort; „Abbrechen“ verwirft den Wechsel. [Umfang und Wiederherstellung (Englisch)](STICKY-FOLDERS.md#english). Bei CLI-Fehlern wird nicht automatisch auf lokales Lesen umgeschaltet.
 
-Beim Ordnerwechsel verschiebt Ja auch vorhandene von der App erstellte Notizen; Nein ändert nur den zukünftigen Speicherort; Abbrechen verwirft den Wechsel. CLI-Fehler wechseln nicht automatisch zu lokalem Lesen.
+### Lokale Dateien verwenden
 
-[Storage (English)](STICKY-FOLDERS.md#english) · [Daily notes (English)](USAGE.en.md#daily)
+Deaktivieren Sie Obsidian CLI in den Einstellungen, wählen Sie den lokalen Basis- und Notizordner und speichern Sie. Der anfängliche Speicherort ist `Documents/StickyNotesData`. Tasks-/Dataview-Abfragen sind nicht verfügbar. Lokale Tagesnotizen lassen sich über einen Ordner und einen regulären Ausdruck mit Datumserfassung konfigurieren. [Beispiele (Englisch)](USAGE.en.md#daily).
 
 ## 3. Optionale Integrationen
 
-Daily notes: Ordner und Datumsformat in Obsidian setzen, die heutige Datei erstellen und im Erstellen/Öffnen-Menü eine Tagesnotiz anzeigen. Ohne gewählte Überschrift wird die ganze Notiz angezeigt. Tasks 8.2.2+ bzw. Dataview im Ziel-Vault aktivieren und `tasks`-/`dataview`-Codeblöcke öffnen. Normale Checkboxen benötigen Tasks nicht. Vorschläge stehen standardmäßig auf Automatisch und bleiben ohne Tasks aus, sofern nicht manuell aktiviert. Für Google eigene APIs und Desktop-OAuth einrichten, JSON importieren, autorisieren und `@calendar today` in einen eigenen Absatz schreiben. Ohne Google-Integration ist keine Google-Autorisierung nötig.
+| Integration | In Obsidian / Google | In Sticky Notes |
+| --- | --- | --- |
+| Tagesnotizen | Core-Plugin Daily notes aktivieren, Ordner und Datumsformat setzen, heutige Notiz erstellen | Im Menü zum Erstellen/Öffnen eine Tagesnotiz anzeigen und eine Überschrift auswählen; leer zeigt die ganze Notiz |
+| Tasks | Im Ziel-Vault aktivieren; v0.0.11 erfordert stabile Version 8.2.2 oder neuer | Notiz mit einem `tasks`-Codeblock öffnen. [Anleitung und Grenzen (Englisch)](TASKS-CLI-PREVIEW.md#english) |
+| Dataview | Im Ziel-Vault aktivieren | LIST / TABLE / TASK in `dataview`-Blöcken anzeigen. [Anleitung und Grenzen (Englisch)](DATAVIEW.md#english) |
+| Google | Calendar API, Tasks API und Desktop-OAuth im eigenen Cloud-Projekt einrichten | JSON importieren, autorisieren und `@calendar today` in einen eigenen Absatz schreiben. [Verbindung (Englisch)](GOOGLE-CALENDAR.en.md#setup) |
 
-[Tasks (English)](TASKS-CLI-PREVIEW.md#english) · [Dataview (English)](DATAVIEW.md#english) · [Google (English)](GOOGLE-CALENDAR.en.md#setup)
+Normale Markdown-Checkboxen benötigen Tasks nicht. Aufgabenvorschläge stehen standardmäßig auf Automatisch und bleiben ohne Tasks deaktiviert, sofern sie nicht manuell aktiviert werden. Ohne Google-Integration ist keine Google-Autorisierung erforderlich.
 
-## 4. Bedienung
+## 4. Notizen erstellen und bearbeiten
 
-Text anklicken (einfacher/doppelter Klick einstellbar) oder `Ctrl+E` zum Bearbeiten; `Ctrl+S` / `Esc` speichert. Das erste Esc schließt offene Vorschläge. Checkboxen im Lesemodus anklicken. `○ / ●` heftet an. Eine Notiz über `…` schließen, die App über den Infobereich beenden.
-
-UI, README, Einrichtung und Bilder unterstützen die neun oben aufgeführten Sprachen. Sprache in den Einstellungen wählen, speichern und neu starten. Ausführliche Referenzen bleiben überwiegend Japanisch/Englisch/Vereinfachtes Chinesisch.
+Erstellen oder öffnen Sie Markdown über das Menü zum Erstellen/Öffnen unter `…`. Klicken Sie in den Text oder drücken Sie `Ctrl+E` zum Bearbeiten; `Ctrl+S` / `Esc` speichert. Für die erste Tagesverknüpfung muss die heutige Datei vorhanden sein; sie wird nicht automatisch erstellt. Wählen Sie die Anzeigesprache in den Einstellungen, speichern Sie und starten Sie neu. Die UI von v0.0.11 unterstützt die neun im README genannten Sprachen.
 
 ## Fehlerbehebung
 
-CLI: laufendes Obsidian, aktivierte CLI, absoluten Pfad und Vault-ID prüfen, dann erneut abrufen. Fehlende Tagesnotiz: Core-Daily-notes-Einstellungen und heutige Datei prüfen; andere Tagesnotiz-Plugins werden nicht automatisch erkannt. Tasks-Warnung: Plugin im betroffenen Vault aktualisieren und die verknüpften Daten neu laden. Speicherkonflikt: Entwurf behalten und neu laden. Google-Probleme: APIs, Testnutzer und Berechtigungen anhand der englischen Anleitung prüfen.
+| Problem | Prüfung |
+| --- | --- |
+| Keine CLI-Verbindung | Obsidian muss laufen; CLI-Aktivierung, absoluten `Obsidian.com`-Pfad und Vault-Name/ID prüfen, dann erneut abrufen |
+| Heutige Notiz fehlt | Core-Daily-notes-Einstellungen und heutige Datei prüfen; Einstellungen anderer Tagesnotiz-Plugins werden nicht automatisch übernommen |
+| Tasks fordert ein Update | Tasks im Ziel-Vault auf 8.2.2 oder neuer aktualisieren und Tasks / Dataview in der Haftnotiz neu laden |
+| Speicherkonflikt | Entwurf behalten und neu laden; das Überschreiben mit veraltetem Inhalt wird verhindert |
+| Google-Autorisierung fehlgeschlagen | APIs, OAuth, Testnutzer und Berechtigungen anhand der [Anleitung (Englisch)](GOOGLE-CALENDAR.en.md) prüfen |
 
 ## Aktualisieren, Daten und Entfernen
 

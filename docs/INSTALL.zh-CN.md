@@ -1,10 +1,10 @@
 [日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
-# 安装与首次设置
+# 安装与初始设置
 
 [返回 README](../README.zh-CN.md) · [详细操作](USAGE.zh-CN.md)
 
-## 1. 安装应用
+## 1. 安装
 
 适用于 Windows 10 / 11（x64），无需管理员权限或单独安装 .NET。
 
@@ -16,9 +16,9 @@
 
 本文档适用于v0.0.11。多 Vault、Tasks 8.2.2支持及九种 UI 语言见[更新日志](../CHANGELOG.zh-CN.md#v0-0-11)。
 
-## 2. 选择保存方式
+## 2. 保存位置与连接方式
 
-### 使用 Obsidian（新配置默认）
+### 使用 Obsidian CLI（默认）
 
 1. 启用 Obsidian **设置 → 常规 → 命令行界面**，按提示注册。如无此项，请检查[官方 CLI 指南](https://obsidian.md/help/cli)中的安装程序更新要求。
 2. 打开目标 Vault，保持 Obsidian 运行。
@@ -28,11 +28,11 @@
 
 更改目录时，“是”同时迁移已有应用便签，“否”只更改今后保存位置，“取消”中止。[迁移范围与恢复](STICKY-FOLDERS.md#简体中文)。CLI 失败不会自动改为本地读取。
 
-### 不使用 Obsidian
+### 使用本地文件
 
 关闭 **使用 Obsidian CLI**，选择本地基准目录和便签保存目录，再保存。初始位置为 `Documents/StickyNotesData`。不能使用 Tasks／Dataview 查询。本地每日笔记可通过目录和日期捕获正则表达式设置。[每日设置示例](USAGE.zh-CN.md#daily)。
 
-## 3. 仅开启需要的集成
+## 3. 可选集成功能
 
 | 集成 | Obsidian／Google 侧 | 便签侧 |
 | --- | --- | --- |
@@ -43,7 +43,7 @@
 
 普通 Markdown 复选框不需要 Tasks。任务补全默认为自动，未启用 Tasks 时须手动开启才工作。不使用 Google 集成就不需要 Google 授权。
 
-## 4. 使用第一个便签
+## 4. 创建和编辑便签
 
 从 `… → 创建与打开` 新建或打开 Markdown。点击正文／`Ctrl+E` 编辑，`Ctrl+S`／`Esc` 保存。首次关联每日笔记需要今日文件，不会自动创建。在设置中选择显示语言，保存并重启后生效。v0.0.11 UI 支持 README 列出的九种语言。
 

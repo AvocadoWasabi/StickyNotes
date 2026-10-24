@@ -4,27 +4,21 @@
 
 [v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
 
-**把 Obsidian 的今日待辦放到桌面，直接勾選完成。**
+用於在便利貼視窗中顯示與編輯 Markdown 檔案的 Windows 應用程式。支援本機檔案、Obsidian 筆記，以及每日筆記中的特定標題區段。編輯內容與核取方塊變更會儲存到原始 Markdown 檔案。
 
-將整篇筆記或每日筆記中的一個標題區域變成 Windows 便利貼，編輯直接儲存到原始 Markdown。也能隨時查看 Tasks、Dataview 查詢結果與 Google Calendar 行程。
+支援透過 Obsidian CLI 顯示 Tasks、Dataview 查詢結果，並取得 Google Calendar 行程與 Google Tasks。
 
 [下載](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [安裝設定](docs/INSTALL.zh-TW.md) · [使用指南（英文）](docs/USAGE.en.md) · [更新紀錄（英文）](CHANGELOG.md)
 
-## 適合怎麼使用？
-
-- **隨時看到今日待辦** — 僅顯示每日筆記的 Tasks 區段，並隨日期切換。
-- **只維護一份筆記** — 編輯與勾選更新原始 `.md`；關閉便利貼仍保留檔案。
-- **工作時快速查看** — 固定置頂，或按 `Alt+Z` 將所有便利貼置頂 10 秒。
-
 ## 畫面範例
 
-| 直接勾選待辦 | Markdown 筆記 | 連結今日筆記 |
+| 核取方塊操作 | Markdown 顯示 | 每日筆記標題區段顯示 |
 | :---: | :---: | :---: |
-| [<img src="docs/images/sticky-tasks-zh-TW.png" alt="直接勾選待辦" width="280">](docs/images/sticky-tasks-zh-TW.png) | [<img src="docs/images/sticky-markdown-zh-TW.png" alt="Markdown 筆記" width="280">](docs/images/sticky-markdown-zh-TW.png) | [<img src="docs/images/sticky-daily-zh-TW.png" alt="連結今日筆記" width="280">](docs/images/sticky-daily-zh-TW.png) |
+| [<img src="docs/images/sticky-tasks-zh-TW.png" alt="核取方塊操作" width="280">](docs/images/sticky-tasks-zh-TW.png) | [<img src="docs/images/sticky-markdown-zh-TW.png" alt="Markdown 顯示" width="280">](docs/images/sticky-markdown-zh-TW.png) | [<img src="docs/images/sticky-daily-zh-TW.png" alt="每日筆記標題區段顯示" width="280">](docs/images/sticky-daily-zh-TW.png) |
 
-以v0.0.11 WPF 控制項繪製虛構筆記，並非桌面擷取。此處筆記與介面皆為台灣華語（繁體中文）。[九種語言的範例與產生步驟](docs/SCREENSHOTS.zh-TW.md)。
+使用應用程式的 WPF 控制項繪製範例筆記，並非桌面擷取。請參閱[各語言畫面範例與產生步驟](docs/SCREENSHOTS.zh-TW.md)。
 
-## 所需工具與設定
+## 執行環境與相依項目
 
 **Windows 10 / 11（x64）**。ZIP 內含 .NET，無需系統管理員權限。
 
@@ -39,28 +33,28 @@
 
 **新設定預設啟用 CLI。** 不使用 Obsidian 時請關閉。CLI 為 Obsidian 內建功能，無需專用的 Sticky Notes Obsidian 外掛。[官方 CLI 需求](https://obsidian.md/help/cli) · [相容性與限制（英文）](docs/TASKS-CLI-PREVIEW.md#english)。
 
-## 開始使用
+## 安裝與初始設定
 
 1. 從 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) 下載 `StickyNotes-win-x64.zip`，完整解壓縮後執行 `Install.cmd`。
 2. 在 Obsidian 啟用 CLI、開啟目標 Vault，再啟動 Markdown Sticky Notes。
 3. 在應用程式設定中確認 `Obsidian.com` 的絕對路徑，輸入 Vault 名稱／ID，按 **透過 CLI 取得 Vault 儲存目錄**。選擇儲存資料夾，再按 **儲存並關閉**。
 4. 從 `… → 建立與開啟` 新增便利貼、開啟 Markdown、連結筆記區段或顯示每日筆記。
 
-本文件適用於v0.0.11。多 Vault、Tasks 8.2.2支援及九種介面語言請見[更新紀錄（英文）](CHANGELOG.md#v0-0-11)。
+本機檔案設定、更新與移除請參閱[安裝指南](docs/INSTALL.zh-TW.md)。此處的功能與設定適用於 v0.0.11。各版本變更見[更新紀錄（英文）](CHANGELOG.md#v0-0-11)。
 
 ## 功能清單
 
 | 功能 | 內容 |
 | --- | --- |
 | Markdown 顯示與編輯 | 標題、清單、核取方塊、表格、程式碼、連結；儲存為一般 `.md` |
-| 標題連結與每日筆記 | 顯示／編輯部分內容，隨日期切換，可保留昨日筆記 |
+| 標題連結與每日筆記 | 顯示與編輯筆記的一部分，隨日期切換，今日筆記不存在時保留前一天的筆記 |
 | Tasks / Dataview | 顯示查詢結果，勾選已驗證來源位置的任務，保留查詢原文 |
 | 任務輸入 | 關鍵字／日期補全、Enter 延續清單、Tab 縮排、可設定勾選快捷鍵 |
 | Google 整合 | `@calendar today` 顯示行程與有日期的未完成 Google Tasks；確認後修改行程標題／說明 |
 | 外觀與視窗 | 色彩、大小、50–200% 縮放、置頂、暫時置頂、工作列顯示 |
 | 便利貼管理 | 選擇／搬移儲存資料夾、重開已關閉便利貼、瀏覽／預覽、更名與刪除 |
-| 資料保護 | 寫入前備份、外部修改衝突偵測 |
-| 多 Vault（v0.0.11） | 各 Vault 的每日筆記、自訂名稱與預設 Vault |
+| 備份與衝突偵測 | 寫入前備份、外部修改衝突偵測 |
+| 多 Vault | 各 Vault 的每日筆記、自訂名稱與預設 Vault |
 
 ## 基本操作
 
@@ -72,16 +66,16 @@
 | 置頂 | `○ / ●` 固定；`Alt+Z` 將所有便利貼置頂 10 秒 |
 | 關閉／結束 | `… → 關閉此便利貼（保留檔案）`／從通知區域結束應用程式 |
 
-## 使用前須知
+## 支援範圍與限制
 
 - v0.0.11的 UI、README、安裝指南與畫面範例支援**日文、英文、簡體中文、台灣華語（繁體中文）、韓文、德文、俄文、西班牙文、瑞典文**九種語言。詳細參考資料通常仍為三種語言。變更語言後請儲存並重新啟動。
 - CLI 整合需要 Obsidian 持續執行；內部 API 變動可能影響相容性。
 - 不會自動建立每日筆記，首次新增前請準備今日筆記。
 - 不完整重現 Obsidian 主題與外掛檢視。圖片顯示替代文字；不支援 DataviewJS、行內運算式與 CALENDAR。
-- Google Tasks 為唯讀且只能取得日期。不支援排定時刻、與 Markdown 任務自動同步或新增行程。
+- Google Tasks 為唯讀，到期資訊僅取得日期。不支援到期時間、與 Markdown 任務自動同步或新增 Google Calendar 行程。
 - 備份位置：`%LOCALAPPDATA%/StickyNotes/backups`。發生衝突時保留草稿，重新載入後重試。
 
-## 詳細資料與問題回報
+## 相關資料與問題回報
 
 以下參考資料為英文：[儲存與搬移](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [任務輸入](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [多 Vault](docs/MULTIPLE-VAULTS.md#english) · [便利貼管理](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [開發](docs/DEVELOPMENT.en.md) · [授權聲明](THIRD-PARTY-NOTICES.txt)
 

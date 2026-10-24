@@ -1,21 +1,22 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: Idéanteckningar
+tags: [sticky, project]
 status: active
 color: blue
 ---
-# Fånga en idé. Ha den nära.
+# Exempel på Markdown
 
-Din vanliga **Markdown**, som en fästis.
+**Rubriker, listor och tabeller** kan visas.
 
-## Ett litet helgprojekt
+## Arbetsanteckningar
 
-1. Samla idéer och material
-2. Prova en första version
+1. Ordna arbetet och materialet som behövs
+2. Anteckna stegen för en prototyp
 
-| Anteckningstyp | Var den finns |
+| Anteckningstyp | Lagringsplats |
 | --- | --- |
 | Idéer | Obsidian-valv |
 | Dagens arbete | Daglig anteckning |
 
-Sparas som en vanlig `.md`-fil.
+Formatet är en vanlig `.md`-fil.

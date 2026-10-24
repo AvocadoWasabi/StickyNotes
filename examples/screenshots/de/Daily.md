@@ -1,23 +1,27 @@
 ---
 tags: [daily]
 ---
-# Daily
+# Daily note
+
+Dieser Teil liegt außerhalb des angezeigten Abschnitts.
 
 ## Tasks
 
-### Mit der heutigen Notiz verbunden.
+### Teil einer Tagesnotiz anzeigen
 
-Nur **Tasks** aus der Tagesnotiz anzeigen.
+Zeigt den Abschnitt **Tasks** der Tagesnotiz an.
 
-- [x] Prioritäten für heute wählen
-- [ ] Kurzes Arbeitsprotokoll führen
-- [ ] Den Tag reflektieren
+- [x] Prioritäten für heute festlegen
+- [ ] Arbeitsprotokoll führen
+- [ ] Tagesrückblick schreiben
 
-### Einen Abschnitt bearbeiten
+### Nach Überschrift bearbeiten
 
-Häkchen und Änderungen aktualisieren das Original.
+Häkchen und Änderungen werden in der Originalnotiz gespeichert.
 Andere Überschriften und Eigenschaften bleiben erhalten.
 
-> Neuer Tag, neue Tagesnotiz.
+> Bei einem Datumswechsel wechselt die angezeigte Notiz.
 
 ## Journal
+
+Auch diese Überschrift liegt außerhalb des angezeigten Abschnitts.

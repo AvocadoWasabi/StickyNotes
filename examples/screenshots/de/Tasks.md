@@ -1,21 +1,22 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: Heutige Aufgaben
+tags: [sticky, personal]
 status: active
 color: yellow
 ---
-# Eine kleine Aufgabe nach der anderen.
+# Aufgabenliste
 
-Die Prioritäten von heute immer im Blick.
+Zeigt Markdown-Checkboxen an.
 
-## Heute erledigen
+## Arbeitsschritte
 
-- [x] Tagesplan durchsehen
-- [x] Heutige Tagesnotiz öffnen
-- [ ] Lesenotizen aufschreiben
+- [x] Termine am Morgen prüfen
+- [x] Tagesnotiz öffnen
+- [ ] Lesenotizen ordnen
 - [ ] Morgen vorbereiten
 
-> Hier direkt abhaken.
-> Änderungen landen in der Markdown-Datei.
+> Checkboxen sind im Lesemodus bedienbar.
+> Änderungen werden in der Markdown-Datei gespeichert.
 
 **Ctrl+E** bearbeiten / **Ctrl+S** speichern

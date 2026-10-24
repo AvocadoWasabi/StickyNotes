@@ -3,25 +3,25 @@ tags: [daily]
 ---
 # Daily note
 
-This introduction is outside the linked section.
+This part is outside the displayed section.
 
 ## Tasks
 
-### Connected to today's note.
+### Displaying part of a daily note
 
-Show just **Tasks** from your daily note.
+Displays the **Tasks** section of the daily note.
 
-- [x] Choose today's priorities
-- [ ] Keep a short work log
-- [ ] Write an end-of-day reflection
+- [x] Set today's priorities
+- [ ] Record the work log
+- [ ] Write a daily review
 
-### Edit one section at a time
+### Editing by heading
 
-Checks and edits update the original note.
+Checkbox changes and edits are saved to the original note.
 Other headings and properties are preserved.
 
-> A new day, a new daily note.
+> The displayed note changes when the date changes.
 
 ## Journal
 
-This heading is also outside the linked section.
+This heading is also outside the displayed section.

@@ -1,21 +1,22 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: Tareas de hoy
+tags: [sticky, personal]
 status: active
 color: yellow
 ---
-# Una pequeña tarea cada vez.
+# Lista de tareas
 
-Las prioridades de hoy siempre a mano.
+Muestra casillas de Markdown.
 
-## Tareas de hoy
+## Elementos de trabajo
 
-- [x] Revisar el plan del día
-- [x] Abrir la nota diaria de hoy
-- [ ] Escribir notas de lectura
+- [x] Revisar la agenda de la mañana
+- [x] Abrir la nota diaria
+- [ ] Organizar notas de lectura
 - [ ] Preparar el día de mañana
 
-> Marque las tareas aquí mismo.
-> Los cambios se guardan en su Markdown.
+> Las casillas se pueden cambiar en modo lectura.
+> Los cambios se guardan en el archivo Markdown.
 
 **Ctrl+E** editar / **Ctrl+S** guardar

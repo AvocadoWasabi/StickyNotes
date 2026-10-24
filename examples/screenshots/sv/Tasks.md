@@ -1,21 +1,22 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: Dagens uppgifter
+tags: [sticky, personal]
 status: active
 color: yellow
 ---
-# En liten uppgift i taget.
+# Uppgiftslista
 
-Ha dagens prioriteringar nära till hands.
+Visar kryssrutor i Markdown.
 
-## Dagens uppgifter
+## Arbetsuppgifter
 
-- [x] Gå igenom dagens plan
+- [x] Kontrollera morgonens schema
 - [x] Öppna dagens anteckning
-- [ ] Skriv läsanteckningar
-- [ ] Förbered morgondagen
+- [ ] Ordna läsanteckningar
+- [ ] Förbereda morgondagen
 
-> Bocka av direkt här.
-> Ändringar sparas i din Markdown-fil.
+> Kryssrutor kan ändras i läsläget.
+> Ändringar sparas i Markdown-filen.
 
 **Ctrl+E** redigera / **Ctrl+S** spara

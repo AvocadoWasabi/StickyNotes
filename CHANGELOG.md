@@ -8,7 +8,7 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
-No pending changes.
+- Use Japanese as the documentation source and describe functions, requirements, procedures and limitations objectively. Align README, setup, screenshot descriptions and sample notes in the other eight languages with the Japanese original. Regenerate and review all 27 screenshot examples.
 
 <a id="v0-0-11"></a>
 

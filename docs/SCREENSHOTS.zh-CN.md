@@ -4,9 +4,9 @@
 
 使用v0.0.11的 WPF 控件，将虚构笔记渲染为460 × 580 px PNG。这不是桌面截图或实际连接 Obsidian／Google 的画面，不使用个人笔记、设置或凭据。
 
-先完成九种 UI 语言支持，再重新生成正文与界面语言一致的27张图片。台湾华语使用繁体中文（zh-TW）。每日笔记文件名为生成日期。
+说明与示例笔记以日语为原本，其他语言为译文。九种 UI 语言各有三张示例，共 27 张，笔记正文与界面语言一致。台湾华语使用繁体中文（zh-TW）。每日笔记的文件名显示生成日期。
 
-| Language | Tasks | Markdown | Daily |
+| 语言 | 复选框 | Markdown | 每日笔记 |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

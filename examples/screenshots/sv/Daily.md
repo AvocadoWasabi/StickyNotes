@@ -1,23 +1,27 @@
 ---
 tags: [daily]
 ---
-# Daily
+# Daily note
+
+Den här delen ligger utanför det visade avsnittet.
 
 ## Tasks
 
-### Kopplad till dagens anteckning.
+### Del av en daglig anteckning
 
-Visa bara **Tasks** från din dagliga anteckning.
+Visar avsnittet **Tasks** i dagens anteckning.
 
-- [x] Välj dagens prioriteringar
-- [ ] För en kort arbetslogg
-- [ ] Skriv en reflektion över dagen
+- [x] Bestämma dagens prioriteringar
+- [ ] Föra arbetslogg
+- [ ] Skriva dagens återblick
 
-### Redigera ett avsnitt i taget
+### Redigera per rubrik
 
-Kryss och ändringar uppdaterar originalet.
+Kryss och ändringar sparas i originalanteckningen.
 Övriga rubriker och egenskaper bevaras.
 
-> En ny dag, en ny daglig anteckning.
+> Den visade anteckningen byts när datumet ändras.
 
 ## Journal
+
+Även denna rubrik ligger utanför det visade avsnittet.

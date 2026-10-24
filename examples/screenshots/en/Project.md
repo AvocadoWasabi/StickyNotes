@@ -1,22 +1,22 @@
 ---
 type: sticky
-title: Ideas and notes
+title: Idea notes
 tags: [sticky, project]
 status: active
 color: blue
 ---
-# Catch an idea. Keep it close.
+# Markdown display example
 
-Your familiar **Markdown**, as a sticky note.
+**Headings, lists and tables** can be displayed.
 
-## A small weekend project
+## Work notes
 
-1. Gather ideas and what you need
-2. Try a first version
+1. Organize the work and required materials
+2. Record the steps for a prototype
 
-| Note type | Where it lives |
+| Note type | Storage |
 | --- | --- |
 | Ideas | Obsidian vault |
 | Today's work | Daily note |
 
-Saved as a regular `.md` file.
+Notes are saved as regular `.md` files.

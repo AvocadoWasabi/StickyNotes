@@ -4,9 +4,9 @@
 
 以v0.0.11的 WPF 控制項，將虛構筆記繪製為460 × 580 px PNG。這不是桌面擷取畫面，也未實際連線至 Obsidian／Google。不使用個人筆記、設定或憑證。
 
-先完成九種介面語言，再重新產生內文與介面語言一致的27張圖片。台灣華語使用繁體中文（zh-TW）。每日筆記檔名為產生日期。
+說明與範例筆記以日文為原本，其他語言為譯文。九種 UI 語言各有三張範例，共 27 張，筆記內文與介面語言一致。台灣華語使用繁體中文（zh-TW）。每日筆記的檔名顯示產生日期。
 
-| Language | Tasks | Markdown | Daily |
+| 語言 | 核取方塊 | Markdown | 每日筆記 |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

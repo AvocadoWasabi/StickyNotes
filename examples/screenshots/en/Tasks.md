@@ -1,22 +1,22 @@
 ---
 type: sticky
-title: Today's checklist
+title: Today's tasks
 tags: [sticky, personal]
 status: active
 color: yellow
 ---
-# One small task at a time.
+# Task list
 
-Keep today's priorities within easy reach.
+Displays Markdown checkboxes.
 
-## Today's checklist
+## Work items
 
-- [x] Review the day's plan
-- [x] Open today's daily note
-- [ ] Write up reading notes
-- [ ] Get ready for tomorrow
+- [x] Review the morning schedule
+- [x] Open the daily note
+- [ ] Organize reading notes
+- [ ] Prepare for tomorrow
 
-> Check things off right here.
-> Changes are saved to your Markdown file.
+> Checkboxes can be changed in reading mode.
+> Changes are saved to the Markdown file.
 
 **Ctrl+E** to edit / **Ctrl+S** to save

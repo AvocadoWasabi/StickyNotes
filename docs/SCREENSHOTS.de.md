@@ -4,9 +4,9 @@
 
 Fiktive Notizen, als PNGs mit 460 × 580 px durch WPF-Steuerelemente von v0.0.11 gerendert. Keine Desktop-Aufnahmen oder aktiven Obsidian-/Google-Verbindungen; keine persönlichen Notizen, Einstellungen oder Zugangsdaten.
 
-Nach Umsetzung der neun UI-Sprachen wurden 27 Bilder mit passendem Notiztext und UI neu erzeugt. Taiwanisches Mandarin verwendet traditionelles Chinesisch (zh-TW). Der tägliche Dateiname zeigt das Erzeugungsdatum.
+Die japanischen Beschreibungen und Beispielnotizen sind die Vorlage für die Übersetzungen. Die 27 Bilder zeigen drei Beispiele für jede der neun UI-Sprachen; Notiztext und Oberfläche verwenden dieselbe Sprache. Taiwanisches Mandarin verwendet traditionelles Chinesisch (zh-TW). Der Dateiname der Tagesnotiz zeigt das Erzeugungsdatum.
 
-| Language | Tasks | Markdown | Daily |
+| Sprache | Checkboxen | Markdown | Tagesnotizen |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

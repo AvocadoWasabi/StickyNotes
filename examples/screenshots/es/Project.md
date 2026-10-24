@@ -1,19 +1,20 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: Notas de ideas
+tags: [sticky, project]
 status: active
 color: blue
 ---
-# Capture una idea. Téngala cerca.
+# Ejemplo de Markdown
 
-Su **Markdown** habitual, como nota adhesiva.
+Se muestran **encabezados, listas y tablas**.
 
-## Un pequeño proyecto de fin de semana
+## Notas de trabajo
 
-1. Reunir ideas y materiales
-2. Probar una primera versión
+1. Organizar el trabajo y los materiales
+2. Anotar los pasos de un prototipo
 
-| Tipo de nota | Dónde se guarda |
+| Tipo de nota | Ubicación |
 | --- | --- |
 | Ideas | Bóveda de Obsidian |
 | Trabajo de hoy | Nota diaria |

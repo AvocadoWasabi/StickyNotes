@@ -4,27 +4,21 @@
 
 [v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
 
-**Se dina Obsidian-uppgifter på skrivbordet och bocka av dem direkt.**
+Ett Windows-program för att visa och redigera Markdown-filer i fästisfönster. Det stöder lokala filer, Obsidian-anteckningar och enskilda avsnitt i dagliga anteckningar. Redigeringar och ändringar av kryssrutor sparas i den ursprungliga Markdown-filen.
 
-Visa en hel Markdown-anteckning eller ett avsnitt ur dagens anteckning som en fästis. Ändringar sparas i originalfilen. Du kan också ha Tasks-/Dataview-resultat och Google-händelser nära till hands.
+Programmet visar frågeresultat från Tasks och Dataview via Obsidian CLI och hämtar händelser från Google Calendar och uppgifter från Google Tasks.
 
 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Installation och inställningar](docs/INSTALL.sv.md) · [Skärmbilder](docs/SCREENSHOTS.sv.md) · [v0.0.11](CHANGELOG.md#v0-0-11)
 
-## Varför Sticky Notes?
-
-- Dagen i blickfånget: det valda avsnittet följer automatiskt datumet.
-- En enda fil: redigering och bockar uppdaterar originalets `.md`. Att stänga fönstret behåller filen.
-- Snabb åtkomst: fäst anteckningar eller tryck `Alt+Z` för att visa alla framför andra fönster i tio sekunder.
-
 ## Skärmbilder
 
-| Bocka av uppgifter | Skriv Markdown | Följ dagens anteckning |
-| --- | --- | --- |
-| [<img src="docs/images/sticky-tasks-sv.png" alt="Bocka av uppgifter" width="280">](docs/images/sticky-tasks-sv.png) | [<img src="docs/images/sticky-markdown-sv.png" alt="Skriv Markdown" width="280">](docs/images/sticky-markdown-sv.png) | [<img src="docs/images/sticky-daily-sv.png" alt="Följ dagens anteckning" width="280">](docs/images/sticky-daily-sv.png) |
+| Kryssrutor | Markdown-visning | Avsnitt i en daglig anteckning |
+| :---: | :---: | :---: |
+| [<img src="docs/images/sticky-tasks-sv.png" alt="Kryssrutor" width="280">](docs/images/sticky-tasks-sv.png) | [<img src="docs/images/sticky-markdown-sv.png" alt="Markdown-visning" width="280">](docs/images/sticky-markdown-sv.png) | [<img src="docs/images/sticky-daily-sv.png" alt="Avsnitt i en daglig anteckning" width="280">](docs/images/sticky-daily-sv.png) |
 
-Påhittade anteckningar renderade med WPF-kontroller från v0.0.11; inga skrivbordsbilder. [Skärmbilder](docs/SCREENSHOTS.sv.md).
+Exempelanteckningar renderade med programmets WPF-kontroller. Detta är inte skrivbordsbilder. Se [språkexempel och instruktioner för att generera bilder](docs/SCREENSHOTS.sv.md).
 
-## Verktyg och inställningar
+## Systemkrav och beroenden
 
 Windows 10 / 11 (x64). .NET ingår i ZIP-filen; administratörsrättigheter behövs inte. CLI är på i nya inställningar: stäng av för lokala filer. Inget särskilt Sticky Notes-tillägg för Obsidian behövs.
 
@@ -39,43 +33,50 @@ Windows 10 / 11 (x64). .NET ingår i ZIP-filen; administratörsrättigheter beh�
 
 [Obsidian CLI](https://obsidian.md/help/cli) · [Google OAuth (English)](docs/GOOGLE-CALENDAR.en.md#setup)
 
-## Kom igång
+## Installation och grundinställningar
 
 1. Hämta `StickyNotes-win-x64.zip` från Releases, packa upp allt och kör `Install.cmd`.
 2. Öppna Obsidian, aktivera CLI och håll det valda valvet öppet.
 3. Kontrollera den absoluta sökvägen till `Obsidian.com` och valvets namn/ID i appens inställningar. Hämta valvmappen via CLI, välj anteckningsmapp och spara.
 4. Skapa/öppna en anteckning eller länka ett avsnitt eller en daglig anteckning under `…`.
 
-Guiden gäller v0.0.11. Se [ändringsloggen (på engelska)](CHANGELOG.md#v0-0-11) för flera valv, Tasks 8.2.2 och nio UI-språk.
+Inställningar för lokala filer, uppdatering och avinstallation beskrivs i [installationsguiden](docs/INSTALL.sv.md). Funktioner och inställningar gäller v0.0.11. Ändringar per version finns i [ändringsloggen (på engelska)](CHANGELOG.md#v0-0-11).
 
 ## Funktioner
 
 | Funktioner | Användning |
 | --- | --- |
 | Markdown | Rubriker, listor, kryssrutor, tabeller, kod och länkar; vanliga `.md`-filer |
-| Avsnitt och dagliga anteckningar | Redigera delar av anteckningar, följ datumbyten och behåll gårdagens anteckning om du vill |
+| Avsnitt och dagliga anteckningar | Visa och redigera ett avsnitt, följa datumbyten och behålla gårdagens anteckning om dagens saknas |
 | Tasks / Dataview | Frågeresultat och bockar med verifierad koppling till källan; frågetexten bevaras |
 | Uppgiftsinmatning | Förslag på ord/datum, Enter fortsätter listor, Tab ger indrag och kortkommando för kryssruta kan väljas |
 | Google | `@calendar today`: händelser och ofärdiga uppgifter med datum; redigera händelsens titel/beskrivning efter bekräftelse |
 | Fönster | Färger, storlek, skala 50–200 %, fästning, tillfällig förgrund och visning i aktivitetsfältet |
 | Hantering | Välj/flytta lagring, öppna stängda anteckningar, bläddra, förhandsgranska, byt namn och ta bort |
-| Dataskydd | Säkerhetskopior före skrivning och kontroll av externa ändringar |
-| Flera valv (v0.0.11) | Dagliga anteckningar per valv, egna namn och standardvalv |
+| Säkerhetskopiering och konfliktkontroll | Säkerhetskopior före skrivning och kontroll av externa ändringar |
+| Flera valv | Dagliga anteckningar per valv, egna namn och standardvalv |
 
 ## Grundläggande användning
 
-Klicka i texten (enkel-/dubbelklick kan väljas) eller tryck `Ctrl+E` för att redigera; `Ctrl+S` / `Esc` sparar. Första Esc stänger öppna förslag. Bocka i läsläget. `○ / ●` fäster anteckningen. Stäng en anteckning via `…` och avsluta appen från meddelandefältet.
+| Åtgärd | Metod |
+| --- | --- |
+| Redigera | Klicka i texten (enkel-/dubbelklick kan väljas) eller `Ctrl+E` |
+| Spara och avsluta redigering | `Ctrl+S` / `Esc`; första Esc stänger öppna förslag |
+| Bocka av | Klicka på kryssrutan i läsläget |
+| Förgrund | Fäst med `○ / ●`; `Alt+Z` visar alla anteckningar framför andra fönster i 10 sekunder |
+| Stäng / avsluta | Stäng anteckningen via `…` / avsluta appen från meddelandefältet |
 
-## Innan du börjar
+## Stöd och begränsningar
 
 - Gränssnitt, README, installation och bilder finns på de nio språken ovan. Välj språk i inställningarna, spara och starta om. Utförliga referenser är främst på japanska, engelska och förenklad kinesiska.
-- Obsidian måste köras för CLI; interna API-ändringar kan påverka kompatibiliteten. Dagliga anteckningar skapas inte automatiskt.
+- Obsidian måste köras för CLI; interna API-ändringar kan påverka kompatibiliteten.
+- Dagliga anteckningar skapas inte automatiskt. Skapa dagens anteckning innan du länkar den första gången.
 - Obsidian-teman och alla tilläggsvyer återskapas inte. Bilder visas som alternativtext. DataviewJS, inline-uttryck och CALENDAR stöds inte.
-- Google Tasks är skrivskyddat och visar bara datum. Klockslag, automatisk synkning av Markdown-uppgifter och att skapa händelser stöds inte.
+- Google Tasks är skrivskyddat; förfallodatum hämtas utan klockslag. Förfallotider, automatisk synkronisering med Markdown-uppgifter och skapande av Google Calendar-händelser stöds inte.
 - Säkerhetskopior: `%LOCALAPPDATA%/StickyNotes/backups`. Vid konflikt, behåll utkastet, läs in på nytt och försök igen.
 
-## Mer hjälp (på engelska)
+## Dokumentation och felrapporter (på engelska)
 
-[Usage](docs/USAGE.en.md) · [Storage](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Task entry](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Multiple vaults](docs/MULTIPLE-VAULTS.md#english) · [Note management](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Development](docs/DEVELOPMENT.en.md) · [License notices](THIRD-PARTY-NOTICES.txt)
+[Användning](docs/USAGE.en.md) · [Lagring och flytt](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Uppgiftsinmatning](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Flera valv](docs/MULTIPLE-VAULTS.md#english) · [Anteckningshantering](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Utveckling](docs/DEVELOPMENT.en.md) · [Licensinformation](THIRD-PARTY-NOTICES.txt)
 
 Vid felrapportering: ange app-/Windows-/tilläggsversioner, CLI eller lokalt läge och steg för att återskapa felet. Bifoga inte personliga anteckningar, OAuth-JSON eller token. [Issues](https://github.com/AvocadoWasabi/StickyNotes/issues)

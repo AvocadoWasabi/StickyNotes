@@ -2,7 +2,7 @@
 
 # Development and releases
 
-Keep UI, README, setup and screenshots aligned in Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish. Detailed references remain in the original three languages. After implementing UI translations, generate 27 images using isolated fictional data with the opt-in `--render-screenshots` command. [Generation and visual review](SCREENSHOTS.en.md). `build.ps1` packages all nine README languages and docs/examples.
+The UI supports nine languages. Keep README, setup and screenshots aligned in Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish. Detailed references remain in the original three languages. After implementing UI translations, generate 27 images using isolated fictional data with the opt-in `--render-screenshots` command. [Generation and visual review](SCREENSHOTS.en.md). `build.ps1` packages all nine README languages and docs/examples.
 
 Since v0.0.11: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
 
@@ -55,7 +55,11 @@ Launch with a separate data directory using the following command. This mode sho
 
 ## Documentation languages
 
-Update English, Japanese, and Simplified Chinese (zh-CN) together for READMEs, changelogs, installation/development guides, related documentation, and release descriptions. Match features, limitations, examples, versions, and links. A single file with all language sections is acceptable. Include language navigation and check packaging. Documentation translation does not imply translated UI or sample data. Do not replace published tags or ZIPs without an instruction.
+Japanese is the documentation source. `README.md` is the canonical README; keep `README.ja.md` identical. Update other languages, including English and Simplified Chinese, as translations of the Japanese original. Apply changes to explanations, terminology and structure to Japanese first.
+
+Describe functions, use cases, requirements, procedures and limitations objectively. Avoid promotional slogans and claims that guarantee benefits. Apply the same policy to sample text in screenshots.
+
+Normally update Japanese, English and Simplified Chinese (zh-CN) together for READMEs, changelogs, installation/development guides, related documentation and release descriptions. If an instruction explicitly requests Japanese-only changes, respect that scope and translate in a separate change. Match features, limitations, examples, versions and links. A single file with language sections is acceptable. Check language navigation and packaging, and distinguish documentation translations from UI and sample translations. Do not replace published tags or ZIPs without an instruction.
 
 ## Publishing (only when requested)
 

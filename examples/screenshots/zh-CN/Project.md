@@ -1,21 +1,22 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: 想法笔记
+tags: [sticky, project]
 status: active
 color: blue
 ---
-# 记下灵感，随时查看。
+# Markdown 显示示例
 
-熟悉的 **Markdown**，变成桌面便签。
+可显示**标题、列表和表格**。
 
-## 周末小项目
+## 工作笔记
 
-1. 收集想法和所需材料
-2. 尝试第一个版本
+1. 整理工作内容和所需资料
+2. 记录原型制作步骤
 
 | 笔记类型 | 保存位置 |
 | --- | --- |
-| 灵感 | Obsidian 仓库 |
+| 想法 | Obsidian Vault |
 | 今日工作 | 每日笔记 |
 
-保存为普通 `.md` 文件。
+保存格式为普通的 `.md` 文件。

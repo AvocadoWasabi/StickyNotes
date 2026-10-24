@@ -4,9 +4,9 @@
 
 Påhittade anteckningar renderade som PNG med 460 × 580 px genom WPF-kontroller i v0.0.11. Inga skrivbordsbilder eller aktiva Obsidian-/Google-sessioner. Inga personliga anteckningar, inställningar eller inloggningsuppgifter används.
 
-Efter att nio UI-språk implementerats skapades 27 bilder på nytt med motsvarande anteckningstext och gränssnitt. Taiwanesisk mandarin använder traditionell kinesiska (zh-TW). Den dagliga filens namn visar datumet då bilden skapades.
+De japanska beskrivningarna och exempelanteckningarna är originalet för översättningarna. De 27 bilderna visar tre exempel för vart och ett av de nio gränssnittsspråken, med text och gränssnitt på samma språk. Taiwanesisk mandarin använder traditionell kinesiska (zh-TW). Den dagliga anteckningens filnamn visar genereringsdatumet.
 
-| Language | Tasks | Markdown | Daily |
+| Språk | Kryssrutor | Markdown | Dagliga anteckningar |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

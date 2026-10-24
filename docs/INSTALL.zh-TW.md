@@ -1,10 +1,10 @@
 [日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
-# 安裝與首次設定
+# 安裝與初始設定
 
 [返回 README](../README.zh-TW.md) · [詳細操作（英文）](USAGE.en.md)
 
-## 1. 安裝應用程式
+## 1. 安裝
 
 適用於 Windows 10 / 11（x64），無需系統管理員權限或另外安裝 .NET。
 
@@ -16,9 +16,9 @@
 
 本文件適用於v0.0.11。多 Vault、Tasks 8.2.2支援及九種介面語言請見[更新紀錄（英文）](../CHANGELOG.md#v0-0-11)。
 
-## 2. 選擇儲存方式
+## 2. 儲存位置與連線方式
 
-### 使用 Obsidian（新設定預設）
+### 使用 Obsidian CLI（預設）
 
 1. 啟用 Obsidian **設定 → 一般 → Command line interface**，依提示註冊。如無此項，請確認[官方 CLI 指南](https://obsidian.md/help/cli)的安裝程式更新需求。
 2. 開啟目標 Vault，保持 Obsidian 執行。
@@ -28,11 +28,11 @@
 
 變更資料夾時，Yes 同時搬移既有應用程式便利貼，No 只變更未來的儲存位置，Cancel 中止。[搬移範圍與復原（英文）](STICKY-FOLDERS.md#english)。CLI 失敗不會自動改用本機讀取。
 
-### 不使用 Obsidian
+### 使用本機檔案
 
 關閉 **使用 Obsidian CLI（預設）**，選擇本機基準資料夾與便利貼儲存資料夾，再儲存。初始位置為 `Documents/StickyNotesData`。無法使用 Tasks／Dataview 查詢。本機每日筆記可透過資料夾與日期擷取正規表示式設定。[每日設定範例（英文）](USAGE.en.md#daily)。
 
-## 3. 僅啟用需要的整合
+## 3. 選用整合功能
 
 | 整合 | Obsidian／Google 端 | 便利貼端 |
 | --- | --- | --- |
@@ -43,7 +43,7 @@
 
 一般 Markdown 核取方塊不需要 Tasks。任務補全預設為自動，Tasks 未啟用時需手動開啟才生效。不使用 Google 整合就不需要 Google 授權。
 
-## 4. 使用第一張便利貼
+## 4. 建立與編輯便利貼
 
 從 `… → 建立與開啟` 新增或開啟 Markdown。點擊內文／`Ctrl+E` 編輯，`Ctrl+S`／`Esc` 儲存。首次連結每日筆記需有今日檔案，不會自動建立。在設定中選擇顯示語言，儲存後重新啟動即可套用。v0.0.11 UI 支援 README 列出的九種語言。台灣華語範例使用繁體中文 UI。
 

@@ -4,9 +4,9 @@
 
 Notas ficticias renderizadas como PNG de 460 × 580 px con controles WPF de v0.0.11. No son capturas del escritorio ni sesiones activas de Obsidian/Google. No se usan notas personales, ajustes ni credenciales.
 
-Tras implementar los nueve idiomas de interfaz, se regeneraron 27 imágenes con texto e interfaz coincidentes. El mandarín de Taiwán usa chino tradicional (zh-TW). El nombre diario indica la fecha de generación.
+Las descripciones y notas de ejemplo en japonés son el original para las traducciones. Las 27 imágenes muestran tres ejemplos por cada uno de los nueve idiomas de interfaz, con texto e interfaz en el mismo idioma. El mandarín de Taiwán usa chino tradicional (zh-TW). El nombre de la nota diaria muestra la fecha de generación.
 
-| Language | Tasks | Markdown | Daily |
+| Idioma | Casillas | Markdown | Notas diarias |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

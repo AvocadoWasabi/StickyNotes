@@ -1,23 +1,27 @@
 ---
 tags: [daily]
 ---
-# Daily
+# Daily note
+
+Esta parte queda fuera de la sección mostrada.
 
 ## Tasks
 
-### Conectada a la nota de hoy.
+### Parte de una nota diaria
 
-Muestre solo **Tasks** de su nota diaria.
+Muestra la sección **Tasks** de la nota diaria.
 
-- [x] Elegir las prioridades de hoy
-- [ ] Llevar un breve registro de trabajo
-- [ ] Escribir una reflexión del día
+- [x] Definir las prioridades de hoy
+- [ ] Registrar el trabajo
+- [ ] Escribir la revisión del día
 
-### Edite una sección cada vez
+### Edición por encabezado
 
-Las marcas y cambios actualizan el original.
+Las casillas y los cambios se guardan en la nota original.
 Se conservan otros encabezados y propiedades.
 
-> Un nuevo día, una nueva nota diaria.
+> La nota mostrada cambia al cambiar la fecha.
 
 ## Journal
+
+Este encabezado también queda fuera de la sección mostrada.

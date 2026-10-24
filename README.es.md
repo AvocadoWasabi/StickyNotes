@@ -4,27 +4,21 @@
 
 [v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
 
-**Tus tareas de Obsidian en el escritorio. Márcalas como completadas allí mismo.**
+Aplicación de Windows para mostrar y editar archivos Markdown en ventanas de notas adhesivas. Admite archivos locales, notas de Obsidian y secciones concretas de notas diarias. Las ediciones y los cambios en las casillas se guardan en el archivo Markdown original.
 
-Convierte una nota Markdown completa o una sección de la nota diaria en una nota adhesiva. Los cambios se guardan en el archivo original. También puedes consultar resultados de Tasks/Dataview y eventos de Google.
+Admite resultados de consultas Tasks y Dataview mediante Obsidian CLI, así como la obtención de eventos de Google Calendar y tareas de Google Tasks.
 
 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Instalación y configuración](docs/INSTALL.es.md) · [Ejemplos de pantalla](docs/SCREENSHOTS.es.md) · [v0.0.11](CHANGELOG.md#v0-0-11)
 
-## ¿Por qué usarlo?
-
-- El día a la vista: la sección elegida sigue automáticamente la fecha.
-- Un solo archivo: editar y marcar actualiza el `.md` original. Cerrar la ventana conserva el archivo.
-- Acceso rápido: fija las notas o pulsa `Alt+Z` para traerlas todas al frente durante diez segundos.
-
 ## Ejemplos de pantalla
 
-| Marcar tareas | Escribir Markdown | Seguir la nota diaria |
-| --- | --- | --- |
-| [<img src="docs/images/sticky-tasks-es.png" alt="Marcar tareas" width="280">](docs/images/sticky-tasks-es.png) | [<img src="docs/images/sticky-markdown-es.png" alt="Escribir Markdown" width="280">](docs/images/sticky-markdown-es.png) | [<img src="docs/images/sticky-daily-es.png" alt="Seguir la nota diaria" width="280">](docs/images/sticky-daily-es.png) |
+| Uso de casillas | Visualización de Markdown | Sección de la nota diaria |
+| :---: | :---: | :---: |
+| [<img src="docs/images/sticky-tasks-es.png" alt="Uso de casillas" width="280">](docs/images/sticky-tasks-es.png) | [<img src="docs/images/sticky-markdown-es.png" alt="Visualización de Markdown" width="280">](docs/images/sticky-markdown-es.png) | [<img src="docs/images/sticky-daily-es.png" alt="Sección de la nota diaria" width="280">](docs/images/sticky-daily-es.png) |
 
-Notas ficticias renderizadas con los controles WPF de v0.0.11; no son capturas del escritorio. [Ejemplos de pantalla](docs/SCREENSHOTS.es.md).
+Notas de ejemplo renderizadas con los controles WPF de la aplicación. No son capturas del escritorio. Consulta los [ejemplos por idioma y las instrucciones de generación](docs/SCREENSHOTS.es.md).
 
-## Herramientas y ajustes necesarios
+## Requisitos del sistema y dependencias
 
 Windows 10 / 11 (x64). El ZIP incluye .NET; no necesitas permisos de administrador. CLI está activada en las configuraciones nuevas: desactívala para archivos locales. No hace falta un complemento específico de Sticky Notes para Obsidian.
 
@@ -39,43 +33,50 @@ Windows 10 / 11 (x64). El ZIP incluye .NET; no necesitas permisos de administrad
 
 [Obsidian CLI](https://obsidian.md/help/cli) · [Google OAuth (English)](docs/GOOGLE-CALENDAR.en.md#setup)
 
-## Primeros pasos
+## Instalación y configuración inicial
 
 1. Descarga `StickyNotes-win-x64.zip` de Releases, extrae todo y ejecuta `Install.cmd`.
 2. Abre Obsidian, activa CLI y mantén abierta la bóveda que quieras usar.
 3. En los ajustes de la aplicación comprueba la ruta absoluta de `Obsidian.com` y el nombre/ID de la bóveda. Obtén la carpeta mediante CLI, elige una carpeta de notas y guarda.
 4. En `…`, crea/abre una nota o vincula una sección o nota diaria.
 
-Esta guía corresponde a v0.0.11. Consulta el [registro de cambios (en inglés)](CHANGELOG.md#v0-0-11) para varias bóvedas, Tasks 8.2.2 y los nueve idiomas de interfaz.
+La configuración de archivos locales, las actualizaciones y la desinstalación se describen en la [guía de instalación](docs/INSTALL.es.md). Las funciones y ajustes corresponden a v0.0.11. Los cambios por versión figuran en el [registro de cambios (en inglés)](CHANGELOG.md#v0-0-11).
 
 ## Funciones
 
 | Funciones | Uso |
 | --- | --- |
 | Markdown | Títulos, listas, casillas, tablas, código y enlaces; archivos `.md` normales |
-| Secciones y notas diarias | Edita parte de una nota, sigue el cambio de fecha y conserva opcionalmente la nota de ayer |
+| Secciones y notas diarias | Mostrar y editar una sección, seguir los cambios de fecha y conservar la nota de ayer si falta la de hoy |
 | Tasks / Dataview | Resultados de consultas y casillas con correspondencia verificada al origen; conserva las consultas |
 | Entrada de tareas | Sugerencias de palabras/fechas, Enter continúa listas, Tab sangra y atajo configurable para casillas |
 | Google | `@calendar today`: eventos y tareas pendientes con fecha; edita título/descripción del evento tras confirmar |
 | Ventanas | Colores, tamaño, escala 50–200 %, fijación, primer plano temporal y barra de tareas |
 | Gestión | Selecciona/migra carpeta, reabre notas, explora archivos, previsualiza, renombra y elimina |
-| Protección de datos | Copias antes de escribir y comprobación de cambios externos |
-| Varias bóvedas (v0.0.11) | Notas diarias por bóveda, nombres editables y bóveda predeterminada |
+| Copias de seguridad y detección de conflictos | Copias antes de escribir y comprobación de cambios externos |
+| Varias bóvedas | Notas diarias por bóveda, nombres editables y bóveda predeterminada |
 
 ## Uso básico
 
-Haz clic en el texto (uno/dos clics configurable) o pulsa `Ctrl+E` para editar; `Ctrl+S` / `Esc` guarda. El primer Esc cierra las sugerencias abiertas. Marca casillas en modo lectura. `○ / ●` fija la nota. Cierra una nota desde `…` y la aplicación desde el área de notificación.
+| Acción | Método |
+| --- | --- |
+| Editar | Clic en el texto (uno/dos clics configurable) o `Ctrl+E` |
+| Guardar y terminar la edición | `Ctrl+S` / `Esc`; el primer Esc cierra las sugerencias abiertas |
+| Marcar una tarea | Clic en la casilla en modo lectura |
+| Primer plano | Fijar con `○ / ●`; `Alt+Z` muestra todas las notas al frente durante 10 segundos |
+| Cerrar / salir | Cerrar la nota desde `…` / salir de la aplicación desde el área de notificación |
 
-## Antes de empezar
+## Alcance y limitaciones
 
 - La interfaz, README, instalación e imágenes admiten los nueve idiomas de arriba. Elige el idioma en ajustes, guarda y reinicia. Las referencias detalladas siguen principalmente en japonés, inglés y chino simplificado.
-- Obsidian debe estar abierto para CLI; cambios en sus API internas pueden afectar la compatibilidad. Las notas diarias no se crean automáticamente.
+- Obsidian debe estar abierto para CLI; cambios en sus API internas pueden afectar la compatibilidad.
+- Las notas diarias no se crean automáticamente. Prepara la nota de hoy antes de vincularla por primera vez.
 - No se reproducen los temas de Obsidian ni todas las vistas de complementos. Las imágenes muestran texto alternativo. No se admiten DataviewJS, expresiones en línea ni CALENDAR.
-- Google Tasks es de solo lectura y solo proporciona fechas. No se admiten horas, sincronización automática de tareas Markdown ni creación de eventos.
+- Google Tasks es de solo lectura; los vencimientos se obtienen solo como fechas. No se admiten horas de vencimiento, sincronización automática con tareas Markdown ni creación de eventos de Google Calendar.
 - Copias: `%LOCALAPPDATA%/StickyNotes/backups`. Ante un conflicto, conserva el borrador, recarga y reintenta.
 
-## Más información (en inglés)
+## Documentación e informes de errores (en inglés)
 
-[Usage](docs/USAGE.en.md) · [Storage](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Task entry](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Multiple vaults](docs/MULTIPLE-VAULTS.md#english) · [Note management](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Development](docs/DEVELOPMENT.en.md) · [License notices](THIRD-PARTY-NOTICES.txt)
+[Uso](docs/USAGE.en.md) · [Almacenamiento y traslado](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Entrada de tareas](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Varias bóvedas](docs/MULTIPLE-VAULTS.md#english) · [Gestión de notas](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Desarrollo](docs/DEVELOPMENT.en.md) · [Licencias](THIRD-PARTY-NOTICES.txt)
 
 Para informar de errores, indica versiones de aplicación/Windows/complementos, modo CLI o local y pasos para reproducirlos. No adjuntes notas personales, JSON OAuth ni tokens. [Issues](https://github.com/AvocadoWasabi/StickyNotes/issues)

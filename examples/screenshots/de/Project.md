@@ -1,21 +1,22 @@
 ---
 type: sticky
-tags: [sticky, demo]
+title: Ideennotizen
+tags: [sticky, project]
 status: active
 color: blue
 ---
-# Ideen festhalten und griffbereit halten.
+# Markdown-Darstellung
 
-Vertrautes **Markdown** als Haftnotiz.
+**Überschriften, Listen und Tabellen** werden dargestellt.
 
-## Ein kleines Wochenendprojekt
+## Arbeitsnotizen
 
-1. Ideen und Materialien sammeln
-2. Eine erste Version ausprobieren
+1. Arbeit und benötigtes Material ordnen
+2. Schritte für einen Prototyp festhalten
 
-| Notiztyp | Speicherort |
+| Notizart | Speicherort |
 | --- | --- |
 | Ideen | Obsidian-Vault |
 | Heutige Arbeit | Tagesnotiz |
 
-Als gewöhnliche `.md`-Datei gespeichert.
+Das Speicherformat ist eine normale `.md`-Datei.

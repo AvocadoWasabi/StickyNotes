@@ -4,9 +4,9 @@
 
 v0.0.11의 WPF 컨트롤로 가상 메모를 460 × 580 px PNG로 렌더링합니다. 실제 데스크톱 캡처나 Obsidian/Google 연결 화면이 아닙니다. 개인 메모, 설정, 인증 정보는 사용하지 않습니다.
 
-9개 UI 언어를 구현한 뒤 본문과 UI 언어를 맞춘 이미지 27장을 다시 생성했습니다. 대만 중국어는 번체(zh-TW)를 사용합니다. 데일리 파일 이름은 생성 날짜입니다.
+설명과 예제 노트의 원본은 일본어이며 다른 언어는 번역입니다. 지원하는 9개 UI 언어마다 예시 3장씩, 총 27장이며 본문과 UI 언어가 일치합니다. 대만 중국어는 번체(zh-TW)를 사용합니다. 데일리 노트 파일명에는 생성 날짜가 표시됩니다.
 
-| Language | Tasks | Markdown | Daily |
+| 언어 | 체크박스 | Markdown | 데일리 노트 |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |

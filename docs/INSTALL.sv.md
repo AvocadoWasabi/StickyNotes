@@ -4,48 +4,58 @@
 
 [README](../README.sv.md) · [Usage (English)](USAGE.en.md)
 
-## 1. Kom igång
+## 1. Installation
 
-Windows 10 / 11 (x64). .NET ingår i ZIP-filen; administratörsrättigheter behövs inte. CLI är på i nya inställningar: stäng av för lokala filer. Inget särskilt Sticky Notes-tillägg för Obsidian behövs.
+För Windows 10 / 11 (x64). Administratörsrättigheter och separat installation av .NET behövs inte.
 
-1. Hämta `StickyNotes-win-x64.zip` från Releases, packa upp allt och kör `Install.cmd`.
-2. Öppna Obsidian, aktivera CLI och håll det valda valvet öppet.
-3. Kontrollera den absoluta sökvägen till `Obsidian.com` och valvets namn/ID i appens inställningar. Hämta valvmappen via CLI, välj anteckningsmapp och spara.
-4. Skapa/öppna en anteckning eller länka ett avsnitt eller en daglig anteckning under `…`.
-
-[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest)
+1. Hämta **StickyNotes-win-x64.zip** från [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest). `Source code` innehåller källkoden.
+2. Packa upp hela ZIP-filen och kör `Install.cmd`.
+3. Starta **Markdown Sticky Notes** från Start-menyn.
 
 Du kan också köra `StickyNotes.exe` direkt ur den uppackade mappen och behålla alla medföljande filer. Appen är osignerad och Windows kan be om bekräftelse. Automatisk start registreras inte.
 
 Guiden gäller v0.0.11. Se [ändringsloggen (på engelska)](../CHANGELOG.md#v0-0-11) för flera valv, Tasks 8.2.2 och nio UI-språk.
 
-## 2. Obsidian eller lokala filer
+## 2. Lagringsplats och anslutning
 
-Aktivera CLI i Obsidian och följ registreringsanvisningarna. Saknas inställningen, kontrollera installationskraven i den officiella CLI-guiden. Kontrollera den absoluta sökvägen i appens inställningar (oftast `C:\Program Files\Obsidian\Obsidian.com`). Under valv och dagliga anteckningar aktiverar du CLI för posten, anger namn/ID och trycker på knappen för att hämta mappen. Tomt använder Obsidians standardval; att skriva hämtar inget. Kontrollera mapparna, välj anteckningsmapp och spara.
+### Använda Obsidian CLI (standard)
 
-[Obsidian CLI](https://obsidian.md/help/cli)
+1. Aktivera **Settings → General → Command line interface** i Obsidian och följ registreringsanvisningarna. Om valet saknas, kontrollera kraven på installationsprogrammet i den [officiella CLI-guiden](https://obsidian.md/help/cli).
+2. Öppna det valda valvet och låt Obsidian vara igång.
+3. Kontrollera den absoluta sökvägen till `Obsidian.com` i appens allmänna inställningar, vanligtvis `C:\Program Files\Obsidian\Obsidian.com`. Ändra den om Obsidian är installerat på en annan plats.
+4. Aktivera CLI för vald post under valv och dagliga anteckningar. Ange valvets namn/ID och klicka på knappen för att hämta valvmappen via CLI. Ett tomt fält använder Obsidians standardval; enbart inmatning hämtar inte mappen.
+5. Kontrollera det hämtade valvet och inställningarna för dagliga anteckningar, välj mapp för fästisar och spara inställningarna.
 
-Utan Obsidian: stäng av CLI, välj lokal basmapp och anteckningsmapp och spara. Första platsen är `Documents/StickyNotesData`. Tasks-/Dataview-frågor är inte tillgängliga. Lokala dagliga anteckningar kan använda en mapp och ett reguljärt uttryck med datumgrupper.
+Vid mappbyte flyttar ”Ja” även befintliga anteckningar skapade av appen; ”Nej” ändrar bara framtida lagring; ”Avbryt” avbryter bytet. [Omfattning och återställning (på engelska)](STICKY-FOLDERS.md#english). CLI-fel växlar inte automatiskt till lokal läsning.
 
-Vid mappbyte flyttar Ja även befintliga anteckningar skapade av appen; Nej ändrar bara framtida lagring; Avbryt stoppar bytet. CLI-fel växlar inte automatiskt till lokal läsning.
+### Använda lokala filer
 
-[Storage (English)](STICKY-FOLDERS.md#english) · [Daily notes (English)](USAGE.en.md#daily)
+Stäng av Obsidian CLI i inställningarna, välj lokal basmapp och anteckningsmapp och spara. Ursprunglig lagringsplats är `Documents/StickyNotesData`. Tasks-/Dataview-frågor är inte tillgängliga. Lokala dagliga anteckningar kan ställas in med en mapp och ett reguljärt uttryck som fångar datumet. [Exempel (på engelska)](USAGE.en.md#daily).
 
 ## 3. Valfria integrationer
 
-Daily notes: ange mapp/datumformat i Obsidian, skapa dagens fil och visa en daglig anteckning via menyn för att skapa/öppna. Utan vald rubrik visas hela anteckningen. Aktivera Tasks 8.2.2+ eller Dataview i valvet och öppna `tasks`-/`dataview`-block. Vanliga kryssrutor behöver inte Tasks. Förslag är automatiska som standard och av utan Tasks, om de inte aktiveras manuellt. För Google: konfigurera egna API:er och OAuth för skrivbord, importera JSON, godkänn och skriv `@calendar today` i ett eget stycke. Utan Google-integrationen behövs inget Google-godkännande.
+| Integration | I Obsidian / Google | I Sticky Notes |
+| --- | --- | --- |
+| Dagliga anteckningar | Aktivera kärntillägget Daily notes, välj mapp och datumformat, skapa dagens anteckning | Visa en daglig anteckning i menyn för att skapa/öppna och välj rubrik; tomt visar hela anteckningen |
+| Tasks | Aktivera i rätt valv; v0.0.11 kräver stabil version 8.2.2 eller senare | Öppna en anteckning med ett `tasks`-block. [Inställningar och gränser (på engelska)](TASKS-CLI-PREVIEW.md#english) |
+| Dataview | Aktivera i rätt valv | Visa LIST / TABLE / TASK i `dataview`-block. [Inställningar och gränser (på engelska)](DATAVIEW.md#english) |
+| Google | Ställ in Calendar API, Tasks API och OAuth för skrivbordsapp i ett eget Cloud-projekt | Importera JSON, godkänn åtkomst och skriv `@calendar today` i ett eget stycke. [Anslutning (på engelska)](GOOGLE-CALENDAR.en.md#setup) |
 
-[Tasks (English)](TASKS-CLI-PREVIEW.md#english) · [Dataview (English)](DATAVIEW.md#english) · [Google (English)](GOOGLE-CALENDAR.en.md#setup)
+Vanliga Markdown-kryssrutor kräver inte Tasks. Uppgiftsförslag är inställda på Automatiskt som standard och förblir avstängda utan Tasks om de inte aktiveras manuellt. Google-auktorisering behövs inte om Google-integrationen inte används.
 
-## 4. Grundläggande användning
+## 4. Skapa och redigera anteckningar
 
-Klicka i texten (enkel-/dubbelklick kan väljas) eller tryck `Ctrl+E` för att redigera; `Ctrl+S` / `Esc` sparar. Första Esc stänger öppna förslag. Bocka i läsläget. `○ / ●` fäster anteckningen. Stäng en anteckning via `…` och avsluta appen från meddelandefältet.
-
-Gränssnitt, README, installation och bilder finns på de nio språken ovan. Välj språk i inställningarna, spara och starta om. Utförliga referenser är främst på japanska, engelska och förenklad kinesiska.
+Skapa eller öppna Markdown via menyn för att skapa/öppna under `…`. Klicka i texten eller tryck `Ctrl+E` för att redigera; `Ctrl+S` / `Esc` sparar. Den första dagliga länken kräver dagens fil; appen skapar den inte automatiskt. Välj visningsspråk i inställningarna, spara och starta om. Gränssnittet i v0.0.11 stöder de nio språken i README.
 
 ## Felsökning
 
-CLI: kontrollera att Obsidian körs, CLI är på och sökväg/valv-ID stämmer; hämta mappen igen. Dagens anteckning saknas: kontrollera kärntillägget Daily notes och dagens fil; andra tilläggs inställningar upptäcks inte. Tasks-varning: uppdatera tillägget i rätt valv och uppdatera länkade data. Sparningskonflikt: behåll utkastet och läs in igen. Google: kontrollera API:er, testanvändare och behörigheter i den engelska guiden.
+| Symtom | Kontroll |
+| --- | --- |
+| CLI kan inte ansluta | Obsidian igång, CLI aktiverat, absolut sökväg till `Obsidian.com` och valvets namn/ID; hämta mappen igen |
+| Dagens anteckning saknas | Inställningar för kärntillägget Daily notes och dagens fil; inställningar från andra tillägg för dagliga anteckningar hämtas inte automatiskt |
+| Tasks begär uppdatering | Uppdatera Tasks till 8.2.2 eller senare i rätt valv och läs in Tasks / Dataview på nytt i fästisen |
+| Konflikt vid sparande | Behåll utkastet och läs in på nytt; appen förhindrar överskrivning med gammalt innehåll |
+| Google-auktorisering misslyckas | Kontrollera API:er, OAuth, testanvändare och behörigheter i [guiden (på engelska)](GOOGLE-CALENDAR.en.md) |
 
 ## Uppdatering, data och borttagning
 

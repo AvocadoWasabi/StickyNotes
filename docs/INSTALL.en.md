@@ -1,10 +1,10 @@
 [日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
-# Installation and first setup
+# Installation and initial setup
 
 [Back to README](../README.en.md) · [Full usage reference](USAGE.en.md)
 
-## 1. Get the app
+## 1. Installation
 
 For Windows 10 / 11 (x64). No administrator access or separate .NET installation required.
 
@@ -16,9 +16,9 @@ To run without installing, launch `StickyNotes.exe` in the extracted folder and 
 
 This guide covers v0.0.11. See the [changelog](../CHANGELOG.md#v0-0-11) for multiple vaults, Tasks 8.2.2 support and the nine-language UI.
 
-## 2. Choose how to store notes
+## 2. Storage and connection method
 
-### With Obsidian (default for new settings)
+### Using Obsidian CLI (default)
 
 1. Enable Obsidian **Settings → General → Command line interface** and follow its registration prompt. If missing, check the installer update requirements in the [official CLI guide](https://obsidian.md/help/cli).
 2. Open your vault and keep Obsidian running.
@@ -28,11 +28,11 @@ This guide covers v0.0.11. See the [changelog](../CHANGELOG.md#v0-0-11) for mult
 
 When changing folders, Yes also migrates existing app-created notes, No changes future storage only, and Cancel aborts. [Migration scope and recovery](STICKY-FOLDERS.md#english). CLI failures do not fall back to local reads.
 
-### Without Obsidian
+### Using local files
 
 Turn off **Use Obsidian CLI**, choose a local base and note folder, then save. Initial storage is `Documents/StickyNotesData`. Tasks/Dataview queries are unavailable. Local daily notes can use a folder and date-capture regular expression. [Daily setup examples](USAGE.en.md#daily).
 
-## 3. Enable only the integrations you need
+## 3. Optional integrations
 
 | Integration | In Obsidian / Google | In Sticky Notes |
 | --- | --- | --- |
@@ -41,9 +41,9 @@ Turn off **Use Obsidian CLI**, choose a local base and note folder, then save. I
 | Dataview | Enable Dataview in the target vault | Display LIST / TABLE / TASK in `dataview` blocks. [Setup and limits](DATAVIEW.md#english) |
 | Google | Set up Calendar API, Tasks API and desktop OAuth in your own Cloud project | Import JSON, authorize and write `@calendar today` in a separate paragraph. [Connection guide](GOOGLE-CALENDAR.en.md#setup) |
 
-Ordinary Markdown checkboxes do not require Tasks. Task suggestions default to Automatic and stays off without Tasks unless manually enabled. No Google authorization is needed unless you use Google integration.
+Ordinary Markdown checkboxes do not require Tasks. Task suggestions default to Automatic and stay off without Tasks unless manually enabled. No Google authorization is needed unless you use Google integration.
 
-## 4. Use your first note
+## 4. Creating and editing notes
 
 Use `… → Create & open` to create or open Markdown. Click the body / press `Ctrl+E` to edit and `Ctrl+S` / `Esc` to save. Daily linking initially needs today's file; the app does not create it. Choose a display language in Settings, save and restart. The v0.0.11 UI supports the nine languages listed in the README.
 
