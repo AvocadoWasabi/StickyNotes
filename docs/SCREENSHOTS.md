@@ -1,12 +1,14 @@
 [日本語](SCREENSHOTS.md) | [English](SCREENSHOTS.en.md) | [简体中文](SCREENSHOTS.zh-CN.md) | [繁體中文（台灣）](SCREENSHOTS.zh-TW.md) | [한국어](SCREENSHOTS.ko.md) | [Deutsch](SCREENSHOTS.de.md) | [Русский](SCREENSHOTS.ru.md) | [Español](SCREENSHOTS.es.md) | [Svenska](SCREENSHOTS.sv.md)
 
-# スクリーンショットと再生成
+# 画面例と生成手順
 
-v0.0.11のWPFコントロールで、架空のノートを460 × 580 pxのPNGに描画しています。デスクトップの実写やObsidian／Googleの接続画面ではありません。個人のノート・設定・認証情報は使いません。
+アプリのWPFコントロールを使い、サンプルノートを460 × 580 pxのPNGに描画しています。デスクトップの撮影や、Obsidian／Googleへの実接続は行っていません。個人のノート・設定・認証情報は使用していません。
 
-UIの9言語対応を実装してから、本文とUIを各言語に揃えて27枚を再生成しました。台湾華語は繁体字（zh-TW）です。デイリーノートのファイル名は生成日です。
+チェックボックス、Markdown、デイリーノートの3種類を9言語で掲載しています。本文とUIの言語を対応させています。台湾華語は繁体字（zh-TW）です。デイリーノートのファイル名は画像の生成日です。
 
-| Language | Tasks | Markdown | Daily |
+日本語の説明とサンプルを原本とし、他言語版はその翻訳として管理します。
+
+| 言語 | チェックボックス | Markdown | デイリーノート |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |
@@ -27,9 +29,9 @@ Windowsと.NET 8 SDKを用意し、リポジトリ直下で実行します。ロ
 dotnet run --project tests/StickyNotes.Tests -c Release --no-build -- --render-screenshots examples/screenshots docs/images
 ```
 
-## アプリで試す
+## サンプル環境の起動
 
-Language は ja / en / zh-CN / zh-TW / ko / de / ru / es / sv に対応。実行ごとに artifacts 内へ独立したデータフォルダを作成し、指定言語とCLI無効を設定します。起動中のアプリで編集中の内容を保存して終了してからデモを開いてください。
+Language は ja / en / zh-CN / zh-TW / ko / de / ru / es / sv に対応。実行ごとに artifacts 内へ独立したデータフォルダを作成し、指定言語とCLI無効を設定します。起動中のアプリで編集中の内容を保存して終了してからサンプル環境を起動してください。
 
 ```powershell
 $demoData = ./scripts/Prepare-ScreenshotDemo.ps1 -Language ja
