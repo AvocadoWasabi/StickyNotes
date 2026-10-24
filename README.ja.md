@@ -1,126 +1,86 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
 
 # Markdown Sticky Notes
 
-未リリース：Tasks連携は安定版8.2.2以降に対応し、旧版には更新手順を表示します。[Tasksの設定・更新手順](docs/TASKS-CLI-PREVIEW.md#日本語)。
+**Obsidianの「今日やること」を、デスクトップに置いて、その場でチェック。**
 
-未リリース：複数Vaultのデイリーノートに対応。初期表示名は「メイン」「サブ」で変更可能です。**設定 → Vault・デイリーノート**で登録・既定Vaultを設定します。[複数Vaultの設定と制約](docs/MULTIPLE-VAULTS.md#日本語)。
+ノート全体でも、デイリーノートの見出しひとつでも。必要な部分だけをWindowsの付箋にして、編集を元のMarkdownへ保存します。Tasks・Dataviewの検索結果やGoogle Calendarの予定も手元に置けます。
 
-v0.0.10：閉じた付箋の一括復元、ファイル名変更と変更できない場合の案内を追加し、メニュー表示時の自動保存によるフリーズを修正しました。[今回の変更・更新手順](docs/RELEASE-NOTES.md#日本語)。
+[ダウンロード](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [導入ガイド](docs/INSTALL.md) · [操作ガイド](docs/USAGE.md) · [変更履歴](CHANGELOG.ja.md)
 
-タスク本文の後のスペースで本家に沿った候補一覧を表示します。先頭の **⏎** でEnterは次項目へ、↓で選んでEnterは候補挿入、Tabは字下げです。[解析元と対応範囲](docs/TASK-EDITING.md#日本語)を参照してください。
+## こんな使い方に
 
-v0.0.8は、タスクのキーワード・日付補完とEnterでのチェックリスト継続に対応し、通常のCLIチェック操作にもTasks本家の完了処理を利用します。[タスク入力と制約](docs/TASK-EDITING.md#日本語)を参照してください。
+- **今日のタスクを見失わない** — デイリーノートの「Tasks」だけを表示し、日付に合わせて切り替え。
+- **メモを二重管理しない** — 編集・チェックは元の `.md` に反映。閉じてもファイルは残ります。
+- **作業中にすぐ見返せる** — 最前面に固定、または `Alt+Z` で全付箋を10秒間表示。
 
-閉じた付箋は **… → 付箋フォルダを管理する…**・常駐メニュー・タスクバーメニューから、本文／YAMLを確認して開き直せます。[チェック操作と付箋一覧](docs/QUERY-EDITING-AND-BROWSER.md#日本語)。
+## スクリーンショット
 
-v0.0.8は、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdownと同時に表示できます。対象VaultでDataviewを有効にしてください。結果は約30秒更新し、元ノートを照合できたタスクのチェック操作に対応します。DataviewJS・インライン式・CALENDARは未対応です。[Dataviewの設定と制約](docs/DATAVIEW.md#日本語)を参照してください。
-
-v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。CLIを有効にしたObsidianを起動しておいてください。既存設定の明示的な無効指定は維持します。設定でCLIを無効にすれば、Obsidianなしでローカルファイルを使えます。
-**v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
-
-CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Vault・デイリーノート → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
-
-[v0.0.9の本文描画例](docs/images/compact-body-v0.0.9.png)（WPFで生成）。下の全画面スクリーンショットは以前のUIです。
-
-<img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes アイコン" width="112">
-
-Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリーノートを直接編集し、Google Calendarの予定を並べて表示できます。Obsidianなしでも使えます。
-
-**Windows 10 / 11（x64）対応。** 画面・資料ともに英語・日本語・簡体字中国語に対応しています。 [表示言語](docs/USAGE.md#language)。Google連携は任意で、利用者自身のOAuth設定が必要です。
-
-[ダウンロード](#ダウンロードとインストール) · [基本操作](#基本操作) · [Google Calendar](#google-calendar) · [補足資料](#補足資料)
-
-<details>
-<summary>スクリーンショット（クリックで展開）</summary>
-
-バージョン0.0.2のWPFコントロールで、紹介用サンプルを描画した付箋画面です。画像をクリックすると元のサイズで表示できます。
-
-| 手元にチェックリスト | Markdownでメモ | デイリーノートと連動 |
+| タスクをその場でチェック | Markdownでメモ | 今日のデイリーと連動 |
 | :---: | :---: | :---: |
-| [<img src="docs/images/sticky-tasks-ja.jpg" alt="日本語のチェックリストと完了済みタスクを表示した黄色の付箋" width="300">](docs/images/sticky-tasks-ja.jpg) | [<img src="docs/images/sticky-markdown-ja.jpg" alt="日本語の見出し・番号付きリスト・表をMarkdownで表示した青い付箋" width="300">](docs/images/sticky-markdown-ja.jpg) | [<img src="docs/images/sticky-daily-ja.jpg" alt="今日のデイリーノートのTasks見出しと連動する緑の付箋" width="300">](docs/images/sticky-daily-ja.jpg) |
+| [<img src="docs/images/sticky-tasks-ja.png" alt="タスクをその場でチェック" width="280">](docs/images/sticky-tasks-ja.png) | [<img src="docs/images/sticky-markdown-ja.png" alt="Markdownでメモ" width="280">](docs/images/sticky-markdown-ja.png) | [<img src="docs/images/sticky-daily-ja.png" alt="今日のデイリーと連動" width="280">](docs/images/sticky-daily-ja.png) |
 
-撮影用の架空データを使用しています。[サンプルファイルと撮影手順](docs/SCREENSHOTS.md)も同梱しています。
+現在の開発版のWPFコントロールで架空のノートを描画した画面例です（デスクトップの撮影ではありません）。[5言語の画面例・再生成手順](docs/SCREENSHOTS.md)。
 
-</details>
+## 必要なツールと設定
 
-## ダウンロードとインストール
+**Windows 10 / 11（x64）**。配布ZIPには.NETを同梱し、管理者権限は不要です。
 
-1. [v0.0.10の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
-2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
-3. 通知領域アイコンの「設定 → Vault・デイリーノート → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
+| 使いたいこと | 必要なもの | 最初の設定 |
+| --- | --- | --- |
+| Markdown付箋だけ | このアプリ | 設定で **Obsidian CLIを使用する** をオフにし、ローカル保存先を選択 |
+| Obsidianのノートを編集 | 起動中のObsidian＋Obsidian CLI | Obsidianの **設定 → 一般 → コマンドラインインターフェース** を有効化し、アプリにVaultを登録 |
+| 今日のデイリーノート | 上記＋コア **デイリーノート** | Obsidianで保存フォルダ・日付形式を設定し、今日のノートを作成 |
+| Tasks検索・本家のチェック処理 | 上記CLI＋コミュニティプラグイン **Tasks** | 対象Vaultで有効化。現開発版は安定版 **8.2.2以降**が必要 |
+| Dataview検索 | 上記CLI＋**Dataview** | 対象Vaultで有効化。LIST / TABLE / TASKに対応 |
+| Googleの予定・タスク | Googleアカウント＋利用者自身のOAuth設定 | Calendar API / Tasks API、デスクトップ用OAuth JSONを用意し[認証](docs/GOOGLE-CALENDAR.md#setup) |
 
-管理者権限や.NETの追加インストールは不要です。未署名のためWindowsの確認が出る場合があります。更新・削除・インストールせず使う方法は[導入ガイド](docs/INSTALL.md)を参照してください。
+**新規設定はCLIがオンです。** Obsidianを使わない場合はオフにしてください。CLIはObsidian付属機能で、このアプリ専用のObsidianプラグインは不要です。[公式CLIの導入条件](https://obsidian.md/help/cli)・[互換性と制限](docs/TASKS-CLI-PREVIEW.md#日本語)。
 
-<a id="起動"></a>
+## はじめる
+
+1. [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest)から `StickyNotes-win-x64.zip` を取得し、すべて展開して `Install.cmd` を実行。
+2. ObsidianでCLIを有効にして対象Vaultを開き、Markdown Sticky Notesを起動。
+3. アプリの設定で `Obsidian.com` の絶対パスを確認し、Vault名／IDを入力して **Vaultの保存フォルダをCLIから取得**。保存先を選び、**保存して閉じる**。
+4. `… → 作成・開く` から新しい付箋、既存Markdown、ノートの一部分、デイリーノートを選択。
+
+CLIを使わない手順、設定場所、更新・削除は[導入ガイド](docs/INSTALL.md)へ。ここで案内する設定画面・画像は現開発版です。公開ZIPとの差分（複数Vault・Tasks 8.2.2対応など）は[未リリース欄](CHANGELOG.ja.md#未リリース)を確認してください。
+
+## 機能一覧
+
+| 機能 | できること |
+| --- | --- |
+| Markdown表示・編集 | 見出し、リスト、チェックボックス、表、コード、リンク。通常の `.md` に保存 |
+| 見出し連動・デイリー | ノートの一部分を表示・編集。日付切替、今日がない場合の前日保持 |
+| Tasks / Dataview | 検索結果を表示し、元ノートを照合できたタスクをチェック。クエリ原文は保持 |
+| タスク入力 | キーワード・日付補完、Enterで項目継続、Tabで字下げ、設定可能なチェック切替キー |
+| Google連携 | `@calendar today` で予定と日付付き未完了Google Tasks。予定の件名・説明を確認後に編集 |
+| 表示・ウィンドウ | 色、サイズ、50〜200%表示倍率、最前面、一時前面表示、タスクバー表示 |
+| 付箋管理 | 保存先選択・移行、閉じた付箋の再表示、一覧とプレビュー、ファイル名変更・削除 |
+| データ保護 | 書込み前のバックアップ、外部変更との競合検出 |
+| 複数Vault（未リリース） | Vaultごとのデイリーノート、名前変更、既定Vaultの選択 |
 
 ## 基本操作
 
 | 操作 | 方法 |
 | --- | --- |
-| 新しい付箋 | `… → 作成・開く → 新しい付箋`、または通知領域の「新しい付箋」 |
-| 編集・保存 | 本文をクリック（設定でシングル／ダブルを選択）／`Ctrl+E` → 編集 → `Ctrl+S` または `Esc` |
-| タスクの完了 | チェックボックスをクリックして元のMarkdownへ保存 |
-| 移動・サイズ変更 | 上部をドラッグ／端や右下をドラッグ |
-| 最前面表示 | `○ / ●`。全付箋の10秒間の一時表示は `Alt + Z` または `…` メニュー |
-| 表示サイズ | `… → 表示・プロパティ → 表示スケール`（50～200%） |
-| 閉じる・終了 | `… → この付箋を閉じる` は付箋だけ閉じる。アプリ終了は通知領域の「終了」 |
+| 編集 | 本文クリック（シングル／ダブルは設定可能）、または `Ctrl+E` |
+| 保存して編集終了 | `Ctrl+S` / `Esc`。補完表示中の最初のEscは候補を閉じます |
+| チェック | 表示中のチェックボックスをクリック |
+| 最前面 | `○ / ●` で固定、`Alt+Z` で全付箋を10秒間表示 |
+| 閉じる / 終了 | `… → この付箋を閉じる` / 通知領域からアプリ終了 |
 
-クリックした位置に対応する本文から編集できます。`Esc`で保存して編集終了します。補完候補が開いている場合は最初の`Esc`で候補を閉じます。編集欄からフォーカスが外れると、変更の保存を確認します。確認なしの自動保存は設定で有効にできます。閉じてもMarkdownは削除されません。
+## 知っておきたい制限
 
-タスクバー表示、操作ボタンの表示方法、ショートカットの詳細は[操作・設定の補足](docs/USAGE.md#editing)へ。
+- UIは**日本語・英語・簡体字中国語**。README・導入・画面例は**繁体字中国語・韓国語**も用意しています。詳細資料は原則3言語です。
+- Obsidian連携中はObsidianの常時起動が必要です。内部APIに依存し、更新で互換性が変わる場合があります。
+- デイリーノートは自動作成しません。初回は今日のノートを用意してください。
+- Obsidianのテーマや全プラグインの表示は再現しません。画像は代替テキストで表示。DataviewJS・インライン式・CALENDARは未対応です。
+- Google Tasksは読み取り専用で、APIから取得できるのは日付のみです。時刻・Markdownタスクとの自動同期・予定の新規作成には対応しません。
+- バックアップは `%LOCALAPPDATA%/StickyNotes/backups`。競合時は下書きを控え、再読込してから再試行してください。
 
-## 保存先とObsidian
+## 詳しく知る・問題を報告する
 
-Vault（CLI）またはローカルの基準フォルダを決めたら、**付箋の保存フォルダを選択…**を押します。一覧選択または新しい相対パスの入力後、**決定**で既存のアプリ作成付箋も移行するか選びます。**はい**は移行、**いいえ**は今後の保存先だけ変更、**キャンセル**は変更しません。対象範囲・巻き戻し・復旧については[保存先と移行のガイド](docs/STICKY-FOLDERS.md#日本語)を参照してください。
+[保存先と移行](docs/STICKY-FOLDERS.md#日本語) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#日本語) · [タスク入力](docs/TASK-EDITING.md#日本語) · [Dataview](docs/DATAVIEW.md#日本語) · [複数Vault](docs/MULTIPLE-VAULTS.md#日本語) · [付箋管理](docs/QUERY-EDITING-AND-BROWSER.md#日本語) · [Google連携](docs/GOOGLE-CALENDAR.md) · [開発](docs/DEVELOPMENT.md) · [ライセンス表記](THIRD-PARTY-NOTICES.txt)
 
-指定した付箋フォルダをObsidian全般の新規保存先より優先します。未指定ならCLIはObsidianの既定、ローカル方式は保存済みフォルダ（初期値`Documents/StickyNotesData`）を維持します。デイリー設定は独立しています。
-
-## デイリーノートの特定箇所を常に表示・編集
-
-1. CLIモードではObsidianのコアDaily notesプラグインを設定し、付箋の設定画面で取得結果を確認します。ローカルモードではフォルダと日時タグ付き正規表現を指定し、一致ファイル名を確認して保存します。
-2. `… → 作成・開く → デイリーノートを表示…` から見出しを選び、「表示」を押します。空欄なら本文全体を表示します。
-3. 付箋で本文を編集したり、タスクをチェックしたりすると元のノートに反映されます。
-
-初回追加には今日のファイルが必要です。以降、今日の分が未作成なら待機するか、設定で昨日の分を表示できます。[ファイル名の例と切替設定](docs/USAGE.md#daily)を参照してください。
-
-固定ノートの一部分を表示するには `… → 作成・開く → ノートの一部分を付箋にする…` を使います。[見出しの選択](docs/USAGE.md#headings)へ。
-
-## Google Calendar
-
-<a id="初回認証"></a>
-
-最初に設定画面の右ペインで[接続ガイド](docs/GOOGLE-CALENDAR.md#setup)に従って認証します。その後、独立した段落に次の行を書いて保存します。
-
-```text
-@calendar 2026-10-06T09:00
-```
-
-**Google Tasksの予定時刻はAPIの仕様上取得できません。** Google側で時刻を設定していても、APIから取得できるのは日付のみのため、このアプリでは「時刻なし」と表示します。
-
-Google Tasksも読み取り専用で表示します。`@calendar today` では当日の日付が付いた未完了タスクを取得します。既存ユーザーはTasks APIの有効化とTasks読み取りを許可する再認証が必要です。[Tasksの設定手順](docs/GOOGLE-CALENDAR.md#tasks)を参照してください。
-
-`@calendar today` はPCの当日（ローカル時刻の0時から翌日0時まで）に自動で追従します。`@calendar today 会議` のように絞り込みもできます。付箋の表示中は約60秒ごとに日付確認と予定取得を行い、スリープ復帰後も追従します。編集中は自動更新を一時停止します。
-
-**キーワード・タイムゾーンなしで検索できます。** 省略時はWindowsのローカル時刻を使用します。絞り込む場合は末尾に `会議` などを追加します。
-
-編集中に独立した段落で `@` を入力すると、補完候補と入力例が表示されます。Tab・Enter・クリックで今日の `00:00` を挿入し、選択された日時を変更できます。挿入した日付は固定です。
-
-予定の件名・説明はクリックして編集し、確認後にGoogleへ反映できます。Markdownタスクとの自動同期や予定の作成には対応していません。[検索条件・JSON管理・トラブル対処](docs/GOOGLE-CALENDAR.md)へ。
-
-## Markdown対応範囲・データ保護
-
-見出し・リスト・タスク・表・コード・リンクに対応します。画像は代替テキストで表示し、Obsidian固有の記法には未対応のものがあります。
-
-外部変更との競合時は上書きを止め、書込み前の内容を `%LOCALAPPDATA%/StickyNotes/backups` に保存します。[対応範囲と復旧の補足](docs/USAGE.md#data)へ。
-
-## 補足資料
-
-| 調べたいこと | 資料 |
-| --- | --- |
-| インストール・更新・削除 | [導入ガイド](docs/INSTALL.md) |
-| 操作・保存先・デイリーノート | [操作・設定の補足](docs/USAGE.md) |
-| Googleの認証・予定検索 | [Google Calendarガイド](docs/GOOGLE-CALENDAR.md) |
-| バージョンごとの変更 | [変更履歴](CHANGELOG.ja.md) |
-| ビルド・検証・公開 | [開発ガイド](docs/DEVELOPMENT.md) |
-| サンプル・ライセンス | [デイリーノート](examples/Daily.md) · [Obsidian Bases](examples/StickyNotes.base) · [ライセンス](THIRD-PARTY-NOTICES.txt) |
+[不具合・要望](https://github.com/AvocadoWasabi/StickyNotes/issues)には、アプリ／Windows／関連プラグインの版、CLIかローカルか、再現手順を添えてください。個人ノート・OAuth JSON・トークンは添付しないでください。

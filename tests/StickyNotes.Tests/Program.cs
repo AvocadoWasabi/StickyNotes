@@ -32,6 +32,11 @@ internal static partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        if (args.Length == 3 && args[0] == "--render-screenshots")
+        {
+            RenderDocumentationScreenshots(args[1], args[2]);
+            return;
+        }
         if (args.Length == 1 && args[0] == "--tasks-readonly-smoke")
         {
             TasksReadOnlySmoke().GetAwaiter().GetResult();

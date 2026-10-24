@@ -2,6 +2,8 @@
 
 # 开发与发布
 
+README、安装指南和界面示例需同步日语／英语／简体中文／繁体中文／韩语五种语言。详细资料和 UI 保留原三种语言；繁体中文／韩语示例使用英文 UI。通过可选的 `--render-screenshots` 命令使用隔离的虚构数据生成图片。[生成与目视检查步骤](SCREENSHOTS.zh-CN.md)。`build.ps1` 打包五种语言的 README 及 docs／examples 目录。
+
 未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](MULTIPLE-VAULTS.md#简体中文)。
 
 补全对照固定版本的Tasks上游批准测试资料，有限日期辅助逻辑也集中于TaskEditing。克隆不分发，MIT声明随包附带。参见[参考版本、验证及兼容范围](TASK-EDITING.md#简体中文)。
@@ -27,7 +29,7 @@
 ./build.ps1 -Publish
 ```
 
-两种命令都会还原依赖、构建 Release、运行测试，并在 `artifacts/app` 中生成自包含应用、安装脚本、三种语言的文档和许可。普通 `./build.ps1` 完成后，即可运行 `artifacts/app/Install.cmd` 本地安装。请先从通知区域退出正在运行的 Sticky Notes。构建完成时会提示安装脚本路径，但不会自动执行安装。
+两种命令都会还原依赖、构建 Release、运行测试，并在 `artifacts/app` 中生成自包含应用、安装脚本、多语言文档和许可。普通 `./build.ps1` 完成后，即可运行 `artifacts/app/Install.cmd` 本地安装。请先从通知区域退出正在运行的 Sticky Notes。构建完成时会提示安装脚本路径，但不会自动执行安装。
 
 `-Publish` 额外生成或更新 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。普通构建不会更新已有 ZIP；分发 ZIP 时请使用 `-Publish`。
 
@@ -59,7 +61,7 @@ Google Tasks 复用同一 OAuth 客户端和令牌，增加 `tasks.readonly` 范
 
 功能或修复完成后，更新[英语](../CHANGELOG.md)、[日语](../CHANGELOG.ja.md)、[简体中文](../CHANGELOG.zh-CN.md)更新日志的 Unreleased 部分。正式发布时一致记录实际版本、日期及 Release 链接，不把草稿或计划写成已发布。`docs/RELEASE-NOTES.md` 也应反映该版本的主要变化。
 
-1. 统一 `src/StickyNotes/StickyNotes.csproj` 中的 `Version`、三种语言 README 下载链接、更新日志和发布说明。完成 `./build.ps1 -Publish` 和两项审查，本地提交后将指定分支合并到 main 并推送。
+1. 统一 `src/StickyNotes/StickyNotes.csproj` 中的 `Version`、五种语言 README 下载说明、更新日志和发布说明。完成 `./build.ps1 -Publish` 和两项审查，本地提交后将指定分支合并到 main 并推送。
 2. 确认 GitHub Actions 的 **Build and test** 成功。
 3. 获得发布指示后，在 main 手动运行 **Package release**，指定新标签，如 `v1.0.0`。
 4. 工作流验证并生成 ZIP 和 **Release 草稿**。发布前检查 ZIP 的 SHA256、程序版本、标签目标提交、附带文档，以及是否混入个人设置等文件。

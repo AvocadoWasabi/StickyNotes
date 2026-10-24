@@ -1,46 +1,73 @@
-[English](INSTALL.en.md) | [日本語](INSTALL.md) | [简体中文](INSTALL.zh-CN.md)
+[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md)
 
-# Installation, updates, and removal
+# Installation and first setup
 
-## Requirements
+[Back to README](../README.en.md) · [Full usage reference](USAGE.en.md)
 
-Windows 10 / 11 (x64). No separate .NET installation or administrator privileges are required. Local mode needs no Obsidian plugins. New settings since v0.0.7 default to CLI mode: Obsidian must be running with CLI enabled; daily notes require its core Daily notes plugin, Tasks queries require Tasks, and Dataview queries require Dataview. Task completion defaults to Automatic and stays off without enabled Tasks until you select ON manually. See [CLI setup](TASKS-CLI-PREVIEW.md#english).
+## 1. Get the app
 
-**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
+For Windows 10 / 11 (x64). No administrator access or separate .NET installation required.
 
-## Installation
+1. Download **StickyNotes-win-x64.zip** from [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest); `Source code` is for development.
+2. Extract everything and run `Install.cmd`.
+3. Start **Markdown Sticky Notes** from the Start menu.
 
-1. Download `StickyNotes-win-x64.zip` from [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases). `Source code` is for developers.
-2. Right-click the ZIP and select Extract All.
-3. Double-click `Install.cmd` in the extracted folder.
-4. Open Markdown Sticky Notes from the Start menu.
+To run without installing, launch `StickyNotes.exe` in the extracted folder and keep all accompanying files. The app is unsigned, so Windows may show a confirmation. Automatic startup is not registered.
 
-The app installs to `%LOCALAPPDATA%\Programs\MarkdownStickyNotes` without enabling automatic startup. It is unsigned; Windows may show a warning. Check the source and file before running it.
+Setting names below follow the current development build. See [Unreleased](../CHANGELOG.md#unreleased) if the published ZIP differs.
 
-For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whole folder; the other bundled files are required.
+## 2. Choose how to store notes
 
-## First-time setup
+### With Obsidian (default for new settings)
 
-Choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language).
+1. Enable Obsidian **Settings → General → Command line interface** and follow its registration prompt. If missing, check the installer update requirements in the [official CLI guide](https://obsidian.md/help/cli).
+2. Open your vault and keep Obsidian running.
+3. In sticky-note **Settings → General**, check the absolute path to `Obsidian.com`, normally `C:\Program Files\Obsidian\Obsidian.com`. Adjust it if installed elsewhere.
+4. Under **Vaults & daily notes**, enable CLI for the selected entry, enter the Obsidian vault name/ID and click **Get Vault folder via CLI**. Blank uses Obsidian's default selection; typing alone does not fetch the folder.
+5. Check the returned vault and daily settings, use **Select sticky-note folder…**, then **Save and close**.
 
-Configure **Settings → Vaults & daily notes → Obsidian CLI** and use **Get Vault folder via CLI**. Enter the Obsidian Vault name/ID before pressing the button (blank uses the default Obsidian selection). Typing alone does not fetch its root. The result and native daily settings appear after retrieval; apply with Save and close. See [retrieval details](MULTIPLE-VAULTS.md#english). After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. Choices remain drafts until **Save and close** in Settings (main registration only). See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
+When changing folders, Yes also migrates existing app-created notes, No changes future storage only, and Cancel aborts. [Migration scope and recovery](STICKY-FOLDERS.md#english). CLI failures do not fall back to local reads.
 
-- [Basic usage](../README.en.md#basic-usage)
-- [Folder migration and daily-note settings](USAGE.en.md#storage)
-- [Optional Google Calendar setup](GOOGLE-CALENDAR.en.md#setup)
+### Without Obsidian
 
-Authentication is unnecessary unless you use Google integration.
+Turn off **Use Obsidian CLI**, choose a local base and note folder, then save. Initial storage is `Documents/StickyNotesData`. Tasks/Dataview queries are unavailable. Local daily notes can use a folder and date-capture regular expression. [Daily setup examples](USAGE.en.md#daily).
 
-## Updates
+## 3. Enable only the integrations you need
 
-Exit through `Exit` in the notification-area menu, extract the new ZIP to a separate directory, and run `Install.cmd` to replace the app files. Notes, settings, and backups are stored separately from the installation.
+| Integration | In Obsidian / Google | In Sticky Notes |
+| --- | --- | --- |
+| Daily notes | Enable core Daily notes, set folder/date format and create today's note | `… → Create & open → Display a daily note…`; choose a heading or leave blank for the whole note |
+| Tasks | Enable Tasks in the target vault; current development build requires stable 8.2.2+ | Open a note containing a `tasks` code block. [Setup and limits](TASKS-CLI-PREVIEW.md#english) |
+| Dataview | Enable Dataview in the target vault | Display LIST / TABLE / TASK in `dataview` blocks. [Setup and limits](DATAVIEW.md#english) |
+| Google | Set up Calendar API, Tasks API and desktop OAuth in your own Cloud project | Import JSON, authorize and write `@calendar today` in a separate paragraph. [Connection guide](GOOGLE-CALENDAR.en.md#setup) |
 
-After upgrading from 0.0.1, check both folder settings and today's matching filename. Documented legacy date formats convert automatically to tagged regular expressions; custom formats need manual correction. Saving without confirmation defaults to off. See the [changelog](../CHANGELOG.md).
+Ordinary Markdown checkboxes do not require Tasks. Task suggestions default to Automatic and stays off without Tasks unless manually enabled. No Google authorization is needed unless you use Google integration.
 
-## Removal
+## 4. Use your first note
 
-1. Exit through `Exit` in the notification-area menu.
-2. Delete `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`.
-3. Right-click Markdown Sticky Notes in the Start menu, open its file location, and delete the shortcut.
+Use `… → Create & open` to create or open Markdown. Click the body / press `Ctrl+E` to edit and `Ctrl+S` / `Esc` to save. Daily linking initially needs today's file; the app does not create it. Change the display language in Settings and restart (UI: Japanese, English, Simplified Chinese).
 
-Settings, credentials, and backups remain in `%LOCALAPPDATA%\StickyNotes`; Markdown remains in your selected folder, or `Documents\StickyNotesData` by default. Check what you want to retain before deleting this data separately.
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| CLI cannot connect | Running Obsidian, CLI enabled, absolute `Obsidian.com` path and vault name/ID; retry the retrieval button |
+| Today's note is missing | Core Daily notes settings and today's file; settings from other daily-note plugins are not inferred |
+| Tasks asks for an update | Update Tasks to 8.2.2+ in the target vault's community plugins, then refresh Tasks / Dataview in the sticky note |
+| Save conflict | Keep the draft and reload; the app is preventing a stale overwrite |
+| Google authorization fails | Check APIs, OAuth, test users and permissions in the [stage-by-stage guide](GOOGLE-CALENDAR.en.md) |
+
+## Updating, removal and data
+
+**Update:** save edits, exit from the notification area, extract the new ZIP into a different folder and run `Install.cmd`. Notes, settings and backups are stored separately from the installed app.
+
+**From v0.0.6 or earlier:** settings without a CLI selection now enable CLI. Disable it and save to keep using local mode; files do not migrate automatically. Custom daily patterns from v0.0.1 may need manual correction.
+
+| Data | Location |
+| --- | --- |
+| Installed app | `%LOCALAPPDATA%/Programs/MarkdownStickyNotes` |
+| Settings and credentials | `%LOCALAPPDATA%/StickyNotes` |
+| Pre-write backups | `%LOCALAPPDATA%/StickyNotes/backups` |
+| Notes | Your selected vault/folder |
+
+**Remove:** exit the app, delete its installation folder and Start menu shortcut. Notes, settings and backups remain; review them before deleting separately.

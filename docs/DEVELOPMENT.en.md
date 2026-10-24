@@ -2,6 +2,8 @@
 
 # Development and releases
 
+Keep README, setup guides and screenshots aligned in Japanese, English, Simplified Chinese, Traditional Chinese and Korean. Detailed references and UI remain in the original three languages; Traditional Chinese/Korean samples use English UI. Generate images through the opt-in `--render-screenshots` command using isolated fictional data. [Generation and visual review](SCREENSHOTS.en.md). `build.ps1` packages all five README languages and the docs/examples directories.
+
 Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
 
 Completion is compared against a pinned Tasks upstream approved fixture. All changes stay in TaskEditing, including the bounded local date helper. The clone is excluded; MIT notices are bundled. See [source revision, tests and parity limits](TASK-EDITING.md#english).
@@ -27,7 +29,7 @@ Use Windows and the .NET 8 SDK. A local `.tools/dotnet` SDK takes priority when 
 ./build.ps1 -Publish
 ```
 
-Both commands restore, build Release, run tests, and generate a self-contained app, installer scripts, documentation in all three languages, and licenses under `artifacts/app`. After a normal `./build.ps1`, run `artifacts/app/Install.cmd` to install locally. Exit any running Sticky Notes from the notification area first. The build prints the installer script path on completion; it does not run the installer itself.
+Both commands restore, build Release, run tests, and generate a self-contained app, installer scripts, multilingual documentation, and licenses under `artifacts/app`. After a normal `./build.ps1`, run `artifacts/app/Install.cmd` to install locally. Exit any running Sticky Notes from the notification area first. The build prints the installer script path on completion; it does not run the installer itself.
 
 `-Publish` additionally creates or updates `artifacts/StickyNotes-win-x64.zip` and its SHA256 checksum. A normal build leaves any existing ZIP unchanged, so use `-Publish` when distributing a ZIP.
 
@@ -59,7 +61,7 @@ Update English, Japanese, and Simplified Chinese (zh-CN) together for READMEs, c
 
 Record completed features and fixes under Unreleased in the [English](../CHANGELOG.md), [Japanese](../CHANGELOG.ja.md), and [Simplified Chinese](../CHANGELOG.zh-CN.md) changelogs. On publication, record the actual version, date, and Release link consistently. Do not present drafts or plans as published. Update `docs/RELEASE-NOTES.md` for that release too.
 
-1. Align `Version` in `src/StickyNotes/StickyNotes.csproj`, download links in all three READMEs, changelogs, and release notes. Complete `./build.ps1 -Publish` and both reviews, commit locally, then merge the requested branch into main and push.
+1. Align `Version` in `src/StickyNotes/StickyNotes.csproj`, download guidance in all five README languages, changelogs, and release notes. Complete `./build.ps1 -Publish` and both reviews, commit locally, then merge the requested branch into main and push.
 2. Confirm GitHub Actions **Build and test** succeeds.
 3. When release publication is authorized, manually run **Package release** on main with a new tag, for example `v1.0.0`.
 4. The workflow validates, packages, and creates a **draft release**. Before publishing, check the ZIP's SHA256, executable version, tag target commit, bundled documentation, and absence of personal settings or other private files.

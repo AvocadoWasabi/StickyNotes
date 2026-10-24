@@ -1,46 +1,73 @@
-[English](INSTALL.en.md) | [日本語](INSTALL.md) | [简体中文](INSTALL.zh-CN.md)
+[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md)
 
-# 安装、更新与卸载
+# 安装与首次设置
 
-## 环境要求
+[返回 README](../README.zh-CN.md) · [详细操作](USAGE.zh-CN.md)
 
-Windows 10 / 11 64 位（x64）。无需单独安装 .NET 或管理员权限。本地模式无需 Obsidian 插件。v0.0.7 起的新配置默认使用 CLI：Obsidian 必须运行并启用 CLI；日记需要核心 Daily notes 插件，Tasks 查询需要 Tasks，Dataview 查询需要 Dataview。任务补全默认自动，未启用 Tasks 时须手动 ON 才会工作。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。
+## 1. 安装应用
 
-**从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
+适用于 Windows 10 / 11（x64），无需管理员权限或单独安装 .NET。
 
-## 安装
+1. 从 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) 下载 **StickyNotes-win-x64.zip**；`Source code` 用于开发。
+2. 全部解压，运行 `Install.cmd`。
+3. 从开始菜单启动 **Markdown Sticky Notes**。
 
-1. 从 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) 下载 `StickyNotes-win-x64.zip`。`Source code` 供开发者使用。
-2. 右键点击 ZIP，选择“全部解压缩”。
-3. 双击解压目录中的 `Install.cmd`。
-4. 从开始菜单启动 Markdown Sticky Notes。
+免安装使用时，在解压目录运行 `StickyNotes.exe`，请保留整个目录。应用未签名，Windows 可能提示确认。不会注册自动启动。
 
-安装目录为 `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`，不会设置开机自启。应用未签名，Windows 可能显示提示；请先确认来源和文件。
+以下设置名称对应当前开发版；与公开 ZIP 不同时请查看[未发布记录](../CHANGELOG.zh-CN.md#未发布)。
 
-免安装使用时，运行解压目录中的 `StickyNotes.exe`。请保留整个文件夹，程序需要其他附带文件。
+## 2. 选择保存方式
 
-## 初次设置
+### 使用 Obsidian（新配置默认）
 
-在设置中选择显示语言，保存后重启。[语言设置详情](USAGE.zh-CN.md#language)。
+1. 启用 Obsidian **设置 → 常规 → 命令行界面**，按提示注册。如无此项，请检查[官方 CLI 指南](https://obsidian.md/help/cli)中的安装程序更新要求。
+2. 打开目标 Vault，保持 Obsidian 运行。
+3. 在便签 **设置 → 常规** 确认 `Obsidian.com` 的绝对路径，通常是 `C:\Program Files\Obsidian\Obsidian.com`。如安装在其他位置请调整。
+4. 在 **Vault 与每日笔记** 为选中的条目启用 CLI，输入 Obsidian Vault 名称／ID，点击 **通过 CLI 获取 Vault 保存目录**。留空使用 Obsidian 默认选择；仅输入不会获取。
+5. 确认返回的 Vault 和每日设置，选择便签保存目录，最后 **保存并关闭**。
 
-在**设置 → Vault 与每日笔记 → Obsidian CLI**中输入 Obsidian 的 Vault 名称／ID，点击**通过 CLI 获取 Vault 保存目录**（留空使用 Obsidian 默认选择）。仅输入不会获取根目录。获取结果及自动检查每日设置后，点击“保存并关闭”生效。参见[获取详情](MULTIPLE-VAULTS.md#简体中文)。确定仓库（CLI）或本地基准目录后，点击**选择便签保存文件夹…**。从列表选择或输入新的相对路径，点击**确定**后选择是否迁移已有应用便签。**是**迁移，**否**仅更改新便签位置，**取消**不做更改。选择保持为草稿，最后在设置中 **保存并关闭** 后应用（仅主注册）。范围、回滚及恢复请参见[文件夹选择与迁移指南](STICKY-FOLDERS.md#简体中文)。
+更改目录时，“是”同时迁移已有应用便签，“否”只更改今后保存位置，“取消”中止。[迁移范围与恢复](STICKY-FOLDERS.md#简体中文)。CLI 失败不会自动改为本地读取。
 
-- [基本操作](../README.zh-CN.md#基本操作)
-- [文件迁移与每日笔记设置](USAGE.zh-CN.md#storage)
-- [Google Calendar 初次授权（可选）](GOOGLE-CALENDAR.zh-CN.md#setup)
+### 不使用 Obsidian
 
-不使用 Google 功能时无需授权。
+关闭 **使用 Obsidian CLI**，选择本地基准目录和便签保存目录，再保存。初始位置为 `Documents/StickyNotesData`。不能使用 Tasks／Dataview 查询。本地每日笔记可通过目录和日期捕获正则表达式设置。[每日设置示例](USAGE.zh-CN.md#daily)。
 
-## 更新
+## 3. 仅开启需要的集成
 
-从通知区域的 `退出` 退出应用，将新 ZIP 解压到另一目录并运行 `Install.cmd`，覆盖原应用文件。笔记、设置和备份保存在安装目录以外。
+| 集成 | Obsidian／Google 侧 | 便签侧 |
+| --- | --- | --- |
+| 每日笔记 | 启用核心日记，设置目录／日期格式，创建今日笔记 | 从 `… → 创建与打开` 显示每日笔记并选择标题；空白表示整篇 |
+| Tasks | 在目标 Vault 启用 Tasks；当前开发版要求稳定版8.2.2以上 | 打开含 `tasks` 代码块的笔记。[步骤与限制](TASKS-CLI-PREVIEW.md#简体中文) |
+| Dataview | 在目标 Vault 启用 Dataview | 显示 `dataview` 的 LIST / TABLE / TASK。[步骤与限制](DATAVIEW.md#简体中文) |
+| Google | 在自己的 Cloud 项目配置 Calendar API、Tasks API 和桌面 OAuth | 导入 JSON 并授权，在独立段落输入 `@calendar today`。[连接指南](GOOGLE-CALENDAR.zh-CN.md#setup) |
 
-从 0.0.1 更新后，请确认两个文件夹设置和今日匹配文件名。旧版标准日期格式会自动转为带日期标签的正则表达式，自定义格式需手动修正。免确认自动保存默认关闭。详见[更新日志](../CHANGELOG.zh-CN.md)。
+普通 Markdown 复选框不需要 Tasks。任务补全默认为自动，未启用 Tasks 时须手动开启才工作。不使用 Google 集成就不需要 Google 授权。
 
-## 卸载
+## 4. 使用第一个便签
 
-1. 从通知区域的 `退出` 退出应用。
-2. 删除 `%LOCALAPPDATA%\Programs\MarkdownStickyNotes`。
-3. 右键点击开始菜单中的 Markdown Sticky Notes，打开文件位置并删除快捷方式。
+从 `… → 创建与打开` 新建或打开 Markdown。点击正文／`Ctrl+E` 编辑，`Ctrl+S`／`Esc` 保存。首次关联每日笔记需要今日文件，不会自动创建。显示语言可在设置中更改，重启生效（UI：日语、英语、简体中文）。
 
-设置、凭据和备份保留在 `%LOCALAPPDATA%\StickyNotes`；Markdown 保留在所选目录，默认 `Documents\StickyNotesData`。如需另外删除，请先确认要保留的数据。
+## 常见问题
+
+| 现象 | 检查内容 |
+| --- | --- |
+| CLI 连接失败 | Obsidian 是否运行、CLI 是否启用、`Obsidian.com` 绝对路径和 Vault 名称／ID是否正确；再次点击获取 |
+| 今日笔记不显示 | 核心日记设置和今日文件；不会推测其他日记插件的设置 |
+| Tasks 提示更新 | 在目标 Vault 的第三方插件更新中升级到8.2.2以上，然后刷新便签的 Tasks / Dataview |
+| 保存冲突 | 保留草稿并重新加载，应用正在阻止旧内容覆盖 |
+| Google 授权失败 | 按[分阶段指南](GOOGLE-CALENDAR.zh-CN.md)检查 API、OAuth、测试用户和权限 |
+
+## 更新、卸载和数据
+
+**更新：** 保存修改并从通知区域退出应用，将新 ZIP 解压到另一目录后运行 `Install.cmd`。笔记、设置和备份与应用分开保存。
+
+**从v0.0.6及以前升级：** 无 CLI 选择的旧配置也会开启 CLI。继续本地模式时请关闭并保存；不会自动迁移文件。v0.0.1 的自定义每日格式可能需要手动修正。
+
+| 数据 | 位置 |
+| --- | --- |
+| 已安装应用 | `%LOCALAPPDATA%/Programs/MarkdownStickyNotes` |
+| 设置和凭据 | `%LOCALAPPDATA%/StickyNotes` |
+| 写入前备份 | `%LOCALAPPDATA%/StickyNotes/backups` |
+| 笔记 | 所选 Vault／目录 |
+
+**卸载：** 退出应用，删除安装目录和开始菜单快捷方式。笔记、设置和备份仍保留，请确认需要的数据后另行删除。

@@ -2,6 +2,8 @@
 
 # 開発と公開
 
+README・導入ガイド・スクリーンショットは日本語／英語／簡体字中国語／繁体字中国語／韓国語の5言語を同期します。詳細資料とUIは従来の3言語です。繁体字・韓国語のサンプルは英語UIを使います。画像は個人データを使わない任意実行の `--render-screenshots` で生成します。[生成・目視確認手順](SCREENSHOTS.md)。`build.ps1` は5言語のREADMEと、docs／examples配下を同梱します。
+
 未リリース：複数Vaultのデイリーノートに対応。初期表示名は「メイン」「サブ」で変更可能です。**設定 → Vault・デイリーノート**で登録・既定Vaultを設定します。[複数Vaultの設定と制約](MULTIPLE-VAULTS.md#日本語)。
 
 補完は版固定した本家Tasksの承認済みテスト資料と照合します。限定した日付補助処理を含めTaskEditingへ集約し、cloneは配布対象外、MIT表記は同梱します。[参照版・検証・互換範囲](TASK-EDITING.md#日本語)を参照してください。
@@ -27,7 +29,7 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 ./build.ps1 -Publish
 ```
 
-どちらも復元・Releaseビルド・既存テストを実行し、自己完結型アプリ、インストール用スクリプト、3言語の資料、ライセンスを `artifacts/app` に生成します。通常の `./build.ps1` 完了後、そのまま `artifacts/app/Install.cmd` からローカルインストールできます。起動中のSticky Notesを通知領域から終了してから実行してください。ビルド完了時にもインストール先のスクリプトを案内します。ビルド自体はインストールを実行しません。
+どちらも復元・Releaseビルド・既存テストを実行し、自己完結型アプリ、インストール用スクリプト、多言語の資料、ライセンスを `artifacts/app` に生成します。通常の `./build.ps1` 完了後、そのまま `artifacts/app/Install.cmd` からローカルインストールできます。起動中のSticky Notesを通知領域から終了してから実行してください。ビルド完了時にもインストール先のスクリプトを案内します。ビルド自体はインストールを実行しません。
 
 `-Publish` は追加で `artifacts/StickyNotes-win-x64.zip` とSHA256チェックサムを生成・更新します。通常のビルドでは既存ZIPは更新しないため、ZIPを配布する場合は `-Publish` を使用してください。
 
@@ -59,7 +61,7 @@ README・変更履歴・導入／開発ガイド・関連資料・リリース�
 
 機能追加・修正の完了時に [日本語のバージョン履歴](../CHANGELOG.ja.md)、[英語の変更履歴](../CHANGELOG.md)、[簡体字中国語の変更履歴](../CHANGELOG.zh-CN.md) の未リリース欄を更新します。正式公開時には実際のバージョン番号・公開日・Releaseリンクを記録し、3言語の内容を揃えます。下書きや予定を公開済みとして記載しないでください。`docs/RELEASE-NOTES.md` にも、そのリリースでの主な変更を反映します。
 
-1. `src/StickyNotes/StickyNotes.csproj` の `Version`、3言語READMEのダウンロードリンク、変更履歴、リリースノートを公開バージョンに揃えます。`./build.ps1 -Publish` と両レビューを完了し、ローカルコミット後、指示されたブランチをmainにマージしてpushします。
+1. `src/StickyNotes/StickyNotes.csproj` の `Version`、5言語READMEのダウンロード案内、変更履歴、リリースノートを公開バージョンに揃えます。`./build.ps1 -Publish` と両レビューを完了し、ローカルコミット後、指示されたブランチをmainにマージしてpushします。
 2. GitHub Actionsの「Build and test」が成功したことを確認します。
 3. Releaseの公開指示を受けたら、「Package release」をmain上で手動実行し、新しいタグ（例: `v1.0.0`）を指定します。
 4. ワークフローが検証とZIP生成を実行し、**下書きRelease**を作成します。添付ZIPのSHA256、実行ファイルのバージョン、タグの対象コミット、同梱資料、個人設定などの混入がないことを確認してから公開します。

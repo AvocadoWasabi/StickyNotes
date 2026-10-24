@@ -1,126 +1,86 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
 
 # Markdown Sticky Notes
 
-Unreleased: Tasks integration supports stable 8.2.2 or later and shows update instructions for older versions. See [Tasks setup and update steps](docs/TASKS-CLI-PREVIEW.md#english).
+**Keep today's Obsidian tasks on your desktop. Check them off right there.**
 
-Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](docs/MULTIPLE-VAULTS.md#english).
+Turn a whole note or a single daily-note heading into a Windows sticky note. Edits save to the original Markdown. Keep Tasks and Dataview results or Google Calendar events close at hand, too.
 
-v0.0.10 adds reopening recently closed note groups, file renaming and guidance when renaming is unavailable, and fixes menu-triggered autosave freezes. See [changes and upgrade steps](docs/RELEASE-NOTES.md#english).
+[Download](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Setup](docs/INSTALL.en.md) · [Usage](docs/USAGE.en.md) · [Changelog](CHANGELOG.md)
 
-Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
+## Why use it?
 
-v0.0.8 adds task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
+- **Keep today's work in sight** — display just the Tasks section of your daily note and follow the date automatically.
+- **Keep one copy of your notes** — edits and checks update the original `.md`. Closing a window keeps the file.
+- **Glance at notes while working** — pin them on top, or press `Alt+Z` to bring all notes forward for 10 seconds.
 
-Browse closed notes from **… → Manage sticky-note folder…**, the tray menu, or the taskbar menu, with body and YAML previews. [Checkbox updates and note browser](docs/QUERY-EDITING-AND-BROWSER.md#english).
+## Screenshots
 
-v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](docs/DATAVIEW.md#english).
-
-Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Keep Obsidian running with CLI enabled. Existing settings that explicitly disable CLI remain local; you can also disable CLI in Settings to use local files without Obsidian.
-**Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
-
-CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Vaults & daily notes → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
-
-[v0.0.9 body rendering sample](docs/images/compact-body-v0.0.9.png), generated with WPF. The full-window screenshots below show an earlier UI.
-
-<img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes icon" width="112">
-
-A Markdown sticky-note app for Windows. Edit Obsidian notes and daily notes directly, and display Google Calendar events alongside them. Obsidian is optional.
-
-**Windows 10 / 11 (x64).** The UI and documentation support English, Japanese, and Simplified Chinese. [Display language](docs/USAGE.en.md#language).  Google integration is optional and requires your own OAuth setup.
-
-[Download](#download-and-install) · [Basic usage](#basic-usage) · [Google Calendar](#google-calendar) · [Further reading](#further-reading)
-
-<details>
-<summary>Screenshots (expand to view)</summary>
-
-Version 0.0.2 note views rendered with the app's WPF controls and English sample notes. The controls in these older images are Japanese. Click an image to view it at full size.
-
-| Checklists at hand | Markdown notes | Linked daily notes |
+| Check off tasks | Write in Markdown | Follow today's daily note |
 | :---: | :---: | :---: |
-| [<img src="docs/images/sticky-tasks-en.jpg" alt="Yellow sticky note with an English checklist and checked tasks" width="300">](docs/images/sticky-tasks-en.jpg) | [<img src="docs/images/sticky-markdown-en.jpg" alt="Blue sticky note displaying English Markdown headings, a numbered list, and a table" width="300">](docs/images/sticky-markdown-en.jpg) | [<img src="docs/images/sticky-daily-en.jpg" alt="Green sticky note linked to the Tasks section of a daily note, with English sample tasks" width="300">](docs/images/sticky-daily-en.jpg) |
+| [<img src="docs/images/sticky-tasks-en.png" alt="Check off tasks" width="280">](docs/images/sticky-tasks-en.png) | [<img src="docs/images/sticky-markdown-en.png" alt="Write in Markdown" width="280">](docs/images/sticky-markdown-en.png) | [<img src="docs/images/sticky-daily-en.png" alt="Follow today's daily note" width="280">](docs/images/sticky-daily-en.png) |
 
-The screenshots use fictional sample content. [Sample files and capture instructions](docs/SCREENSHOTS.md) are included for reproduction.
+Fictional notes rendered with the current development build's WPF controls, rather than desktop captures. [Five languages and reproduction steps](docs/SCREENSHOTS.en.md).
 
-</details>
+## Tools and settings you need
 
-## Download and install
+**Windows 10 / 11 (x64)**. The ZIP includes .NET; administrator access is not required.
 
-1. Download `StickyNotes-win-x64.zip` from the [v0.0.10 release](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) and extract it.
-2. Run `Install.cmd`, then open Markdown Sticky Notes from the Start menu.
-3. Open `Settings` from the notification-area icon. In **Obsidian CLI**, get the open vault, then select a sticky-note folder. To use local files, disable CLI and choose a base folder first. [Connection and plugin setup](docs/TASKS-CLI-PREVIEW.md#english).
+| Use case | Required tools | Initial setting |
+| --- | --- | --- |
+| Markdown sticky notes only | This app | Turn off **Use Obsidian CLI** in Settings and choose a local folder |
+| Edit Obsidian notes | Running Obsidian + Obsidian CLI | Enable Obsidian **Settings → General → Command line interface**, then connect the vault in this app |
+| Today's daily note | CLI above + core **Daily notes** | Configure its folder/date format in Obsidian and create today's note |
+| Tasks queries and native checkbox behavior | CLI above + community **Tasks** plugin | Enable in the target vault; current development build requires stable **8.2.2+** |
+| Dataview queries | CLI above + **Dataview** | Enable in the target vault; LIST / TABLE / TASK supported |
+| Google events and tasks | Google account + your own OAuth setup | Enable Calendar API / Tasks API, obtain desktop OAuth JSON and [authorize](docs/GOOGLE-CALENDAR.en.md#setup) |
 
-No administrator privileges or separate .NET installation are required. The app is unsigned, so Windows may ask for confirmation. See the [installation guide](docs/INSTALL.en.md) for updates, removal, and portable use.
+**New settings enable CLI by default.** Turn it off to work without Obsidian. CLI is built into Obsidian; no dedicated Sticky Notes Obsidian plugin is needed. [Official CLI requirements](https://obsidian.md/help/cli) · [Compatibility and limits](docs/TASKS-CLI-PREVIEW.md#english).
 
-<a id="using-the-app"></a>
+## Get started
+
+1. Download `StickyNotes-win-x64.zip` from [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest), extract everything and run `Install.cmd`.
+2. Enable CLI in Obsidian, open your vault and start Markdown Sticky Notes.
+3. In app Settings, check the absolute path to `Obsidian.com`, enter the vault name/ID and click **Get Vault folder via CLI**. Choose a note folder, then **Save and close**.
+4. Use `… → Create & open` to create a sticky note, open Markdown, link a section or display a daily note.
+
+See [Setup](docs/INSTALL.en.md) for local mode, setting locations, updating and removal. Settings and images here describe the current development build. Check [Unreleased](CHANGELOG.md#unreleased) for differences from the published ZIP, including multiple vaults and Tasks 8.2.2 support.
+
+## Features
+
+| Feature | What it does |
+| --- | --- |
+| Markdown display and editing | Headings, lists, checkboxes, tables, code and links; save to regular `.md` files |
+| Linked sections and daily notes | Display/edit part of a note, follow date changes and optionally retain yesterday's note |
+| Tasks / Dataview | Display query results and check tasks with verified source mappings; preserve query source |
+| Task entry | Keyword/date completion, Enter to continue lists, Tab to indent, configurable checkbox shortcut |
+| Google integration | `@calendar today` shows events and dated incomplete Google Tasks; edit event titles/descriptions after confirmation |
+| Windows and appearance | Colors, resizing, 50–200% scale, pinning, temporary foreground and taskbar visibility |
+| Note management | Select/migrate storage, reopen closed notes, browse/preview files, rename and delete |
+| Data protection | Backups before writes and external-change conflict checks |
+| Multiple vaults (unreleased) | Daily notes per vault, editable names and a default vault |
 
 ## Basic usage
 
-| Action | Control |
+| Action | How |
 | --- | --- |
-| Create a note | `… → Create & open → New note`, or `New note` in the notification-area menu |
-| Edit and save | Click the body (single/double click in Settings) / `Ctrl+E` → edit → `Ctrl+S` or `Esc` |
-| Complete a task | Click its checkbox to update the source Markdown |
-| Move or resize | Drag the top / an edge or the bottom-right corner |
-| Keep on top | `○ / ●`; `Alt + Z` or the `…` menu brings all notes to the top for 10 seconds |
-| Scale content | `… → Display & properties → Display scale` (50–200%) |
-| Close or exit | `… → Close this note` closes a note; notification-area `Exit` exits the app |
+| Edit | Click the body (single/double click is configurable), or `Ctrl+E` |
+| Save and leave editing | `Ctrl+S` / `Esc`; the first Esc dismisses open completion suggestions |
+| Check a task | Click its checkbox in reading mode |
+| Bring forward | Pin with `○ / ●`; `Alt+Z` brings all notes forward for 10 seconds |
+| Close / exit | `… → Close this note` / exit the app from the notification area |
 
-Clicking starts editing at the corresponding source position. `Esc` saves and finishes editing; if a completion suggestion is open, the first `Esc` dismisses it. Leaving the editor prompts to save changed text. Settings can enable saving without confirmation. Closing a note does not delete its Markdown file.
+## Before you start
 
-See the [usage reference](docs/USAGE.en.md#editing) for taskbar icons, button visibility, and shortcuts.
+- App UI: **Japanese, English and Simplified Chinese**. README, setup and screenshots also cover **Traditional Chinese and Korean**. Detailed references generally remain in three languages.
+- Obsidian must stay running for CLI integration. Internal API changes can affect compatibility.
+- Daily notes are not created automatically. Prepare today's note before adding the first daily sticky.
+- Obsidian themes and all plugin views are not reproduced. Images show alt text. DataviewJS, inline expressions and CALENDAR are unsupported.
+- Google Tasks is read-only and exposes dates only. Scheduled times, automatic Markdown task sync and creating events are unsupported.
+- Backups: `%LOCALAPPDATA%/StickyNotes/backups`. On a conflict, keep your draft, reload and retry.
 
-## Storage and Obsidian
+## Learn more or report a problem
 
-After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](docs/STICKY-FOLDERS.md#english) for scope, rollback and recovery.
+[Storage and migration](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Task entry](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Multiple vaults](docs/MULTIPLE-VAULTS.md#english) · [Note management](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Development](docs/DEVELOPMENT.en.md) · [License notices](THIRD-PARTY-NOTICES.txt)
 
-An explicit sticky folder takes precedence over Obsidian's general new-note location. Without a selection, CLI mode retains Obsidian's default; local mode retains its saved folder (initially `Documents/StickyNotesData`). Daily-note settings remain independent.
-
-## Display and edit a daily note section
-
-1. In CLI mode, configure Obsidian's core Daily notes plugin and check the retrieved settings in Sticky Notes. In local mode, choose the daily-note folder and tagged regular expression, check the matching filename, then save.
-2. Use `… → Create & open → Display a daily note…`, choose a heading, and select `Display`. A blank heading shows the whole body.
-3. Edit text or check tasks in the sticky note to update the source note.
-
-The first addition requires today's file. Later, missing daily notes can show a waiting message or retain yesterday according to Settings. See [filename examples and switching options](docs/USAGE.en.md#daily).
-
-For a fixed note, use `… → Create & open → Link part of a note…`. See [heading selection](docs/USAGE.en.md#headings).
-
-## Google Calendar
-
-<a id="initial-authentication"></a>
-
-First authenticate using the [connection guide](docs/GOOGLE-CALENDAR.en.md#setup) in the right pane of Settings. Then save this line in a separate paragraph:
-
-```text
-@calendar 2026-10-06T09:00
-```
-
-**Scheduled times cannot be retrieved through the Google Tasks API.** Even when a time is set in Google, the API provides only the date, so this app displays “no time”.
-
-Google Tasks is also displayed as read-only. `@calendar today` includes today's dated, incomplete tasks. Existing users must enable the Tasks API and sign in again with Tasks read access; see the [Tasks setup guide](docs/GOOGLE-CALENDAR.en.md#tasks).
-
-Use `@calendar today` to follow the PC's current day automatically (local midnight to the next midnight). `@calendar today meeting` filters by keyword. The date is checked and events are refreshed about every 60 seconds while viewing the note, including after waking from sleep; automatic refresh pauses while editing.
-
-**Keywords and time zone offsets are optional.** Without an offset, the app uses Windows local time. Append a keyword such as `meeting` to filter results.
-
-While editing, type `@` in a separate paragraph to show a suggestion and examples. Tab, Enter, or a click inserts today's date at `00:00` and selects the date and time for editing. The inserted date stays fixed.
-
-Click an event to edit its title or description, then confirm to send changes to Google. Creating events and automatically syncing Markdown tasks are unsupported. See [search rules, JSON management, and troubleshooting](docs/GOOGLE-CALENDAR.en.md).
-
-## Markdown support and data protection
-
-Headings, lists, tasks, tables, code, and links are supported. Images display as alternative text; some Obsidian-specific syntax is unsupported.
-
-Conflicting external changes block overwrites. Pre-write backups are saved under `%LOCALAPPDATA%/StickyNotes/backups`. See [supported syntax and recovery details](docs/USAGE.en.md#data).
-
-## Further reading
-
-| Topic | Guide |
-| --- | --- |
-| Install, update, or remove | [Installation](docs/INSTALL.en.md) |
-| Controls, storage, and daily notes | [Usage reference](docs/USAGE.en.md) |
-| Google authentication and events | [Google Calendar](docs/GOOGLE-CALENDAR.en.md) |
-| Changes by version | [Changelog](CHANGELOG.md) |
-| Build, test, and release | [Development](docs/DEVELOPMENT.en.md) |
-| Examples and licenses | [Daily note](examples/Daily.md) · [Obsidian Bases](examples/StickyNotes.base) · [Licenses](THIRD-PARTY-NOTICES.txt) |
+For [bugs and requests](https://github.com/AvocadoWasabi/StickyNotes/issues), include app/Windows/plugin versions, CLI or local mode, and reproduction steps. Do not attach personal notes, OAuth JSON or tokens.

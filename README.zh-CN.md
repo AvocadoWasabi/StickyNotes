@@ -1,126 +1,86 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
 
 # Markdown Sticky Notes
 
-未发布：Tasks集成支持稳定版8.2.2或更高版本，并为旧版显示更新步骤。参见[Tasks设置与更新步骤](docs/TASKS-CLI-PREVIEW.md#简体中文)。
+**把 Obsidian 的今日任务放到桌面，直接勾选完成。**
 
-未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](docs/MULTIPLE-VAULTS.md#简体中文)。
+将整篇笔记或每日笔记中的一个标题区域变成 Windows 便签，编辑直接保存到原 Markdown。也可随时查看 Tasks、Dataview 查询结果和 Google Calendar 日程。
 
-v0.0.10新增成组恢复最近关闭的便签、文件重命名及无法重命名时的说明，并修复打开菜单时自动保存造成的卡顿。参见[更新内容及升级步骤](docs/RELEASE-NOTES.md#简体中文)。
+[下载](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [安装设置](docs/INSTALL.zh-CN.md) · [使用指南](docs/USAGE.zh-CN.md) · [更新日志](CHANGELOG.zh-CN.md)
 
-任务正文后输入空格显示上游默认候选菜单：**⏎** 上Enter继续列表，↓选择后Enter插入字段，Tab缩进。参见[分析来源与兼容范围](docs/TASK-EDITING.md#简体中文)。
+## 适合怎样使用？
 
-v0.0.8新增任务关键字／日期补全及Enter继续检查列表；普通CLI复选框使用Tasks原生完成逻辑。参见[任务输入与限制](docs/TASK-EDITING.md#简体中文)。
+- **随时看到今日任务** — 仅显示每日笔记的 Tasks 部分，并随日期切换。
+- **只维护一份笔记** — 编辑和勾选更新原 `.md`；关闭便签仍保留文件。
+- **工作时快速查看** — 固定置顶，或按 `Alt+Z` 将所有便签置顶 10 秒。
 
-可从 **… → 管理便签文件夹…**、通知区域菜单或任务栏菜单，通过正文／YAML 预览重新打开已关闭便签。参见 [复选框及便签列表](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
+## 界面示例
 
-v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](docs/DATAVIEW.md#简体中文)。
-
-从 v0.0.7 起，新配置默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。请保持 Obsidian 运行并启用 CLI。保留已有设置中明确禁用 CLI 的选择；也可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。
-**从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
-
-CLI 模式从 Obsidian 获取正文及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Vault 与每日笔记 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
-
-[v0.0.9正文渲染示例](docs/images/compact-body-v0.0.9.png)，由WPF生成。下方整窗截图为旧版界面。
-
-<img src="docs/images/StickyNotes.png" alt="Markdown Sticky Notes 图标" width="112">
-
-Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔记，并在旁边显示 Google Calendar 日程。也可不使用 Obsidian。
-
-**支持 Windows 10 / 11（x64）。** 界面和文档支持英语、日语和简体中文。 [显示语言](docs/USAGE.zh-CN.md#language)。Google 集成为可选功能，需要自行配置 OAuth。
-
-[下载](#下载与安装) · [基本操作](#基本操作) · [Google Calendar](#google-calendar) · [补充资料](#补充资料)
-
-<details>
-<summary>界面示例（点击展开）</summary>
-
-以下为使用 0.0.2 版 WPF 控件和英文示例笔记渲染的便签内容。这些旧版图片中的控件为日语。点击图片可查看原图。
-
-| 随手查看清单 | Markdown 笔记 | 关联每日笔记 |
+| 直接勾选任务 | Markdown 笔记 | 关联今日笔记 |
 | :---: | :---: | :---: |
-| [<img src="docs/images/sticky-tasks-en.jpg" alt="黄色 Markdown 桌面便签中的英文任务清单" width="300">](docs/images/sticky-tasks-en.jpg) | [<img src="docs/images/sticky-markdown-en.jpg" alt="蓝色便签中的 Markdown 标题、列表和表格" width="300">](docs/images/sticky-markdown-en.jpg) | [<img src="docs/images/sticky-daily-en.jpg" alt="显示每日笔记 Tasks 部分的绿色便签" width="300">](docs/images/sticky-daily-en.jpg) |
+| [<img src="docs/images/sticky-tasks-zh-CN.png" alt="直接勾选任务" width="280">](docs/images/sticky-tasks-zh-CN.png) | [<img src="docs/images/sticky-markdown-zh-CN.png" alt="Markdown 笔记" width="280">](docs/images/sticky-markdown-zh-CN.png) | [<img src="docs/images/sticky-daily-zh-CN.png" alt="关联今日笔记" width="280">](docs/images/sticky-daily-zh-CN.png) |
 
-图片使用虚构的示例内容。参见[示例文件与显示步骤](docs/SCREENSHOTS.zh-CN.md)。
+使用当前开发版 WPF 控件渲染虚构笔记，并非桌面截图。[五种语言的示例与生成步骤](docs/SCREENSHOTS.zh-CN.md)。
 
-</details>
+## 所需工具和设置
 
-## 下载与安装
+**Windows 10 / 11（x64）**。ZIP 包含 .NET，无需管理员权限。
 
-1. 从 [v0.0.10 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) 下载 `StickyNotes-win-x64.zip` 并解压。
-2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
-3. 在通知区域图标的 **设置 → Vault 与每日笔记 → Obsidian CLI** 获取当前仓库，再选择便签保存目录。使用本地文件时，先禁用 CLI 并选择基准目录。参见[连接及插件设置](docs/TASKS-CLI-PREVIEW.md#简体中文)。
+| 使用目的 | 所需工具 | 初始设置 |
+| --- | --- | --- |
+| 仅使用 Markdown 便签 | 本应用 | 在设置中关闭 **使用 Obsidian CLI**，选择本地目录 |
+| 编辑 Obsidian 笔记 | 正在运行的 Obsidian＋Obsidian CLI | 启用 Obsidian **设置 → 常规 → 命令行界面**，在本应用连接 Vault |
+| 今日每日笔记 | 上述 CLI＋核心 **日记** 插件 | 在 Obsidian 配置目录和日期格式，创建今日笔记 |
+| Tasks 查询与原生勾选行为 | 上述 CLI＋第三方 **Tasks** 插件 | 在目标 Vault 启用；当前开发版要求稳定版 **8.2.2 或更高版本** |
+| Dataview 查询 | 上述 CLI＋**Dataview** | 在目标 Vault 启用；支持 LIST / TABLE / TASK |
+| Google 日程与任务 | Google 账号＋自己的 OAuth 配置 | 启用 Calendar API / Tasks API，准备桌面 OAuth JSON 并[授权](docs/GOOGLE-CALENDAR.zh-CN.md#setup) |
 
-无需管理员权限或另外安装 .NET。应用未签名，Windows 可能要求确认。更新、卸载和免安装使用见[安装指南](docs/INSTALL.zh-CN.md)。
+**新配置默认启用 CLI。** 不使用 Obsidian 时请关闭。CLI 内置于 Obsidian，无需专用的 Sticky Notes Obsidian 插件。[官方 CLI 要求](https://obsidian.md/help/cli) · [兼容性与限制](docs/TASKS-CLI-PREVIEW.md#简体中文)。
 
-<a id="使用应用"></a>
+## 开始使用
+
+1. 从 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) 下载 `StickyNotes-win-x64.zip`，全部解压后运行 `Install.cmd`。
+2. 在 Obsidian 启用 CLI、打开目标 Vault，然后启动 Markdown Sticky Notes。
+3. 在应用设置中确认 `Obsidian.com` 的绝对路径，输入 Vault 名称／ID，点击 **通过 CLI 获取 Vault 保存目录**。选择便签目录，再 **保存并关闭**。
+4. 从 `… → 创建与打开` 新建便签、打开 Markdown、关联笔记的一部分或显示每日笔记。
+
+本地模式、设置位置、更新和卸载见[安装指南](docs/INSTALL.zh-CN.md)。此处设置和图片对应当前开发版；与已发布 ZIP 的差异（多 Vault、Tasks 8.2.2 支持等）见[未发布](CHANGELOG.zh-CN.md#未发布)。
+
+## 功能列表
+
+| 功能 | 内容 |
+| --- | --- |
+| Markdown 显示与编辑 | 标题、列表、复选框、表格、代码、链接；保存为普通 `.md` |
+| 标题关联与每日笔记 | 显示／编辑部分内容，随日期切换，可保留昨日笔记 |
+| Tasks / Dataview | 显示查询结果，勾选已验证源位置的任务，保留查询原文 |
+| 任务输入 | 关键词／日期补全、Enter 续写列表、Tab 缩进、可配置勾选快捷键 |
+| Google 集成 | `@calendar today` 显示日程和有日期的未完成 Google Tasks；确认后修改日程标题／说明 |
+| 外观与窗口 | 颜色、大小、50–200% 缩放、置顶、临时置顶、任务栏显示 |
+| 便签管理 | 选择／迁移保存目录，重新显示已关闭便签，浏览／预览，重命名和删除 |
+| 数据保护 | 写入前备份、外部修改冲突检测 |
+| 多 Vault（未发布） | 各 Vault 的每日笔记、自定义名称和默认 Vault |
 
 ## 基本操作
 
 | 操作 | 方法 |
 | --- | --- |
-| 新建便签 | `… → 创建与打开 → 新建便签`，或通知区域菜单的 `新便签` |
-| 编辑与保存 | 点击正文（设置中选择单击／双击）／`Ctrl+E` → 编辑 → `Ctrl+S` 或 `Esc` |
-| 完成任务 | 点击复选框，保存到原始 Markdown |
-| 移动与调整大小 | 拖动顶部／边缘或右下角 |
-| 置顶 | `○ / ●`；`Alt + Z` 或 `…` 菜单可将所有便签临时置顶 10 秒 |
-| 显示缩放 | `… → 显示与属性 → 显示缩放`（50～200%） |
-| 关闭与退出 | `… → 关闭便签` 仅关闭便签；通知区域的 `退出` 退出应用 |
+| 编辑 | 点击正文（可配置单击／双击），或 `Ctrl+E` |
+| 保存并结束编辑 | `Ctrl+S` / `Esc`；显示补全候选时，第一次 Esc 关闭候选 |
+| 勾选任务 | 在阅读模式点击复选框 |
+| 置顶 | `○ / ●` 固定；`Alt+Z` 将全部便签置顶 10 秒 |
+| 关闭／退出 | `… → 关闭此便签`／从通知区域退出应用 |
 
-从点击位置对应的源文本处开始编辑。`Esc`保存并结束编辑；若补全候选已打开，首次`Esc`仅关闭候选。编辑器失去焦点且内容有变化时，会询问是否保存。可在设置中启用免确认保存。关闭便签不会删除 Markdown 文件。
+## 使用前须知
 
-任务栏图标、按钮显示和快捷键的详情见[操作与设置补充](docs/USAGE.zh-CN.md#editing)。
+- UI 支持**日语、英语、简体中文**。README、安装和界面示例还提供**繁体中文、韩语**。详细参考资料通常为三种语言。
+- CLI 集成需要 Obsidian 持续运行；内部 API 变化可能影响兼容性。
+- 不自动创建每日笔记，首次添加前请准备今日笔记。
+- 不完整复现 Obsidian 主题和插件视图。图片显示替代文字；不支持 DataviewJS、内联表达式、CALENDAR。
+- Google Tasks 只读且仅能获取日期。不支持计划时刻、与 Markdown 任务自动同步或新建日程。
+- 备份目录：`%LOCALAPPDATA%/StickyNotes/backups`。发生冲突时保留草稿，重新加载后重试。
 
-## 文件存储与 Obsidian
+## 详细资料与问题反馈
 
-确定仓库（CLI）或本地基准目录后，点击**选择便签保存文件夹…**。从列表选择或输入新的相对路径，点击**确定**后选择是否迁移已有应用便签。**是**迁移，**否**仅更改新便签位置，**取消**不做更改。范围、回滚及恢复请参见[文件夹选择与迁移指南](docs/STICKY-FOLDERS.md#简体中文)。
+[保存与迁移](docs/STICKY-FOLDERS.md#简体中文) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#简体中文) · [任务输入](docs/TASK-EDITING.md#简体中文) · [Dataview](docs/DATAVIEW.md#简体中文) · [多 Vault](docs/MULTIPLE-VAULTS.md#简体中文) · [便签管理](docs/QUERY-EDITING-AND-BROWSER.md#简体中文) · [Google](docs/GOOGLE-CALENDAR.zh-CN.md) · [开发](docs/DEVELOPMENT.zh-CN.md) · [许可声明](THIRD-PARTY-NOTICES.txt)
 
-显式便签目录优先于Obsidian的一般新笔记位置。未选择时，CLI保持Obsidian默认位置，本地模式保留已有目录（初始为`Documents/StickyNotesData`）。日记设置独立。
-
-## 显示和编辑每日笔记的指定部分
-
-1. CLI 模式下配置 Obsidian 核心 Daily notes 插件，在便签设置中确认读取结果。本地模式下选择每日笔记文件夹及带日期标签的正则表达式，确认匹配文件名并保存。
-2. 从 `… → 创建与打开 → 显示每日笔记…` 选择标题，点击 `显示`。留空则显示整个正文。
-3. 在便签中编辑正文或勾选任务，修改会保存到原笔记。
-
-首次添加需要今日文件。之后若今日笔记尚未创建，可按设置显示等待提示或保留昨天。详见[文件名示例与切换选项](docs/USAGE.zh-CN.md#daily)。
-
-固定笔记使用 `… → 创建与打开 → 显示笔记的一部分…`。详见[标题选择](docs/USAGE.zh-CN.md#headings)。
-
-## Google Calendar
-
-<a id="初次授权"></a>
-
-先在设置右侧窗格按照[连接指南](docs/GOOGLE-CALENDAR.zh-CN.md#setup)完成授权，再将以下命令作为独立段落保存：
-
-```text
-@calendar 2026-10-06T09:00
-```
-
-**由于 Google Tasks API 的规格限制，无法获取计划时间。** 即使已在 Google 中设置时间，API 也只提供日期，因此本应用显示“无时间”。
-
-也以只读方式显示 Google Tasks。`@calendar today` 获取当天有日期的未完成任务。现有用户需启用 Tasks API 并重新授权 Tasks 读取权限，详见[Tasks 设置指南](docs/GOOGLE-CALENDAR.zh-CN.md#tasks)。
-
-`@calendar today` 自动跟随电脑当天的日期（本地时间0点至次日0点）。可用 `@calendar today 会议` 按关键词筛选。查看便签时约每60秒检查日期并获取日程，从睡眠恢复后也会跟随当前日期；编辑期间暂停自动刷新。
-
-**无需关键词或时区偏移也能搜索。** 省略时区时使用 Windows 本地时间。如需筛选，在末尾追加 `会议` 等关键词。
-
-编辑时，在独立段落输入 `@` 可显示补全候选与示例。Tab、Enter 或点击候选会插入今天的 `00:00`，并选中日期时间供修改。插入的日期保持固定。
-
-点击日程可编辑标题和说明，确认后发送到 Google。不支持创建日程或自动同步 Markdown 任务。详见[搜索规则、JSON 管理与故障排查](docs/GOOGLE-CALENDAR.zh-CN.md)。
-
-## Markdown 支持与数据保护
-
-支持标题、列表、任务、表格、代码和链接。图片显示为替代文本，部分 Obsidian 专用语法尚不支持。
-
-外部修改冲突时阻止覆盖，写入前备份保存在 `%LOCALAPPDATA%/StickyNotes/backups`。详见[支持范围与恢复说明](docs/USAGE.zh-CN.md#data)。
-
-## 补充资料
-
-| 内容 | 资料 |
-| --- | --- |
-| 安装、更新与卸载 | [安装指南](docs/INSTALL.zh-CN.md) |
-| 操作、保存位置与每日笔记 | [操作与设置补充](docs/USAGE.zh-CN.md) |
-| Google 授权与日程搜索 | [Google Calendar 指南](docs/GOOGLE-CALENDAR.zh-CN.md) |
-| 各版本变化 | [更新日志](CHANGELOG.zh-CN.md) |
-| 构建、验证与发布 | [开发指南](docs/DEVELOPMENT.zh-CN.md) |
-| 示例与许可证 | [每日笔记](examples/Daily.md) · [Obsidian Bases](examples/StickyNotes.base) · [许可证](THIRD-PARTY-NOTICES.txt) |
+[报告问题或建议](https://github.com/AvocadoWasabi/StickyNotes/issues)时，请注明应用／Windows／插件版本、CLI 或本地模式及重现步骤。不要上传个人笔记、OAuth JSON 或令牌。
