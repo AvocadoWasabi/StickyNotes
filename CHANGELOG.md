@@ -6,6 +6,10 @@ User-facing changes are recorded here, newest releases first. Development commit
 
 See the [README](README.en.md) for usage and [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) for published packages when available.
 
+## Unreleased
+
+- Rename the folder browser to **Manage sticky-note folder…** and add confirmed deletion of a selected Markdown file, recovery files, conflict/draft protection, and cleanup of open notes and closed-note history. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
+
 ## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22
 
 - Show an explanatory message when double-clicking a note title cannot rename the file, including daily notes, active saves, and notes that have not loaded.

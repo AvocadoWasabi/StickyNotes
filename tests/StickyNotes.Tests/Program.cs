@@ -150,6 +150,7 @@ internal static partial class Program
             TasksPreviewTests(root);
             DataviewTests(root);
             QueryEditingTests(root);
+            NoteDeleteTests(root);
             NoteSourceTests(root);
             Console.WriteLine($"\n{count} tests passed.");
         }

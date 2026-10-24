@@ -8,7 +8,7 @@ v0.0.10新增成组恢复最近关闭的便签、文件重命名及无法重命�
 
 v0.0.8新增任务关键字／日期补全及Enter继续检查列表；普通CLI复选框使用Tasks原生完成逻辑。参见[任务输入与限制](docs/TASK-EDITING.md#简体中文)。
 
-可从 **… → 从便签文件夹打开…**、通知区域菜单或任务栏菜单，通过正文／YAML 预览重新打开已关闭便签。参见 [复选框及便签列表](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
+可从 **… → 管理便签文件夹…**、通知区域菜单或任务栏菜单，通过正文／YAML 预览重新打开已关闭便签。参见 [复选框及便签列表](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
 v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Markdown 同时显示。请在目标仓库启用 Dataview。结果约每 30 秒刷新，已验证原任务的复选框可直接更新原笔记。不支持 DataviewJS、内联表达式或 CALENDAR。参见 [Dataview 设置和限制](docs/DATAVIEW.md#简体中文)。
 

@@ -6,6 +6,10 @@
 
 使用方法见 [README](README.zh-CN.md)，发布包见 [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases)。
 
+## 未发布
+
+- 将列表改名为 **管理便签文件夹…**，增加确认后删除所选 Markdown 文件的功能。保留恢复文件，保护冲突及未保存编辑，并清理打开的便签及关闭历史。[详情](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
+
 ## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22
 
 - 双击便签标题但无法重命名时，显示说明消息，包括每日笔记、正在保存及尚未加载的笔记。

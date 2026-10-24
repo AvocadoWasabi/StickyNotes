@@ -6,6 +6,10 @@
 
 使い方は [日本語README](README.ja.md)、公開後の配布ファイルは [GitHub Releases](https://github.com/AvocadoWasabi/StickyNotes/releases) を参照してください。
 
+## 未リリース
+
+- 一覧を **付箋フォルダを管理する…** に改称し、選択したMarkdownファイルの確認付き削除を追加。復元用ファイルを残し、競合・未保存編集を保護し、開いている付箋と閉じた履歴を整理します。[詳細](docs/QUERY-EDITING-AND-BROWSER.md#日本語)。
+
 ## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22
 
 - 名前変更できない付箋のタイトルをダブルクリックしたとき、デイリーノート・保存中・読み込み未完了などの理由をメッセージで表示。

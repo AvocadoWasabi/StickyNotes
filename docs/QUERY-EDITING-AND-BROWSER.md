@@ -8,7 +8,9 @@ v0.0.8 lets you change checkboxes in Obsidian **Tasks** results and Dataview **T
 
 Tasks uses the installed plugin's native status cycle and recurrence output, including its completion dates. Dataview changes only the selected task's checkbox to `x` or space; it does not apply Dataview's optional completion-date tracking or recursive child completion. Original YAML, BOM, newline style and unrelated lines are preserved. A whole-note hash check and backup run before writing through `vault.process`. External changes reject the write; refresh and retry. A failed/timed-out update clears actionable cached results; work already running in Obsidian may still finish, so refresh before retrying. Query source remains editable as before.
 
-**Browse sticky-note folder…** is available from a note's **…** menu, the notification-area menu, and the Windows taskbar menu. It starts in the configured sticky-note folder (or Obsidian's default new-note folder) and lists Markdown files recursively, including closed notes. Choose another folder under the configured base/vault, filter by filename/path, then select a note. **Body preview** renders ordinary Markdown; **YAML** displays the original frontmatter. Both are read-only; embedded queries/scripts are not executed in this picker. Select **Open as sticky note** or double-click to open it. An already-open note is activated and restored if minimized.
+**Manage sticky-note folder…** is available from a note's **…** menu, the notification-area menu, and the Windows taskbar menu. It starts in the configured sticky-note folder (or Obsidian's default new-note folder) and lists Markdown files recursively, including closed notes. Choose another folder under the configured base/vault, filter by filename/path, then select a note. **Body preview** renders ordinary Markdown; **YAML** displays the original frontmatter. Both are read-only; embedded queries/scripts are not executed in this picker. Select **Open as sticky note** or double-click to open it. An already-open note is activated and restored if minimized.
+
+**Delete note** asks you to confirm the full path and removes the entire selected Markdown file, including YAML and all sections. Unsaved edits in any view of that file block deletion. Successful deletion closes its open views and removes ordinary-file entries from recently closed history; daily-note rules remain configured. Local mode moves the file to the app data folder under `deleted-notes/<operation-id>/`; CLI mode saves a copy there before moving it to the vault trash through [Obsidian’s API](https://docs.obsidian.md/Reference/TypeScript+API/Vault/trash). Each recovery folder contains `source.json` with the original location. Restore manually by copying the Markdown file back after checking for name conflicts. Refresh before retrying a conflict or connection error; a timed-out Obsidian operation can still finish. Recovery files are not automatically purged.
 
 Lists are limited to 1,000 Markdown notes; select a smaller folder if needed. Hidden/system/link directories are skipped in local mode. Preview text is limited to 50,000 characters; opening the note uses its full contents. CLI mode lists and reads through Obsidian, with no local fallback. Changing selection or closing the picker discards late preview responses. Missing files and connection errors are shown without modifying notes.
 
@@ -20,7 +22,9 @@ v0.0.8は、Obsidianの **Tasks** 検索結果とDataviewの **TASK** 検索結�
 
 Tasksは、本家プラグインの状態遷移と繰り返し処理を利用し、完了日などもそれに従います。Dataviewは選択したタスクのチェック記号だけを`x`／空白へ変更し、任意設定の完了日記録や子タスクの再帰的な完了処理は適用しません。元のYAML・BOM・改行形式・無関係な行を保持します。`vault.process`でノート全体のハッシュを照合し、バックアップ後に書き込みます。外部変更があれば保存を拒否するため、更新後に再試行してください。失敗・タイムアウト時は操作可能な結果キャッシュを消します。Obsidian内の開始済み処理が後から完了する場合があるため、再試行前に更新してください。クエリ原文は従来どおり編集できます。
 
-**付箋フォルダから開く…**を、付箋の **…** メニュー・通知領域の常駐メニュー・Windowsタスクバーメニューに追加しました。設定済みの付箋フォルダ（未指定ならObsidianの新規保存先）から始まり、閉じた付箋を含めMarkdownをサブフォルダまで一覧表示します。基準フォルダ／Vault内の別フォルダへ切り替え、ファイル名・パスで絞り込み、ノートを選べます。**本文プレビュー**は通常のMarkdownを描画し、**YAML**は元のフロントマターを表示します。どちらも読み取り専用で、この画面ではクエリやスクリプトを実行しません。**付箋として開く**またはダブルクリックで開きます。既に開いている付箋は前面へ移し、最小化されていれば復元します。
+**付箋フォルダを管理する…**を、付箋の **…** メニュー・通知領域の常駐メニュー・Windowsタスクバーメニューに追加しました。設定済みの付箋フォルダ（未指定ならObsidianの新規保存先）から始まり、閉じた付箋を含めMarkdownをサブフォルダまで一覧表示します。基準フォルダ／Vault内の別フォルダへ切り替え、ファイル名・パスで絞り込み、ノートを選べます。**本文プレビュー**は通常のMarkdownを描画し、**YAML**は元のフロントマターを表示します。どちらも読み取り専用で、この画面ではクエリやスクリプトを実行しません。**付箋として開く**またはダブルクリックで開きます。既に開いている付箋は前面へ移し、最小化されていれば復元します。
+
+**付箋を削除**はフルパスを確認後、YAML・全見出しを含む選択したMarkdownファイル全体を削除します。同じファイルを表示中の付箋に未保存の編集がある場合は拒否します。成功時は表示中の付箋を閉じ、通常ファイルの閉じた履歴から除外します。デイリーノートの表示ルールは保持します。通常方式はアプリのデータフォルダ内の `deleted-notes/<操作ID>/` へ移動し、CLI方式はそこへコピーを残してから [Obsidian API](https://docs.obsidian.md/Reference/TypeScript+API/Vault/trash) でVaultのゴミ箱へ移します。各復元フォルダの `source.json` に元の場所を記録します。復元するには同名ファイルがないか確認してMarkdownを元の場所へ手動でコピーしてください。競合・接続エラー時は更新してから再試行してください。タイムアウトしたObsidianの処理が後から完了する場合があります。復元ファイルは自動削除しません。
 
 一覧はMarkdown最大1,000件で、多い場合は小さいフォルダを選んでください。ローカル方式では隠し・システム・リンク先のディレクトリを除外します。本文プレビューは先頭50,000文字までですが、付箋として開くと全文を扱います。CLI方式の一覧・本文はObsidian経由で取得し、ローカルへフォールバックしません。選択変更や画面を閉じた後の古い応答は破棄します。ファイルの削除や接続エラーは、ノートを変更せず画面に表示します。
 
@@ -32,7 +36,9 @@ v0.0.8支持修改 Obsidian **Tasks** 和 Dataview **TASK** 查询结果中的�
 
 Tasks 使用已安装插件的原生状态循环和重复任务输出，包括完成日期。Dataview 仅将选中任务的复选框标记改为 `x` 或空格，不应用其可选的完成日期跟踪或递归完成子任务设置。保留原 YAML、BOM、换行格式及无关行。通过 `vault.process` 检查整篇笔记哈希并备份后写入。外部修改会拒绝保存，请刷新后重试。更新失败／超时时清除可操作的缓存结果；Obsidian 内已开始的操作可能随后完成，因此重试前先刷新。查询原文仍可正常编辑。
 
-便签的 **…** 菜单、通知区域菜单和 Windows 任务栏菜单均提供 **从便签文件夹打开…**。默认从已配置的便签文件夹（未指定时为 Obsidian 新笔记目录）开始，递归列出 Markdown，包括已关闭的便签。可在配置的基础目录／仓库内选择其他文件夹，按文件名或路径筛选并选择笔记。**正文预览** 渲染普通 Markdown，**YAML** 显示原 frontmatter。两者均只读，选择器不执行查询或脚本。点击 **作为便签打开** 或双击即可打开；已打开的便签会激活，最小化时会恢复。
+便签的 **…** 菜单、通知区域菜单和 Windows 任务栏菜单均提供 **管理便签文件夹…**。默认从已配置的便签文件夹（未指定时为 Obsidian 新笔记目录）开始，递归列出 Markdown，包括已关闭的便签。可在配置的基础目录／仓库内选择其他文件夹，按文件名或路径筛选并选择笔记。**正文预览** 渲染普通 Markdown，**YAML** 显示原 frontmatter。两者均只读，选择器不执行查询或脚本。点击 **作为便签打开** 或双击即可打开；已打开的便签会激活，最小化时会恢复。
+
+**删除便签**会确认完整路径，并删除所选 Markdown 文件的全部内容，包括 YAML 和所有章节。同一文件的任一便签有未保存编辑时拒绝删除。成功后关闭显示该文件的便签，并从最近关闭历史中移除普通文件记录；保留每日笔记显示规则。本地模式将文件移动到应用数据目录的 `deleted-notes/<操作ID>/`；CLI 模式先在那里保存副本，再通过 [Obsidian API](https://docs.obsidian.md/Reference/TypeScript+API/Vault/trash) 移入仓库回收站。每个恢复文件夹的 `source.json` 记录原路径。恢复时先检查重名冲突，再手动将 Markdown 复制回原位置。遇到冲突或连接错误请刷新后重试；超时的 Obsidian 操作可能随后完成。恢复文件不会自动清理。
 
 每次最多列出 1,000 篇 Markdown，超出时请选择更小的文件夹。本地模式跳过隐藏、系统及链接目录。正文预览最多 50,000 字符，作为便签打开时使用完整内容。CLI 模式通过 Obsidian 列举和读取，不回退到本地。切换选择或关闭窗口后丢弃过期响应。文件缺失及连接错误会在界面显示，不修改笔记。
 

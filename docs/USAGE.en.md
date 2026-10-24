@@ -10,7 +10,7 @@ After a task and a space, the generic menu starts with **⏎** (Enter continues 
 
 For task keyword/date completion, Enter-to-continue checklists and native Tasks checkbox behavior, see [task editing](TASK-EDITING.md#english).
 
-Use **Browse sticky-note folder…** from **…**, the tray menu or the taskbar menu to reopen closed notes with body/YAML previews. [Query checkbox updates and folder browsing](QUERY-EDITING-AND-BROWSER.md#english).
+Use **Manage sticky-note folder…** from **…**, the tray menu or the taskbar menu to reopen closed notes with body/YAML previews. [Query checkbox updates and folder browsing](QUERY-EDITING-AND-BROWSER.md#english).
 
 v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](DATAVIEW.md#english).
 
@@ -80,7 +80,7 @@ Canceled closes are excluded. Reopening restores display settings and saved file
 
 Enable `Show note icons in the taskbar` in Settings to show note icons in the taskbar (off by default). It applies to all notes and persists after restarting. The notification-area icon remains available.
 
-Right-click the taskbar icon to access the same ten operations as the notification-area menu: New note, Open Markdown, Browse sticky-note folder, Link a section, Display a daily note, Show all, Reopen recently closed notes, Temporarily bring notes to the top, Settings, and Exit. Windows displays these as Jump List tasks alongside its own pin/close commands.
+Right-click the taskbar icon to access the same ten operations as the notification-area menu: New note, Open Markdown, Manage sticky-note folder, Link a section, Display a daily note, Show all, Reopen recently closed notes, Temporarily bring notes to the top, Settings, and Exit. Windows displays these as Jump List tasks alongside its own pin/close commands.
 
 Show all also restores minimized notes. Operations are forwarded to the running app, retaining the usual save confirmation on exit.
 

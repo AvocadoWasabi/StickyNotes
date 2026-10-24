@@ -29,6 +29,37 @@ async function stickyFolderOperation(q) {
         return { folders: ['.', ...folders], defaultFolder: parent === '/' || !parent ? '.' : parent };
     }
     const path = clean(q.path);
+    if (q.mode === 'delete') {
+        if (!/^[0-9a-f]{32}$/.test(q.operation) || !/^cli:[0-9a-f]{64}$/.test(q.hash)) fail('Invalid delete request.');
+        const operations = window.__stickyNotesDeletes ||= new Map();
+        const identity = JSON.stringify([q.root, path, q.hash, q.backup]);
+        if (operations.has(q.operation)) {
+            const previous = operations.get(q.operation);
+            if (previous.identity !== identity) fail('Delete operation conflict.');
+            if (previous.error) fail(previous.error);
+            return {};
+        }
+        const file = get(path);
+        if (!file || folder(file) || file.extension !== 'md') fail('Source Markdown note is missing.');
+        const fs = require('fs'), nodePath = require('path');
+        // Reject filesystem links even when the vault index contains the path.
+        for (let current = nodePath.resolve(q.root, path); ; current = nodePath.dirname(current)) {
+            if (fs.lstatSync(current).isSymbolicLink()) fail('Linked paths cannot be deleted.');
+            if (current === nodePath.dirname(current)) break;
+        }
+        try {
+            const text = await read(file);
+            if (hash(text) !== q.hash) fail('Delete conflict; refresh before retrying.');
+            fs.writeFileSync(nodePath.join(q.backup, nodePath.basename(path)), text, {encoding:'utf8', flag:'wx'});
+            if (hash(await read(file)) !== q.hash) fail('Delete conflict; refresh before retrying.');
+            await app.vault.trash(file, false);
+            operations.set(q.operation, {identity});
+        } catch (error) {
+            operations.set(q.operation, {identity, error:String(error)});
+            throw error;
+        }
+        return {};
+    }
     if (q.mode === 'rename') {
         const target = clean(q.target);
         if (!/^[0-9a-f]{32}$/.test(q.operation) || target.split('/').slice(0, -1).join('/') !== path.split('/').slice(0, -1).join('/')) fail('Invalid rename request.');

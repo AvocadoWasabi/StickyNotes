@@ -1018,8 +1018,8 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="DataviewPreview.QueryLimit" xml:space="preserve">
     <value>Dataviewクエリは1ノート20ブロック・合計8,000文字までです。</value>
   </data>
-  <data name="NoteBrowser.Title" xml:space="preserve"><value>付箋フォルダから開く…</value></data>
-  <data name="NoteBrowser.Help" xml:space="preserve"><value>フォルダ内のMarkdownを選んで開き直せます。プレビューとYAMLは読み取り専用で、クエリは実行しません。</value></data>
+  <data name="NoteBrowser.Title" xml:space="preserve"><value>付箋フォルダを管理する…</value></data>
+  <data name="NoteBrowser.Help" xml:space="preserve"><value>フォルダ内のMarkdownを選んで開き直したり削除したりできます。プレビューとYAMLは読み取り専用で、クエリは実行しません。</value></data>
   <data name="NoteBrowser.Open" xml:space="preserve"><value>付箋として開く</value></data>
   <data name="NoteBrowser.Search" xml:space="preserve"><value>ファイル名・パスで絞り込み</value></data>
   <data name="NoteBrowser.Preview" xml:space="preserve"><value>本文プレビュー</value></data>
@@ -1056,4 +1056,12 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="Rename.Draft" xml:space="preserve"><value>同じファイルを表示している付箋の未保存変更を保存してから、もう一度実行してください。</value></data>
   <data name="Rename.Recovery" xml:space="preserve"><value>名前変更または設定の保存を確認できませんでした。元／変更先のファイルと下記の復旧記録を確認してください。ファイルが移動済みの場合は変更先を開き直してください。</value></data>
   <data name="Rename.Unavailable" xml:space="preserve"><value>ノートを読み込めていないため、ファイル名を変更できません。読み込み完了後にもう一度お試しください。</value></data>
+  <data name="NoteBrowser.Delete" xml:space="preserve"><value>付箋を削除</value></data>
+  <data name="NoteBrowser.DeleteConfirm" xml:space="preserve"><value>次のMarkdownファイル全体を削除しますか？
+{0}
+
+このファイルを表示中の付箋も閉じます。復元用のファイルはアプリのデータフォルダ内の deleted-notes に残ります。</value></data>
+  <data name="NoteBrowser.Deleting" xml:space="preserve"><value>付箋を削除しています…</value></data>
+  <data name="NoteBrowser.DeleteDraft" xml:space="preserve"><value>このファイルを表示中の付箋に未保存の編集があります。保存するか編集を取り消してから削除してください。</value></data>
+  <data name="NoteBrowser.SettingsChanged" xml:space="preserve"><value>設定が変更されました。管理画面を開き直してください。</value></data>
 </root>

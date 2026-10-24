@@ -8,6 +8,10 @@ internal sealed class NoteBrowserWindow : Window
     private sealed record Entry(string Path, string Label) { public override string ToString() => Label; }
     private readonly NoteSource source;
     private readonly Action<string> open;
+    private readonly Func<FileSnapshot, Task>? delete;
+    private readonly Func<string, bool>? confirmDelete;
+    private FileSnapshot? selectedSnapshot;
+    private bool deleting;
     private readonly CancellationTokenSource lifetime = new();
     private CancellationTokenSource? listing, reading;
     private bool closed, initializing;
@@ -19,10 +23,14 @@ internal sealed class NoteBrowserWindow : Window
     internal TextBox Yaml { get; } = new() { IsReadOnly = true, AcceptsReturn = true, TextWrapping = TextWrapping.Wrap, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
     internal TextBlock Status { get; } = new() { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 8) };
     internal Button Open { get; } = new() { Content = L10n.Text("NoteBrowser.Open"), IsEnabled = false, MinWidth = 100 };
+    internal Button Delete { get; } = new() { Content = L10n.Text("NoteBrowser.Delete"), IsEnabled = false, MinWidth = 100 };
+    private readonly Button refresh;
 
-    internal NoteBrowserWindow(NoteSource source, Action<string> open)
+    internal NoteBrowserWindow(NoteSource source, Action<string> open, Func<FileSnapshot, Task>? delete = null,
+        Func<string, bool>? confirmDelete = null)
     {
         this.source = source; this.open = open;
+        this.delete = delete; this.confirmDelete = confirmDelete;
         Title = L10n.Text("NoteBrowser.Title"); Width = 900; Height = 620; MinWidth = 600; MinHeight = 400;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         var root = new DockPanel { Margin = new Thickness(16) };
@@ -33,7 +41,8 @@ internal sealed class NoteBrowserWindow : Window
         header.Children.Add(Search); header.Children.Add(Status); root.Children.Add(header);
         var footer = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 10, 0, 0) };
         DockPanel.SetDock(footer, Dock.Bottom);
-        footer.Children.Add(Ui.Button(L10n.Text("NoteBrowser.Refresh"), () => _ = LoadFolderAsync()));
+        refresh = Ui.Button(L10n.Text("NoteBrowser.Refresh"), () => _ = LoadFolderAsync());
+        footer.Children.Add(refresh); footer.Children.Add(Delete);
         footer.Children.Add(Open); root.Children.Add(footer);
         var grid = new Grid(); grid.ColumnDefinitions.Add(new() { Width = new GridLength(2, GridUnitType.Star) });
         grid.ColumnDefinitions.Add(new() { Width = new GridLength(3, GridUnitType.Star) });
@@ -47,7 +56,9 @@ internal sealed class NoteBrowserWindow : Window
         Notes.SelectionChanged += (_, _) => _ = LoadPreviewAsync();
         Notes.MouseDoubleClick += (_, e) => { if (e.OriginalSource is DependencyObject element && ItemsControl.ContainerFromElement(Notes, element) is ListBoxItem) OpenSelected(); };
         Open.Click += (_, _) => OpenSelected();
+        Delete.Click += async (_, _) => await DeleteSelectedAsync();
         Loaded += async (_, _) => await InitializeAsync();
+        Closing += (_, e) => { if (deleting) e.Cancel = true; };
         Closed += (_, _) => { closed = true; lifetime.Cancel(); listing?.Cancel(); reading?.Cancel(); lifetime.Dispose(); };
     }
 
@@ -72,7 +83,7 @@ internal sealed class NoteBrowserWindow : Window
 
     internal async Task LoadFolderAsync()
     {
-        if (closed || Folder.SelectedItem is not string relative) return;
+        if (closed || deleting || Folder.SelectedItem is not string relative) return;
         listing?.Cancel(); reading?.Cancel();
         using var cancel = CancellationTokenSource.CreateLinkedTokenSource(lifetime.Token); listing = cancel;
         paths = []; Filter(); Status.Text = L10n.Text("NoteBrowser.Loading");
@@ -97,12 +108,12 @@ internal sealed class NoteBrowserWindow : Window
         if (Notes.SelectedItem is null) { reading?.Cancel(); ClearPreview(); }
     }
 
-    private void ClearPreview() { Preview.Document = new FlowDocument(); Yaml.Text = ""; Open.IsEnabled = false; }
+    private void ClearPreview() { Preview.Document = new FlowDocument(); Yaml.Text = ""; selectedSnapshot = null; Open.IsEnabled = Delete.IsEnabled = false; }
 
     internal async Task LoadPreviewAsync()
     {
         reading?.Cancel(); ClearPreview();
-        if (closed || Notes.SelectedItem is not Entry entry) return;
+        if (closed || deleting || Notes.SelectedItem is not Entry entry) return;
         using var cancel = CancellationTokenSource.CreateLinkedTokenSource(lifetime.Token); reading = cancel;
         try
         {
@@ -115,6 +126,7 @@ internal sealed class NoteBrowserWindow : Window
             var body = split.Body[..length];
             Preview.Document = MarkdownView.Render(body, (_, _) => { }, readOnly: true);
             Yaml.Text = split.Frontmatter; Open.IsEnabled = true;
+            selectedSnapshot = snapshot; Delete.IsEnabled = delete is not null;
             Status.Text = entry.Label + (split.Body.Length > body.Length ? L10n.Text("NoteBrowser.Truncated") : "");
         }
         catch (OperationCanceledException) when (cancel.IsCancellationRequested) { }
@@ -124,8 +136,37 @@ internal sealed class NoteBrowserWindow : Window
 
     internal void OpenSelected()
     {
-        if (closed || !Open.IsEnabled || Notes.SelectedItem is not Entry entry) return;
+        if (closed || deleting || !Open.IsEnabled || Notes.SelectedItem is not Entry entry) return;
         try { open(entry.Path); Close(); }
         catch (Exception ex) { Status.Text = ex.Message; }
+    }
+
+    internal async Task DeleteSelectedAsync()
+    {
+        if (closed || deleting || !Delete.IsEnabled || delete is null || selectedSnapshot is not { } expected) return;
+        deleting = true;
+        Folder.IsEnabled = Search.IsEnabled = Notes.IsEnabled = refresh.IsEnabled = Open.IsEnabled = Delete.IsEnabled = false;
+        var deleted = false;
+        string? error = null;
+        try
+        {
+            var confirmed = confirmDelete?.Invoke(expected.Path) ?? MessageBox.Show(this,
+                L10n.Format("NoteBrowser.DeleteConfirm", expected.Path), L10n.Text("NoteBrowser.Delete"),
+                MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes;
+            if (!confirmed) return;
+            Status.Text = L10n.Text("NoteBrowser.Deleting");
+            await delete(expected);
+            deleted = true;
+        }
+        catch (Exception ex) { error = ex.Message; }
+        finally
+        {
+            deleting = false;
+            Folder.IsEnabled = Search.IsEnabled = Notes.IsEnabled = refresh.IsEnabled = true;
+            if (deleted) await LoadFolderAsync();
+            else if (error is not null) ClearPreview();
+            else Open.IsEnabled = Delete.IsEnabled = true;
+            if (error is not null) Status.Text = error;
+        }
     }
 }

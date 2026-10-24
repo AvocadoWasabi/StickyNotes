@@ -8,7 +8,7 @@ Task completion now follows the upstream default menu after a space: Enter on **
 
 v0.0.8 adds task keyword/date completion and Enter-to-continue checklists; ordinary CLI checkboxes use Tasks native completion behavior. See [task editing and limits](docs/TASK-EDITING.md#english).
 
-Browse closed notes from **… → Browse sticky-note folder…**, the tray menu, or the taskbar menu, with body and YAML previews. [Checkbox updates and note browser](docs/QUERY-EDITING-AND-BROWSER.md#english).
+Browse closed notes from **… → Manage sticky-note folder…**, the tray menu, or the taskbar menu, with body and YAML previews. [Checkbox updates and note browser](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
 v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tasks and normal Markdown. Enable Dataview in the selected vault. Results refresh about every 30 seconds; verified task checkboxes update their source notes. DataviewJS, inline expressions and CALENDAR are unsupported. See [Dataview setup and limits](docs/DATAVIEW.md#english).
 

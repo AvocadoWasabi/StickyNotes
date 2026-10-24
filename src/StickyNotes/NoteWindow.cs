@@ -789,7 +789,7 @@ public sealed partial class NoteWindow : Window
     private void OnClosing(object? sender, CancelEventArgs e)
     {
         closeRequested = app.CloseClock();
-        if (!app.Exiting && !CanClose()) { e.Cancel = true; return; }
+        if (!deleted && !app.Exiting && !CanClose()) { e.Cancel = true; return; }
         if (initialized) MonitorLayout.Capture(this, Placement);
     }
 

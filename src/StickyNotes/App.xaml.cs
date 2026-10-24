@@ -134,7 +134,13 @@ public partial class App : Application
     public void BrowseNotes()
     {
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
-        new NoteBrowserWindow(NoteSources(Config), path => ShowNote(new() { Path = path })).ShowDialog();
+        var settings = Config;
+        var source = NoteSources(settings);
+        new NoteBrowserWindow(source, path => ShowNote(new() { Path = path }), expected =>
+        {
+            if (!ReferenceEquals(settings, Config)) throw new InvalidOperationException(L10n.Text("NoteBrowser.SettingsChanged"));
+            return DeleteNoteAsync(source, expected);
+        }).ShowDialog();
     }
 
     public void LinkSection()
@@ -151,6 +157,7 @@ public partial class App : Application
 
     public void ShowNote(NotePlacement placement)
     {
+        if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         lastCloseCompleted = null;
         var existing = Notes.FirstOrDefault(n => n.Placement.Daily == placement.Daily &&
             n.Placement.Heading == placement.Heading && string.Equals(n.Placement.Path, placement.Path, StringComparison.OrdinalIgnoreCase));

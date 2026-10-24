@@ -1018,8 +1018,8 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="DataviewPreview.QueryLimit" xml:space="preserve">
     <value>Dataview queries are limited to 20 blocks and 8,000 total characters per note.</value>
   </data>
-  <data name="NoteBrowser.Title" xml:space="preserve"><value>Browse sticky-note folder…</value></data>
-  <data name="NoteBrowser.Help" xml:space="preserve"><value>Select a Markdown note to reopen. Preview and YAML are read-only; queries are not executed.</value></data>
+  <data name="NoteBrowser.Title" xml:space="preserve"><value>Manage sticky-note folder…</value></data>
+  <data name="NoteBrowser.Help" xml:space="preserve"><value>Select a Markdown note to reopen or delete. Preview and YAML are read-only; queries are not executed.</value></data>
   <data name="NoteBrowser.Open" xml:space="preserve"><value>Open as sticky note</value></data>
   <data name="NoteBrowser.Search" xml:space="preserve"><value>Filter by filename or path</value></data>
   <data name="NoteBrowser.Preview" xml:space="preserve"><value>Body preview</value></data>
@@ -1056,4 +1056,12 @@ Ordinary linked notes and daily notes are excluded. Relative links inside moved 
   <data name="Rename.Draft" xml:space="preserve"><value>Save unsaved changes in other sticky notes displaying this file, then try again.</value></data>
   <data name="Rename.Recovery" xml:space="preserve"><value>Could not confirm the rename or save settings. Check the original/destination files and recovery record below. If the file has moved, reopen the destination.</value></data>
   <data name="Rename.Unavailable" xml:space="preserve"><value>The file cannot be renamed because the note has not loaded. Try again after it finishes loading.</value></data>
+  <data name="NoteBrowser.Delete" xml:space="preserve"><value>Delete note</value></data>
+  <data name="NoteBrowser.DeleteConfirm" xml:space="preserve"><value>Delete this entire Markdown file?
+{0}
+
+Notes displaying this file will also close. A recovery file remains in deleted-notes under the app data folder.</value></data>
+  <data name="NoteBrowser.Deleting" xml:space="preserve"><value>Deleting note…</value></data>
+  <data name="NoteBrowser.DeleteDraft" xml:space="preserve"><value>A note displaying this file has unsaved edits. Save or discard those edits before deleting.</value></data>
+  <data name="NoteBrowser.SettingsChanged" xml:space="preserve"><value>Settings have changed. Reopen the management window.</value></data>
 </root>
