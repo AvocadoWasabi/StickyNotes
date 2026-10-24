@@ -72,6 +72,7 @@ internal static partial class Program
         Throws<IOException>(() => disconnected.ResolveDailyAsync(date).GetAwaiter().GetResult(), "Native daily: CLI failure cannot fall back to legacy folder/regex");
         Throws<InvalidOperationException>(() => ObsidianTasksClient.ParseEnvelope("=> STICKY_TASKS_PREVIEW:{\"error\":\"STICKY_DAILY_DISABLED\"}"), "Native daily: disabled core plugin is an explicit error");
         NativeDailySettingsUiTests(root);
+        VaultFolderDiscoveryTests(root);
         NativeDailyWindowTests(root);
     }
 

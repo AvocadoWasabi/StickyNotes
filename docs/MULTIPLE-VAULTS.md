@@ -7,7 +7,8 @@
 Unreleased source changes: existing settings become **Main**; the first added Vault starts as **Sub**. These display names can be changed at any time and do not select the Obsidian connection.
 
 1. Open **Settings → Vaults & daily notes**. Select a registration on the left, or **Add Vault**. Edit its display name and select CLI or local access. The common `Obsidian.com` executable path is under **General**.
-2. For CLI, enter the absolute Vault root and its Obsidian name/ID, or use **Get open vault from Obsidian**. When registering multiple Vaults, specify each CLI target explicitly. Keep each target Vault open in Obsidian with the required plugins enabled. Detection uses the active Vault; it does not enumerate all saved Vaults.
+2. For CLI, enter the Obsidian **Vault name/ID** (not the Main/Sub display name), then click **Get Vault folder via CLI** to fill the absolute Vault root. Typing alone does not fetch the root. An empty name uses Obsidian's default selection (working-directory Vault, otherwise active Vault) and fills its name too. The screen shows fetching, success or failure; Save is disabled during fetching. Failure keeps the inputs; edits, profile switches or closing discard stale results. Explicit IDs are preserved. Keep the target Vault open in Obsidian with the required plugins enabled. Manual root entry remains available; this does not enumerate all saved Vaults. See the [official CLI targeting rules](https://help.obsidian.md/cli#Target+a+vault).
+   After retrieval, the native daily-note folder is checked automatically (connection edits also refresh the preview). This does not choose the ordinary sticky-note subfolder; select that separately for Main. Retrieved fields remain drafts until **Save and close**. For multiple Vaults, specify each CLI target explicitly.
 3. **Check connection / today’s note** shows the native Daily notes folder, date format, template, today's path and existence. These are read-only in CLI mode. In local mode, edit the daily folder and tagged regex and check the resolved filename. Choose a missing-today retention policy separately for each Vault.
 4. Choose the **Default Vault for new daily notes**, then **Save and close**. Profile edits and sticky-folder/migration choices remain drafts until this save. Cancel or closing the settings window discards them. Explicit Google credential import/deletion and completed authentication keep their existing immediate effects; Google login/check no longer saves unrelated settings.
 5. **Display a daily note** starts on the default Vault. Choose a Vault, then a heading. Section linking also offers a Vault selector. The title stays the Markdown filename without `.md`; a separate small label identifies the Vault.
@@ -25,7 +26,8 @@ Validation uses synthetic local Vaults and simulated CLI transport for independe
 未リリースのソース変更です。既存設定は **メイン**、最初に追加するVaultは **サブ** になります。表示名はあとから変更でき、Obsidianへの接続先名とは別です。
 
 1. **設定 → Vault・デイリーノート**を開きます。左の登録を選ぶか **Vaultを追加** し、表示名とCLI／ローカル方式を設定します。共通の `Obsidian.com` 実行ファイルは **一般** にあります。
-2. CLIではVaultルートの絶対パスとObsidianのVault名／IDを入力するか、**開いているVaultをObsidianから取得**します。複数登録では各CLI接続先名を明示してください。対象VaultをObsidianで開き、必要なプラグインを有効にします。取得はアクティブなVaultが対象で、保存済みVaultの一括列挙は行いません。
+2. CLIではObsidianの **Vault名／ID**（メイン／サブの表示名とは別）を入力し、**Vaultの保存フォルダをCLIから取得**を押すと、Vaultルートの絶対パスが入力されます。名前の入力だけではルートを取得しません。名前が空欄ならObsidianの既定選択（作業ディレクトリのVault、該当しなければアクティブなVault）を使い、名前も入力します。取得中・完了・失敗を表示し、取得中は設定を保存できません。失敗時は入力内容を保持し、編集・登録切替・画面を閉じた後の古い結果は破棄します。明示したIDも保持します。対象VaultをObsidianで開き、必要なプラグインを有効にしてください。ルートの手入力も可能で、保存済みVaultの一括列挙は行いません。[本家CLIの接続先指定](https://help.obsidian.md/cli#Target+a+vault)も参照してください。
+   取得後は本家デイリーノートの保存先を自動確認します（接続先の編集時もプレビューを更新）。通常の付箋用サブフォルダは別途メインで選択します。取得した設定は **保存して閉じる** まで下書きです。複数Vaultでは各CLI接続先名を明示してください。
 3. **接続・今日のノートを確認**で、CLIでは本家のDaily notesフォルダ・日付書式・テンプレート・今日のパスと存在状態を読み取り専用で表示します。ローカル方式ではデイリーフォルダと日時タグ付き正規表現を編集し、一致ファイル名を確認します。今日の分がない場合の保持方法もVaultごとに選べます。
 4. **新しいデイリー付箋の既定Vault**を選び、**保存して閉じる**を押します。Vault設定と付箋フォルダ・移行方法の選択はここまで下書きで、キャンセルや設定画面を閉じる操作で破棄します。Google認証JSONの明示的な取り込み・削除と完了した認証は従来どおり即時反映しますが、Googleログイン・接続確認は他の未保存設定を保存しません。
 5. **デイリーノートを表示**は既定Vaultから始まり、Vaultを選んでから見出しを指定します。見出し連携にもVault選択があります。タイトルはMarkdownのファイル名（`.md`を除く）を保ち、その下に小さくVault名を表示します。
@@ -43,7 +45,8 @@ Validation uses synthetic local Vaults and simulated CLI transport for independe
 尚未发布的源代码变更：现有设置成为 **主 Vault**，首次添加的 Vault 默认为 **副 Vault**。显示名称可随时修改，与 Obsidian 连接名称相互独立。
 
 1. 打开 **设置 → Vault 与每日笔记**，选择左侧注册项或 **添加 Vault**，填写显示名称并选择 CLI 或本地方式。共用的 `Obsidian.com` 路径位于 **常规**。
-2. CLI 方式需填写 Vault 根目录绝对路径与 Obsidian 名称／ID，或点击 **从 Obsidian 获取当前仓库**。注册多个 Vault 时必须明确指定各 CLI 目标。在 Obsidian 中打开各目标 Vault 并启用所需插件。检测仅获取当前活动 Vault，不枚举所有已保存的 Vault。
+2. CLI 方式先输入 Obsidian **Vault 名称／ID**（与主／副显示名称不同），再点击 **通过 CLI 获取 Vault 保存目录**，填入 Vault 根目录绝对路径。仅输入名称不会获取根目录。名称留空时使用 Obsidian 的默认选择（工作目录中的 Vault，否则为活动 Vault），并填入其名称。界面显示获取中、成功或失败，获取期间无法保存设置。失败保留输入；编辑、切换注册项或关闭窗口后丢弃过期结果。显式 ID 也会保留。请在 Obsidian 中打开目标 Vault 并启用所需插件。仍可手动输入根目录，不枚举全部已保存 Vault。参见[官方 CLI 目标规则](https://help.obsidian.md/cli#Target+a+vault)。
+   获取后自动检查原生每日笔记保存目录（编辑连接时也会更新预览）。普通便签子目录需在主注册中另行选择。获取的设置在 **保存并关闭** 前仍为草稿。使用多个 Vault 时需明确指定各 CLI 目标。
 3. **检查连接及今日笔记**在 CLI 方式下只读显示原生 Daily notes 文件夹、日期格式、模板、今日路径及存在状态。本地方式可编辑每日笔记文件夹和带日期标签的正则表达式并检查匹配文件名。今日笔记不存在时的保留策略按 Vault 分别设置。
 4. 选择 **新建每日便签的默认 Vault**，然后 **保存并关闭**。Vault 设置及便签文件夹／迁移选择在此之前均为草稿，取消或关闭设置窗口会丢弃它们。Google 凭据 JSON 的显式导入／删除及已完成的认证仍立即生效，但 Google 登录／连接检查不再保存其他未保存设置。
 5. **显示每日笔记**从默认 Vault 开始，先选择 Vault 再选择标题。章节关联也提供 Vault 选择。便签标题保持 Markdown 文件名（不含 `.md`），下方的小标签显示 Vault 名称。

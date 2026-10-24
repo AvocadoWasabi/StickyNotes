@@ -844,7 +844,7 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>Target vault folder</value>
   </data>
   <data name="TasksPreview.VaultId" xml:space="preserve">
-    <value>Vault name / ID (blank: folder name)</value>
+    <value>Obsidian Vault name / ID (connection target)</value>
   </data>
   <data name="TasksPreview.VaultRequired" xml:space="preserve">
     <value>Absolute vault and note paths are required.</value>
@@ -901,7 +901,7 @@ Google Tasks is read-only. The Google Tasks API provides dates only; it cannot r
     <value>CLI command length limit exceeded. Check the length of the vault name, paths or queries.</value>
   </data>
   <data name="CliDaily.Detect" xml:space="preserve">
-    <value>Get open vault from Obsidian</value>
+    <value>Get Vault folder via CLI</value>
   </data>
   <data name="CliDaily.Help" xml:space="preserve">
     <value>Folder, date format and template follow Obsidian. Only today's and yesterday's paths are checked; missing daily notes are not created. Use the sticky-folder selector to override the new-note location; otherwise it follows Obsidian.</value>
@@ -1083,7 +1083,7 @@ Notes displaying this file will also close. A recovery file remains in deleted-n
     <value>The main Vault and Vaults used by open or recently closed notes cannot be removed.</value>
   </data>
   <data name="Vault.TargetRequired" xml:space="preserve">
-    <value>For multiple Vaults, specify each CLI Vault name. Use Detect active Vault to fill it in.</value>
+    <value>For multiple Vaults, specify each CLI Vault name/ID. With an empty name, Get Vault folder via CLI also fills in the name of the Vault selected by Obsidian.</value>
   </data>
   <data name="Vault.Duplicate" xml:space="preserve">
     <value>The same folder cannot be registered as multiple Vaults.</value>
@@ -1117,5 +1117,17 @@ Notes displaying this file will also close. A recovery file remains in deleted-n
   </data>
   <data name="Vault.Category" xml:space="preserve">
     <value>Vaults &amp; daily notes</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>Enter the Obsidian Vault name/ID (separate from the display name), then press the button above to fetch its folder (Vault root). Typing alone does not fetch it. Leave blank to use the Vault selected by Obsidian. After fetching, the daily-note folder is checked automatically. Choose the ordinary sticky-note folder separately, then apply with Save and close.</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>Fetching the Vault folder via CLI… (settings cannot be saved until this finishes)</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>Fetched: {0} → {1}. Not saved yet. Apply with Save and close.</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>Could not fetch the folder. Your inputs are unchanged. {0}</value>
   </data>
 </root>

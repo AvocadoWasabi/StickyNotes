@@ -29,6 +29,9 @@ public sealed class SettingsWindow : Window
         var pendingMigration = false;
         var folderSelectionPending = false;
         var savingSettings = false;
+        var discoveringVault = false;
+        var save = new Button { Content = L10n.Text("SettingsWindow.Text68") };
+        CancellationTokenSource? authentication = null;
         Closing += (_, e) => { if (savingSettings) e.Cancel = true; };
         var loadingProfile = false;
         var defaultId = app.Config.DefaultDailyVaultId;
@@ -108,10 +111,15 @@ public sealed class SettingsWindow : Window
         tasksPanel.Children.Add(new TextBlock { Text = L10n.Text("TasksPreview.Help"), TextWrapping = TextWrapping.Wrap });
         var tasksCli = Add(L10n.Text("TasksPreview.Cli"), app.Config.ObsidianCli, tasksPanel);
         var tasksVault = Add(L10n.Text("TasksPreview.Vault"), app.Config.ObsidianVaultFolder, tasksPanel);
+        tasksVault.Name = "VaultRoot";
         tasksPanel.Children.Add(Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(tasksVault)));
         var tasksId = Add(L10n.Text("TasksPreview.VaultId"), app.Config.ObsidianVaultId, tasksPanel);
+        tasksId.Name = "VaultCliTarget";
         var detectVault = new Button { Name = "DetectObsidianVault", Content = L10n.Text("CliDaily.Detect") };
         tasksPanel.Children.Add(detectVault);
+        tasksPanel.Children.Add(new TextBlock { Text = L10n.Text("Vault.DiscoveryHelp"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        var discoveryStatus = new TextBlock { Name = "VaultDiscoveryStatus", TextWrapping = TextWrapping.Wrap };
+        tasksPanel.Children.Add(discoveryStatus);
         panel.Children.Insert(panel.Children.IndexOf(notes) - 1, new Expander { Header = "Obsidian CLI", IsExpanded = true, Content = tasksPanel });
         var notesBrowse = Ui.Button(L10n.Text("SettingsWindow.Text09"), () => PickFolder(notes));
         panel.Children.Add(notesBrowse);
@@ -166,7 +174,7 @@ public sealed class SettingsWindow : Window
             previewTimer.Stop();
             previewStatus.Foreground = Brushes.DimGray;
             previewStatus.Text = L10n.Text("SettingsWindow.Text20");
-            previewTimer.Start();
+            if (!discoveringVault) previewTimer.Start();
         }
         previewTimer.Tick += async (_, _) =>
         {
@@ -251,25 +259,63 @@ public sealed class SettingsWindow : Window
         tasksEnabled.Checked += (_, _) => UpdateSourceMode();
         tasksEnabled.Unchecked += (_, _) => UpdateSourceMode();
         UpdateSourceMode();
+        var discoveryVersion = 0;
+        CancellationTokenSource? discoveryCancellation = null;
+        void ResetDiscovery()
+        {
+            discoveryVersion++;
+            discoveryCancellation?.Cancel();
+            discoveryStatus.Text = "";
+        }
+        tasksId.TextChanged += (_, _) => ResetDiscovery();
+        tasksVault.TextChanged += (_, _) => ResetDiscovery();
+        tasksCli.TextChanged += (_, _) => ResetDiscovery();
+        tasksEnabled.Checked += (_, _) => ResetDiscovery();
+        tasksEnabled.Unchecked += (_, _) => ResetDiscovery();
         detectVault.Click += async (_, _) =>
         {
-            detectVault.IsEnabled = false;
+            if (discoveringVault) return;
+            discoveringVault = true;
+            detectVault.IsEnabled = save.IsEnabled = false;
+            SchedulePreview();
+            var version = ++discoveryVersion;
             var profileId = selectedProfile.Id;
-            var selectedCli = tasksCli.Text;
+            var selectedCli = tasksCli.Text.Trim();
             var previousVault = tasksVault.Text; var previousId = tasksId.Text;
-            bool CurrentDetection() => !previewClosed && profileId == selectedProfile.Id && tasksCli.Text == selectedCli &&
+            using var cancellation = new CancellationTokenSource();
+            discoveryCancellation = cancellation;
+            discoveryStatus.Foreground = Brushes.DimGray;
+            discoveryStatus.Text = L10n.Text("Vault.DiscoveryPending");
+            bool CurrentDetection() => !previewClosed && version == discoveryVersion && profileId == selectedProfile.Id && tasksCli.Text.Trim() == selectedCli &&
                 tasksVault.Text == previousVault && tasksId.Text == previousId;
             try
             {
-                var connection = await app.NoteSources(new Settings { ObsidianCli = selectedCli }).DiscoverVaultAsync();
+                // No old root: a blank target asks Obsidian for its default Vault, not the previous folder's name.
+                var connection = await app.NoteSources(new Settings { ObsidianCli = selectedCli, ObsidianVaultId = previousId.Trim() }).DiscoverVaultAsync(cancellation.Token);
                 if (!CurrentDetection()) return;
-                tasksVault.Text = connection.Root; tasksId.Text = connection.Name;
+                discoveryCancellation = null;
+                tasksVault.Text = connection.Root;
+                // Preserve an explicit ID, which can disambiguate Vaults with identical names.
+                if (string.IsNullOrWhiteSpace(previousId)) tasksId.Text = connection.Name;
+                discoveryStatus.Foreground = Brushes.DarkGreen;
+                discoveryStatus.Text = L10n.Format("Vault.DiscoverySuccess", connection.Name, connection.Root);
             }
-            catch (Exception ex) { if (CurrentDetection()) { previewStatus.Foreground = Brushes.DarkRed; previewStatus.Text = ex.Message; } }
-            finally { if (!previewClosed) detectVault.IsEnabled = true; }
+            catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
+            catch (Exception ex) { if (CurrentDetection()) { discoveryStatus.Foreground = Brushes.DarkRed; discoveryStatus.Text = L10n.Format("Vault.DiscoveryFailed", ex.Message); } }
+            finally
+            {
+                discoveryCancellation = null;
+                discoveringVault = false;
+                if (!previewClosed)
+                {
+                    detectVault.IsEnabled = true;
+                    save.IsEnabled = authentication is null;
+                    SchedulePreview();
+                }
+            }
         };
         Loaded += (_, _) => SchedulePreview();
-        Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
+        Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); discoveryCancellation?.Cancel(); };
         var sourceControls = panel.Children.Cast<UIElement>().Skip(sourceStart).ToArray();
         googlePanel.Children.Add(new TextBlock { Text = "Google Calendar / Tasks", FontSize = 24,
             FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
@@ -387,6 +433,7 @@ public sealed class SettingsWindow : Window
         }
         void LoadProfile(VaultProfile profile)
         {
+            ResetDiscovery();
             loadingProfile = true; selectedProfile = profile;
             profileName.Text = profile.Name;
             tasksVault.Text = profile.UseCli ? profile.Folder : profile.CliFolder;
@@ -463,15 +510,14 @@ public sealed class SettingsWindow : Window
         var cancel = new Button { Name = "GoogleCancel", Content = L10n.Text("SettingsWindow.Text67"), IsEnabled = false };
         foreach (var button in new[] { login, verify, cancel })
             button.SetResourceReference(ContentControl.ContentTemplateProperty, "WrappingButtonContent");
-        var save = new Button { Content = L10n.Text("SettingsWindow.Text68") };
         save.Click += async (_, _) =>
         {
+            if (discoveringVault) return;
             savingSettings = true; IsEnabled = false;
             try { await Save(); savingSettings = false; Close(); }
             catch (Exception ex) { MessageBox.Show(this, ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Warning); }
             finally { savingSettings = false; IsEnabled = true; }
         };
-        CancellationTokenSource? authentication = null;
         cancel.Click += (_, _) => authentication?.Cancel();
         Closed += (_, _) => authentication?.Cancel();
         async Task Connect(bool signIn)
@@ -505,7 +551,8 @@ public sealed class SettingsWindow : Window
             finally
             {
                 authentication = null;
-                login.IsEnabled = verify.IsEnabled = credentials.IsEnabled = pickCredentials.IsEnabled = calendar.IsEnabled = save.IsEnabled = true;
+                login.IsEnabled = verify.IsEnabled = credentials.IsEnabled = pickCredentials.IsEnabled = calendar.IsEnabled = true;
+                save.IsEnabled = !discoveringVault;
                 credentialButtons.IsEnabled = true;
                 cancel.IsEnabled = false;
             }

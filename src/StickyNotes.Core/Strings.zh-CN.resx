@@ -844,7 +844,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>目标仓库文件夹</value>
   </data>
   <data name="TasksPreview.VaultId" xml:space="preserve">
-    <value>仓库名称／ID（留空使用文件夹名）</value>
+    <value>Obsidian Vault 名称／ID（连接目标）</value>
   </data>
   <data name="TasksPreview.VaultRequired" xml:space="preserve">
     <value>需要仓库和笔记的绝对路径。</value>
@@ -901,7 +901,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>超出 CLI 命令长度限制。请检查仓库名称、路径或查询的长度。</value>
   </data>
   <data name="CliDaily.Detect" xml:space="preserve">
-    <value>从 Obsidian 获取当前仓库</value>
+    <value>通过 CLI 获取 Vault 保存目录</value>
   </data>
   <data name="CliDaily.Help" xml:space="preserve">
     <value>目录、日期格式及模板遵循 Obsidian。仅检查今天和昨天的路径，不自动创建缺失的日记。可通过便签文件夹选择器指定保存位置；未指定时遵循 Obsidian。</value>
@@ -1083,7 +1083,7 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>主 Vault 以及正在显示或最近关闭的便签使用的 Vault 无法移除。</value>
   </data>
   <data name="Vault.TargetRequired" xml:space="preserve">
-    <value>使用多个 Vault 时，请明确指定每个 CLI 连接的 Vault 名称，可通过检测当前 Vault 获取。</value>
+    <value>使用多个 Vault 时，请指定每个 CLI 连接的 Vault 名称／ID。名称留空后点击“通过 CLI 获取 Vault 保存目录”，也会填入 Obsidian 所选 Vault 的名称。</value>
   </data>
   <data name="Vault.Duplicate" xml:space="preserve">
     <value>不能将同一文件夹注册为多个 Vault。</value>
@@ -1117,5 +1117,17 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   </data>
   <data name="Vault.Category" xml:space="preserve">
     <value>Vault 与每日笔记</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>输入 Obsidian 的 Vault 名称／ID（与显示名称不同），再点击上方按钮获取保存目录（Vault 根目录）。仅输入不会获取。留空时使用 Obsidian 选择的 Vault。获取后自动检查每日笔记保存目录。普通便签保存目录需另行选择，最后点击“保存并关闭”生效。</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>正在通过 CLI 获取保存目录…（完成前无法保存设置）</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>获取完成：{0} → {1}。尚未保存，请点击“保存并关闭”生效。</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>获取失败，输入内容未更改。{0}</value>
   </data>
 </root>

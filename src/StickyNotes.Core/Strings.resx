@@ -844,7 +844,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>対象Vaultのフォルダ</value>
   </data>
   <data name="TasksPreview.VaultId" xml:space="preserve">
-    <value>Vault名／ID（空欄ならフォルダ名）</value>
+    <value>ObsidianのVault名／ID（接続先）</value>
   </data>
   <data name="TasksPreview.VaultRequired" xml:space="preserve">
     <value>Vaultとノートの絶対パスが必要です。</value>
@@ -901,7 +901,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>CLIコマンドの長さ上限を超えました。Vault名・パスやクエリの長さを確認してください。</value>
   </data>
   <data name="CliDaily.Detect" xml:space="preserve">
-    <value>開いているVaultをObsidianから取得</value>
+    <value>Vaultの保存フォルダをCLIから取得</value>
   </data>
   <data name="CliDaily.Help" xml:space="preserve">
     <value>保存先・日付形式・テンプレートはObsidianの設定に従います。今日と前日のパスだけを確認し、ノートは自動作成しません。付箋の保存先は専用の選択画面で指定でき、未指定ならObsidianに従います。</value>
@@ -1083,7 +1083,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>メインVault、表示中または「閉じた付箋を復元」で使用するVaultは登録解除できません。</value>
   </data>
   <data name="Vault.TargetRequired" xml:space="preserve">
-    <value>複数Vaultでは各CLI接続のVault名を明示してください。「起動中のVaultを取得」で取得できます。</value>
+    <value>複数Vaultでは各CLI接続のVault名／IDを明示してください。空欄で「Vaultの保存フォルダをCLIから取得」を押すと、Obsidianが選ぶVaultの名前も入力されます。</value>
   </data>
   <data name="Vault.Duplicate" xml:space="preserve">
     <value>同じフォルダを複数のVaultとして登録できません。</value>
@@ -1117,5 +1117,17 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   </data>
   <data name="Vault.Category" xml:space="preserve">
     <value>Vault・デイリーノート</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>ObsidianのVault名／ID（表示名とは別）を入力し、上のボタンを押すと保存フォルダ（Vaultルート）を取得します。入力だけでは取得しません。空欄ならObsidianが選ぶVaultが対象です。取得後はデイリーノートの保存先を自動確認します。通常の付箋の保存先は別途選択し、最後に「保存して閉じる」で反映します。</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>CLIから保存フォルダを取得中…（完了まで設定の保存はできません）</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>取得完了：{0} → {1}。まだ保存されていません。「保存して閉じる」で反映します。</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>取得に失敗しました。入力内容は変更していません。{0}</value>
   </data>
 </root>
