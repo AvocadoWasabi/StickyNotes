@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](docs/MULTIPLE-VAULTS.md#简体中文)。
+
 v0.0.10新增成组恢复最近关闭的便签、文件重命名及无法重命名时的说明，并修复打开菜单时自动保存造成的卡顿。参见[更新内容及升级步骤](docs/RELEASE-NOTES.md#简体中文)。
 
 任务正文后输入空格显示上游默认候选菜单：**⏎** 上Enter继续列表，↓选择后Enter插入字段，Tab缩进。参见[分析来源与兼容范围](docs/TASK-EDITING.md#简体中文)。
@@ -15,7 +17,7 @@ v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Mark
 从 v0.0.7 起，新配置默认使用 [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#简体中文)。请保持 Obsidian 运行并启用 CLI。保留已有设置中明确禁用 CLI 的选择；也可在设置中禁用 CLI，不运行 Obsidian 而使用本地文件。
 **从 v0.0.6 或更早版本升级：** 无 CLI 选项的旧配置也默认启用 CLI，需要设置仓库。继续使用本地文件时，请在设置中取消 **使用 Obsidian CLI** 并保存。已有文件不会自动迁移。
 
-CLI 模式从 Obsidian 获取正文及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
+CLI 模式从 Obsidian 获取正文及 Daily notes 设置，不回退到本地读取，也不扫描整个仓库来查找日记。在 **设置 → Vault 与每日笔记 → Obsidian CLI** 配置连接；隐藏重复的本地文件夹及正则表达式字段，保留其值供禁用 CLI 后使用。
 
 [v0.0.9正文渲染示例](docs/images/compact-body-v0.0.9.png)，由WPF生成。下方整窗截图为旧版界面。
 
@@ -44,7 +46,7 @@ Windows Markdown 桌面便签应用。直接编辑 Obsidian 笔记和每日笔�
 
 1. 从 [v0.0.10 发布页](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) 下载 `StickyNotes-win-x64.zip` 并解压。
 2. 运行 `Install.cmd`，从开始菜单启动 Markdown Sticky Notes。
-3. 在通知区域图标的 **设置 → Obsidian CLI** 获取当前仓库，再选择便签保存目录。使用本地文件时，先禁用 CLI 并选择基准目录。参见[连接及插件设置](docs/TASKS-CLI-PREVIEW.md#简体中文)。
+3. 在通知区域图标的 **设置 → Vault 与每日笔记 → Obsidian CLI** 获取当前仓库，再选择便签保存目录。使用本地文件时，先禁用 CLI 并选择基准目录。参见[连接及插件设置](docs/TASKS-CLI-PREVIEW.md#简体中文)。
 
 无需管理员权限或另外安装 .NET。应用未签名，Windows 可能要求确认。更新、卸载和免安装使用见[安装指南](docs/INSTALL.zh-CN.md)。
 

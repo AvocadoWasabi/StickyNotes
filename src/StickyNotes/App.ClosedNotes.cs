@@ -40,10 +40,7 @@ public partial class App
     {
         // Relative CLI paths and daily links belong to the selected source/vault.
         // Do not reinterpret old history after switching to a different source.
-        if (NoteSource.UsesCli(Config) != NoteSource.UsesCli(next) ||
-            !string.Equals(Config.ObsidianVaultFolder.TrimEnd('\\', '/'), next.ObsidianVaultFolder.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase) ||
-            !string.Equals(Config.ObsidianVaultId, next.ObsidianVaultId, StringComparison.Ordinal)) return [];
-        return Config.RecentlyClosedWindows.Select(placement =>
+        return Config.RecentlyClosedWindows.Where(p => Settings.SameSource(Config.ForVault(p.VaultId), next.ForVault(p.VaultId))).Select(placement =>
         {
             var copy = placement.Copy();
             if (copy.Path.Length > 0 && paths.Count > 0 && paths.TryGetValue(Path.GetFullPath(copy.Path), out var path))

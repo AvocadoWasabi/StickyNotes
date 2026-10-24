@@ -2,6 +2,8 @@
 
 # Development and releases
 
+Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
+
 Completion is compared against a pinned Tasks upstream approved fixture. All changes stay in TaskEditing, including the bounded local date helper. The clone is excluded; MIT notices are bundled. See [source revision, tests and parity limits](TASK-EDITING.md#english).
 
 Task input rules, popup/IME behavior and the public Tasks checkbox adapter are grouped in `src/StickyNotes/TaskEditing/`. The window delegates to this module, sharing existing CLI transport and conflict-safe saves. See [architecture and validation](TASK-EDITING.md#english).
@@ -29,7 +31,7 @@ Both commands restore, build Release, run tests, and generate a self-contained a
 
 `-Publish` additionally creates or updates `artifacts/StickyNotes-win-x64.zip` and its SHA256 checksum. A normal build leaves any existing ZIP unchanged, so use `-Publish` when distributing a ZIP.
 
-Standard local builds default to Obsidian CLI; existing explicit local-mode settings are preserved. Configure **Settings → Obsidian CLI**. Obsidian supplies Daily notes settings; an optional sticky-folder override uses `FoldersBridge` for folder listing, creation and moves, with a shared local/CLI migration coordinator; `DailyBridge` resolves today/yesterday without listing the vault, and both sources share retention logic. The standard profile remains separate from the optional `./build.ps1 -Publish -TasksPreview` output in `artifacts/tasks-cli-preview`. See [CLI setup, architecture and limitations](TASKS-CLI-PREVIEW.md#english).
+Standard local builds default to Obsidian CLI; existing explicit local-mode settings are preserved. Configure **Settings → Vaults & daily notes → Obsidian CLI**. Obsidian supplies Daily notes settings; an optional sticky-folder override uses `FoldersBridge` for folder listing, creation and moves, with a shared local/CLI migration coordinator; `DailyBridge` resolves today/yesterday without listing the vault, and both sources share retention logic. The standard profile remains separate from the optional `./build.ps1 -Publish -TasksPreview` output in `artifacts/tasks-cli-preview`. See [CLI setup, architecture and limitations](TASKS-CLI-PREVIEW.md#english).
 
 `DataviewBridge.js` uses the installed plugin's `query` + Markdown export APIs with the source-note path. Tasks and Dataview share rendering/lifecycle code but keep independent state and errors. Normal tests cover rendering and stale responses; the optional Node.js `--dataview-bridge-smoke` executes the actual generated CLI code with synthetic API data. See [Dataview architecture, limits and validation status](DATAVIEW.md#english).
 

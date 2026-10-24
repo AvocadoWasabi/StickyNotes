@@ -48,7 +48,7 @@ The existing approximately 60-second refresh also refreshes Tasks, pauses during
 
 ## Initial authentication
 
-Open the connection guide in the right-hand `Google Calendar / Tasks` pane of Settings. The left pane contains note and daily-note settings; each pane scrolls independently. These instructions cover personal use with your own Google account and were checked against official documentation on 2026-10-06. Buttons open your system browser, where you complete Google registration and consent. Labels vary with the display language.
+Open the `Google Calendar / Tasks` connection guide in the **Google** category of Settings. It scrolls independently of General and Vault settings. These instructions cover personal use with your own Google account and were checked against official documentation on 2026-10-06. Buttons open your system browser, where you complete Google registration and consent. Labels vary with the display language.
 
 ### 1-1: Enable the API
 
@@ -80,11 +80,11 @@ Select the downloaded file with `Select and check JSON`, then click the adjacent
 
 ### App Step 3: Sign in
 
-Click `Step 3: Save settings and sign in to Google`. Within three minutes, select the account added in 1-3, verify the app name and allow Calendar access and Tasks read access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `Connection verified`. The app saves the token and verifies read access to the selected calendar and task lists without modifying events or tasks.
+Click `Step 3: Sign in to Google`. Within three minutes, select the account added in 1-3, verify the app name and allow Calendar access and Tasks read access in the browser. The app receives the result automatically. Close the browser tab, return to Settings and check for `Connection verified`. The app saves the token and verifies read access to the selected calendar and task lists without modifying events or tasks.
 
 ### App Step 4: Recheck the connection
 
-When signed in, this checks access without opening the login screen. Steps 3 and 4 save all entered settings, including those unrelated to Google. Successful verification does not guarantee permission to edit events.
+When signed in, this checks access without opening the login screen. Steps 3 and 4 check the entered Google connection and save tokens after authentication; they do not save other pending settings. Save the JSON path and Calendar ID with Save and close. Successful verification does not guarantee permission to edit events.
 
 <a id="cancel"></a>
 

@@ -23,7 +23,7 @@ For portable use, run `StickyNotes.exe` from the extracted folder. Keep the whol
 
 Choose the display language in Settings, save, and restart. [Language details](USAGE.en.md#language).
 
-Configure **Settings → Obsidian CLI** and use **Get open vault from Obsidian**. Check native daily settings. After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
+Configure **Settings → Vaults & daily notes → Obsidian CLI** and use **Get open vault from Obsidian**. Check native daily settings. After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. Choices remain drafts until **Save and close** in Settings (main registration only). See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
 
 - [Basic usage](../README.en.md#basic-usage)
 - [Folder migration and daily-note settings](USAGE.en.md#storage)

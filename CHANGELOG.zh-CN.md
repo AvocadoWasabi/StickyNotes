@@ -8,6 +8,8 @@
 
 ## 未发布
 
+- 支持多 Vault 每日笔记：主／副显示名称可修改，设置按 Vault 保存，固定引用 ID，默认选择，Tasks／Dataview 独立连接及使用中注册移除保护。设置分为常规／Vault 与每日笔记／Google，Vault 及保存目录草稿统一在保存时生效。[详情](docs/MULTIPLE-VAULTS.md#简体中文)。
+
 - 将便签标题统一为 Markdown 文件名（不含 `.md`），包括关联章节和每日便签。重命名后立即更新顶部及任务栏标题；YAML 的 `title` 保留为元数据。
 - 将列表改名为 **管理便签文件夹…**，增加确认后删除所选 Markdown 文件的功能。保留恢复文件，保护冲突及未保存编辑，并清理打开的便签及关闭历史。[详情](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
 

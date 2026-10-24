@@ -6,6 +6,11 @@ namespace StickyNotes;
 
 public sealed class SettingsWindow : Window
 {
+    internal StackPanel GeneralPanel { get; private set; } = null!;
+    internal StackPanel VaultDetailsPanel { get; private set; } = null!;
+    internal StackPanel GooglePanel { get; private set; } = null!;
+    internal StackPanel Footer { get; private set; } = null!;
+    internal TabControl Categories { get; private set; } = null!;
     public SettingsWindow() : this(null) { }
 
     internal SettingsWindow(Func<bool>? confirmRegexTemplate, Func<bool>? confirmCredentialDeletion = null)
@@ -19,6 +24,17 @@ public sealed class SettingsWindow : Window
         MaxHeight = SystemParameters.WorkArea.Height;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         var app = App.Current;
+        var profiles = app.Config.GetVaultProfiles();
+        var selectedProfile = profiles[0];
+        var pendingMigration = false;
+        var folderSelectionPending = false;
+        var savingSettings = false;
+        Closing += (_, e) => { if (savingSettings) e.Cancel = true; };
+        var loadingProfile = false;
+        var defaultId = app.Config.DefaultDailyVaultId;
+        var profileName = new TextBox { Name = "VaultDisplayName", Text = selectedProfile.Name };
+        var vaultList = new ListBox { Name = "VaultList", DisplayMemberPath = "Name", MinHeight = 120, MaxHeight = 220 };
+        var defaultVault = new ComboBox { Name = "DefaultDailyVault", DisplayMemberPath = "Name", SelectedValuePath = "Id" };
         var panel = new StackPanel { Margin = new Thickness(24) };
         var googlePanel = new StackPanel { Margin = new Thickness(24) };
         panel.Children.Add(new TextBlock { Text = "Markdown Sticky Notes", FontSize = 24, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
@@ -83,6 +99,7 @@ public sealed class SettingsWindow : Window
             target.Children.Add(new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap });
             var input = new TextBox { Text = value }; target.Children.Add(input); return input;
         }
+        var sourceStart = panel.Children.Count;
         var notes = Add(L10n.Text("StickyFolder.Root"), string.IsNullOrWhiteSpace(app.Config.NotesRoot) ? app.Config.NotesFolder : app.Config.NotesRoot);
         var notesLabel = panel.Children[panel.Children.IndexOf(notes) - 1];
         var tasksEnabled = new CheckBox { Name = "UseObsidianCli", Content = L10n.Text("TasksPreview.Enable"), IsChecked = app.Config.ObsidianTasksEnabled };
@@ -104,9 +121,9 @@ public sealed class SettingsWindow : Window
         void ShowStickyFolder()
         {
             stickyFolderStatus.Text = tasksEnabled.IsChecked == true
-                ? L10n.Format("StickyFolder.Current", app.Config.ObsidianNotesFolder ?? L10n.Text("CliDaily.Default"))
-                : L10n.Format("StickyFolder.Current", app.Config.NotesFolder);
-            chooseStickyFolder.IsEnabled = Path.IsPathFullyQualified(tasksEnabled.IsChecked == true ? tasksVault.Text.Trim() : notes.Text.Trim());
+                ? L10n.Format("StickyFolder.Current", selectedProfile.ObsidianNotesFolder ?? L10n.Text("CliDaily.Default"))
+                : L10n.Format("StickyFolder.Current", selectedProfile.NotesFolder);
+            chooseStickyFolder.IsEnabled = selectedProfile.Id == Settings.MainVaultId && Path.IsPathFullyQualified(tasksEnabled.IsChecked == true ? tasksVault.Text.Trim() : notes.Text.Trim());
         }
         notes.TextChanged += (_, _) => ShowStickyFolder();
         tasksVault.TextChanged += (_, _) => ShowStickyFolder();
@@ -223,6 +240,8 @@ public sealed class SettingsWindow : Window
         {
             var cli = tasksEnabled.IsChecked == true;
             var visibility = cli ? Visibility.Collapsed : Visibility.Visible;
+            foreach (var control in tasksPanel.Children.Cast<UIElement>().Where(c => !ReferenceEquals(c, tasksEnabled)))
+                control.Visibility = cli ? Visibility.Visible : Visibility.Collapsed;
             foreach (var control in manualDailyControls) control.Visibility = visibility;
             notes.Visibility = notesLabel.Visibility = notesBrowse.Visibility = insertTags.Visibility = visibility;
             dailyHelp.Text = L10n.Text(cli ? "CliDaily.Help" : "SettingsWindow.Text14");
@@ -235,19 +254,23 @@ public sealed class SettingsWindow : Window
         detectVault.Click += async (_, _) =>
         {
             detectVault.IsEnabled = false;
+            var profileId = selectedProfile.Id;
             var selectedCli = tasksCli.Text;
             var previousVault = tasksVault.Text; var previousId = tasksId.Text;
+            bool CurrentDetection() => !previewClosed && profileId == selectedProfile.Id && tasksCli.Text == selectedCli &&
+                tasksVault.Text == previousVault && tasksId.Text == previousId;
             try
             {
                 var connection = await app.NoteSources(new Settings { ObsidianCli = selectedCli }).DiscoverVaultAsync();
-                if (previewClosed || tasksCli.Text != selectedCli || tasksVault.Text != previousVault || tasksId.Text != previousId) return;
+                if (!CurrentDetection()) return;
                 tasksVault.Text = connection.Root; tasksId.Text = connection.Name;
             }
-            catch (Exception ex) { if (!previewClosed) { previewStatus.Foreground = Brushes.DarkRed; previewStatus.Text = ex.Message; } }
+            catch (Exception ex) { if (CurrentDetection()) { previewStatus.Foreground = Brushes.DarkRed; previewStatus.Text = ex.Message; } }
             finally { if (!previewClosed) detectVault.IsEnabled = true; }
         };
         Loaded += (_, _) => SchedulePreview();
         Closed += (_, _) => { previewClosed = true; previewVersion++; previewTimer.Stop(); previewCancellation?.Cancel(); };
+        var sourceControls = panel.Children.Cast<UIElement>().Skip(sourceStart).ToArray();
         googlePanel.Children.Add(new TextBlock { Text = "Google Calendar / Tasks", FontSize = 24,
             FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
         googlePanel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text27"), Margin = new Thickness(0, 0, 0, 8) });
@@ -337,31 +360,68 @@ public sealed class SettingsWindow : Window
         googlePanel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text58"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
         var calendar = Add(L10n.Text("SettingsWindow.Text59"), app.Config.CalendarId, googlePanel);
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 10, 0, 10) };
+        void CaptureProfile()
+        {
+            if (loadingProfile) return;
+            var cli = tasksEnabled.IsChecked == true;
+            var folder = (cli ? tasksVault.Text : notes.Text).Trim();
+            var previousFolder = cli == selectedProfile.UseCli ? selectedProfile.Folder : cli ? selectedProfile.CliFolder : selectedProfile.LocalRoot;
+            if (!string.Equals(folder.TrimEnd('\\', '/'), previousFolder.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase))
+            {
+                if (selectedProfile.Id == Settings.MainVaultId) { pendingMigration = false; folderSelectionPending = false; }
+                if (cli) selectedProfile.ObsidianNotesFolder = null;
+                else selectedProfile.NotesFolder = folder;
+            }
+            selectedProfile.Name = profileName.Text.Trim();
+            selectedProfile.UseCli = cli; selectedProfile.Folder = folder; selectedProfile.CliTarget = tasksId.Text.Trim();
+            selectedProfile.CliFolder = tasksVault.Text.Trim(); selectedProfile.LocalRoot = notes.Text.Trim();
+            selectedProfile.DailyFolder = daily.Text.Trim(); selectedProfile.DailyPattern = pattern.Text;
+            selectedProfile.DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex);
+        }
+        void RefreshProfiles()
+        {
+            loadingProfile = true;
+            vaultList.ItemsSource = null; vaultList.ItemsSource = profiles; vaultList.SelectedItem = selectedProfile;
+            defaultVault.ItemsSource = null; defaultVault.ItemsSource = profiles; defaultVault.SelectedValue = defaultId;
+            loadingProfile = false;
+        }
+        void LoadProfile(VaultProfile profile)
+        {
+            loadingProfile = true; selectedProfile = profile;
+            profileName.Text = profile.Name;
+            tasksVault.Text = profile.UseCli ? profile.Folder : profile.CliFolder;
+            notes.Text = !profile.UseCli ? profile.Folder : profile.LocalRoot;
+            tasksId.Text = profile.CliTarget;
+            daily.Text = profile.DailyFolder; pattern.Text = profile.DailyPattern;
+            retention.SelectedIndex = (int)profile.DailyRetention; tasksEnabled.IsChecked = profile.UseCli;
+            loadingProfile = false; UpdateSourceMode();
+        }
         Settings ReadSettings()
         {
-            var cli = tasksEnabled.IsChecked == true;
-            if (cli)
+            CaptureProfile();
+            foreach (var profile in profiles)
             {
-                if (!Path.IsPathFullyQualified(tasksVault.Text.Trim())) throw new InvalidOperationException(L10n.Text("TasksPreview.VaultRequired"));
-                if (!Path.IsPathFullyQualified(tasksCli.Text.Trim())) throw new InvalidOperationException(L10n.Text("TasksPreview.CliRequired"));
+                if (string.IsNullOrWhiteSpace(profile.Name)) throw new InvalidOperationException(L10n.Text("Vault.Invalid"));
+                if (!Path.IsPathFullyQualified(profile.Folder)) throw new InvalidOperationException(L10n.Text("TasksPreview.VaultRequired"));
+                if (profile.UseCli)
+                {
+                    if (!Path.IsPathFullyQualified(tasksCli.Text.Trim())) throw new InvalidOperationException(L10n.Text("TasksPreview.CliRequired"));
+                    // Multiple connections use explicit targets instead of inferring names from folders.
+                    if (profiles.Count > 1 && string.IsNullOrWhiteSpace(profile.CliTarget)) throw new InvalidOperationException(L10n.Text("Vault.TargetRequired"));
+                }
+                else
+                {
+                    if (profile.DailyFolder.Length > 0 && !Path.IsPathFullyQualified(profile.DailyFolder)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text61"));
+                    DailyNoteResolver.Validate(profile.DailyPattern);
+                }
             }
-            else
-            {
-                if (!Path.IsPathFullyQualified(notes.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text60"));
-                if (daily.Text.Length > 0 && !Path.IsPathFullyQualified(daily.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text61"));
-                DailyNoteResolver.Validate(pattern.Text);
-            }
+            if (profiles.Select(p => Path.GetFullPath(p.Folder).TrimEnd('\\', '/')).Distinct(StringComparer.OrdinalIgnoreCase).Count() != profiles.Count)
+                throw new InvalidOperationException(L10n.Text("Vault.Duplicate"));
             if (string.IsNullOrWhiteSpace(calendar.Text)) throw new InvalidOperationException(L10n.Text("SettingsWindow.Text62"));
-            var sameRoot = cli || NoteFolderMigration.SameFolder(notes.Text, string.IsNullOrWhiteSpace(app.Config.NotesRoot) ? app.Config.NotesFolder : app.Config.NotesRoot);
-            var sameVault = string.Equals(tasksVault.Text.Trim().TrimEnd('\\', '/'), app.Config.ObsidianVaultFolder.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase);
-            return new Settings
+            var next = new Settings
             {
                 Language = languageCodes[Math.Max(0, language.SelectedIndex)],
-                NotesFolder = sameRoot ? app.Config.NotesFolder : NoteFolderMigration.Normalize(notes.Text),
-                NotesRoot = cli ? app.Config.NotesRoot : NoteFolderMigration.Normalize(notes.Text),
-                ObsidianNotesFolder = sameVault ? app.Config.ObsidianNotesFolder : null,
-                DailyFolder = cli ? app.Config.DailyFolder : daily.Text, DailyPattern = cli ? app.Config.DailyPattern : pattern.Text,
-                DailyRetention = (DailyNoteRetention)Math.Max(0, retention.SelectedIndex),
+                NotesRoot = app.Config.NotesRoot,
                 AutoSaveOnFocusLoss = autoSave.IsChecked == true,
                 DoubleClickToEdit = editGesture.SelectedIndex == 1,
                 TaskCompletion = (TaskCompletionMode)Math.Max(0, taskCompletion.SelectedIndex),
@@ -369,42 +429,48 @@ public sealed class SettingsWindow : Window
                 TitleButtonOverlay = overlay.IsChecked == true,
                 ShowInTaskbar = taskbar.IsChecked == true,
                 GoogleCredentialsFile = credentials.Text, CalendarId = calendar.Text,
-                ObsidianTasksEnabled = tasksEnabled.IsChecked == true,
-                ObsidianCli = tasksCli.Text.Trim(), ObsidianVaultFolder = tasksVault.Text.Trim(), ObsidianVaultId = tasksId.Text.Trim()
+                ObsidianCli = tasksCli.Text.Trim(), DefaultDailyVaultId = defaultId
             };
+            next.SetVaultProfiles(profiles);
+            return next;
         }
-        bool SelectStickyFolder(Settings next)
+        void SelectStickyFolder()
         {
+            CaptureProfile();
+            var next = new Settings { NotesRoot = app.Config.NotesRoot, ObsidianCli = tasksCli.Text.Trim() };
+            next.SetVaultProfiles([selectedProfile]);
             var source = app.NoteSources(next);
             var selected = source.IsCli ? next.ObsidianNotesFolder : StickyFolderPath.Relative(source.FolderRoot, next.NotesFolder);
-            var picker = new StickyFolderWindow(source, selected, async (relative, migrate) =>
+            var picker = new StickyFolderWindow(source, selected, (relative, migrate) =>
             {
-                if (source.IsCli) next.ObsidianNotesFolder = relative;
-                else next.NotesFolder = StickyFolderPath.Absolute(source.FolderRoot, relative);
-                await app.ApplyFolderSettingsAsync(next, migrate);
-                ShowStickyFolder();
+                if (source.IsCli) selectedProfile.ObsidianNotesFolder = relative;
+                else selectedProfile.NotesFolder = StickyFolderPath.Absolute(source.FolderRoot, relative);
+                pendingMigration = migrate; folderSelectionPending = true; ShowStickyFolder();
+                return Task.CompletedTask;
             }) { Owner = this };
             picker.ShowDialog();
-            return picker.Committed;
         }
-        chooseStickyFolder.Click += (_, _) => app.Safe(() => SelectStickyFolder(ReadSettings()));
-        bool Save()
+        chooseStickyFolder.Click += (_, _) => app.Safe(SelectStickyFolder);
+        async Task Save()
         {
             var next = ReadSettings();
-            var rootChanged = next.ObsidianTasksEnabled
-                ? !string.Equals(next.ObsidianVaultFolder.TrimEnd('\\', '/'), app.Config.ObsidianVaultFolder.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase)
-                : !NoteFolderMigration.SameFolder(next.NotesRoot, string.IsNullOrWhiteSpace(app.Config.NotesRoot) ? app.Config.NotesFolder : app.Config.NotesRoot);
-            if (rootChanged) return SelectStickyFolder(next);
-            app.ApplySettings(next, false);
-            ShowStickyFolder();
-            return true;
+            if (folderSelectionPending) await app.ApplyFolderSettingsAsync(next, pendingMigration);
+            else app.ApplySettings(next, false);
+            pendingMigration = false; folderSelectionPending = false;
         }
         var login = new Button { Name = "GoogleLogin", Content = L10n.Text("SettingsWindow.Text65") };
         var verify = new Button { Name = "GoogleVerify", Content = L10n.Text("SettingsWindow.Text66") };
         var cancel = new Button { Name = "GoogleCancel", Content = L10n.Text("SettingsWindow.Text67"), IsEnabled = false };
         foreach (var button in new[] { login, verify, cancel })
             button.SetResourceReference(ContentControl.ContentTemplateProperty, "WrappingButtonContent");
-        var save = Ui.Button(L10n.Text("SettingsWindow.Text68"), () => { if (Save()) Close(); });
+        var save = new Button { Content = L10n.Text("SettingsWindow.Text68") };
+        save.Click += async (_, _) =>
+        {
+            savingSettings = true; IsEnabled = false;
+            try { await Save(); savingSettings = false; Close(); }
+            catch (Exception ex) { MessageBox.Show(this, ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Warning); }
+            finally { savingSettings = false; IsEnabled = true; }
+        };
         CancellationTokenSource? authentication = null;
         cancel.Click += (_, _) => authentication?.Cancel();
         Closed += (_, _) => authentication?.Cancel();
@@ -419,7 +485,6 @@ public sealed class SettingsWindow : Window
             try
             {
                 CalendarService.ValidateCredentials(credentials.Text);
-                if (!Save()) return;
                 app.Calendar.Configure(credentials.Text);
                 if (signIn)
                 {
@@ -448,26 +513,66 @@ public sealed class SettingsWindow : Window
         login.Click += async (_, _) => await Connect(true);
         verify.Click += async (_, _) => await Connect(false);
         googlePanel.Children.Add(login); googlePanel.Children.Add(verify); googlePanel.Children.Add(cancel); googlePanel.Children.Add(status);
-        panel.Children.Add(new TextBlock { Text = L10n.Text("SettingsWindow.Text74"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
-        panel.Children.Add(save);
-        var layout = new Grid();
-        layout.ColumnDefinitions.Add(new ColumnDefinition());
-        layout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1) });
-        layout.ColumnDefinitions.Add(new ColumnDefinition());
-        var generalPane = new ScrollViewer { Name = "GeneralSettingsPane", Content = panel,
-            VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
-        var googlePane = new ScrollViewer { Name = "GoogleSettingsPane", Content = googlePanel,
-            VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
-        // Preserve readable controls on small screens; each pane scrolls independently.
-        panel.Width = googlePanel.Width = 440;
-        void FitPane(ScrollViewer pane, StackPanel content) => content.Width = Math.Max(440,
-            pane.ActualWidth - content.Margin.Left - content.Margin.Right - SystemParameters.VerticalScrollBarWidth);
-        generalPane.SizeChanged += (_, _) => FitPane(generalPane, panel);
-        googlePane.SizeChanged += (_, _) => FitPane(googlePane, googlePanel);
-        var divider = new Border { Background = Brushes.LightGray };
-        Grid.SetColumn(divider, 1); Grid.SetColumn(googlePane, 2);
-        layout.Children.Add(generalPane); layout.Children.Add(divider); layout.Children.Add(googlePane);
-        Content = layout;
+        GeneralPanel = panel; GooglePanel = googlePanel;
+        VaultDetailsPanel = new StackPanel { Margin = new Thickness(20) };
+        foreach (var control in sourceControls) { panel.Children.Remove(control); VaultDetailsPanel.Children.Add(control); }
+        var cliLabel = tasksPanel.Children[tasksPanel.Children.IndexOf(tasksCli) - 1];
+        tasksPanel.Children.Remove(cliLabel); tasksPanel.Children.Remove(tasksCli);
+        cliLabel.Visibility = tasksCli.Visibility = Visibility.Visible;
+        var sharedCli = new StackPanel(); sharedCli.Children.Add(cliLabel); sharedCli.Children.Add(tasksCli); panel.Children.Add(sharedCli);
+        var vaultPane = new Grid();
+        vaultPane.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
+        vaultPane.ColumnDefinitions.Add(new ColumnDefinition());
+        var listPanel = new StackPanel { Margin = new Thickness(16) };
+        listPanel.Children.Add(vaultList);
+        var addVault = Ui.Button(L10n.Text("Vault.Add"), () =>
+        {
+            CaptureProfile();
+            var number = profiles.Count(p => p.Id != Settings.MainVaultId) + 1;
+            var profile = new VaultProfile { Name = L10n.Text("Vault.Sub") + (number == 1 ? "" : " " + number), UseCli = selectedProfile.UseCli };
+            profiles.Add(profile); LoadProfile(profile); RefreshProfiles();
+        });
+        addVault.Name = "AddVault"; listPanel.Children.Add(addVault);
+        var removeVault = Ui.Button(L10n.Text("Vault.Remove"), () =>
+        {
+            if (selectedProfile.Id == Settings.MainVaultId || app.Notes.Any(n => n.Placement.VaultId == selectedProfile.Id) ||
+                app.Config.RecentlyClosedWindows.Any(p => p.VaultId == selectedProfile.Id))
+                throw new InvalidOperationException(L10n.Text("Vault.InUse"));
+            profiles.Remove(selectedProfile);
+            if (defaultId == selectedProfile.Id) defaultId = Settings.MainVaultId;
+            LoadProfile(profiles[0]); RefreshProfiles();
+        });
+        removeVault.Name = "RemoveVault"; listPanel.Children.Add(removeVault);
+        listPanel.Children.Add(new TextBlock { Text = L10n.Text("Vault.Default"), TextWrapping = TextWrapping.Wrap });
+        listPanel.Children.Add(defaultVault);
+        listPanel.Children.Add(new TextBlock { Text = L10n.Text("Vault.DefaultHelp"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        var details = new StackPanel();
+        var namePanel = new StackPanel { Margin = new Thickness(20, 16, 20, 0) };
+        namePanel.Children.Add(new TextBlock { Text = L10n.Text("Vault.Name") }); namePanel.Children.Add(profileName);
+        namePanel.Children.Add(new TextBlock { Text = L10n.Text("Vault.FolderHelp"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });
+        details.Children.Add(namePanel); details.Children.Add(VaultDetailsPanel);
+        var connectionCheck = Ui.Button(L10n.Text("Vault.Check"), SchedulePreview); connectionCheck.Name = "CheckVault";
+        namePanel.Children.Add(connectionCheck);
+        vaultList.SelectionChanged += (_, _) =>
+        {
+            if (loadingProfile || vaultList.SelectedItem is not VaultProfile profile || ReferenceEquals(profile, selectedProfile)) return;
+            CaptureProfile(); LoadProfile(profile); RefreshProfiles();
+        };
+        profileName.LostFocus += (_, _) => { if (!loadingProfile) { CaptureProfile(); RefreshProfiles(); } };
+        defaultVault.SelectionChanged += (_, _) => { if (!loadingProfile && defaultVault.SelectedValue is string id) defaultId = id; };
+        RefreshProfiles();
+        var detailsPane = new ScrollViewer { Content = details, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        Grid.SetColumn(detailsPane, 1);
+        vaultPane.Children.Add(new ScrollViewer { Content = listPanel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
+        vaultPane.Children.Add(detailsPane);
+        Categories = new TabControl { Name = "SettingsCategories" };
+        Categories.Items.Add(new TabItem { Header = L10n.Text("Vault.General"), Content = new ScrollViewer { Name = "GeneralSettingsPane", Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto } });
+        Categories.Items.Add(new TabItem { Header = L10n.Text("Vault.Category"), Content = vaultPane });
+        Categories.Items.Add(new TabItem { Header = "Google", Content = new ScrollViewer { Name = "GoogleSettingsPane", Content = googlePanel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto } });
+        Footer = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(12) };
+        Footer.Children.Add(Ui.Button(L10n.Text("Ui.Text01"), Close)); Footer.Children.Add(save);
+        var layout = new Grid(); layout.RowDefinitions.Add(new RowDefinition()); layout.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        layout.Children.Add(Categories); Grid.SetRow(Footer, 1); layout.Children.Add(Footer); Content = layout;
         FillEmptyRegex();
     }
 

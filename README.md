@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+未リリース：複数Vaultのデイリーノートに対応。初期表示名は「メイン」「サブ」で変更可能です。**設定 → Vault・デイリーノート**で登録・既定Vaultを設定します。[複数Vaultの設定と制約](docs/MULTIPLE-VAULTS.md#日本語)。
+
 v0.0.10：閉じた付箋の一括復元、ファイル名変更と変更できない場合の案内を追加し、メニュー表示時の自動保存によるフリーズを修正しました。[今回の変更・更新手順](docs/RELEASE-NOTES.md#日本語)。
 
 タスク本文の後のスペースで本家に沿った候補一覧を表示します。先頭の **⏎** でEnterは次項目へ、↓で選んでEnterは候補挿入、Tabは字下げです。[解析元と対応範囲](docs/TASK-EDITING.md#日本語)を参照してください。
@@ -15,7 +17,7 @@ v0.0.8は、DataviewのLIST・TABLE・TASKをCLI経由でTasksや通常のMarkdo
 v0.0.7から、新規設定では[Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#日本語)を既定とします。CLIを有効にしたObsidianを起動しておいてください。既存設定の明示的な無効指定は維持します。設定でCLIを無効にすれば、Obsidianなしでローカルファイルを使えます。
 **v0.0.6以前からの更新：** CLI選択項目がない旧設定もCLIが有効になるため、Vaultの設定が必要です。従来のローカル方式を続ける場合は、設定の **Obsidian CLIを使用する** を無効にして保存してください。既存ファイルは自動移行しません。
 
-CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
+CLIモードでは本文・Daily notes設定をObsidianから取得し、ローカル読込へのフォールバックやデイリー用のVault全件検索を行いません。「設定 → Vault・デイリーノート → Obsidian CLI」で接続を設定します。重複するローカルフォルダ・正規表現欄は隠し、無効化時に使えるよう値を保持します。
 
 [v0.0.9の本文描画例](docs/images/compact-body-v0.0.9.png)（WPFで生成）。下の全画面スクリーンショットは以前のUIです。
 
@@ -44,7 +46,7 @@ Windows向けのMarkdown付箋アプリです。Obsidianのノートやデイリ
 
 1. [v0.0.10の配布ページ](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)から `StickyNotes-win-x64.zip` をダウンロードして展開します。
 2. `Install.cmd` を実行し、スタートメニューの「Markdown Sticky Notes」から起動します。
-3. 通知領域アイコンの「設定 → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
+3. 通知領域アイコンの「設定 → Vault・デイリーノート → Obsidian CLI」で開いているVaultを取得し、付箋の保存フォルダを選びます。ローカルファイルを使う場合はCLIを無効にして基準フォルダから選択します。[接続・プラグインの設定](docs/TASKS-CLI-PREVIEW.md#日本語)。
 
 管理者権限や.NETの追加インストールは不要です。未署名のためWindowsの確認が出る場合があります。更新・削除・インストールせず使う方法は[導入ガイド](docs/INSTALL.md)を参照してください。
 

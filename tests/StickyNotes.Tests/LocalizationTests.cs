@@ -66,8 +66,10 @@ internal static partial class Program
                 var selector = general.Children.OfType<StackPanel>().SelectMany(p => p.Children.OfType<ComboBox>()).Single(c => c.Name == "DisplayLanguage");
                 var layout = (Grid)settings.Content;
                 layout.Measure(new Size(1100, 700)); layout.Arrange(new Rect(0, 0, 1100, 700)); layout.UpdateLayout();
-                Check(layout.Children.OfType<ScrollViewer>().All(p => p.ScrollableWidth == 0), code + ": settings panes fit normal width");
+                var panes = LogicalDescendants(settings.Categories).OfType<ScrollViewer>().ToArray();
+                Check(panes.Length >= 3 && panes.All(p => p.ScrollableWidth == 0), code + ": settings categories fit normal width");
                 RenderLocalizationPreview(layout, code + "-settings");
+                settings.Categories.SelectedIndex = 2;
                 SettingsPanel(settings, true).Children.OfType<Expander>().Single().IsExpanded = true;
                 layout.UpdateLayout();
                 RenderLocalizationPreview(layout, code + "-guide");

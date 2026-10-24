@@ -6,7 +6,7 @@
 
 v0.0.8 displays fenced `dataview` **LIST, TABLE and TASK** queries through Obsidian CLI. Download the [v0.0.10 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10), extract it and run `Install.cmd`. For a source build, use `./build.ps1 -Publish`, then `artifacts/app/Install.cmd`.
 
-Start Obsidian with CLI enabled, enable **Dataview** in the selected vault, and configure **Settings → Obsidian CLI** in Sticky Notes. Tasks is required only for `tasks` blocks. See [CLI setup](TASKS-CLI-PREVIEW.md#english). For example:
+Start Obsidian with CLI enabled, enable **Dataview** in the selected vault, and configure **Settings → Vaults & daily notes → Obsidian CLI** in Sticky Notes. Tasks is required only for `tasks` blocks. See [CLI setup](TASKS-CLI-PREVIEW.md#english). For example:
 
 ````markdown
 ```dataview
@@ -29,7 +29,7 @@ Normal tests use synthetic note sources and verify mixed rendering, mapped check
 
 v0.0.8は、`dataview`コードブロックの **LIST・TABLE・TASK** をObsidian CLI経由で表示します。[v0.0.10のZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)を展開して`Install.cmd`で導入してください。ソースからの場合は`./build.ps1 -Publish`でビルドし、`artifacts/app/Install.cmd`を実行します。
 
-CLIを有効にしたObsidianを起動し、対象Vaultで **Dataview** を有効にして、付箋の **設定 → Obsidian CLI** で接続します。Tasksは`tasks`ブロックだけに必要です。[CLI設定](TASKS-CLI-PREVIEW.md#日本語)も参照してください。例：
+CLIを有効にしたObsidianを起動し、対象Vaultで **Dataview** を有効にして、付箋の **設定 → Vault・デイリーノート → Obsidian CLI** で接続します。Tasksは`tasks`ブロックだけに必要です。[CLI設定](TASKS-CLI-PREVIEW.md#日本語)も参照してください。例：
 
 ````markdown
 ```dataview
@@ -52,7 +52,7 @@ LIMIT 10
 
 v0.0.8 通过 Obsidian CLI 显示 `dataview` 代码块中的 **LIST、TABLE 和 TASK** 查询。下载并解压 [v0.0.10 ZIP](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10)，运行 `Install.cmd` 安装。从源码构建时，运行 `./build.ps1 -Publish`，再用 `artifacts/app/Install.cmd` 安装。
 
-启动已启用 CLI 的 Obsidian，在目标仓库启用 **Dataview**，并在便签的 **设置 → Obsidian CLI** 中配置连接。只有 `tasks` 块需要 Tasks 插件。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。例如：
+启动已启用 CLI 的 Obsidian，在目标仓库启用 **Dataview**，并在便签的 **设置 → Vault 与每日笔记 → Obsidian CLI** 中配置连接。只有 `tasks` 块需要 Tasks 插件。参见 [CLI 设置](TASKS-CLI-PREVIEW.md#简体中文)。例如：
 
 ````markdown
 ```dataview

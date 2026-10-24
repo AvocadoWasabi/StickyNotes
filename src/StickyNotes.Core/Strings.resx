@@ -759,10 +759,10 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
     <value>付箋ファイルの移行</value>
   </data>
   <data name="SettingsWindow.Text65" xml:space="preserve">
-    <value>手順3: 設定を保存してGoogleにログイン</value>
+    <value>手順3: Googleにログイン</value>
   </data>
   <data name="SettingsWindow.Text66" xml:space="preserve">
-    <value>手順4: 保存して接続を確認（ログイン済みの場合）</value>
+    <value>手順4: 接続を確認（ログイン済みの場合）</value>
   </data>
   <data name="SettingsWindow.Text67" xml:space="preserve">
     <value>認証・接続確認をキャンセル</value>
@@ -1064,4 +1064,58 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="NoteBrowser.Deleting" xml:space="preserve"><value>付箋を削除しています…</value></data>
   <data name="NoteBrowser.DeleteDraft" xml:space="preserve"><value>このファイルを表示中の付箋に未保存の編集があります。保存するか編集を取り消してから削除してください。</value></data>
   <data name="NoteBrowser.SettingsChanged" xml:space="preserve"><value>設定が変更されました。管理画面を開き直してください。</value></data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>メイン</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>サブ</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>参照先のVault登録がありません。設定を確認してください。</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>Vaultの表示名と内部IDを確認してください。</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>参照先の設定が変更されています。編集中の内容を退避または保存し、付箋を再読み込みしてください。</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>メインVault、表示中または「閉じた付箋を復元」で使用するVaultは登録解除できません。</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>複数Vaultでは各CLI接続のVault名を明示してください。「起動中のVaultを取得」で取得できます。</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>同じフォルダを複数のVaultとして登録できません。</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>Vault</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>Vaultを追加</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>登録を解除</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>新しいデイリー付箋の既定Vault</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>既存の付箋の参照先は変わりません。登録解除はファイルを削除しません。</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>表示名（あとから変更できます）</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>デイリー設定はVaultごとに保存します。通常の付箋の新規作成・保存先フォルダ設定はメインを使用します。</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>接続・今日のノートを確認</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>Vault・デイリーノート</value>
+  </data>
 </root>

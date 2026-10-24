@@ -152,6 +152,7 @@ internal static partial class Program
             QueryEditingTests(root);
             NoteDeleteTests(root);
             NoteSourceTests(root);
+            MultipleVaultTests(root);
             Console.WriteLine($"\n{count} tests passed.");
         }
         finally { Directory.Delete(root, true); }
@@ -1276,9 +1277,10 @@ internal static partial class Program
         }
     }
 
-    private static StackPanel SettingsPanel(SettingsWindow window, bool google = false) =>
-        (StackPanel)((Grid)window.Content).Children.OfType<ScrollViewer>()
-            .Single(x => x.Name == (google ? "GoogleSettingsPane" : "GeneralSettingsPane")).Content;
+    private sealed record SettingsControls(IEnumerable<UIElement> Children);
+    private static SettingsControls SettingsPanel(SettingsWindow window, bool google = false) =>
+        new(google ? window.GooglePanel.Children.Cast<UIElement>() : window.GeneralPanel.Children.Cast<UIElement>()
+            .Concat(window.VaultDetailsPanel.Children.Cast<UIElement>()).Concat(window.Footer.Children.Cast<UIElement>()));
 
     private static void GoogleSetupUiTests(string root)
     {
@@ -1291,16 +1293,15 @@ internal static partial class Program
         var panel = SettingsPanel(settings, google: true);
         var layout = (Grid)settings.Content;
         layout.Measure(new Size(1100, 700)); layout.Arrange(new Rect(0, 0, 1100, 700)); layout.UpdateLayout();
-        var generalPane = layout.Children.OfType<ScrollViewer>().Single(x => x.Name == "GeneralSettingsPane");
-        var googlePane = layout.Children.OfType<ScrollViewer>().Single(x => x.Name == "GoogleSettingsPane");
-        Check(googlePane.TranslatePoint(new Point(), layout).X >= generalPane.ActualWidth &&
-            SettingsPanel(settings).Children.OfType<TextBox>().All(x => x.Name != "GoogleCredentialsFile"),
-            "Google credentials appear in a separate right-hand pane");
+        var generalPane = (ScrollViewer)((TabItem)settings.Categories.Items[0]).Content;
+        var googlePane = (ScrollViewer)((TabItem)settings.Categories.Items[2]).Content;
+        Check(settings.Categories.Items.Count == 3 && SettingsPanel(settings).Children.OfType<TextBox>().All(x => x.Name != "GoogleCredentialsFile"),
+            "Google credentials have a separate category alongside General and Vaults");
+        settings.Categories.SelectedIndex = 2; layout.UpdateLayout();
         googlePane.ScrollToBottom(); layout.UpdateLayout();
         Check(googlePane.VerticalOffset > 0 && generalPane.VerticalOffset == 0,
             "long Google guide scrolls independently of general settings");
-        Check(googlePane.ScrollableWidth == 0 && generalPane.ScrollableWidth == 0,
-            "both settings panes fit the normal window width without horizontal scrolling");
+        Check(googlePane.ScrollableWidth == 0, "Google category fits the normal window width without horizontal scrolling");
         Check(panel.Children.OfType<Expander>().Single(x => x.Name == "GoogleSetupGuide").IsExpanded,
             "first-time Google setup displays the guide");
         panel.Children.OfType<TextBox>().Single(x => x.Name == "GoogleCredentialsFile").Text = path;

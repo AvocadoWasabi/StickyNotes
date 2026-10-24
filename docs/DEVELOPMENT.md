@@ -2,6 +2,8 @@
 
 # 開発と公開
 
+未リリース：複数Vaultのデイリーノートに対応。初期表示名は「メイン」「サブ」で変更可能です。**設定 → Vault・デイリーノート**で登録・既定Vaultを設定します。[複数Vaultの設定と制約](MULTIPLE-VAULTS.md#日本語)。
+
 補完は版固定した本家Tasksの承認済みテスト資料と照合します。限定した日付補助処理を含めTaskEditingへ集約し、cloneは配布対象外、MIT表記は同梱します。[参照版・検証・互換範囲](TASK-EDITING.md#日本語)を参照してください。
 
 タスク入力規則・候補UI／IME・Tasks公開チェックAPI連携は`src/StickyNotes/TaskEditing/`に集約します。ウィンドウから委譲し、既存のCLI転送と競合検出付き保存を共用します。[設計と検証](TASK-EDITING.md#日本語)を参照してください。
@@ -29,7 +31,7 @@ Windowsと.NET 8 SDKを使用します。ローカルの `.tools/dotnet` があ�
 
 `-Publish` は追加で `artifacts/StickyNotes-win-x64.zip` とSHA256チェックサムを生成・更新します。通常のビルドでは既存ZIPは更新しないため、ZIPを配布する場合は `-Publish` を使用してください。
 
-通常ローカルビルドはObsidian CLIを既定とし、既存の明示的なローカル設定は維持します。「設定 → Obsidian CLI」で接続します。Daily notes設定はObsidianを参照します。付箋保存先の上書き指定は`FoldersBridge`で一覧・作成・移動を扱い、移行制御はCLI／ローカル共通です。`DailyBridge`がVaultを列挙せず今日・昨日を解決、保持処理は両取得方式で共用します。通常プロファイルと、`./build.ps1 -Publish -TasksPreview`による`artifacts/tasks-cli-preview`の独立プロファイルは分離したままです。[CLI手順・構成・制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
+通常ローカルビルドはObsidian CLIを既定とし、既存の明示的なローカル設定は維持します。「設定 → Vault・デイリーノート → Obsidian CLI」で接続します。Daily notes設定はObsidianを参照します。付箋保存先の上書き指定は`FoldersBridge`で一覧・作成・移動を扱い、移行制御はCLI／ローカル共通です。`DailyBridge`がVaultを列挙せず今日・昨日を解決、保持処理は両取得方式で共用します。通常プロファイルと、`./build.ps1 -Publish -TasksPreview`による`artifacts/tasks-cli-preview`の独立プロファイルは分離したままです。[CLI手順・構成・制約](TASKS-CLI-PREVIEW.md#日本語)を参照してください。
 
 `DataviewBridge.js`は元ノートのパスを渡して本家の`query` + Markdown export APIsを呼びます。TasksとDataviewは描画・ライフサイクル処理を共用し、状態とエラーは独立しています。通常テストで表示と古い応答を検証し、任意のNode.js `--dataview-bridge-smoke`で生成した実際のCLIコードを合成APIデータで検証できます。[Dataviewの構成・制限・検証状況](DATAVIEW.md#日本語)を参照してください。
 

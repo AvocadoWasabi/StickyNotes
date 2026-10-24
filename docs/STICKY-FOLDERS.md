@@ -8,7 +8,7 @@ Available in v0.0.7 and later, in both CLI and local modes.
 
 1. In Settings, select the Obsidian vault, or disable CLI and choose a local base folder.
 2. Select **Select sticky-note folder…**. The app retrieves folders under that root. Choose one from the editable list, or type a new relative path such as `Sticky Notes/Work`. `.` selects the root.
-3. Select **Confirm**, then **Yes** to also migrate existing app-created sticky notes, **No** to change only the destination for new notes, or **Cancel** to make no changes. Confirming saves the Settings form; a new folder is created only after Yes/No. Saving a changed vault/base folder also opens this selection flow.
+3. Select **Confirm**, then **Yes** to also migrate existing app-created sticky notes, **No** to change only the destination for new notes, or **Cancel** to make no changes. These choices remain drafts. **Save and close** in Settings creates the selected folder and applies any requested migration; cancelling Settings discards the choices. This setting belongs to the main registration under **Vaults & daily notes**.
 
 CLI mode lists/creates folders, reads candidates and moves notes through Obsidian, without direct local Markdown access or fallback. An explicit sticky folder takes precedence over Obsidian's general new-note location; older profiles with no selection continue using Obsidian's location. Local mode uses the selected absolute base and its chosen subfolder. Daily settings remain separate. There is no automatic migration merely from switching access modes.
 
@@ -26,7 +26,7 @@ v0.0.7以降のCLI・ローカル両方式で使用できます。
 
 1. 設定でObsidianのVaultを指定します。ローカル方式ではCLIを無効にし、基準フォルダを選びます。
 2. **付箋の保存フォルダを選択…** を押すと、基準内のフォルダ一覧を取得します。一覧から選ぶか、`付箋/仕事`のような新しい相対パスを入力します。`.`は直下です。
-3. **決定**後、**はい**で既存のアプリ作成付箋も移行、**いいえ**で今後の保存先だけ変更、**キャンセル**で変更しません。確定時に設定画面の内容を保存し、新規フォルダは「はい／いいえ」の後に作成します。Vault・基準フォルダを変更して設定保存した場合も、この選択画面を開きます。
+3. **決定**後、**はい**で既存のアプリ作成付箋も移行、**いいえ**で今後の保存先だけ変更、**キャンセル**で変更しません。選択内容は下書きです。設定画面の **保存して閉じる** でフォルダ作成と選択した移行を実行し、設定をキャンセルすれば破棄します。この項目は **Vault・デイリーノート** のメイン登録にあります。
 
 CLIモードでは一覧取得・フォルダ作成・対象本文の取得・移動をObsidian経由に統一し、ローカルMarkdownの直接取得へ切り替えません。指定した付箋フォルダはObsidian全般の新規保存先より優先します。未指定の旧設定はObsidianの保存先を継続使用します。ローカル方式では絶対パスの基準フォルダと選択したサブフォルダを使います。デイリー設定は独立しており、取得方式を切り替えただけでは移行しません。
 
@@ -44,7 +44,7 @@ v0.0.7 及以上版本的 CLI 和本地模式均可使用。
 
 1. 在设置中选择Obsidian仓库；本地模式则禁用CLI并选择基准文件夹。
 2. 点击**选择便签保存文件夹…**，获取基准内的目录列表。选择已有目录，或输入`便签/工作`等新的相对路径。`.`表示根目录。
-3. 点击**确定**后，选择**是**迁移已有的应用便签、**否**仅更改新便签保存位置，或**取消**不做更改。确认会保存设置表单；新文件夹仅在选择是／否后创建。更改仓库或基准目录并保存设置时，也会打开此选择流程。
+3. 点击**确定**后，选择**是**迁移已有的应用便签、**否**仅更改新便签保存位置，或**取消**不做更改。选择内容保留为草稿，点击设置中的 **保存并关闭** 后才创建目录并执行所选迁移，取消设置会丢弃选择。此项位于 **Vault 与每日笔记** 的主注册。
 
 CLI模式通过Obsidian完成列表获取、建目录、读取候选正文及移动，不回退到直接读取本地Markdown。显式便签目录优先于Obsidian的一般新笔记位置；未选择目录的旧配置继续使用Obsidian位置。本地模式使用绝对基准目录及所选子目录。日记设置独立，单纯切换访问模式不会自动迁移。
 

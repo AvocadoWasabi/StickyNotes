@@ -759,10 +759,10 @@ Cancel: Do not save settings.</value>
     <value>Migrate note files</value>
   </data>
   <data name="SettingsWindow.Text65" xml:space="preserve">
-    <value>Step 3: Save settings and sign in to Google</value>
+    <value>Step 3: Sign in to Google</value>
   </data>
   <data name="SettingsWindow.Text66" xml:space="preserve">
-    <value>Step 4: Save and check connection (signed in)</value>
+    <value>Step 4: Check connection (signed in)</value>
   </data>
   <data name="SettingsWindow.Text67" xml:space="preserve">
     <value>Cancel sign-in / connection check</value>
@@ -1064,4 +1064,58 @@ Notes displaying this file will also close. A recovery file remains in deleted-n
   <data name="NoteBrowser.Deleting" xml:space="preserve"><value>Deleting note…</value></data>
   <data name="NoteBrowser.DeleteDraft" xml:space="preserve"><value>A note displaying this file has unsaved edits. Save or discard those edits before deleting.</value></data>
   <data name="NoteBrowser.SettingsChanged" xml:space="preserve"><value>Settings have changed. Reopen the management window.</value></data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>Sub</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>The registered Vault is missing. Check settings.</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>Check the Vault display names and internal IDs.</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>The source settings changed. Save or copy your draft, then reload the note.</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>The main Vault and Vaults used by open or recently closed notes cannot be removed.</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>For multiple Vaults, specify each CLI Vault name. Use Detect active Vault to fill it in.</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>The same folder cannot be registered as multiple Vaults.</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>Vault</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>Add Vault</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>Remove registration</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>Default Vault for new daily notes</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>Existing notes keep their Vault. Removing a registration does not delete files.</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>Display name (editable later)</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>Daily settings are saved per Vault. New ordinary notes and their destination folder use the main registration.</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>Check connection / today’s note</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>Vaults &amp; daily notes</value>
+  </data>
 </root>

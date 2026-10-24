@@ -37,8 +37,8 @@ public sealed partial class NoteWindow
 
     internal static FencedCodeBlock[] FindTasksBlocks(string markdown) => FindQueryBlocks(markdown, "tasks");
 
-    private string QueryIdentity() => JsonSerializer.Serialize(new { snapshot?.Path, content, Placement.HeadingFilters, app.Config.ObsidianCli,
-        app.Config.ObsidianVaultFolder, app.Config.ObsidianVaultId });
+    private string QueryIdentity() => JsonSerializer.Serialize(new { snapshot?.Path, Placement.VaultId, content, Placement.HeadingFilters, SourceSettings.ObsidianCli,
+        SourceSettings.ObsidianVaultFolder, SourceSettings.ObsidianVaultId });
 
     private void CancelQueryPreviews()
     {
@@ -55,7 +55,7 @@ public sealed partial class NoteWindow
             if (filter.Missing.Length > 0)
                 preview.Document.Blocks.Add(new Paragraph(new Run(L10n.Text("HeadingFilter.Missing"))));
         }
-        if (!app.Config.ObsidianTasksEnabled)
+        if (!SourceSettings.ObsidianTasksEnabled)
         {
             if (force || queryIdentity.Length > 0)
             {
@@ -109,12 +109,13 @@ public sealed partial class NoteWindow
 
     private async Task ToggleQueryTask(QueryPreviewState state, QueryTaskTarget target, bool value)
     {
-        if (queryTaskSaving || editing || dirty || closed || !app.Config.ObsidianTasksEnabled || QueryIdentity() != queryIdentity) return;
+        if (queryTaskSaving || editing || dirty || closed || !SourceSettings.ObsidianTasksEnabled || QueryIdentity() != queryIdentity) return;
         var identity = queryIdentity;
         queryTaskSaving = true; RenderQueryPreviews();
         try
         {
-            await app.NoteSources(app.Config).ToggleQueryTaskAsync(target, state.Language, value, Path.Combine(App.DataDirectory, "backups"));
+            EnsureWritableSource();
+            await app.NoteSources(SourceSettings).ToggleQueryTaskAsync(target, state.Language, value, Path.Combine(App.DataDirectory, "backups"));
             if (closed || editing || dirty || identity != QueryIdentity()) return;
             CancelQueryPreviews();
             await ReloadCliNoteAsync(true);
@@ -138,10 +139,10 @@ public sealed partial class NoteWindow
     private async Task RefreshQueryPreviews()
     {
         if (closed || editing || dirty || snapshot is null || cliNoteError is not null) return;
-        if (NoteSource.UsesCli(app.Config) && !snapshot.Hash.StartsWith("cli:", StringComparison.Ordinal))
+        if (NoteSource.UsesCli(SourceSettings) && !snapshot.Hash.StartsWith("cli:", StringComparison.Ordinal))
         { await ReloadCliNoteAsync(true); return; }
         RenderQueryPreviews(false);
-        if (!app.Config.ObsidianTasksEnabled) return;
+        if (!SourceSettings.ObsidianTasksEnabled) return;
         await Task.WhenAll(RefreshQueryPreview(tasksPreview, app.TasksQueries), RefreshQueryPreview(dataviewPreview, app.DataviewQueries));
     }
 
@@ -154,12 +155,12 @@ public sealed partial class NoteWindow
         var identity = queryIdentity;
         using var cancellation = new CancellationTokenSource();
         state.Cancellation = cancellation;
-        bool Current() => !closed && !editing && !dirty && cliNoteError is null && app.Config.ObsidianTasksEnabled &&
+        bool Current() => !closed && !editing && !dirty && cliNoteError is null && SourceSettings.ObsidianTasksEnabled &&
             queryIdentity == identity && QueryIdentity() == identity && ReferenceEquals(state.Cancellation, cancellation) &&
             !cancellation.IsCancellationRequested;
         try
         {
-            var response = await query(app.Config, snapshot!.Path, state.Queries, cancellation.Token);
+            var response = await query(SourceSettings, snapshot!.Path, state.Queries, cancellation.Token);
             if (!Current()) return;
             state.Response = response; state.Fetched = DateTime.Now; state.Error = null;
             RenderQueryPreviews();

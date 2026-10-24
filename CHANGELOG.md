@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Support multiple daily-note Vaults with editable Main/Sub names, per-Vault settings, stable placement IDs, a default picker, independent Tasks/Dataview routing, and guarded registration removal. Settings now use General / Vaults & daily notes / Google categories and commit profile/folder drafts on Save. [Details](docs/MULTIPLE-VAULTS.md#english).
+
 - Display Markdown filenames without `.md` as note titles, including linked-section and daily notes. Update headers and taskbar titles immediately after renaming; preserve YAML `title` as metadata.
 - Rename the folder browser to **Manage sticky-note folder…** and add confirmed deletion of a selected Markdown file, recovery files, conflict/draft protection, and cleanup of open notes and closed-note history. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
 

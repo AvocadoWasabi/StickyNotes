@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](docs/MULTIPLE-VAULTS.md#english).
+
 v0.0.10 adds reopening recently closed note groups, file renaming and guidance when renaming is unavailable, and fixes menu-triggered autosave freezes. See [changes and upgrade steps](docs/RELEASE-NOTES.md#english).
 
 Task completion now follows the upstream default menu after a space: Enter on **⏎** continues the list; ↓ then Enter selects a field, and Tab indents. See [analyzed source and compatibility scope](docs/TASK-EDITING.md#english).
@@ -15,7 +17,7 @@ v0.0.8 also displays Dataview LIST/TABLE/TASK queries through CLI, alongside Tas
 Since v0.0.7, new settings default to [Obsidian CLI](docs/TASKS-CLI-PREVIEW.md#english). Keep Obsidian running with CLI enabled. Existing settings that explicitly disable CLI remain local; you can also disable CLI in Settings to use local files without Obsidian.
 **Upgrading from v0.0.6 or earlier:** settings without a CLI selection also default to CLI and require vault setup. To continue with local files, uncheck **Use Obsidian CLI** in Settings and save. Existing files are not moved automatically.
 
-CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
+CLI mode obtains note text and Daily notes settings from Obsidian, without local-read fallback or a whole-vault daily-note search. Configure the connection in **Settings → Vaults & daily notes → Obsidian CLI**; duplicate local folder and regex fields are hidden, with their values preserved for opting out.
 
 [v0.0.9 body rendering sample](docs/images/compact-body-v0.0.9.png), generated with WPF. The full-window screenshots below show an earlier UI.
 

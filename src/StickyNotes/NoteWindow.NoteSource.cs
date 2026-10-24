@@ -10,12 +10,26 @@ public sealed partial class NoteWindow
     private string cliReadIdentity = "";
     private string? cliNoteError;
     private int cliReadVersion;
+    private string? snapshotSourceIdentity;
+
+    internal void EnsureWritableSource()
+    {
+        if (snapshotSourceIdentity is not null && snapshotSourceIdentity != SourceSettings.SourceIdentity(Placement.Daily))
+            throw new InvalidOperationException(L10n.Text("Vault.SourceChanged"));
+    }
+
+    internal void RefreshVaultSettings()
+    {
+        UpdateTitle(snapshot?.Path ?? (Placement.Daily ? null : Placement.Path));
+        if (!editing && !dirty && snapshotSourceIdentity is not null && snapshotSourceIdentity != SourceSettings.SourceIdentity(Placement.Daily))
+        { CancelCliRead(); CancelQueryPreviews(); snapshot = null; Reload(); }
+    }
 
     internal void PauseFolderChange() { CancelCliRead(); CancelQueryPreviews(); }
 
-    private string ReadIdentity() => JsonSerializer.Serialize(new { Placement.Path, Placement.Daily, Placement.Heading,
-        app.Config.ObsidianTasksEnabled, app.Config.ObsidianCli, app.Config.ObsidianVaultFolder, app.Config.ObsidianVaultId,
-        app.Config.DailyRetention, Date = today().Date });
+    private string ReadIdentity() => JsonSerializer.Serialize(new { Placement.Path, Placement.Daily, Placement.Heading, Placement.VaultId,
+        SourceSettings.ObsidianTasksEnabled, SourceSettings.ObsidianCli, SourceSettings.ObsidianVaultFolder, SourceSettings.ObsidianVaultId,
+        SourceSettings.DailyRetention, Date = today().Date });
 
     private void CancelCliRead()
     {
@@ -27,7 +41,7 @@ public sealed partial class NoteWindow
     private void AcceptSnapshot(FileSnapshot fresh)
     {
         var nextContent = Placement.Heading.Length > 0 ? SectionEditor.Find(fresh.Text, Placement.Heading).Content : NoteStore.Split(fresh.Text).Body;
-        snapshot = fresh; content = nextContent; dirty = false; SetEditing(false);
+        snapshot = fresh; snapshotSourceIdentity = SourceSettings.SourceIdentity(Placement.Daily); content = nextContent; dirty = false; SetEditing(false);
         displayedDate = dailyDisplay.TargetDate;
         Render(); status.Text = Placement.Daily ? L10n.Text("NoteWindow.Text17") + Path.GetFileName(fresh.Path) : L10n.Text("NoteWindow.Text18") + Path.GetFileName(fresh.Path);
     }
@@ -40,12 +54,12 @@ public sealed partial class NoteWindow
         var daily = await source.GetDailyNotesAsync(date, token);
         token.ThrowIfCancellationRequested();
         if (closed || identity != ReadIdentity()) throw new OperationCanceledException(token);
-        return dailyDisplay.Resolve(daily.Configuration, date, app.Config.DailyRetention, daily.Resolve);
+        return dailyDisplay.Resolve(SourceSettings.SourceIdentity(true) + daily.Configuration, date, SourceSettings.DailyRetention, daily.Resolve);
     }
 
     private async Task ReloadCliNoteAsync(bool force)
     {
-        if (closed || app.IsChangingFolder || !NoteSource.UsesCli(app.Config)) return;
+        if (closed || app.IsChangingFolder || !NoteSource.UsesCli(SourceSettings)) return;
         var identity = ReadIdentity();
         var changed = identity != cliReadIdentity;
         if (!force && !changed && (cliReadCancellation is not null || (lastCliRead is { } last && Environment.TickCount64 - last < 30_000))) return;
@@ -60,9 +74,9 @@ public sealed partial class NoteWindow
             snapshot = null; content = ""; CancelQueryPreviews(); preview.Document?.Blocks.Clear();
         }
         status.Text = L10n.Text("CliNote.Loading");
-        var source = app.NoteSources(app.Config);
+        var source = app.NoteSources(SourceSettings);
         bool Current() => !closed && !cancel.IsCancellationRequested && version == cliReadVersion &&
-            NoteSource.UsesCli(app.Config) && identity == ReadIdentity();
+            NoteSource.UsesCli(SourceSettings) && identity == ReadIdentity();
         try
         {
             var path = await ResolveCliPathAsync(source, cancel.Token);
@@ -77,7 +91,7 @@ public sealed partial class NoteWindow
                 return;
             }
             if (force || snapshot?.Path != fresh.Path || snapshot.Hash != fresh.Hash ||
-                (Placement.Daily && (renderedToday != today().Date || renderedRetention != app.Config.DailyRetention))) AcceptSnapshot(fresh);
+                (Placement.Daily && (renderedToday != today().Date || renderedRetention != SourceSettings.DailyRetention))) AcceptSnapshot(fresh);
             else status.Text = L10n.Text("CliNote.Loaded");
             await RefreshQueryPreviews();
         }

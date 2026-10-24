@@ -11,6 +11,8 @@ namespace StickyNotes;
 public sealed partial class NoteWindow : Window
 {
     public NotePlacement Placement { get; }
+    internal Settings SourceSettings => app.Config.ForVault(Placement.VaultId);
+    private readonly TextBlock vaultLabel = new() { Name = "VaultLabel", FontSize = 10, Margin = new Thickness(13, 0, 10, 3), Foreground = Brushes.DimGray, TextTrimming = TextTrimming.CharacterEllipsis };
     internal StackPanel NoteControls { get; } = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(4, 0, 4, 3) };
     internal Grid NoteHeader { get; } = new() { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(12, 0, 0, 0)), Focusable = true };
     private readonly Border controlsHost = new();
@@ -114,6 +116,7 @@ public sealed partial class NoteWindow : Window
         header.IsKeyboardFocusWithinChanged += (_, _) => UpdateButtonOverlay();
         ApplyButtonDisplay();
         DockPanel.SetDock(header, Dock.Top); dock.Children.Add(header);
+        DockPanel.SetDock(vaultLabel, Dock.Top); dock.Children.Add(vaultLabel);
         DockPanel.SetDock(tags, Dock.Top); dock.Children.Add(tags);
         tags.Visibility = Visibility.Collapsed;
         DockPanel.SetDock(status, Dock.Bottom); dock.Children.Add(status);
@@ -129,7 +132,7 @@ public sealed partial class NoteWindow : Window
         grid.Children.Add(reading); grid.Children.Add(editor); dock.Children.Add(grid);
         calendarCompletion = new CalendarCompletion(this, editor, this.today);
         taskEditor = new TaskEditorBehavior(this, editor, this.today,
-            token => TaskCompletionPolicy.IsEnabledAsync(app.Config, app.NoteSources, token));
+            token => TaskCompletionPolicy.IsEnabledAsync(SourceSettings, app.NoteSources, token));
         preview.MinZoom = NotePlacement.MinContentScale; preview.MaxZoom = NotePlacement.MaxContentScale; preview.ZoomIncrement = 10;
         ApplyContentScale();
         PreviewZoom.AddValueChanged(preview, OnPreviewZoomChanged);
@@ -322,16 +325,16 @@ public sealed partial class NoteWindow : Window
     private string ResolvePath()
     {
         if (!Placement.Daily) return Placement.Path;
-        if (NoteSource.UsesCli(app.Config))
-            return Task.Run(() => ResolveCliPathAsync(app.NoteSources(app.Config), CancellationToken.None)).GetAwaiter().GetResult();
-        return dailyDisplay.Resolve(app.Config.DailyFolder, app.Config.DailyPattern, today(), app.Config.DailyRetention);
+        if (NoteSource.UsesCli(SourceSettings))
+            return Task.Run(() => ResolveCliPathAsync(app.NoteSources(SourceSettings), CancellationToken.None)).GetAwaiter().GetResult();
+        return dailyDisplay.Resolve(SourceSettings.DailyFolder, SourceSettings.DailyPattern, today(), SourceSettings.DailyRetention);
     }
 
     private void Reload()
     {
         if (IsSaving) return;
         if (app.IsChangingFolder) return;
-        if (NoteSource.UsesCli(app.Config))
+        if (NoteSource.UsesCli(SourceSettings))
         {
             dirty = false; SetEditing(false);
             _ = ReloadCliNoteAsync(true); return;
@@ -339,7 +342,7 @@ public sealed partial class NoteWindow : Window
         CancelCliRead();
         try
         {
-            AcceptSnapshot(app.NoteSources(app.Config).Read(ResolvePath()));
+            AcceptSnapshot(app.NoteSources(SourceSettings).Read(ResolvePath()));
         }
         catch (Exception ex) { ShowReadError(ex); }
     }
@@ -360,20 +363,23 @@ public sealed partial class NoteWindow : Window
 
     private void UpdateTitle(string? path)
     {
+        vaultLabel.Text = app.Config.VaultName(Placement.VaultId);
+        vaultLabel.ToolTip = vaultLabel.Text;
+        vaultLabel.Visibility = Placement.Daily || app.Config.AdditionalVaults.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         title.Text = string.IsNullOrEmpty(path)
             ? L10n.Text(Placement.Daily ? "NoteWindow.Text19" : "NoteWindow.Text20")
             : Path.GetFileNameWithoutExtension(path);
         Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
-        title.ToolTip = title.Text + (Placement.Heading.Length > 0 ? "\n" + Placement.Heading : "") + "\n" + tags.Text + "\n" + path;
+        title.ToolTip = title.Text + "\n" + vaultLabel.Text + (Placement.Heading.Length > 0 ? "\n" + Placement.Heading : "") + "\n" + tags.Text + "\n" + path;
     }
 
     private void Render()
     {
         if (snapshot is null) return;
-        renderedToday = today().Date; renderedRetention = app.Config.DailyRetention;
+        renderedToday = today().Date; renderedRetention = SourceSettings.DailyRetention;
         var yesterday = Placement.Daily && displayedDate < today().Date;
         dailyNotice.Text = yesterday ? L10n.Format("NoteWindow.Text21", displayedDate) +
-            (app.Config.DailyRetention == DailyNoteRetention.UntilRefresh ? L10n.Text("NoteWindow.Text22") : L10n.Text("NoteWindow.Text23")) : "";
+            (SourceSettings.DailyRetention == DailyNoteRetention.UntilRefresh ? L10n.Text("NoteWindow.Text22") : L10n.Text("NoteWindow.Text23")) : "";
         dailyNotice.Visibility = yesterday ? Visibility.Visible : Visibility.Collapsed;
         var metadata = NoteStore.Metadata(snapshot.Text);
         if (Placement.Heading.Length == 0) Placement.Color = metadata.Color;
@@ -474,7 +480,7 @@ public sealed partial class NoteWindow : Window
     internal async Task<bool> SaveEditorAsync()
     {
         if (IsSaving || closed || app.IsChangingFolder) return false;
-        if (!NoteSource.UsesCli(app.Config) || snapshot is null || !editing || !dirty) return Save();
+        if (!NoteSource.UsesCli(SourceSettings) || snapshot is null || !editing || !dirty) return Save();
         focusLossTimer.Stop();
         var previousDecision = decisionInProgress;
         decisionInProgress = true; IsSaving = true;
@@ -483,8 +489,9 @@ public sealed partial class NoteWindow : Window
         try
         {
             var expected = snapshot;
+            EnsureWritableSource();
             var updated = UpdatedContent(editor.Text);
-            var source = app.NoteSources(app.Config);
+            var source = app.NoteSources(SourceSettings);
             var backup = Path.Combine(App.DataDirectory, "backups");
             CancelCliRead();
             status.Text = L10n.Text("NoteWindow.Saving");
@@ -583,10 +590,11 @@ public sealed partial class NoteWindow : Window
 
     private void SaveContent(string next)
     {
+        EnsureWritableSource();
         if (snapshot is null) throw new InvalidOperationException(L10n.Text("NoteWindow.Text32"));
         var updated = UpdatedContent(next);
-        if (NoteSource.UsesCli(app.Config)) CancelCliRead();
-        snapshot = app.NoteSources(app.Config).Save(snapshot, updated, Path.Combine(App.DataDirectory, "backups"));
+        if (NoteSource.UsesCli(SourceSettings)) CancelCliRead();
+        snapshot = app.NoteSources(SourceSettings).Save(snapshot, updated, Path.Combine(App.DataDirectory, "backups"));
         content = Placement.Heading.Length > 0 ? SectionEditor.Find(snapshot.Text, Placement.Heading).Content : NoteStore.Split(snapshot.Text).Body;
     }
 
@@ -596,7 +604,8 @@ public sealed partial class NoteWindow : Window
         {
             if (editing) throw new InvalidOperationException(L10n.Text("NoteWindow.Text33"));
             if (snapshot is null) return;
-            SaveContent(app.NoteSources(app.Config).ToggleTaskContent(snapshot, content, line, value));
+            EnsureWritableSource();
+            SaveContent(app.NoteSources(SourceSettings).ToggleTaskContent(snapshot, content, line, value));
             Render(); status.Text = L10n.Text("NoteWindow.Text34");
         }
         catch (Exception ex) { status.Text = ex.Message; Render(); }
@@ -624,7 +633,7 @@ public sealed partial class NoteWindow : Window
         if (closed) return;
         try
         {
-            if (NoteSource.UsesCli(app.Config))
+            if (NoteSource.UsesCli(SourceSettings))
             {
                 await ReloadCliNoteAsync(false);
                 if (!editing && snapshot is not null && cliNoteError is null)
@@ -639,7 +648,7 @@ public sealed partial class NoteWindow : Window
             if (!dirty && !editing)
             {
                 if (!File.Exists(path) || snapshot is null || snapshot.Path != path || NoteStore.Read(path).Hash != snapshot.Hash ||
-                    (Placement.Daily && (renderedToday != today().Date || renderedRetention != app.Config.DailyRetention))) Reload();
+                    (Placement.Daily && (renderedToday != today().Date || renderedRetention != SourceSettings.DailyRetention))) Reload();
             }
             else if (snapshot is not null && (snapshot.Path != path || NoteStore.Read(snapshot.Path).Hash != snapshot.Hash))
                 status.Text = L10n.Text("NoteWindow.Text37");
@@ -755,10 +764,10 @@ public sealed partial class NoteWindow : Window
         menu.Items.Add(ContentScaleMenu());
         Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
         Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); });
-        if (app.Config.ObsidianTasksEnabled) Add(L10n.Text("QueryPreview.Refresh"), () => { ResetQueryRefresh(); _ = RefreshQueryPreviews(); });
+        if (SourceSettings.ObsidianTasksEnabled) Add(L10n.Text("QueryPreview.Refresh"), () => { ResetQueryRefresh(); _ = RefreshQueryPreviews(); });
         Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
         Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
-        Add(L10n.Text("NoteBrowser.Title"), app.BrowseNotes);
+        Add(L10n.Text("NoteBrowser.Title"), () => app.BrowseNotes(Placement.VaultId));
         Add(L10n.Text("AppCommands.RestoreClosed"), app.RestoreRecentlyClosedNotes);
         Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
         Add(L10n.Text("NoteWindow.Text55"), app.LinkDaily);
@@ -774,10 +783,11 @@ public sealed partial class NoteWindow : Window
         var original = NoteStore.Metadata(snapshot.Text);
         var values = Ui.Prompt(L10n.Text("NoteWindow.Text59"), [new("title", L10n.Text("NoteWindow.Text60"), original.Title), new("tags", L10n.Text("NoteWindow.Text61"), string.Join(" ", original.Tags)), new("status", L10n.Text("NoteWindow.Text62"), original.Status), new("color", L10n.Text("NoteWindow.Text63"), original.Color)], this);
         if (values is null) return;
+        EnsureWritableSource();
         var list = values["tags"].Split([' ', ',', '、', '\n', '\r'], StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimStart('#')).Distinct().ToArray();
         if (list.Any(t => !Regex.IsMatch(t, @"^[\p{L}\p{N}_/-]+$") || t.All(char.IsDigit))) throw new InvalidOperationException(L10n.Text("NoteWindow.Text64"));
-        if (NoteSource.UsesCli(app.Config)) CancelCliRead();
-        snapshot = app.NoteSources(app.Config).Save(snapshot, NoteStore.WithMetadata(snapshot.Text, new(values["title"], list, values["status"], values["color"])), Path.Combine(App.DataDirectory, "backups"));
+        if (NoteSource.UsesCli(SourceSettings)) CancelCliRead();
+        snapshot = app.NoteSources(SourceSettings).Save(snapshot, NoteStore.WithMetadata(snapshot.Text, new(values["title"], list, values["status"], values["color"])), Path.Combine(App.DataDirectory, "backups"));
         Reload(); app.SaveConfig();
     }
 

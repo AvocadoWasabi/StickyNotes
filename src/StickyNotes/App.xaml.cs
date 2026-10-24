@@ -131,12 +131,14 @@ public partial class App : Application
         if (picker.ShowDialog() == true) ShowNote(new() { Path = picker.FileName });
     }
 
-    public void BrowseNotes()
+    public void BrowseNotes() => BrowseNotes(Settings.MainVaultId);
+
+    public void BrowseNotes(string vaultId)
     {
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         var settings = Config;
-        var source = NoteSources(settings);
-        new NoteBrowserWindow(source, path => ShowNote(new() { Path = path }), expected =>
+        var source = NoteSources(settings.ForVault(vaultId));
+        new NoteBrowserWindow(source, path => ShowNote(new() { Path = path, VaultId = vaultId }), expected =>
         {
             if (!ReferenceEquals(settings, Config)) throw new InvalidOperationException(L10n.Text("NoteBrowser.SettingsChanged"));
             return DeleteNoteAsync(source, expected);
@@ -159,7 +161,9 @@ public partial class App : Application
     {
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         lastCloseCompleted = null;
+        _ = Config.ForVault(placement.VaultId);
         var existing = Notes.FirstOrDefault(n => n.Placement.Daily == placement.Daily &&
+            n.Placement.VaultId == placement.VaultId &&
             n.Placement.Heading == placement.Heading && string.Equals(n.Placement.Path, placement.Path, StringComparison.OrdinalIgnoreCase));
         if (existing is not null) { existing.Show(); if (existing.WindowState == WindowState.Minimized) existing.WindowState = WindowState.Normal; existing.Activate(); return; }
         var window = new NoteWindow(placement);
@@ -214,6 +218,7 @@ public partial class App : Application
 
     public void ApplySettings(Settings next, bool migrate)
     {
+        ValidateVaultChange(next);
         if (Notes.Any(note => note.IsSaving)) throw new InvalidOperationException(L10n.Text("NoteWindow.Saving"));
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         if (migrate) NoteFolderMigration.Move(Config.NotesFolder, next.NotesFolder, paths => CommitSettings(next, paths));
@@ -223,6 +228,7 @@ public partial class App : Application
 
     internal async Task ApplyFolderSettingsAsync(Settings next, bool migrate)
     {
+        ValidateVaultChange(next);
         if (Notes.Any(note => note.IsSaving)) throw new InvalidOperationException(L10n.Text("NoteWindow.Saving"));
         if (IsChangingFolder) throw new InvalidOperationException(L10n.Text("StickyFolder.Working"));
         IsChangingFolder = true;
@@ -260,7 +266,18 @@ public partial class App : Application
         {
             note.ApplyButtonDisplay();
             note.ApplyTaskbarDisplay();
+            note.RefreshVaultSettings();
         }
+    }
+
+    private void ValidateVaultChange(Settings next)
+    {
+        if (Notes.Any(n => n.HasPendingWrite)) throw new InvalidOperationException(L10n.Text("NoteWindow.Saving"));
+        var ids = next.GetVaultProfiles().Select(p => p.Id).ToHashSet(StringComparer.Ordinal);
+        if (Notes.Select(n => n.Placement).Concat(Config.RecentlyClosedWindows).Any(p => !ids.Contains(p.VaultId)))
+            throw new InvalidOperationException(L10n.Text("Vault.InUse"));
+        if (Notes.Any(n => n.HasUnsavedChanges && n.SourceSettings.SourceIdentity(n.Placement.Daily) != next.ForVault(n.Placement.VaultId).SourceIdentity(n.Placement.Daily)))
+            throw new InvalidOperationException(L10n.Text("Vault.SourceChanged"));
     }
 
     private bool PrepareExit()

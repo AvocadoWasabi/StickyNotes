@@ -2,6 +2,8 @@
 
 # 开发与发布
 
+未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](MULTIPLE-VAULTS.md#简体中文)。
+
 补全对照固定版本的Tasks上游批准测试资料，有限日期辅助逻辑也集中于TaskEditing。克隆不分发，MIT声明随包附带。参见[参考版本、验证及兼容范围](TASK-EDITING.md#简体中文)。
 
 任务输入规则、候选界面／输入法和Tasks公开复选框API适配集中在`src/StickyNotes/TaskEditing/`，窗口委托该模块，复用已有CLI传输及冲突保护保存。参见[设计和验证](TASK-EDITING.md#简体中文)。
@@ -29,7 +31,7 @@
 
 `-Publish` 额外生成或更新 `artifacts/StickyNotes-win-x64.zip` 和 SHA256 校验文件。普通构建不会更新已有 ZIP；分发 ZIP 时请使用 `-Publish`。
 
-普通本地构建默认使用 Obsidian CLI，保留已有的明确本地模式设置。在 **设置 → Obsidian CLI** 配置连接。Daily notes设置由Obsidian管理；显式便签目录通过`FoldersBridge`列举／创建／移动，并与本地模式共用迁移控制；`DailyBridge`仅解析今天、昨天，不列举仓库，两种来源共用保留逻辑。普通配置与`./build.ps1 -Publish -TasksPreview`输出到`artifacts/tasks-cli-preview`的独立配置保持分离。参见 [CLI 设置、架构及限制](TASKS-CLI-PREVIEW.md#简体中文)。
+普通本地构建默认使用 Obsidian CLI，保留已有的明确本地模式设置。在 **设置 → Vault 与每日笔记 → Obsidian CLI** 配置连接。Daily notes设置由Obsidian管理；显式便签目录通过`FoldersBridge`列举／创建／移动，并与本地模式共用迁移控制；`DailyBridge`仅解析今天、昨天，不列举仓库，两种来源共用保留逻辑。普通配置与`./build.ps1 -Publish -TasksPreview`输出到`artifacts/tasks-cli-preview`的独立配置保持分离。参见 [CLI 设置、架构及限制](TASKS-CLI-PREVIEW.md#简体中文)。
 
 `DataviewBridge.js` 将原笔记路径传给已安装插件的 `query` + Markdown export APIs。Tasks 和 Dataview 共用渲染及生命周期代码，但独立维护状态和错误。常规测试覆盖显示及过期响应；可选的 Node.js `--dataview-bridge-smoke` 用合成 API 数据执行实际生成的 CLI 代码。参见 [Dataview 架构、限制和验证状态](DATAVIEW.md#简体中文)。
 

@@ -14,7 +14,8 @@ public partial class App
         foreach (var note in windows) { note.PauseFolderChange(); note.IsEnabled = false; }
         try
         {
-            await NoteRename.ApplyAsync(NoteSources(Config), expected, target, paths =>
+            owner.EnsureWritableSource();
+            await NoteRename.ApplyAsync(NoteSources(owner.SourceSettings), expected, target, paths =>
             {
                 Config.RecentlyClosedWindows = CopyClosedNotesForSettings(Config, paths);
                 foreach (var note in Notes) note.Relocate(paths);

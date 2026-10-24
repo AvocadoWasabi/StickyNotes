@@ -4,7 +4,7 @@ namespace StickyNotes.Core;
 
 public enum TaskCompletionMode { Automatic = 0, On = 1, Off = 2 }
 
-public sealed class Settings : IJsonOnDeserialized
+public sealed partial class Settings : IJsonOnDeserialized
 {
     public string Language { get; set; } = "";
     public string NotesFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StickyNotesData");
@@ -35,6 +35,8 @@ public sealed class Settings : IJsonOnDeserialized
 
 public sealed class NotePlacement
 {
+    // Missing fields in old settings retain the original source.
+    public string VaultId { get; set; } = Settings.MainVaultId;
     public const int MinContentScale = 50;
     public const int MaxContentScale = 200;
     private int contentScale = 100;

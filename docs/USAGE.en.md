@@ -2,6 +2,8 @@
 
 # Usage reference
 
+Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
+
 **Displayed title:** Regular, linked-section, and daily notes show the current Markdown filename without `.md` in the header and taskbar. Renaming updates the title immediately, including while editing. The YAML `title` remains metadata; editing it in properties does not rename the file or change the displayed title. The title tooltip retains the linked heading, and a separate notice identifies retained daily notes from yesterday.
 
 Double-clicking the title when renaming is unavailable displays an explanatory message. Daily notes show “Daily note files cannot be renamed here.” and remain unchanged. Active saves, folder changes, and notes that have not loaded also display guidance.
@@ -76,7 +78,7 @@ If you accidentally select **Close all windows** on the Windows taskbar, choose 
 
 Closes belong to the same group when the next close request arrives within two seconds of the previous close completing. Quickly closing notes manually also groups them; longer gaps start a new group. Opening a note, reopening the group, or saving settings ends the group. Only the latest group is stored in settings, including across restarts; restored entries are removed. **Exit** still saves the open layout without replacing this history.
 
-Canceled closes are excluded. Reopening restores display settings and saved files, not discarded edits or deleted files. A missing source file produces a read error on the note. Changing the note source mode or Obsidian connection clears history to avoid opening notes from the wrong source. Starting with all notes closed and history available leaves the app in the tray, where you can reopen the group.
+Canceled closes are excluded. Reopening restores display settings and saved files, not discarded edits or deleted files. A missing source file produces a read error on the note. Changing the note source mode or Obsidian connection clears only that Vault’s history to avoid opening notes from the wrong source; other Vaults are retained. Starting with all notes closed and history available leaves the app in the tray, where you can reopen the group.
 
 ### Taskbar and menus
 
@@ -118,7 +120,7 @@ The app saves note positions, sizes, and always-on-top settings as notes move an
 
 ## Storage and Obsidian
 
-After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
+After choosing a vault (CLI) or local base folder, select **Select sticky-note folder…**. Choose an existing folder or enter a new relative path; **Confirm** asks whether to migrate existing app-created sticky notes. **Yes** moves them, **No** changes only the destination, and **Cancel** changes nothing. Choices remain drafts until **Save and close** in Settings (main registration only). See the [folder selection and migration guide](STICKY-FOLDERS.md#english) for scope, rollback and recovery.
 
 An explicit sticky folder takes precedence over Obsidian's general new-note location. Without a selection, CLI mode retains Obsidian's default; local mode retains its saved folder (initially `Documents/StickyNotesData`). Daily-note settings remain independent.
 
@@ -154,7 +156,7 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 ## Daily notes
 
 1. In CLI mode, configure Obsidian's core Daily notes plugin, then check its folder, format, template and today's path in Sticky Notes Settings. In local mode, configure the folder and tagged regex, check the matching filename, then select `Save and close`.
-2. Select `… → Display a daily note…` (Display a daily note). The app loads today's file from Settings; no absolute-path input or daily-mode switch is needed.
+2. Select `… → Display a daily note…` (Display a daily note). The default Vault is selected. Switch Vault if needed, load today's file, then select a heading; no absolute-path input or daily-mode switch is needed.
 3. In the shared heading selector, choose an existing heading or type a new name without `#`. Leave it blank to display the entire body.
 4. Select `Display`. A new name creates a `## Heading` at the end of the original file after making a backup. Typing or cancelling does not write anything. Clicking a task checkbox updates the corresponding source line.
 

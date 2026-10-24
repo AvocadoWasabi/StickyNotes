@@ -759,10 +759,10 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
     <value>迁移便签文件</value>
   </data>
   <data name="SettingsWindow.Text65" xml:space="preserve">
-    <value>步骤3：保存设置并登录 Google</value>
+    <value>步骤3：登录 Google</value>
   </data>
   <data name="SettingsWindow.Text66" xml:space="preserve">
-    <value>步骤4：保存并检查连接（已登录）</value>
+    <value>步骤4：检查连接（已登录）</value>
   </data>
   <data name="SettingsWindow.Text67" xml:space="preserve">
     <value>取消授权／连接检查</value>
@@ -1064,4 +1064,58 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="NoteBrowser.Deleting" xml:space="preserve"><value>正在删除便签…</value></data>
   <data name="NoteBrowser.DeleteDraft" xml:space="preserve"><value>显示此文件的便签有未保存的编辑。请先保存或放弃编辑再删除。</value></data>
   <data name="NoteBrowser.SettingsChanged" xml:space="preserve"><value>设置已更改。请重新打开管理窗口。</value></data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>主 Vault</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>副 Vault</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>找不到已注册的 Vault，请检查设置。</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>请检查 Vault 显示名称和内部 ID。</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>来源设置已更改。请保存或复制草稿，然后重新加载便签。</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>主 Vault 以及正在显示或最近关闭的便签使用的 Vault 无法移除。</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>使用多个 Vault 时，请明确指定每个 CLI 连接的 Vault 名称，可通过检测当前 Vault 获取。</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>不能将同一文件夹注册为多个 Vault。</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>Vault</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>添加 Vault</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>移除注册</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>新建每日便签的默认 Vault</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>已有便签仍使用原 Vault。移除注册不会删除文件。</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>显示名称（可随时修改）</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>每日笔记设置按 Vault 保存。普通便签的新建及保存文件夹使用主注册。</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>检查连接及今日笔记</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>常规</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>Vault 与每日笔记</value>
+  </data>
 </root>

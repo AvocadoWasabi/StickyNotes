@@ -9,6 +9,10 @@ public sealed class NoteLinkWindow : Window
     private FileSnapshot? source;
     private string? selectedPath;
     private string selectedFolder;
+    private readonly ComboBox vaults;
+    private string VaultId => (vaults.SelectedItem as VaultProfile)?.Id ?? throw new InvalidOperationException(L10n.Text("Vault.Missing"));
+    private Settings SourceSettings => App.Current.Config.ForVault(VaultId);
+    private string? sourceIdentity;
     private readonly TextBlock sourceLabel = new() { Text = L10n.Text("NoteLinkWindow.Text01"), TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 12) };
     private readonly TextBlock status = new() { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DarkRed, Margin = new Thickness(0, 10, 0, 10) };
     internal HeadingPicker Headings { get; } = new();
@@ -25,6 +29,16 @@ public sealed class NoteLinkWindow : Window
         Width = 600; SizeToContent = SizeToContent.Height; MaxHeight = SystemParameters.WorkArea.Height;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         var panel = new StackPanel { Margin = new Thickness(22) };
+        vaults = new ComboBox { Name = "DailyVault", ItemsSource = App.Current.Config.GetVaultProfiles(), DisplayMemberPath = "Name", SelectedValuePath = "Id",
+            SelectedValue = daily ? App.Current.Config.DefaultDailyVaultId : Settings.MainVaultId };
+        panel.Children.Add(new TextBlock { Text = L10n.Text("Vault.Select") });
+        panel.Children.Add(vaults);
+        vaults.SelectionChanged += (_, _) =>
+        {
+            loadVersion++; ClearSource(); selectedPath = null; status.Text = "";
+            selectedFolder = SourceSettings.NotesFolder;
+            if (daily && IsLoaded) TryLoad(null);
+        };
         if (daily)
             panel.Children.Add(new TextBlock { Text = L10n.Text("NoteLinkWindow.Text04"), TextWrapping = TextWrapping.Wrap });
         else
@@ -69,12 +83,13 @@ public sealed class NoteLinkWindow : Window
         try
         {
             ClearSource();
-            var access = App.Current.NoteSources(App.Current.Config);
+            var identity = SourceSettings.SourceIdentity(daily);
+            var access = App.Current.NoteSources(SourceSettings);
             path = daily ? await ResolveDailyAsync(access) : path;
             ValidatePath(path);
             selectedPath = path;
             var snapshot = await access.ReadAsync(Path.GetFullPath(path!));
-            if (closed || version != loadVersion) return;
+            if (closed || version != loadVersion || identity != SourceSettings.SourceIdentity(daily)) return;
             SetSource(snapshot); status.Text = "";
         }
         catch (Exception ex) { if (!closed && version == loadVersion) status.Text = ex.Message; }
@@ -83,7 +98,7 @@ public sealed class NoteLinkWindow : Window
     internal void LoadSource(string? path = null)
     {
         ClearSource();
-        var access = App.Current.NoteSources(App.Current.Config);
+        var access = App.Current.NoteSources(SourceSettings);
         path = daily ? Task.Run(() => ResolveDailyAsync(access)).GetAwaiter().GetResult() : path;
         ValidatePath(path);
         selectedPath = path;
@@ -108,6 +123,7 @@ public sealed class NoteLinkWindow : Window
     {
         Headings.Load(snapshot.Text);
         source = snapshot;
+        sourceIdentity = SourceSettings.SourceIdentity(daily);
         Preview.Update(source, Headings.Heading);
         selectedFolder = Path.GetDirectoryName(snapshot.Path)!;
         sourceLabel.Text = (daily ? L10n.Text("NoteLinkWindow.Text12") : L10n.Text("NoteLinkWindow.Text13")) + snapshot.Path;
@@ -116,9 +132,12 @@ public sealed class NoteLinkWindow : Window
     internal NotePlacement Prepare()
     {
         if (source is null) throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text14"));
-        var access = App.Current.NoteSources(App.Current.Config);
+        if (sourceIdentity != SourceSettings.SourceIdentity(daily)) throw new InvalidOperationException(L10n.Text("Vault.SourceChanged"));
+        var access = App.Current.NoteSources(SourceSettings);
         if (daily && !string.Equals(Path.GetFullPath(Task.Run(() => ResolveDailyAsync(access)).GetAwaiter().GetResult()), source.Path, StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException(L10n.Text("NoteLinkWindow.Text15"));
-        return access.PrepareLink(source, Headings.Heading, daily, Path.Combine(App.DataDirectory, "backups"));
+        var placement = access.PrepareLink(source, Headings.Heading, daily, Path.Combine(App.DataDirectory, "backups"));
+        placement.VaultId = VaultId;
+        return placement;
     }
 }
