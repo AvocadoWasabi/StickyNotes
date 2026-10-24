@@ -67,7 +67,7 @@ public sealed partial class NoteWindow : Window
         this.confirmFocusSave = confirmFocusSave; this.reportSaveError = reportSaveError;
         SetResourceReference(IconProperty, "AppIcon");
         Placement = placement;
-        Title = "Markdown Sticky Notes";
+        UpdateTitle(placement.Daily ? null : placement.Path);
         Width = Math.Clamp(placement.Width, 280, 1800); Height = Math.Clamp(placement.Height, 240, 1500);
         MinWidth = 280; MinHeight = 240;
         Left = placement.Left; Top = placement.Top;
@@ -311,7 +311,12 @@ public sealed partial class NoteWindow : Window
         if (snapshot is not null && paths.TryGetValue(Path.GetFullPath(snapshot.Path), out var snapshotPath))
             nextSnapshot = snapshot with { Path = snapshotPath };
         Placement.Path = nextPath; snapshot = nextSnapshot;
-        return () => { Placement.Path = previousPath; snapshot = previousSnapshot; };
+        UpdateTitle(snapshot?.Path ?? (Placement.Daily ? null : Placement.Path));
+        return () =>
+        {
+            Placement.Path = previousPath; snapshot = previousSnapshot;
+            UpdateTitle(snapshot?.Path ?? (Placement.Daily ? null : Placement.Path));
+        };
     }
 
     private string ResolvePath()
@@ -349,8 +354,17 @@ public sealed partial class NoteWindow : Window
         dailyNotice.Text = Placement.Daily && error is DailyNoteMissingException ? DailyWaitingMessage : "";
         dailyNotice.Visibility = dailyNotice.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
         eventsPanel.Children.Clear(); tags.Text = "";
-        title.Text = Placement.Daily ? L10n.Text("NoteWindow.Text19") : L10n.Text("NoteWindow.Text20");
+        UpdateTitle(Placement.Daily ? null : Placement.Path);
         status.Text = error.Message;
+    }
+
+    private void UpdateTitle(string? path)
+    {
+        title.Text = string.IsNullOrEmpty(path)
+            ? L10n.Text(Placement.Daily ? "NoteWindow.Text19" : "NoteWindow.Text20")
+            : Path.GetFileNameWithoutExtension(path);
+        Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
+        title.ToolTip = title.Text + (Placement.Heading.Length > 0 ? "\n" + Placement.Heading : "") + "\n" + tags.Text + "\n" + path;
     }
 
     private void Render()
@@ -364,10 +378,8 @@ public sealed partial class NoteWindow : Window
         var metadata = NoteStore.Metadata(snapshot.Text);
         if (Placement.Heading.Length == 0) Placement.Color = metadata.Color;
         Background = Ui.Color(Placement.Color);
-        title.Text = Placement.Heading.Length > 0 ? (Placement.Daily ? (yesterday ? L10n.Text("NoteWindow.Text24") : L10n.Text("NoteWindow.Text25")) : L10n.Text("NoteWindow.Text26")) + Placement.Heading : metadata.Title;
-        Title = title.Text + (BuildFlavor.TasksPreview ? " — Tasks CLI Preview" : "");
         tags.Text = string.Join("  ", metadata.Tags.Select(x => "#" + x)) + (Placement.Heading.Length == 0 ? "   · " + metadata.Status : "");
-        title.ToolTip = title.Text + "\n" + tags.Text + "\n" + snapshot.Path;
+        UpdateTitle(snapshot.Path);
         RenderQueryPreviews();
         UpdateHeadingFilterStatus();
         var command = MarkdownView.FindCalendarCommand(content, new HeadingFilter(content, Placement.HeadingFilters).Includes);

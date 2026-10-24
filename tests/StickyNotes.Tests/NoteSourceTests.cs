@@ -147,6 +147,7 @@ internal static partial class Program
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(window, null);
             var viewer = (FlowDocumentScrollViewer)typeof(NoteWindow).GetField("preview", flags)!.GetValue(window)!;
             Check(reads == 1 && new TextRange(viewer.Document.ContentStart, viewer.Document.ContentEnd).Text.Contains("remote result"), "CLI window: first load obtains whole Markdown through CLI before running queries");
+            Check(window.Title == Path.GetFileNameWithoutExtension(window.Placement.Path), "CLI title uses the source filename instead of YAML");
             var baseline = NoteStore.Split(RenderingCorpus).Body;
             Check((string)typeof(NoteWindow).GetField("content", flags)!.GetValue(window)! == baseline, "CLI window: original Markdown is retained separately from generated query output");
             fail = true;

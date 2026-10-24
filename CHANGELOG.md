@@ -8,6 +8,7 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Display Markdown filenames without `.md` as note titles, including linked-section and daily notes. Update headers and taskbar titles immediately after renaming; preserve YAML `title` as metadata.
 - Rename the folder browser to **Manage sticky-note folder…** and add confirmed deletion of a selected Markdown file, recovery files, conflict/draft protection, and cleanup of open notes and closed-note history. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
 ## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22

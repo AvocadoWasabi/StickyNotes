@@ -8,6 +8,7 @@
 
 ## 未リリース
 
+- 付箋タイトルをMarkdownのファイル名（`.md`を除く）へ統一。見出し連携・デイリーにも適用し、名前変更後は付箋上部とタスクバーへ即時反映。YAMLの `title` はメタデータとして保持。
 - 一覧を **付箋フォルダを管理する…** に改称し、選択したMarkdownファイルの確認付き削除を追加。復元用ファイルを残し、競合・未保存編集を保護し、開いている付箋と閉じた履歴を整理します。[詳細](docs/QUERY-EDITING-AND-BROWSER.md#日本語)。
 
 ## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22

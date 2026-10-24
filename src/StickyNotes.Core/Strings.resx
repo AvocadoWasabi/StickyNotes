@@ -495,7 +495,7 @@ Obsidianで今日の分を作成すると、自動でここに表示されます
     <value>付箋のプロパティ</value>
   </data>
   <data name="NoteWindow.Text60" xml:space="preserve">
-    <value>タイトル</value>
+    <value>YAMLのtitle（メタデータ）</value>
   </data>
   <data name="NoteWindow.Text61" xml:space="preserve">
     <value>タグ（空白またはカンマ区切り。階層は project/name）</value>
@@ -1051,7 +1051,7 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="Rename.Menu" xml:space="preserve"><value>ファイル名を変更…</value></data>
   <data name="Rename.Hint" xml:space="preserve"><value>ダブルクリックでファイル名を変更</value></data>
   <data name="Rename.Daily" xml:space="preserve"><value>デイリーノートのファイル名は変更できません。</value></data>
-  <data name="Rename.Label" xml:space="preserve"><value>新しいファイル名（拡張子不要）。表示タイトルは変更されません。</value></data>
+  <data name="Rename.Label" xml:space="preserve"><value>新しいファイル名（拡張子不要）。付箋タイトルにも反映します。</value></data>
   <data name="Rename.Invalid" xml:space="preserve"><value>有効なファイル名を入力してください。空白のみ・パス区切り・予約名・末尾の空白やピリオドは使用できません。</value></data>
   <data name="Rename.Draft" xml:space="preserve"><value>同じファイルを表示している付箋の未保存変更を保存してから、もう一度実行してください。</value></data>
   <data name="Rename.Recovery" xml:space="preserve"><value>名前変更または設定の保存を確認できませんでした。元／変更先のファイルと下記の復旧記録を確認してください。ファイルが移動済みの場合は変更先を開き直してください。</value></data>

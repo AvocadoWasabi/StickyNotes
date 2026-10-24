@@ -37,6 +37,7 @@ internal static partial class Program
         {
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(note, null);
             typeof(NoteWindow).GetMethod("Reload", flags)!.Invoke(section, null);
+            Check(note.Title == "original" && section.Title == "original", "Note and linked-section titles use filename instead of YAML or heading");
             Check(note.RenameMenuItem().IsEnabled && section.RenameMenuItem().IsEnabled && !daily.RenameMenuItem().IsEnabled,
                 "Rename menu enables regular and heading notes, disables daily notes");
             typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(section, null);
@@ -47,11 +48,19 @@ internal static partial class Program
             Check(section.SaveEditorAsync().GetAwaiter().GetResult(), "Rename fixture saves section draft");
             app.Config.RecentlyClosedWindows.Add(new NotePlacement { Path = path, Heading = "Section", Width = 777 });
             var before = File.ReadAllBytes(path);
+            typeof(NoteWindow).GetMethod("BeginEdit", flags)!.Invoke(note, null);
             var rename = app.RenameNoteAsync(note, NoteStore.Read(path), target);
             WaitFor(() => rename.IsCompleted, "Rename app operation completes"); rename.GetAwaiter().GetResult();
             Check(!File.Exists(path) && File.ReadAllBytes(target).SequenceEqual(before), "Rename preserves exact bytes including display title");
             Check(note.Placement.Path == target && section.Placement.Path == target && note.Placement.Color == "pink" && note.Placement.ContentScale == 125,
                 "Rename relocates open windows preserving appearance");
+            Check(note.Title == "新しい名前" && section.Title == "新しい名前" &&
+                ((TextBlock)typeof(NoteWindow).GetField("title", flags)!.GetValue(note)!).Text == "新しい名前" &&
+                (bool)typeof(NoteWindow).GetField("editing", flags)!.GetValue(note)!,
+                "Rename updates header and taskbar titles immediately even in a clean editor");
+            var undo = note.Relocate(new Dictionary<string, string> { [target] = path });
+            undo();
+            Check(note.Title == "新しい名前", "Relocation rollback restores filename title");
             var persisted = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(App.DataDirectory, "settings.json")))!;
             Check(persisted.RecentlyClosedWindows.Single(n => n.Path == target).Width == 777,
                 "Rename persists closed history with geometry");

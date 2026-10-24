@@ -937,7 +937,8 @@ internal static partial class Program
             File.WriteAllText(current, "## Tasks\ntoday\n"); Tick(window);
             Check(Field<FileSnapshot>(window, "snapshot").Path == current, "until-created mode switches automatically when today appears");
             date = date.AddDays(1); Tick(window);
-            Check(Field<FileSnapshot>(window, "snapshot").Path == current && Field<TextBlock>(window, "title").Text.StartsWith("昨日"), "year rollover retains exactly yesterday and relabels it");
+            Check(Field<FileSnapshot>(window, "snapshot").Path == current && Field<TextBlock>(window, "title").Text == Path.GetFileNameWithoutExtension(current) &&
+                Field<TextBlock>(window, "dailyNotice").Text.Length > 0, "year rollover retains yesterday's filename title and separate date notice");
             Call(window, "BeginEdit"); Field<TextBox>(window, "editor").Text = "unsaved previous-day draft";
             File.WriteAllText(FileFor(date), "## Tasks\nnew year\n"); Tick(window);
             Check(Field<TextBox>(window, "editor").Text == "unsaved previous-day draft" && Field<FileSnapshot>(window, "snapshot").Path == current, "creation during editing preserves previous-day snapshot and draft");

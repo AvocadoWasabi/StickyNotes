@@ -8,6 +8,7 @@
 
 ## 未发布
 
+- 将便签标题统一为 Markdown 文件名（不含 `.md`），包括关联章节和每日便签。重命名后立即更新顶部及任务栏标题；YAML 的 `title` 保留为元数据。
 - 将列表改名为 **管理便签文件夹…**，增加确认后删除所选 Markdown 文件的功能。保留恢复文件，保护冲突及未保存编辑，并清理打开的便签及关闭历史。[详情](docs/QUERY-EDITING-AND-BROWSER.md#简体中文)。
 
 ## [0.0.10](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.10) — 2026-10-22
