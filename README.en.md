@@ -56,12 +56,12 @@ No administrator privileges or separate .NET installation are required. The app 
 
 | Action | Control |
 | --- | --- |
-| Create a note | `… → New note`, or `New note` in the notification-area menu |
+| Create a note | `… → Create & open → New note`, or `New note` in the notification-area menu |
 | Edit and save | Click the body (single/double click in Settings) / `Ctrl+E` → edit → `Ctrl+S` or `Esc` |
 | Complete a task | Click its checkbox to update the source Markdown |
 | Move or resize | Drag the top / an edge or the bottom-right corner |
 | Keep on top | `○ / ●`; `Alt + Z` or the `…` menu brings all notes to the top for 10 seconds |
-| Scale content | `… → Display scale` (50–200%) |
+| Scale content | `… → Display & properties → Display scale` (50–200%) |
 | Close or exit | `… → Close this note` closes a note; notification-area `Exit` exits the app |
 
 Clicking starts editing at the corresponding source position. `Esc` saves and finishes editing; if a completion suggestion is open, the first `Esc` dismisses it. Leaving the editor prompts to save changed text. Settings can enable saving without confirmation. Closing a note does not delete its Markdown file.
@@ -77,12 +77,12 @@ An explicit sticky folder takes precedence over Obsidian's general new-note loca
 ## Display and edit a daily note section
 
 1. In CLI mode, configure Obsidian's core Daily notes plugin and check the retrieved settings in Sticky Notes. In local mode, choose the daily-note folder and tagged regular expression, check the matching filename, then save.
-2. Use `… → Display a daily note…`, choose a heading, and select `Display`. A blank heading shows the whole body.
+2. Use `… → Create & open → Display a daily note…`, choose a heading, and select `Display`. A blank heading shows the whole body.
 3. Edit text or check tasks in the sticky note to update the source note.
 
 The first addition requires today's file. Later, missing daily notes can show a waiting message or retain yesterday according to Settings. See [filename examples and switching options](docs/USAGE.en.md#daily).
 
-For a fixed note, use `… → Link part of a note…`. See [heading selection](docs/USAGE.en.md#headings).
+For a fixed note, use `… → Create & open → Link part of a note…`. See [heading selection](docs/USAGE.en.md#headings).
 
 ## Google Calendar
 

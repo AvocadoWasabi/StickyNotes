@@ -1130,4 +1130,16 @@ Notes displaying this file will also close. A recovery file remains in deleted-n
   <data name="Vault.DiscoveryFailed" xml:space="preserve">
     <value>Could not fetch the folder. Your inputs are unchanged. {0}</value>
   </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>Display &amp; properties</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>Refresh linked data</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>Create &amp; open</value>
+  </data>
 </root>

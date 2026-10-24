@@ -49,9 +49,9 @@ internal static partial class Program
             confirmed = true;
             var deleting = browser.DeleteSelectedAsync();
             browser.DeleteSelectedAsync().GetAwaiter().GetResult(); browser.OpenSelected(); browser.Close();
-            Check(calls == 1 && !browser.Folder.IsEnabled && !browser.Open.IsEnabled, "Delete blocks duplicate clicks, open, folder changes and close");
+            Check(calls == 1 && !browser.Folder.IsEnabled && !browser.Open.IsEnabled && !browser.CloseButton.IsEnabled, "Delete blocks duplicate clicks, open, folder changes and close");
             pending.SetResult(); WaitFor(() => deleting.IsCompleted, "Delete browser operation finishes"); deleting.GetAwaiter().GetResult();
-            Check(browser.Notes.Items.Count == 0 && !browser.Delete.IsEnabled && browser.Folder.IsEnabled, "Delete refreshes list and disables actions on empty selection");
+            Check(browser.Notes.Items.Count == 0 && !browser.Delete.IsEnabled && browser.Folder.IsEnabled && browser.CloseButton.IsEnabled, "Delete refreshes list and restores Close on empty selection");
         }
         finally { pending.TrySetResult(); browser.Close(); }
 

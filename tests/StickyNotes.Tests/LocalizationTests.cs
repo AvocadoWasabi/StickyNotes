@@ -89,7 +89,31 @@ internal static partial class Program
                 var content = (FrameworkElement)note.Content;
                 content.Measure(new Size(360, 400)); content.Arrange(new Rect(0, 0, 360, 400)); content.UpdateLayout();
                 RenderLocalizationPreview(content, code + "-note");
+                typeof(NoteWindow).GetMethod("Menu", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.Invoke(note, null);
+                var noteMenu = note.ToolbarMenu!;
+                noteMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                noteMenu.Arrange(new Rect(noteMenu.DesiredSize)); noteMenu.UpdateLayout();
+                RenderLocalizationPreview(noteMenu, code + "-note-menu");
+                var display = noteMenu.Items.OfType<MenuItem>().Single(m => Equals(m.Header, L10n.Text("NoteMenu.Display")));
+                var details = display.Items.OfType<MenuItem>().Single(m => Equals(m.Header, L10n.Text("NoteWindow.Details")));
+                var tags = (FrameworkElement)typeof(NoteWindow).GetField("tags", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(note)!;
+                var wasVisible = tags.Visibility == Visibility.Visible;
+                Check(details.IsChecked == wasVisible, code + ": display submenu reflects metadata visibility");
+                details.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+                Check((tags.Visibility == Visibility.Visible) != wasVisible, code + ": nested display action changes visibility exactly once");
+                noteMenu.IsOpen = false;
                 note.Close();
+                var browser = new NoteBrowserWindow(new NoteSource(App.Current.Config, false), _ => throw new Exception("Close must not open a note"));
+                var browserContent = (FrameworkElement)browser.Content;
+                browserContent.Measure(new Size(568, 420)); browserContent.Arrange(new Rect(0, 0, 568, 420)); browserContent.UpdateLayout();
+                RenderLocalizationPreview(browserContent, code + "-browser-compact");
+                var closeBounds = browser.CloseButton.TransformToAncestor(browserContent).TransformBounds(new Rect(browser.CloseButton.RenderSize));
+                Check(closeBounds.Right <= 568 && closeBounds.Bottom <= 420 && browser.CloseButton.ActualWidth >= 100,
+                    code + ": manager Close stays inside the compact window");
+                var browserClosed = false; browser.Closed += (_, _) => browserClosed = true;
+                browser.CloseButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+                Check(browserClosed && browser.CloseButton.IsCancel && File.ReadAllBytes(preserved).SequenceEqual(before),
+                    code + ": Close dismisses manager without opening or modifying notes");
             }
         }
         finally

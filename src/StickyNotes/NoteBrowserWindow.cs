@@ -24,6 +24,7 @@ internal sealed class NoteBrowserWindow : Window
     internal TextBlock Status { get; } = new() { TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 8, 0, 8) };
     internal Button Open { get; } = new() { Content = L10n.Text("NoteBrowser.Open"), IsEnabled = false, MinWidth = 100 };
     internal Button Delete { get; } = new() { Content = L10n.Text("NoteBrowser.Delete"), IsEnabled = false, MinWidth = 100 };
+    internal Button CloseButton { get; } = new() { Name = "CloseBrowser", Content = L10n.Text("NoteBrowser.Close"), IsCancel = true, MinWidth = 100 };
     private readonly Button refresh;
 
     internal NoteBrowserWindow(NoteSource source, Action<string> open, Func<FileSnapshot, Task>? delete = null,
@@ -39,12 +40,12 @@ internal sealed class NoteBrowserWindow : Window
         header.Children.Add(Folder);
         header.Children.Add(new TextBlock { Text = L10n.Text("NoteBrowser.Search"), Margin = new Thickness(0, 8, 0, 2) });
         header.Children.Add(Search); header.Children.Add(Status); root.Children.Add(header);
-        var footer = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 10, 0, 0) };
+        var footer = new WrapPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 10, 0, 0) };
         DockPanel.SetDock(footer, Dock.Bottom);
         refresh = Ui.Button(L10n.Text("NoteBrowser.Refresh"), () => _ = (Folder.SelectedItem is null ? InitializeAsync() : LoadFolderAsync()));
         refresh.Name = "RefreshNotes";
         footer.Children.Add(refresh); footer.Children.Add(Delete);
-        footer.Children.Add(Open); root.Children.Add(footer);
+        footer.Children.Add(Open); footer.Children.Add(CloseButton); root.Children.Add(footer);
         var grid = new Grid(); grid.ColumnDefinitions.Add(new() { Width = new GridLength(2, GridUnitType.Star) });
         grid.ColumnDefinitions.Add(new() { Width = new GridLength(3, GridUnitType.Star) });
         grid.Children.Add(Notes);
@@ -57,6 +58,7 @@ internal sealed class NoteBrowserWindow : Window
         Notes.SelectionChanged += (_, _) => _ = LoadPreviewAsync();
         Notes.MouseDoubleClick += (_, e) => { if (e.OriginalSource is DependencyObject element && ItemsControl.ContainerFromElement(Notes, element) is ListBoxItem) OpenSelected(); };
         Open.Click += (_, _) => OpenSelected();
+        CloseButton.Click += (_, _) => Close();
         Delete.Click += async (_, _) => await DeleteSelectedAsync();
         Loaded += async (_, _) => await InitializeAsync();
         Closing += (_, e) => { if (deleting) e.Cancel = true; };
@@ -146,7 +148,7 @@ internal sealed class NoteBrowserWindow : Window
     {
         if (closed || deleting || !Delete.IsEnabled || delete is null || selectedSnapshot is not { } expected) return;
         deleting = true;
-        Folder.IsEnabled = Search.IsEnabled = Notes.IsEnabled = refresh.IsEnabled = Open.IsEnabled = Delete.IsEnabled = false;
+        Folder.IsEnabled = Search.IsEnabled = Notes.IsEnabled = refresh.IsEnabled = Open.IsEnabled = Delete.IsEnabled = CloseButton.IsEnabled = false;
         var deleted = false;
         string? error = null;
         try
@@ -163,7 +165,7 @@ internal sealed class NoteBrowserWindow : Window
         finally
         {
             deleting = false;
-            Folder.IsEnabled = Search.IsEnabled = Notes.IsEnabled = refresh.IsEnabled = true;
+            Folder.IsEnabled = Search.IsEnabled = Notes.IsEnabled = refresh.IsEnabled = CloseButton.IsEnabled = true;
             if (deleted) await LoadFolderAsync();
             else if (error is not null) ClearPreview();
             else Open.IsEnabled = Delete.IsEnabled = true;

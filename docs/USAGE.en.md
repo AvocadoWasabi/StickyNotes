@@ -42,7 +42,7 @@ Assign a key (for example, `Ctrl+Enter`) under **Settings → Toggle checkbox sh
 
 | Control | Action |
 | --- | --- |
-| `… → New note` | Create a note |
+| `… → Create & open → New note` | Create a note |
 | `… → Edit` / `Ctrl+E` | Edit the Markdown source |
 | `Save` / `Ctrl+S` / `Esc` | Save the file and return to reading mode |
 | `… → Reload` | Reload the source file, with confirmation if edits are unsaved |
@@ -102,7 +102,7 @@ Each note then returns to its pin setting; the previous stacking order is not re
 
 ### Button visibility
 
-The title and controls share one row with Headings, Pin and More. Edit, Reload, New and Close are in More; Save appears only while editing. Show/hide details in More toggles tags/status, also available in the title tooltip. Successful save/read notices disappear after four seconds; errors remain visible.
+The title and controls share one row with Headings, Pin and More. Edit, Reload, New and Close are in More; Save appears only while editing. More → Display & properties → Show/hide details toggles tags/status, also available in the title tooltip. Successful save/read notices disappear after four seconds; errors remain visible.
 
 Enable `Show buttons when hovering over the title` to reveal controls on hover without shifting the body. Save remains available while editing. Disable it to restore always-visible controls.
 
@@ -110,7 +110,7 @@ Use the left-edge handle to move the note, or `F6` then `Tab` for keyboard acces
 
 ### Scale and placement
 
-Use `… → Display scale` to set 50–200% (default 100%, ten-point increments). In reading mode, `Ctrl+wheel`, `Ctrl++` / `Ctrl+-`, and `Ctrl+0` (reset) also work.
+Use `… → Display & properties → Display scale` to set 50–200% (default 100%, ten-point increments). In reading mode, `Ctrl+wheel`, `Ctrl++` / `Ctrl+-`, and `Ctrl+0` (reset) also work.
 
 Body content, events, and daily-note guidance scale together; titles, controls, and the editor do not. Each note retains its scale across reloads and restarts. Source Markdown and unsaved input remain unchanged.
 
@@ -143,7 +143,7 @@ updated: 2026-10-05T09:00:00+09:00
 ---
 ```
 
-Use `… → Tags, title, status, and color` (Tags, title, status, and color) to edit properties. Available colors are `yellow / green / blue / pink / gray`. The `status` field accepts values such as `active / done / archived`; it is for organization and does not automatically hide or delete notes.
+Use `… → Display & properties → Tags, title, status, and color` (Tags, title, status, and color) to edit properties. Available colors are `yellow / green / blue / pink / gray`. The `status` field accepts values such as `active / done / archived`; it is for organization and does not automatically hide or delete notes.
 
 Copy [StickyNotes.base](../examples/StickyNotes.base) into your vault to list notes with `type: sticky`. To exclude sticky notes from other Bases, use a condition such as `type != "sticky"`, or exclude their folder with `!file.inFolder("Sticky Notes")`.
 
@@ -156,7 +156,7 @@ References: [Obsidian Properties](https://obsidian.md/help/properties), [Bases s
 ## Daily notes
 
 1. In CLI mode, configure Obsidian's core Daily notes plugin, then check its folder, format, template and today's path in Sticky Notes Settings. In local mode, configure the folder and tagged regex, check the matching filename, then select `Save and close`.
-2. Select `… → Display a daily note…` (Display a daily note). The default Vault is selected. Switch Vault if needed, load today's file, then select a heading; no absolute-path input or daily-mode switch is needed.
+2. Select `… → Create & open → Display a daily note…` (Display a daily note). The default Vault is selected. Switch Vault if needed, load today's file, then select a heading; no absolute-path input or daily-mode switch is needed.
 3. In the shared heading selector, choose an existing heading or type a new name without `#`. Leave it blank to display the entire body.
 4. Select `Display`. A new name creates a `## Heading` at the end of the original file after making a backup. Typing or cancelling does not write anything. Clicking a task checkbox updates the corresponding source line.
 
@@ -214,7 +214,7 @@ Adding a daily sticky note for the first time requires today's file.
 
 ## Headings and previews
 
-For a fixed note, use the separate `… → Link part of a note…` (Link part of a note) menu. Select `Choose folder…` (Choose folder) to browse a folder and then select its Markdown file, or use `Choose Markdown file…` (Choose Markdown file) directly. There is no manual absolute-path field or daily-mode control. Both dialogs share the same heading selector: select an existing heading, enter a new one, or leave it blank for the whole body. Both menus are also available from the notification-area icon. Use `Reload` to refresh the heading list.
+For a fixed note, use the separate `… → Create & open → Link part of a note…` (Link part of a note) menu. Select `Choose folder…` (Choose folder) to browse a folder and then select its Markdown file, or use `Choose Markdown file…` (Choose Markdown file) directly. There is no manual absolute-path field or daily-mode control. Both dialogs share the same heading selector: select an existing heading, enter a new one, or leave it blank for the whole body. Both menus are also available from the notification-area icon. Use `Reload` to refresh the heading list.
 
 The read-only content preview is the final item in both the daily-note and fixed-note linking dialogs. Loading or reloading a file, selecting a heading, or typing a heading updates the Markdown preview of the chosen range, up to 4,000 characters. A blank heading previews the entire body; a new heading shows a pending append. Previewing never writes to the source file.
 

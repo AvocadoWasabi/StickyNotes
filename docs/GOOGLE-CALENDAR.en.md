@@ -26,7 +26,7 @@ Use `@calendar today` to follow the PC's current day automatically (local midnig
 
 While editing, type `@` at the start of a separate paragraph (leave a blank line after preceding text) to show the `@calendar` suggestion and floating usage examples. Press Tab or Enter, or click the suggestion, to insert today's date at `00:00` without an offset or keyword. The date and time are selected so you can replace them, then save the note. The inserted date stays fixed; it does not advance automatically. Esc closes the suggestion. Completion does not save the note itself and does not appear inside email addresses or code blocks.
 
-Events refresh about every 60 seconds, or when you choose `… → Fetch events now` (Fetch events now). Only the first command in each note is used. Leave blank lines around the command. Examples inside fenced code blocks are not executed.
+Events refresh about every 60 seconds, or when you choose `… → Refresh linked data → Fetch events now` (Fetch events now). Only the first command in each note is used. Leave blank lines around the command. Examples inside fenced code blocks are not executed.
 
 Click an event to edit its title and description. Changes are sent to Google **only after you select OK** in the confirmation dialog, which shows the changes and attendee notification behavior. Times, attendees, and recurrence rules are not changed. Editing a recurring event affects the retrieved occurrence. If the event has changed on Google since it was loaded, an ETag check prevents overwriting it and asks you to refresh.
 

@@ -752,26 +752,47 @@ public sealed partial class NoteWindow : Window
         focusLossTimer.Stop();
         toolbarMenuOpen = true; UpdateButtonOverlay();
         menu.Closed += (_, _) => { toolbarMenuOpen = false; ToolbarMenu = null; UpdateButtonOverlay(); ScheduleFocusLoss(); };
-        void Add(string label, Action action) { var item = new MenuItem { Header = label }; item.Click += (_, _) => app.Safe(action); menu.Items.Add(item); }
+        MenuItem Add(string label, Action action, ItemsControl? parent = null)
+        {
+            var item = new MenuItem { Header = label };
+            item.Click += (_, e) => { e.Handled = true; app.Safe(action); };
+            (parent ?? menu).Items.Add(item);
+            return item;
+        }
+        MenuItem Group(string key)
+        {
+            var item = new MenuItem { Header = L10n.Text(key) };
+            menu.Items.Add(item);
+            return item;
+        }
         Add(L10n.Text("NoteWindow.Text03"), BeginEdit);
         Add(L10n.Text("NoteWindow.Text07"), ReloadAsked);
-        Add(L10n.Text("NoteWindow.Text09"), app.NewNote);
         menu.Items.Add(RenameMenuItem());
+        Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
+        menu.Items.Add(new Separator());
+        var display = Group("NoteMenu.Display");
+        var details = Add(L10n.Text("NoteWindow.Details"), () => tags.Visibility = tags.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible, display);
+        details.IsCheckable = true; details.IsChecked = tags.Visibility == Visibility.Visible;
+        display.Items.Add(ContentScaleMenu());
+        display.Items.Add(new Separator());
+        Add(L10n.Text("NoteWindow.Text49"), EditMetadata, display);
+        var updates = Group("NoteMenu.Refresh");
+        if (SourceSettings.ObsidianTasksEnabled) Add(L10n.Text("QueryPreview.Refresh"), () => { ResetQueryRefresh(); _ = RefreshQueryPreviews(); }, updates);
+        Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); }, updates);
+        menu.Items.Add(new Separator());
+        var opening = Group("NoteMenu.Open");
+        Add(L10n.Text("NoteWindow.Text09"), app.NewNote, opening);
+        Add(L10n.Text("NoteWindow.Text55"), app.LinkDaily, opening);
+        Add(L10n.Text("NoteWindow.Text54"), app.LinkSection, opening);
+        Add(L10n.Text("NoteWindow.Text53"), app.OpenNote, opening);
+        opening.Items.Add(new Separator());
+        Add(L10n.Text("AppCommands.RestoreClosed"), app.RestoreRecentlyClosedNotes, opening);
+        Add(L10n.Text("NoteBrowser.Title"), () => app.BrowseNotes(Placement.VaultId));
+        Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily).InputGestureText = TemporaryFrontHotkey.Gesture;
+        menu.Items.Add(new Separator());
+        Add(L10n.Text("NoteWindow.Text56"), () => new SettingsWindow().ShowDialog());
         Add(L10n.Text("NoteWindow.Text11"), Close);
         menu.Items.Add(new Separator());
-        Add(L10n.Text("NoteWindow.Details"), () => tags.Visibility = tags.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible);
-        Add(L10n.Text("NoteWindow.Text49"), EditMetadata);
-        menu.Items.Add(ContentScaleMenu());
-        Add(L10n.Text("NoteWindow.Text50"), app.BringNotesToFrontTemporarily);
-        Add(L10n.Text("NoteWindow.Text51"), () => { _ = RefreshCalendar(); });
-        if (SourceSettings.ObsidianTasksEnabled) Add(L10n.Text("QueryPreview.Refresh"), () => { ResetQueryRefresh(); _ = RefreshQueryPreviews(); });
-        Add(L10n.Text("NoteWindow.Text52"), () => Process.Start(new ProcessStartInfo(ResolvePath()) { UseShellExecute = true }));
-        Add(L10n.Text("NoteWindow.Text53"), app.OpenNote);
-        Add(L10n.Text("NoteBrowser.Title"), () => app.BrowseNotes(Placement.VaultId));
-        Add(L10n.Text("AppCommands.RestoreClosed"), app.RestoreRecentlyClosedNotes);
-        Add(L10n.Text("NoteWindow.Text54"), app.LinkSection);
-        Add(L10n.Text("NoteWindow.Text55"), app.LinkDaily);
-        Add(L10n.Text("NoteWindow.Text56"), () => new SettingsWindow().ShowDialog());
         Add(L10n.Text("NoteWindow.Text57"), app.Quit);
         menu.IsOpen = true;
     }

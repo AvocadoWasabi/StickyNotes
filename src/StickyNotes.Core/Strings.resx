@@ -1130,4 +1130,16 @@ Google Tasksは読み取り専用です。Google Tasks APIの仕様上、取得�
   <data name="Vault.DiscoveryFailed" xml:space="preserve">
     <value>取得に失敗しました。入力内容は変更していません。{0}</value>
   </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>表示・プロパティ</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>連携データの更新</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>作成・開く</value>
+  </data>
 </root>

@@ -4,6 +4,8 @@
 
 ## English
 
+The note's **…** menu puts Edit, Reload, Rename and opening the source file in its default app first. **Display & properties**, **Refresh linked data**, and **Create & open** group the remaining note actions. Folder management remains directly accessible; Settings and closing the current note follow, with Exit app separated at the bottom. The manager has a **Close** button at the bottom right (also Esc); closing does not delete or open a note. Close is disabled while deletion is in progress. Footer buttons wrap in narrow windows.
+
 Unreleased fix: folder operations now use the same bounded CLI transport as note saves. When the bundled code/request exceeds the inline budget, it is sent through a temporary file restricted to the current user, verified by hash, and removed after success, failure or cancellation. The CLI length limit stays in place. This fixes the length-limit error when opening folder management, including with ordinary Vault names; folder selection, moves, renames and deletions share the fix. **Refresh list** also retries the initial folder catalog after a connection error, without requiring the window to be reopened.
 
 v0.0.8 lets you change checkboxes in Obsidian **Tasks** results and Dataview **TASK** results. Start Obsidian with CLI and the corresponding plugin enabled. Clicking changes the original task's note, not the query text. Results refresh after saving. Sorted, grouped, duplicate and nested results use explicit source paths and line numbers rather than matching visible descriptions. Only rows with verified source mappings are enabled (up to 1,000 per block); missing/stale mappings and arbitrary checkbox text in Dataview LIST/TABLE output remain disabled.
@@ -20,6 +22,8 @@ Validation: normal WPF tests cover menus, source validation, successful/failed w
 
 ## 日本語
 
+付箋の **…** メニューは、編集・再読込・名前変更・元ファイルを既定アプリで開くを上段に配置しました。その他の操作は **表示・プロパティ**、**連携データの更新**、**作成・開く** に整理しています。付箋管理は直接選べる位置に残し、設定・この付箋を閉じるを下段に、アプリ終了を区切った最下段に置きます。管理画面の右下に **閉じる** ボタンを追加し、Escでも閉じられます。閉じる操作では付箋を開いたり削除したりしません。削除処理中は閉じるボタンを無効にし、狭い画面では下部のボタンを折り返します。
+
 未リリースの修正：フォルダ操作にも本文保存と同じCLI転送方式を適用しました。同梱コード・要求が引数の上限を超える場合は、現在のユーザーのみがアクセスできる一時ファイルで渡し、ハッシュを検証し、成功・失敗・取消後に削除します。CLIの長さ上限は維持しています。通常のVault名でも付箋管理を開けなくなる長さ上限エラーを解消し、フォルダ選択・移動・名前変更・削除にも適用します。初回のフォルダ取得に失敗した場合も、画面を開き直さず **一覧を更新** で再試行できます。
 
 v0.0.8は、Obsidianの **Tasks** 検索結果とDataviewの **TASK** 検索結果のチェック操作に対応します。CLIと対応プラグインを有効にしてObsidianを起動してください。クリックはクエリ文字列ではなく、元タスクのノートへ反映し、保存後に結果を再取得します。並べ替え・グループ化・同名・入れ子のタスクを、表示文字列で推測せず元のパス・行番号で特定します。元ノートを照合できた行だけ操作できます（1ブロック最大1,000件）。対応付けがない・古い行や、Dataview LIST／TABLEに任意の文字列として含まれるチェックボックスは無効です。
@@ -35,6 +39,8 @@ Tasksは、本家プラグインの状態遷移と繰り返し処理を利用し
 検証：通常のWPFテストでメニュー、元ノート情報の検証、保存成功・失敗、連打防止、フォルダ境界、読み取り専用プレビュー、YAML、古い選択応答を確認します。`dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke`はNode.jsで生成したCLIコマンドを合成ノートと模擬Tasks／Dataview APIに対して実行し、グループ・入れ子・同名タスクの対応、バックアップ、競合、繰り返し出力を確認します。内部APIはTasks 7.23.1とDataviewの上流ソースを参照しました。今回の変更は起動中のObsidianとの実機検証は未実施です。`./build.ps1 -Publish`後に`artifacts/app/Install.cmd`で導入できます。
 
 ## 简体中文
+
+便签的 **…** 菜单将编辑、重新加载、重命名及用默认应用打开原文件放在顶部，其他操作归入 **显示与属性**、**刷新关联数据**、**创建与打开**。文件夹管理仍可直接选择；设置和关闭当前便签位于下方，退出应用单独放在底部。管理窗口右下方新增 **关闭** 按钮，也可按 Esc。关闭不会打开或删除笔记；删除过程中禁用关闭按钮，窄窗口中的底部按钮会自动换行。
 
 尚未发布的修复：文件夹操作改用与正文保存相同的 CLI 传输方式。同捆代码／请求超过参数预算时，通过仅当前用户可访问的临时文件传递，校验哈希，并在成功、失败或取消后删除。CLI 长度上限保持不变。修复了普通 Vault 名称也可能触发的管理窗口长度超限错误，文件夹选择、移动、重命名及删除同样适用。初次获取文件夹失败后，可点击 **刷新列表** 重试，无需重新打开窗口。
 

@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Add Close/Esc to folder management and wrap its footer buttons in narrow windows. Organize the note menu into common actions, Display & properties, Refresh linked data, and Create & open, separating note close from app exit. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
+
 - Fix the CLI command-length error when opening **Manage sticky-note folder…** by using protected temporary transfers for oversized folder requests. Keep the transport limit and add initial folder-loading retries through **Refresh list**. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
 
 - Fetch a Vault root via CLI using the entered Vault name/ID. Clarify the explicit button trigger, automatic daily-folder preview and Save timing; show progress/results and discard stale responses after edits or profile switches. [Details](docs/MULTIPLE-VAULTS.md#english).

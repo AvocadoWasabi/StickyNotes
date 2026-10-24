@@ -1130,4 +1130,16 @@ Google Tasks 为只读。Google Tasks API 的规格仅提供日期，无法获�
   <data name="Vault.DiscoveryFailed" xml:space="preserve">
     <value>获取失败，输入内容未更改。{0}</value>
   </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>显示与属性</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>刷新关联数据</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>创建与打开</value>
+  </data>
 </root>
