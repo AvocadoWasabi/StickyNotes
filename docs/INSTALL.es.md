@@ -17,7 +17,7 @@ Windows 10 / 11 (x64). El ZIP incluye .NET; no necesitas permisos de administrad
 
 También puedes ejecutar `StickyNotes.exe` desde la carpeta extraída manteniendo todos sus archivos. La aplicación no está firmada; Windows puede pedir confirmación. No se configura inicio automático.
 
-Esta documentación describe la versión actual en desarrollo. Consulta Unreleased para las diferencias con el ZIP publicado. [Unreleased](../CHANGELOG.md#unreleased)
+Esta guía corresponde a v0.0.11. Consulta el [registro de cambios (en inglés)](../CHANGELOG.md#v0-0-11) para varias bóvedas, Tasks 8.2.2 y los nueve idiomas de interfaz.
 
 ## 2. Obsidian o archivos locales
 

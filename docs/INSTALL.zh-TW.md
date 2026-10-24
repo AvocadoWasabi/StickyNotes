@@ -14,7 +14,7 @@
 
 免安裝使用時，直接執行解壓縮資料夾內的 `StickyNotes.exe`，請保留整個資料夾。應用程式未簽署，Windows 可能顯示確認。程式不會登錄自動啟動。
 
-以下使用目前開發版的台灣華語 UI 名稱；與公開 ZIP 不同時請查看[未發布紀錄（英文）](../CHANGELOG.md#unreleased)。
+本文件適用於v0.0.11。多 Vault、Tasks 8.2.2支援及九種介面語言請見[更新紀錄（英文）](../CHANGELOG.md#v0-0-11)。
 
 ## 2. 選擇儲存方式
 
@@ -37,7 +37,7 @@
 | 整合 | Obsidian／Google 端 | 便利貼端 |
 | --- | --- | --- |
 | 每日筆記 | 啟用核心 Daily notes、設定資料夾／日期格式並建立今日筆記 | `… → 建立與開啟 → 顯示每日筆記…` 選擇標題，留空顯示整篇 |
-| Tasks | 在目標 Vault 啟用 Tasks；目前開發版需要穩定版8.2.2以上 | 開啟含 `tasks` 程式碼區塊的筆記。[步驟與限制（英文）](TASKS-CLI-PREVIEW.md#english) |
+| Tasks | 在目標 Vault 啟用 Tasks；v0.0.11需要穩定版8.2.2以上 | 開啟含 `tasks` 程式碼區塊的筆記。[步驟與限制（英文）](TASKS-CLI-PREVIEW.md#english) |
 | Dataview | 在目標 Vault 啟用 Dataview | 顯示 `dataview` 的 LIST / TABLE / TASK。[步驟與限制（英文）](DATAVIEW.md#english) |
 | Google | 在自己的 Cloud 專案設定 Calendar API、Tasks API 與桌面 OAuth | 匯入 JSON 並授權，在獨立段落輸入 `@calendar today`。[連線指南（英文）](GOOGLE-CALENDAR.en.md#setup) |
 
@@ -45,7 +45,7 @@
 
 ## 4. 使用第一張便利貼
 
-從 `… → 建立與開啟` 新增或開啟 Markdown。點擊內文／`Ctrl+E` 編輯，`Ctrl+S`／`Esc` 儲存。首次連結每日筆記需有今日檔案，不會自動建立。在設定中選擇顯示語言，儲存後重新啟動即可套用。目前開發版 UI 支援 README 列出的九種語言。台灣華語範例使用繁體中文 UI。
+從 `… → 建立與開啟` 新增或開啟 Markdown。點擊內文／`Ctrl+E` 編輯，`Ctrl+S`／`Esc` 儲存。首次連結每日筆記需有今日檔案，不會自動建立。在設定中選擇顯示語言，儲存後重新啟動即可套用。v0.0.11 UI 支援 README 列出的九種語言。台灣華語範例使用繁體中文 UI。
 
 ## 常見問題
 

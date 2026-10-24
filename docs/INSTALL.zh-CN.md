@@ -14,7 +14,7 @@
 
 免安装使用时，在解压目录运行 `StickyNotes.exe`，请保留整个目录。应用未签名，Windows 可能提示确认。不会注册自动启动。
 
-以下设置名称对应当前开发版；与公开 ZIP 不同时请查看[未发布记录](../CHANGELOG.zh-CN.md#未发布)。
+本文档适用于v0.0.11。多 Vault、Tasks 8.2.2支持及九种 UI 语言见[更新日志](../CHANGELOG.zh-CN.md#v0-0-11)。
 
 ## 2. 选择保存方式
 
@@ -37,7 +37,7 @@
 | 集成 | Obsidian／Google 侧 | 便签侧 |
 | --- | --- | --- |
 | 每日笔记 | 启用核心日记，设置目录／日期格式，创建今日笔记 | 从 `… → 创建与打开` 显示每日笔记并选择标题；空白表示整篇 |
-| Tasks | 在目标 Vault 启用 Tasks；当前开发版要求稳定版8.2.2以上 | 打开含 `tasks` 代码块的笔记。[步骤与限制](TASKS-CLI-PREVIEW.md#简体中文) |
+| Tasks | 在目标 Vault 启用 Tasks；v0.0.11要求稳定版8.2.2以上 | 打开含 `tasks` 代码块的笔记。[步骤与限制](TASKS-CLI-PREVIEW.md#简体中文) |
 | Dataview | 在目标 Vault 启用 Dataview | 显示 `dataview` 的 LIST / TABLE / TASK。[步骤与限制](DATAVIEW.md#简体中文) |
 | Google | 在自己的 Cloud 项目配置 Calendar API、Tasks API 和桌面 OAuth | 导入 JSON 并授权，在独立段落输入 `@calendar today`。[连接指南](GOOGLE-CALENDAR.zh-CN.md#setup) |
 
@@ -45,7 +45,7 @@
 
 ## 4. 使用第一个便签
 
-从 `… → 创建与打开` 新建或打开 Markdown。点击正文／`Ctrl+E` 编辑，`Ctrl+S`／`Esc` 保存。首次关联每日笔记需要今日文件，不会自动创建。在设置中选择显示语言，保存并重启后生效。当前开发版 UI 支持 README 列出的九种语言。
+从 `… → 创建与打开` 新建或打开 Markdown。点击正文／`Ctrl+E` 编辑，`Ctrl+S`／`Esc` 保存。首次关联每日笔记需要今日文件，不会自动创建。在设置中选择显示语言，保存并重启后生效。v0.0.11 UI 支持 README 列出的九种语言。
 
 ## 常见问题
 

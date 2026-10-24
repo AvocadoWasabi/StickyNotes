@@ -2,11 +2,13 @@
 
 # Markdown Sticky Notes
 
+[v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
+
 **Obsidian-Aufgaben auf dem Desktop sehen und direkt abhaken.**
 
 Zeige eine ganze Markdown-Notiz oder nur einen Abschnitt der Tagesnotiz als Haftnotiz an. Änderungen werden in der Originaldatei gespeichert. Auch Tasks-/Dataview-Abfragen und Google-Termine bleiben so im Blick.
 
-[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Installation und Einrichtung](docs/INSTALL.de.md) · [Bildschirmbeispiele](docs/SCREENSHOTS.de.md) · [Unreleased](CHANGELOG.md#unreleased)
+[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Installation und Einrichtung](docs/INSTALL.de.md) · [Bildschirmbeispiele](docs/SCREENSHOTS.de.md) · [v0.0.11](CHANGELOG.md#v0-0-11)
 
 ## Warum Sticky Notes?
 
@@ -20,7 +22,7 @@ Zeige eine ganze Markdown-Notiz oder nur einen Abschnitt der Tagesnotiz als Haft
 | --- | --- | --- |
 | [<img src="docs/images/sticky-tasks-de.png" alt="Aufgaben abhaken" width="280">](docs/images/sticky-tasks-de.png) | [<img src="docs/images/sticky-markdown-de.png" alt="Markdown schreiben" width="280">](docs/images/sticky-markdown-de.png) | [<img src="docs/images/sticky-daily-de.png" alt="Der Tagesnotiz folgen" width="280">](docs/images/sticky-daily-de.png) |
 
-Fiktive Notizen, mit den WPF-Steuerelementen des aktuellen Entwicklungsstands gerendert; keine Desktop-Aufnahmen. [Bildschirmbeispiele](docs/SCREENSHOTS.de.md).
+Fiktive Notizen, mit den WPF-Steuerelementen von v0.0.11 gerendert; keine Desktop-Aufnahmen. [Bildschirmbeispiele](docs/SCREENSHOTS.de.md).
 
 ## Benötigte Werkzeuge und Einstellungen
 
@@ -31,7 +33,7 @@ Windows 10 / 11 (x64). .NET ist im ZIP enthalten; keine Administratorrechte nöt
 | Nur Markdown | Diese App | Obsidian CLI in den Einstellungen ausschalten und lokalen Ordner wählen |
 | Obsidian-Notizen | Laufendes Obsidian + integrierte CLI | In Obsidian Settings → General → Command line interface aktivieren; Vault verbinden |
 | Tagesnotizen | CLI + Core-Plugin Daily notes | Ordner/Datumsformat einstellen und die heutige Notiz erstellen |
-| Tasks-Abfragen | CLI + Community-Plugin Tasks | Im Ziel-Vault aktivieren; aktueller Entwicklungsstand benötigt stabile Version 8.2.2+ |
+| Tasks-Abfragen | CLI + Community-Plugin Tasks | Im Ziel-Vault aktivieren; v0.0.11 benötigt stabile Version 8.2.2+ |
 | Dataview-Abfragen | CLI + Dataview | Im Ziel-Vault aktivieren; LIST / TABLE / TASK |
 | Google | Google-Konto + eigene OAuth-Konfiguration | Calendar API / Tasks API aktivieren, Desktop-OAuth-JSON importieren und autorisieren |
 
@@ -44,7 +46,7 @@ Windows 10 / 11 (x64). .NET ist im ZIP enthalten; keine Administratorrechte nöt
 3. In den App-Einstellungen den absoluten Pfad zu `Obsidian.com` und den Vault-Namen bzw. die ID prüfen. Den Vault-Ordner per CLI abrufen, Notizordner wählen und speichern.
 4. Unter `…` eine Notiz erstellen/öffnen oder eine Tagesnotiz bzw. einen Abschnitt verknüpfen.
 
-Diese Anleitung beschreibt den aktuellen Entwicklungsstand. Unterschiede zum veröffentlichten ZIP stehen unter Unreleased.
+Diese Anleitung gilt für v0.0.11. Mehrere Vaults, Tasks 8.2.2 und neun UI-Sprachen sind im [Änderungsprotokoll (Englisch)](CHANGELOG.md#v0-0-11) beschrieben.
 
 ## Funktionen
 
@@ -58,7 +60,7 @@ Diese Anleitung beschreibt den aktuellen Entwicklungsstand. Unterschiede zum ver
 | Fenster | Farben, Größe, Skalierung 50–200 %, Anheften, temporärer Vordergrund und Taskleistenanzeige |
 | Notizverwaltung | Speicherort wählen/umziehen, geschlossene Notizen öffnen, Dateien durchsuchen, Vorschau, Umbenennen und Löschen |
 | Datenschutz | Sicherungen vor Schreibvorgängen und Prüfung auf externe Änderungen |
-| Mehrere Vaults (unveröffentlicht) | Tagesnotizen je Vault, Namen ändern und Standard-Vault wählen |
+| Mehrere Vaults (v0.0.11) | Tagesnotizen je Vault, Namen ändern und Standard-Vault wählen |
 
 ## Bedienung
 

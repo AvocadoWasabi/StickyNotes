@@ -4,7 +4,7 @@
 
 Keep UI, README, setup and screenshots aligned in Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish. Detailed references remain in the original three languages. After implementing UI translations, generate 27 images using isolated fictional data with the opt-in `--render-screenshots` command. [Generation and visual review](SCREENSHOTS.en.md). `build.ps1` packages all nine README languages and docs/examples.
 
-Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
+Since v0.0.11: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
 
 Completion is compared against a pinned Tasks upstream approved fixture. All changes stay in TaskEditing, including the bounded local date helper. The clone is excluded; MIT notices are bundled. See [source revision, tests and parity limits](TASK-EDITING.md#english).
 

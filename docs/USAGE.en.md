@@ -2,7 +2,7 @@
 
 # Usage reference
 
-Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
+Since v0.0.11: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
 
 **Displayed title:** Regular, linked-section, and daily notes show the current Markdown filename without `.md` in the header and taskbar. Renaming updates the title immediately, including while editing. The YAML `title` remains metadata; editing it in properties does not rename the file or change the displayed title. The title tooltip retains the linked heading, and a separate notice identifies retained daily notes from yesterday.
 
@@ -28,11 +28,11 @@ Choose the section you need.
 
 ## Display language
 
-In Settings, choose **Display language**: Windows language, or 日本語 / English / 简体中文 / 繁體中文（台灣） / 한국어 / Deutsch / Русский / Español / Svenska. Save and restart. Automatic follows Windows: Traditional Chinese (Taiwan, Hong Kong, Macao or zh-Hant) uses Taiwanese Mandarin; other Chinese uses Simplified Chinese; other supported languages use their matching UI, and unsupported languages use English. Explicit preferences take priority. The six added languages are available in the current development build.
+In Settings, choose **Display language**: Windows language, or 日本語 / English / 简体中文 / 繁體中文（台灣） / 한국어 / Deutsch / Русский / Español / Svenska. Save and restart. Automatic follows Windows: Traditional Chinese (Taiwan, Hong Kong, Macao or zh-Hant) uses Taiwanese Mandarin; other Chinese uses Simplified Chinese; other supported languages use their matching UI, and unsupported languages use English. Explicit preferences take priority. The six added languages are available in the v0.0.11.
 
 Menus, settings, guidance, app error messages, and new-note templates are translated. Existing note text, titles, headings, tags, and Google event content stay unchanged. Windows dialog buttons, external pages, and system/library errors may use another language.
 
-Japanese, English and Simplified Chinese are available from v0.0.5. The six additional languages are unreleased. Control names below follow the English UI.
+Japanese, English and Simplified Chinese are available from v0.0.5. The six additional languages are available from v0.0.11. Control names below follow the English UI.
 
 <a id="editing"></a>
 

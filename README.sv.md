@@ -2,11 +2,13 @@
 
 # Markdown Sticky Notes
 
+[v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
+
 **Se dina Obsidian-uppgifter på skrivbordet och bocka av dem direkt.**
 
 Visa en hel Markdown-anteckning eller ett avsnitt ur dagens anteckning som en fästis. Ändringar sparas i originalfilen. Du kan också ha Tasks-/Dataview-resultat och Google-händelser nära till hands.
 
-[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Installation och inställningar](docs/INSTALL.sv.md) · [Skärmbilder](docs/SCREENSHOTS.sv.md) · [Unreleased](CHANGELOG.md#unreleased)
+[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Installation och inställningar](docs/INSTALL.sv.md) · [Skärmbilder](docs/SCREENSHOTS.sv.md) · [v0.0.11](CHANGELOG.md#v0-0-11)
 
 ## Varför Sticky Notes?
 
@@ -20,7 +22,7 @@ Visa en hel Markdown-anteckning eller ett avsnitt ur dagens anteckning som en f�
 | --- | --- | --- |
 | [<img src="docs/images/sticky-tasks-sv.png" alt="Bocka av uppgifter" width="280">](docs/images/sticky-tasks-sv.png) | [<img src="docs/images/sticky-markdown-sv.png" alt="Skriv Markdown" width="280">](docs/images/sticky-markdown-sv.png) | [<img src="docs/images/sticky-daily-sv.png" alt="Följ dagens anteckning" width="280">](docs/images/sticky-daily-sv.png) |
 
-Påhittade anteckningar renderade med WPF-kontroller från den aktuella utvecklingsversionen; inga skrivbordsbilder. [Skärmbilder](docs/SCREENSHOTS.sv.md).
+Påhittade anteckningar renderade med WPF-kontroller från v0.0.11; inga skrivbordsbilder. [Skärmbilder](docs/SCREENSHOTS.sv.md).
 
 ## Verktyg och inställningar
 
@@ -31,7 +33,7 @@ Windows 10 / 11 (x64). .NET ingår i ZIP-filen; administratörsrättigheter beh�
 | Bara Markdown | Den här appen | Stäng av Obsidian CLI och välj en lokal mapp |
 | Obsidian-anteckningar | Obsidian igång + inbyggd CLI | Aktivera Settings → General → Command line interface och anslut valvet |
 | Dagliga anteckningar | CLI + kärntillägget Daily notes | Ställ in mapp/datumformat och skapa dagens anteckning |
-| Tasks-frågor | CLI + tillägget Tasks | Aktivera i rätt valv; utvecklingsversionen kräver stabil version 8.2.2+ |
+| Tasks-frågor | CLI + tillägget Tasks | Aktivera i rätt valv; v0.0.11 kräver stabil version 8.2.2+ |
 | Dataview-frågor | CLI + Dataview | Aktivera i rätt valv; LIST / TABLE / TASK |
 | Google | Google-konto + egen OAuth-konfiguration | Aktivera Calendar API / Tasks API, importera OAuth-JSON för skrivbordsapp och godkänn åtkomst |
 
@@ -44,7 +46,7 @@ Windows 10 / 11 (x64). .NET ingår i ZIP-filen; administratörsrättigheter beh�
 3. Kontrollera den absoluta sökvägen till `Obsidian.com` och valvets namn/ID i appens inställningar. Hämta valvmappen via CLI, välj anteckningsmapp och spara.
 4. Skapa/öppna en anteckning eller länka ett avsnitt eller en daglig anteckning under `…`.
 
-Dokumentationen beskriver den aktuella utvecklingsversionen. Se Unreleased för skillnader mot publicerad ZIP.
+Guiden gäller v0.0.11. Se [ändringsloggen (på engelska)](CHANGELOG.md#v0-0-11) för flera valv, Tasks 8.2.2 och nio UI-språk.
 
 ## Funktioner
 
@@ -58,7 +60,7 @@ Dokumentationen beskriver den aktuella utvecklingsversionen. Se Unreleased för 
 | Fönster | Färger, storlek, skala 50–200 %, fästning, tillfällig förgrund och visning i aktivitetsfältet |
 | Hantering | Välj/flytta lagring, öppna stängda anteckningar, bläddra, förhandsgranska, byt namn och ta bort |
 | Dataskydd | Säkerhetskopior före skrivning och kontroll av externa ändringar |
-| Flera valv (ej släppt) | Dagliga anteckningar per valv, egna namn och standardvalv |
+| Flera valv (v0.0.11) | Dagliga anteckningar per valv, egna namn och standardvalv |
 
 ## Grundläggande användning
 

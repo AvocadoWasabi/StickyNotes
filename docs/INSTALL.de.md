@@ -17,7 +17,7 @@ Windows 10 / 11 (x64). .NET ist im ZIP enthalten; keine Administratorrechte nöt
 
 Alternativ `StickyNotes.exe` direkt aus dem entpackten Ordner starten und alle Begleitdateien behalten. Die App ist unsigniert; Windows kann eine Bestätigung verlangen. Autostart wird nicht eingerichtet.
 
-Diese Anleitung beschreibt den aktuellen Entwicklungsstand. Unterschiede zum veröffentlichten ZIP stehen unter Unreleased. [Unreleased](../CHANGELOG.md#unreleased)
+Diese Anleitung gilt für v0.0.11. Mehrere Vaults, Tasks 8.2.2 und neun UI-Sprachen sind im [Änderungsprotokoll (Englisch)](../CHANGELOG.md#v0-0-11) beschrieben.
 
 ## 2. Obsidian oder lokale Dateien
 

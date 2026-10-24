@@ -14,7 +14,7 @@ For Windows 10 / 11 (x64). No administrator access or separate .NET installation
 
 To run without installing, launch `StickyNotes.exe` in the extracted folder and keep all accompanying files. The app is unsigned, so Windows may show a confirmation. Automatic startup is not registered.
 
-Setting names below follow the current development build. See [Unreleased](../CHANGELOG.md#unreleased) if the published ZIP differs.
+This guide covers v0.0.11. See the [changelog](../CHANGELOG.md#v0-0-11) for multiple vaults, Tasks 8.2.2 support and the nine-language UI.
 
 ## 2. Choose how to store notes
 
@@ -37,7 +37,7 @@ Turn off **Use Obsidian CLI**, choose a local base and note folder, then save. I
 | Integration | In Obsidian / Google | In Sticky Notes |
 | --- | --- | --- |
 | Daily notes | Enable core Daily notes, set folder/date format and create today's note | `… → Create & open → Display a daily note…`; choose a heading or leave blank for the whole note |
-| Tasks | Enable Tasks in the target vault; current development build requires stable 8.2.2+ | Open a note containing a `tasks` code block. [Setup and limits](TASKS-CLI-PREVIEW.md#english) |
+| Tasks | Enable Tasks in the target vault; v0.0.11 requires stable 8.2.2+ | Open a note containing a `tasks` code block. [Setup and limits](TASKS-CLI-PREVIEW.md#english) |
 | Dataview | Enable Dataview in the target vault | Display LIST / TABLE / TASK in `dataview` blocks. [Setup and limits](DATAVIEW.md#english) |
 | Google | Set up Calendar API, Tasks API and desktop OAuth in your own Cloud project | Import JSON, authorize and write `@calendar today` in a separate paragraph. [Connection guide](GOOGLE-CALENDAR.en.md#setup) |
 
@@ -45,7 +45,7 @@ Ordinary Markdown checkboxes do not require Tasks. Task suggestions default to A
 
 ## 4. Use your first note
 
-Use `… → Create & open` to create or open Markdown. Click the body / press `Ctrl+E` to edit and `Ctrl+S` / `Esc` to save. Daily linking initially needs today's file; the app does not create it. Choose a display language in Settings, save and restart. The current development UI supports the nine languages listed in the README.
+Use `… → Create & open` to create or open Markdown. Click the body / press `Ctrl+E` to edit and `Ctrl+S` / `Esc` to save. Daily linking initially needs today's file; the app does not create it. Choose a display language in Settings, save and restart. The v0.0.11 UI supports the nine languages listed in the README.
 
 ## Troubleshooting
 

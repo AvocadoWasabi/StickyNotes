@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+[v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
+
 **Keep today's Obsidian tasks on your desktop. Check them off right there.**
 
 Turn a whole note or a single daily-note heading into a Windows sticky note. Edits save to the original Markdown. Keep Tasks and Dataview results or Google Calendar events close at hand, too.
@@ -20,7 +22,7 @@ Turn a whole note or a single daily-note heading into a Windows sticky note. Edi
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-en.png" alt="Check off tasks" width="280">](docs/images/sticky-tasks-en.png) | [<img src="docs/images/sticky-markdown-en.png" alt="Write in Markdown" width="280">](docs/images/sticky-markdown-en.png) | [<img src="docs/images/sticky-daily-en.png" alt="Follow today's daily note" width="280">](docs/images/sticky-daily-en.png) |
 
-Fictional notes rendered with the current development build's WPF controls, rather than desktop captures. [Nine languages and reproduction steps](docs/SCREENSHOTS.en.md).
+Fictional notes rendered with WPF controls from v0.0.11, rather than desktop captures. [Nine languages and reproduction steps](docs/SCREENSHOTS.en.md).
 
 ## Tools and settings you need
 
@@ -31,7 +33,7 @@ Fictional notes rendered with the current development build's WPF controls, rath
 | Markdown sticky notes only | This app | Turn off **Use Obsidian CLI** in Settings and choose a local folder |
 | Edit Obsidian notes | Running Obsidian + Obsidian CLI | Enable Obsidian **Settings → General → Command line interface**, then connect the vault in this app |
 | Today's daily note | CLI above + core **Daily notes** | Configure its folder/date format in Obsidian and create today's note |
-| Tasks queries and native checkbox behavior | CLI above + community **Tasks** plugin | Enable in the target vault; current development build requires stable **8.2.2+** |
+| Tasks queries and native checkbox behavior | CLI above + community **Tasks** plugin | Enable in the target vault; v0.0.11 requires stable **8.2.2+** |
 | Dataview queries | CLI above + **Dataview** | Enable in the target vault; LIST / TABLE / TASK supported |
 | Google events and tasks | Google account + your own OAuth setup | Enable Calendar API / Tasks API, obtain desktop OAuth JSON and [authorize](docs/GOOGLE-CALENDAR.en.md#setup) |
 
@@ -44,7 +46,7 @@ Fictional notes rendered with the current development build's WPF controls, rath
 3. In app Settings, check the absolute path to `Obsidian.com`, enter the vault name/ID and click **Get Vault folder via CLI**. Choose a note folder, then **Save and close**.
 4. Use `… → Create & open` to create a sticky note, open Markdown, link a section or display a daily note.
 
-See [Setup](docs/INSTALL.en.md) for local mode, setting locations, updating and removal. Settings and images here describe the current development build. Check [Unreleased](CHANGELOG.md#unreleased) for differences from the published ZIP, including multiple vaults and Tasks 8.2.2 support.
+This guide covers v0.0.11. See the [changelog](CHANGELOG.md#v0-0-11) for multiple vaults, Tasks 8.2.2 support and the nine-language UI.
 
 ## Features
 
@@ -58,7 +60,7 @@ See [Setup](docs/INSTALL.en.md) for local mode, setting locations, updating and 
 | Windows and appearance | Colors, resizing, 50–200% scale, pinning, temporary foreground and taskbar visibility |
 | Note management | Select/migrate storage, reopen closed notes, browse/preview files, rename and delete |
 | Data protection | Backups before writes and external-change conflict checks |
-| Multiple vaults (unreleased) | Daily notes per vault, editable names and a default vault |
+| Multiple vaults (v0.0.11) | Daily notes per vault, editable names and a default vault |
 
 ## Basic usage
 
@@ -72,7 +74,7 @@ See [Setup](docs/INSTALL.en.md) for local mode, setting locations, updating and 
 
 ## Before you start
 
-- The current development build’s UI, README, setup and screenshots support **Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish**. Detailed references generally remain in three languages. Save and restart to apply a language change.
+- The UI in v0.0.11, README, setup and screenshots support **Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish**. Detailed references generally remain in three languages. Save and restart to apply a language change.
 - Obsidian must stay running for CLI integration. Internal API changes can affect compatibility.
 - Daily notes are not created automatically. Prepare today's note before adding the first daily sticky.
 - Obsidian themes and all plugin views are not reproduced. Images show alt text. DataviewJS, inline expressions and CALENDAR are unsupported.

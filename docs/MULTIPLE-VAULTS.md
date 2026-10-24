@@ -4,7 +4,7 @@
 
 ## English
 
-Unreleased source changes: existing settings become **Main**; the first added Vault starts as **Sub**. These display names can be changed at any time and do not select the Obsidian connection.
+Since v0.0.11: existing settings become **Main**; the first added Vault starts as **Sub**. These display names can be changed at any time and do not select the Obsidian connection.
 
 1. Open **Settings → Vaults & daily notes**. Select a registration on the left, or **Add Vault**. Edit its display name and select CLI or local access. The common `Obsidian.com` executable path is under **General**.
 2. For CLI, enter the Obsidian **Vault name/ID** (not the Main/Sub display name), then click **Get Vault folder via CLI** to fill the absolute Vault root. Typing alone does not fetch the root. An empty name uses Obsidian's default selection (working-directory Vault, otherwise active Vault) and fills its name too. The screen shows fetching, success or failure; Save is disabled during fetching. Failure keeps the inputs; edits, profile switches or closing discard stale results. Explicit IDs are preserved. Keep the target Vault open in Obsidian with the required plugins enabled. Manual root entry remains available; this does not enumerate all saved Vaults. See the [official CLI targeting rules](https://help.obsidian.md/cli#Target+a+vault).
@@ -23,7 +23,7 @@ Validation uses synthetic local Vaults and simulated CLI transport for independe
 
 ## 日本語
 
-未リリースのソース変更です。既存設定は **メイン**、最初に追加するVaultは **サブ** になります。表示名はあとから変更でき、Obsidianへの接続先名とは別です。
+v0.0.11以降の機能です。既存設定は **メイン**、最初に追加するVaultは **サブ** になります。表示名はあとから変更でき、Obsidianへの接続先名とは別です。
 
 1. **設定 → Vault・デイリーノート**を開きます。左の登録を選ぶか **Vaultを追加** し、表示名とCLI／ローカル方式を設定します。共通の `Obsidian.com` 実行ファイルは **一般** にあります。
 2. CLIではObsidianの **Vault名／ID**（メイン／サブの表示名とは別）を入力し、**Vaultの保存フォルダをCLIから取得**を押すと、Vaultルートの絶対パスが入力されます。名前の入力だけではルートを取得しません。名前が空欄ならObsidianの既定選択（作業ディレクトリのVault、該当しなければアクティブなVault）を使い、名前も入力します。取得中・完了・失敗を表示し、取得中は設定を保存できません。失敗時は入力内容を保持し、編集・登録切替・画面を閉じた後の古い結果は破棄します。明示したIDも保持します。対象VaultをObsidianで開き、必要なプラグインを有効にしてください。ルートの手入力も可能で、保存済みVaultの一括列挙は行いません。[本家CLIの接続先指定](https://help.obsidian.md/cli#Target+a+vault)も参照してください。
@@ -42,7 +42,7 @@ Validation uses synthetic local Vaults and simulated CLI transport for independe
 
 ## 简体中文
 
-尚未发布的源代码变更：现有设置成为 **主 Vault**，首次添加的 Vault 默认为 **副 Vault**。显示名称可随时修改，与 Obsidian 连接名称相互独立。
+从v0.0.11起：现有设置成为 **主 Vault**，首次添加的 Vault 默认为 **副 Vault**。显示名称可随时修改，与 Obsidian 连接名称相互独立。
 
 1. 打开 **设置 → Vault 与每日笔记**，选择左侧注册项或 **添加 Vault**，填写显示名称并选择 CLI 或本地方式。共用的 `Obsidian.com` 路径位于 **常规**。
 2. CLI 方式先输入 Obsidian **Vault 名称／ID**（与主／副显示名称不同），再点击 **通过 CLI 获取 Vault 保存目录**，填入 Vault 根目录绝对路径。仅输入名称不会获取根目录。名称留空时使用 Obsidian 的默认选择（工作目录中的 Vault，否则为活动 Vault），并填入其名称。界面显示获取中、成功或失败，获取期间无法保存设置。失败保留输入；编辑、切换注册项或关闭窗口后丢弃过期结果。显式 ID 也会保留。请在 Obsidian 中打开目标 Vault 并启用所需插件。仍可手动输入根目录，不枚举全部已保存 Vault。参见[官方 CLI 目标规则](https://help.obsidian.md/cli#Target+a+vault)。

@@ -2,7 +2,7 @@
 
 # Ejemplos de pantalla y regeneración
 
-Notas ficticias renderizadas como PNG de 460 × 580 px con controles WPF de la versión actual en desarrollo. No son capturas del escritorio ni sesiones activas de Obsidian/Google. No se usan notas personales, ajustes ni credenciales.
+Notas ficticias renderizadas como PNG de 460 × 580 px con controles WPF de v0.0.11. No son capturas del escritorio ni sesiones activas de Obsidian/Google. No se usan notas personales, ajustes ni credenciales.
 
 Tras implementar los nueve idiomas de interfaz, se regeneraron 27 imágenes con texto e interfaz coincidentes. El mandarín de Taiwán usa chino tradicional (zh-TW). El nombre diario indica la fecha de generación.
 

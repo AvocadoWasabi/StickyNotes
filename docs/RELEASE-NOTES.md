@@ -1,60 +1,78 @@
-# Markdown Sticky Notes v0.0.10
+# Markdown Sticky Notes v0.0.11
 
 [日本語](#日本語) | [English](#english) | [简体中文](#简体中文)
 
 ## 日本語
 
-Windows 10 / 11（x64）向け。v0.0.9以降の変更をまとめました。
+Windows 10 / 11（x64）向け。v0.0.10以降の変更です。
 
-- **閉じた付箋の一括復元**：通知領域・タスクバー・付箋メニューから、直前に閉じた一組を位置・サイズ・固定・倍率・見出しフィルター付きで復元。最新の一組は再起動後も保持します。
-- **保存時のフリーズ修正**：「…」メニューを開いている間はフォーカス離脱時の自動保存・確認を保留。CLI編集保存は画面を止めずに待機し、失敗時は下書きを保持します。保存中の重複保存・終了・設定変更を抑止します。
-- **ファイル名変更**：「… → ファイル名を変更…」またはタイトルのダブルクリックから変更。表示設定・開いている付箋・閉じた履歴の参照先を保持し、CLI方式ではObsidianのリンク更新設定に従います。同名・不正名・本文の競合を拒否し、失敗時は復旧記録を残します。
-- **変更不可時の案内**：デイリー付箋・保存中・読み込み未完了などでタイトルをダブルクリックしたとき、変更できない理由を表示します。
+- **9言語UI**：日本語・英語・簡体字中国語に、台湾華語（繁体字）・韓国語・ドイツ語・ロシア語・スペイン語・スウェーデン語を追加。設定で選択し、保存後の再起動で反映します。
+- **READMEと導入資料の刷新**：特長・必要ツールと設定・機能一覧を中心に9言語で再構成。UI対応後に各言語の画面例27枚を再生成しました。
+- **複数Vaultのデイリーノート**：接続・デイリー設定・表示名・既定Vaultを管理。既存設定はメインに移行し、固定IDで各ノートの接続先を保持。Vault名／IDを指定したCLIフォルダ取得とデイリー設定の確認に対応します。
+- **Tasks 8.2.2対応**：グループ化・入れ子の検索結果と元タスクの対応を保持。連携には安定版8.2.2以降が必要です。旧版は書き込み前に停止し、対象Vaultでの更新を案内します。
+- **付箋管理とメニュー**：確認付き削除、復旧ファイル、下書き／競合保護、閉じるボタン／Escを追加。操作メニューを整理し、Markdownファイル名を付箋タイトルとして表示。YAMLタイトルはメタデータとして保持します。
+- **CLI長さ上限エラーを修正**：大きなフォルダ操作要求をアクセス制限・ハッシュ検証付き一時ファイルで転送。「一覧を更新」で初回取得の失敗も再試行できます。
 
-### 更新・検証・制限
+### 更新と検証
 
-アプリを終了し、Assetsの **StickyNotes-win-x64.zip** を新しいフォルダへ全展開して **Install.cmd** を実行してください。ノート・設定・バックアップは保持されます。管理者権限や別途.NET導入は不要です。未署名のため、必要に応じて **StickyNotes-win-x64.zip.sha256** で照合できます。
+編集を保存し、通知領域からアプリを終了してください。Assetsの **StickyNotes-win-x64.zip** を新しいフォルダに全展開し、**Install.cmd** を実行します。ノート・設定・バックアップは保持され、.NET導入や管理者権限は不要です。未署名アプリです。**StickyNotes-win-x64.zip.sha256** で照合できます。
 
-自動テスト、模擬Obsidian API、配布ビルド、ZIP内容・SHA256、コード／セキュリティレビューで確認。実マウス操作・実環境Obsidianでのリンク更新・物理IME・別Windowsテーマは今回再検証していません。
+Obsidian連携はObsidianの起動とCLI有効化が必要です。Tasksを使う各Vaultで **設定 → コミュニティプラグイン → アップデートを確認** から更新し、付箋の **連携データの更新 → Tasks / Dataviewを更新** を実行します。Obsidianなしで使う場合はこのアプリのCLI設定を無効にしてください。
 
-復元は最新の一組のみで、2秒以内の連続クローズも同じ組に含みます。破棄した編集や削除済みファイルは戻りません。デイリー付箋は名前変更の対象外。大文字小文字だけの変更は一度別名を経由してください。ローカル方式では他ノートのリンクを更新しません。変更結果が不明な場合は両方のパスとアプリデータ内の `note-renames` 記録を確認してください。閉じる際の保存・メタデータ保存・新規作成のCLI処理は引き続き同期処理です。既存CLI制限と以前観測された一時的な保存競合は継続し、競合時は上書きを拒否します。
+自動テスト、模擬Obsidian API、9言語のWPF画面、配布ビルド、ZIP内容・SHA256、コード／セキュリティレビューで確認。実アカウントのGoogle操作、すべてのWindowsテーマ・DPI・物理IME、母語話者による校正は今回の検証対象外です。
 
-[利用手順と制限](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.10/docs/USAGE.md) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.10/CHANGELOG.ja.md)
+### 制限
+
+詳細資料は主に日英簡体字の3言語です。画面例は架空ノートを実WPFで描画したもので、デスクトップ撮影ではありません。Windows標準ダイアログ・外部ページ・ライブラリの文言は別言語の場合があります。既存ノート本文は翻訳しません。通常の新規付箋・保存先移行はメインVaultを使い、Vault間移行は追加していません。CLIは共通キュー・タイムアウトを使い、将来のObsidian／Tasks内部API変更には追加対応が必要になる場合があります。競合書き込みは拒否し、デイリーノートは自動作成しません。
+
+[導入手順](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/docs/INSTALL.md) · [変更履歴](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/CHANGELOG.ja.md) · [画面例](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/docs/SCREENSHOTS.md)
 
 ## English
 
-For Windows 10 / 11 (x64). Includes the changes since v0.0.9.
+For Windows 10 / 11 (x64). Changes since v0.0.10.
 
-- **Reopen closed note groups:** Restore the most recently closed group from the tray, taskbar or note menu, including position, size, pinning, zoom and heading filters. The latest group survives app restarts.
-- **Save freeze fix:** Defer focus-loss saves and prompts while the More menu is open. CLI editor saves wait without blocking the UI and retain drafts on failure. Prevent overlapping saves, closing the saving note and settings changes during a write.
-- **File renaming:** Use More → Rename file or double-click the title. Preserve display settings and update open windows and closed history. CLI mode follows Obsidian's link-update settings. Reject duplicate/invalid names and content conflicts, and retain recovery records on failure.
-- **Unavailable-action guidance:** Explain why title double-click cannot rename daily notes, notes being saved, notes that have not loaded, and other unavailable states.
+- **Nine-language UI:** Add Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish alongside Japanese, English and Simplified Chinese. Choose a language in Settings, save and restart.
+- **Rewritten README and onboarding:** Explain benefits, required tools/settings and features in nine languages. Regenerate 27 screen examples after implementing the UI translations.
+- **Daily notes across multiple vaults:** Manage connections, daily settings, names and a default vault. Existing settings become Main; stable IDs preserve each note’s source. Retrieve the folder through CLI using the entered vault name/ID and inspect native daily settings.
+- **Tasks 8.2.2 support:** Preserve source mappings for grouped and nested query results. Integration requires stable 8.2.2 or later. Older versions stop before writing and show update instructions for the affected vault.
+- **Note management and menus:** Add confirmed deletion, recovery files, draft/conflict guards and Close/Esc. Organize actions and display Markdown filenames as note titles, retaining YAML titles as metadata.
+- **CLI length-limit fix:** Transfer oversized folder requests through access-restricted temporary files with hash verification. Refresh list also retries initial loading after failure.
 
-### Updating, validation and limits
+### Updating and validation
 
-Exit the app, extract the complete **StickyNotes-win-x64.zip** from Assets into a new folder and run **Install.cmd**. Notes, settings and backups are retained. No administrator privileges or separate .NET installation are required. The app is unsigned; verify with **StickyNotes-win-x64.zip.sha256** when needed.
+Save edits and exit from the notification area. Extract the complete **StickyNotes-win-x64.zip** from Assets into a new folder and run **Install.cmd**. Notes, settings and backups are retained. No separate .NET installation or administrator access is required. The app is unsigned. Verify with **StickyNotes-win-x64.zip.sha256**.
 
-Validation covers automated tests, a synthetic Obsidian API, the distribution build, ZIP contents/SHA256, and code/security reviews. Real mouse gestures, link updates in live Obsidian, physical IME input and other Windows themes were not revalidated.
+Keep Obsidian running with CLI enabled for integration. In every vault using Tasks, open **Settings → Community plugins → Check for updates**, update Tasks, then choose **Refresh linked data → Refresh Tasks / Dataview** in the sticky-note menu. Disable the app’s CLI setting to use local files without Obsidian.
 
-Only the latest group is restored; consecutive closes within two seconds belong to the same group. Discarded edits and deleted files cannot be recovered. Daily notes cannot be renamed. Case-only changes require an intermediate name. Local mode does not update links in other notes. If the outcome is unclear, check both paths and the `note-renames` records in the app-data directory. Save-on-close, metadata saves and new-note CLI creation remain synchronous. Existing CLI limits and previously observed transient save conflicts remain; conflicting writes are refused.
+Validation covers automated tests, synthetic Obsidian APIs, WPF views in nine languages, distribution builds, ZIP contents/SHA256, and code/security reviews. Real-account Google operations, every Windows theme/DPI/physical IME combination, and native-speaker proofreading were outside this validation.
 
-[User guide and limits](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.10/docs/USAGE.en.md) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.10/CHANGELOG.md)
+### Limits
+
+Detailed references remain mainly in Japanese, English and Simplified Chinese. Screen examples render fictional notes using actual WPF controls; they are not desktop captures. Windows dialogs, external pages and library messages may use another language. Existing note text is not translated. Ordinary new notes and storage migration use Main; cross-vault file migration is not added. CLI retains its shared queue and timeout; future Obsidian/Tasks internal API changes may require updates. Conflicting writes are rejected and daily notes are not created automatically.
+
+[Setup](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/docs/INSTALL.en.md) · [Changelog](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/CHANGELOG.md) · [Screenshots](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/docs/SCREENSHOTS.en.md)
 
 ## 简体中文
 
-适用于 Windows 10 / 11（x64）。汇总 v0.0.9 之后的更新。
+适用于Windows 10 / 11（x64）。以下为v0.0.10之后的变化。
 
-- **成组恢复关闭的便签**：从通知区域、任务栏或便签菜单恢复最近关闭的一组便签，包括位置、大小、置顶、缩放及标题筛选。重启后仍保留最近一组。
-- **修复保存卡顿**：打开更多菜单时暂缓失焦保存和确认。CLI编辑保存不阻塞界面，失败时保留草稿；写入期间阻止重复保存、关闭正在保存的便签及修改设置。
-- **文件重命名**：通过更多菜单的重命名操作或双击标题修改文件名。保留显示设置并更新打开的便签及关闭历史中的引用。CLI模式遵循Obsidian的链接更新设置；拒绝重复／无效名称及内容冲突，失败时保留恢复记录。
-- **不可用时说明原因**：双击每日便签、正在保存或尚未加载的便签标题等情况下，显示无法重命名的原因。
+- **九种界面语言**：除日语、英语和简体中文外，新增台湾华语（繁体）、韩语、德语、俄语、西班牙语和瑞典语。在设置中选择，保存并重启后生效。
+- **重写README与入门资料**：以特点、工具与设置、功能列表为重点，提供九种语言。先实现界面翻译，再生成27张画面示例。
+- **多个Vault的每日笔记**：分别管理连接、每日设置、名称和默认Vault。旧设置成为主Vault，以固定ID保持各笔记来源。支持按输入的Vault名称／ID通过CLI获取文件夹并检查原生每日设置。
+- **Tasks 8.2.2支持**：保持分组、嵌套结果与源任务的映射。集成要求稳定版8.2.2以上。旧版在写入前停止，并提示在对应Vault更新插件。
+- **便签管理和菜单**：新增确认删除、恢复文件、草稿／冲突保护以及关闭／Esc。整理操作菜单，用Markdown文件名作为便签标题，YAML标题仍保留为元数据。
+- **修复CLI长度超限**：通过限制访问并校验哈希的临时文件传递过大的文件夹请求。刷新列表也可重试初次加载失败。
 
-### 更新、验证与限制
+### 更新与验证
 
-退出应用，将 Assets 中的 **StickyNotes-win-x64.zip** 全部解压到新目录并运行 **Install.cmd**。保留笔记、设置和备份，无需管理员权限或另装.NET。应用未签名，可通过 **StickyNotes-win-x64.zip.sha256** 校验。
+保存编辑并从通知区域退出，将Assets中的 **StickyNotes-win-x64.zip** 全部解压到新目录后运行 **Install.cmd**。笔记、设置和备份保留，无需另装.NET或管理员权限。应用未签名，可通过 **StickyNotes-win-x64.zip.sha256** 校验。
 
-验证涵盖自动测试、模拟Obsidian API、分发构建、ZIP内容与SHA256、代码及安全审查。本次未重新验证真实鼠标操作、实际Obsidian链接更新、物理输入法及其他Windows主题。
+Obsidian集成需要保持Obsidian运行并启用CLI。在每个使用Tasks的Vault中，通过 **设置 → 第三方插件 → 检查更新** 更新Tasks，然后选择便签菜单的 **刷新关联数据 → 刷新 Tasks / Dataview**。不使用Obsidian时，请关闭本应用的CLI设置。
 
-仅恢复最近一组，两秒内连续关闭也归入同组；无法恢复已丢弃的编辑或已删除的文件。每日便签不能重命名。仅改变大小写时需先改为其他名称。本地模式不更新其他笔记中的链接。如结果不明确，请检查两个路径及应用数据目录中的 `note-renames` 记录。关闭时保存、元数据保存和新建笔记的CLI处理仍为同步操作。现有CLI限制及此前观察到的临时保存冲突仍存在，冲突写入会被拒绝。
+验证涵盖自动测试、模拟Obsidian API、九种语言WPF画面、分发构建、ZIP内容／SHA256以及代码和安全审查。本次未验证真实账号的Google操作、所有Windows主题／DPI／物理输入法组合，也未经母语使用者校对。
 
-[使用指南与限制](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.10/docs/USAGE.zh-CN.md) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.10/CHANGELOG.zh-CN.md)
+### 限制
+
+详细资料主要保留日英简体三种语言。画面示例通过实际WPF控件渲染虚构笔记，并非桌面截图。Windows对话框、外部网页和库的文案可能使用其他语言。不会翻译现有正文。普通新便签和存储迁移仍使用主Vault，未新增跨Vault迁移。CLI保留共享队列和超时；将来Obsidian／Tasks内部API变化可能需要更新。冲突写入会被拒绝，每日笔记不会自动创建。
+
+[安装指南](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/docs/INSTALL.zh-CN.md) · [更新日志](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/CHANGELOG.zh-CN.md) · [界面示例](https://github.com/AvocadoWasabi/StickyNotes/blob/v0.0.11/docs/SCREENSHOTS.zh-CN.md)

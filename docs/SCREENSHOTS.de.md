@@ -2,7 +2,7 @@
 
 # Bildschirmbeispiele und Neuerzeugung
 
-Fiktive Notizen, als PNGs mit 460 × 580 px durch WPF-Steuerelemente des aktuellen Entwicklungsstands gerendert. Keine Desktop-Aufnahmen oder aktiven Obsidian-/Google-Verbindungen; keine persönlichen Notizen, Einstellungen oder Zugangsdaten.
+Fiktive Notizen, als PNGs mit 460 × 580 px durch WPF-Steuerelemente von v0.0.11 gerendert. Keine Desktop-Aufnahmen oder aktiven Obsidian-/Google-Verbindungen; keine persönlichen Notizen, Einstellungen oder Zugangsdaten.
 
 Nach Umsetzung der neun UI-Sprachen wurden 27 Bilder mit passendem Notiztext und UI neu erzeugt. Taiwanisches Mandarin verwendet traditionelles Chinesisch (zh-TW). Der tägliche Dateiname zeigt das Erzeugungsdatum.
 

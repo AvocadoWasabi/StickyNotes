@@ -2,7 +2,7 @@
 
 # Screenshots and reproduction
 
-Fictional notes rendered as 460 × 580 px PNGs with the current development build’s WPF controls. These are not desktop captures or live Obsidian/Google sessions. No personal notes, settings or credentials are used.
+Fictional notes rendered as 460 × 580 px PNGs with WPF controls from v0.0.11. These are not desktop captures or live Obsidian/Google sessions. No personal notes, settings or credentials are used.
 
 After implementing all nine UI languages, we regenerated 27 images with matching note text and UI. Taiwanese Mandarin uses Traditional Chinese (zh-TW). The daily filename shows the generation date.
 

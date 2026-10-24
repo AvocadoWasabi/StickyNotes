@@ -4,7 +4,7 @@
 
 UI、README、安装指南和界面示例同步日语／英语／简体中文／台湾华语（繁体）／韩语／德语／俄语／西班牙语／瑞典语九种语言。详细资料保留原三种语言。完成 UI 翻译后，使用隔离的虚构数据，通过可选 `--render-screenshots` 命令生成27张图片。[生成与目视检查](SCREENSHOTS.zh-CN.md)。`build.ps1` 打包九种语言的 README 和 docs／examples。
 
-未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](MULTIPLE-VAULTS.md#简体中文)。
+从v0.0.11起：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](MULTIPLE-VAULTS.md#简体中文)。
 
 补全对照固定版本的Tasks上游批准测试资料，有限日期辅助逻辑也集中于TaskEditing。克隆不分发，MIT声明随包附带。参见[参考版本、验证及兼容范围](TASK-EDITING.md#简体中文)。
 

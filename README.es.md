@@ -2,11 +2,13 @@
 
 # Markdown Sticky Notes
 
+[v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
+
 **Tus tareas de Obsidian en el escritorio. Márcalas como completadas allí mismo.**
 
 Convierte una nota Markdown completa o una sección de la nota diaria en una nota adhesiva. Los cambios se guardan en el archivo original. También puedes consultar resultados de Tasks/Dataview y eventos de Google.
 
-[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Instalación y configuración](docs/INSTALL.es.md) · [Ejemplos de pantalla](docs/SCREENSHOTS.es.md) · [Unreleased](CHANGELOG.md#unreleased)
+[Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) · [Instalación y configuración](docs/INSTALL.es.md) · [Ejemplos de pantalla](docs/SCREENSHOTS.es.md) · [v0.0.11](CHANGELOG.md#v0-0-11)
 
 ## ¿Por qué usarlo?
 
@@ -20,7 +22,7 @@ Convierte una nota Markdown completa o una sección de la nota diaria en una not
 | --- | --- | --- |
 | [<img src="docs/images/sticky-tasks-es.png" alt="Marcar tareas" width="280">](docs/images/sticky-tasks-es.png) | [<img src="docs/images/sticky-markdown-es.png" alt="Escribir Markdown" width="280">](docs/images/sticky-markdown-es.png) | [<img src="docs/images/sticky-daily-es.png" alt="Seguir la nota diaria" width="280">](docs/images/sticky-daily-es.png) |
 
-Notas ficticias renderizadas con los controles WPF de la versión actual en desarrollo; no son capturas del escritorio. [Ejemplos de pantalla](docs/SCREENSHOTS.es.md).
+Notas ficticias renderizadas con los controles WPF de v0.0.11; no son capturas del escritorio. [Ejemplos de pantalla](docs/SCREENSHOTS.es.md).
 
 ## Herramientas y ajustes necesarios
 
@@ -31,7 +33,7 @@ Windows 10 / 11 (x64). El ZIP incluye .NET; no necesitas permisos de administrad
 | Solo Markdown | Esta aplicación | Desactiva Obsidian CLI y elige una carpeta local |
 | Notas de Obsidian | Obsidian abierto + CLI integrada | Activa Settings → General → Command line interface y conecta la bóveda |
 | Notas diarias | CLI + complemento principal Daily notes | Configura carpeta/formato de fecha y crea la nota de hoy |
-| Consultas Tasks | CLI + complemento Tasks | Actívalo en la bóveda; la versión en desarrollo requiere la versión estable 8.2.2+ |
+| Consultas Tasks | CLI + complemento Tasks | Actívalo en la bóveda; v0.0.11 requiere la versión estable 8.2.2+ |
 | Consultas Dataview | CLI + Dataview | Actívalo en la bóveda; LIST / TABLE / TASK |
 | Google | Cuenta de Google + configuración OAuth propia | Activa Calendar API / Tasks API, importa JSON OAuth de escritorio y autoriza |
 
@@ -44,7 +46,7 @@ Windows 10 / 11 (x64). El ZIP incluye .NET; no necesitas permisos de administrad
 3. En los ajustes de la aplicación comprueba la ruta absoluta de `Obsidian.com` y el nombre/ID de la bóveda. Obtén la carpeta mediante CLI, elige una carpeta de notas y guarda.
 4. En `…`, crea/abre una nota o vincula una sección o nota diaria.
 
-Esta documentación describe la versión actual en desarrollo. Consulta Unreleased para las diferencias con el ZIP publicado.
+Esta guía corresponde a v0.0.11. Consulta el [registro de cambios (en inglés)](CHANGELOG.md#v0-0-11) para varias bóvedas, Tasks 8.2.2 y los nueve idiomas de interfaz.
 
 ## Funciones
 
@@ -58,7 +60,7 @@ Esta documentación describe la versión actual en desarrollo. Consulta Unreleas
 | Ventanas | Colores, tamaño, escala 50–200 %, fijación, primer plano temporal y barra de tareas |
 | Gestión | Selecciona/migra carpeta, reabre notas, explora archivos, previsualiza, renombra y elimina |
 | Protección de datos | Copias antes de escribir y comprobación de cambios externos |
-| Varias bóvedas (sin publicar) | Notas diarias por bóveda, nombres editables y bóveda predeterminada |
+| Varias bóvedas (v0.0.11) | Notas diarias por bóveda, nombres editables y bóveda predeterminada |
 
 ## Uso básico
 

@@ -26,7 +26,7 @@ Since v0.0.7, new settings use Obsidian CLI by default. The existing standard pr
 
 ### Tasks, preservation and limits
 
-The unreleased integration requires stable Tasks **8.2.2 or later**. Older, prerelease or unrecognized versions stop with an update error before native queries or checkbox edits. In **each affected Vault**, open Obsidian **Settings → Community plugins → Check for updates**, update Tasks, then select **Refresh linked data → Refresh Tasks / Dataview** in the sticky-note menu. The message includes the installed version. Newer versions still require the expected internal API; incompatible APIs stop safely and ask you to check both app/plugin updates. Tasks is not updated automatically.
+The v0.0.11 integration requires stable Tasks **8.2.2 or later**. Older, prerelease or unrecognized versions stop with an update error before native queries or checkbox edits. In **each affected Vault**, open Obsidian **Settings → Community plugins → Check for updates**, update Tasks, then select **Refresh linked data → Refresh Tasks / Dataview** in the sticky-note menu. The message includes the installed version. Newer versions still require the expected internal API; incompatible APIs stop safely and ask you to check both app/plugin updates. Tasks is not updated automatically.
 
 Tasks runs the installed plugin's native search and Markdown export; results never replace the query source, and verified checkboxes can update the original tasks. Ordinary text and checkboxes remain editable. The sticky app renders the returned Markdown, so Obsidian HTML/CSS, interactive controls and some layouts are not reproduced. Use trusted queries: Tasks JavaScript filters, global queries and presets execute with Obsidian's privileges.
 
@@ -70,7 +70,7 @@ v0.0.7から、新規設定ではObsidian CLIを既定とします。通常プ�
 
 ### Tasks・データ保持・制約
 
-未リリース版の連携は、安定版のTasks **8.2.2以降**が必要です。旧版・プレリリース版・認識できない版では、本家クエリやチェック操作の前に更新エラーを表示します。**対象Vaultごとに**Obsidianの **設定 → コミュニティプラグイン → アップデートを確認** からTasksを更新し、付箋の **連携データの更新 → Tasks / Dataviewを更新** を実行してください。案内には現在のバージョンも表示します。新しい版でも必要な内部APIが異なる場合は処理を中止し、付箋アプリとTasksの更新確認を案内します。Tasksの自動更新は行いません。
+v0.0.11以降の連携は、安定版のTasks **8.2.2以降**が必要です。旧版・プレリリース版・認識できない版では、本家クエリやチェック操作の前に更新エラーを表示します。**対象Vaultごとに**Obsidianの **設定 → コミュニティプラグイン → アップデートを確認** からTasksを更新し、付箋の **連携データの更新 → Tasks / Dataviewを更新** を実行してください。案内には現在のバージョンも表示します。新しい版でも必要な内部APIが異なる場合は処理を中止し、付箋アプリとTasksの更新確認を案内します。Tasksの自動更新は行いません。
 
 Tasksはインストール済み本家の検索とMarkdown出力を使います。クエリ原文を置き換えて保存せず、元ノートを照合できたタスクのチェック状態を更新できます。通常の本文・チェックボックスは編集できます。取得結果は付箋側でMarkdown描画するため、ObsidianのHTML/CSSや操作部品、一部のレイアウトは再現しません。JavaScriptフィルター・グローバルクエリ・プリセットはObsidianの権限で実行するため、信頼できるクエリを使用してください。
 
@@ -114,7 +114,7 @@ v0.0.8支持通过 CLI 将 Dataview LIST／TABLE／TASK 与 Tasks 和普通 Mark
 
 ### Tasks、数据保护与限制
 
-未发布版本的集成要求稳定版 Tasks **8.2.2 或更高版本**。旧版、预发布版或无法识别的版本会在原生查询或复选框操作之前显示更新错误。请在**每个受影响的 Vault** 中打开 Obsidian **设置 → 第三方插件 → 检查更新**，更新 Tasks 后，在便签菜单中选择 **刷新关联数据 → 刷新 Tasks / Dataview**。提示中包含当前版本。新版本仍需提供预期的内部 API；若不兼容则安全停止，并提示检查应用和插件的更新。不会自动更新 Tasks。
+v0.0.11的集成要求稳定版 Tasks **8.2.2 或更高版本**。旧版、预发布版或无法识别的版本会在原生查询或复选框操作之前显示更新错误。请在**每个受影响的 Vault** 中打开 Obsidian **设置 → 第三方插件 → 检查更新**，更新 Tasks 后，在便签菜单中选择 **刷新关联数据 → 刷新 Tasks / Dataview**。提示中包含当前版本。新版本仍需提供预期的内部 API；若不兼容则安全停止，并提示检查应用和插件的更新。不会自动更新 Tasks。
 
 Tasks 使用已安装原插件的查询及 Markdown 导出。结果不会覆盖查询原文，已验证的复选框可修改原任务；普通正文和复选框仍可编辑。便签使用自身 Markdown 渲染器，不重现 Obsidian HTML/CSS、交互控件及部分布局。JavaScript 筛选器、全局查询和预设以 Obsidian 权限执行，请使用可信查询。
 

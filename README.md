@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+[v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
+
 **Obsidianの「今日やること」を、デスクトップに置いて、その場でチェック。**
 
 ノート全体でも、デイリーノートの見出しひとつでも。必要な部分だけをWindowsの付箋にして、編集を元のMarkdownへ保存します。Tasks・Dataviewの検索結果やGoogle Calendarの予定も手元に置けます。
@@ -20,7 +22,7 @@
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-ja.png" alt="タスクをその場でチェック" width="280">](docs/images/sticky-tasks-ja.png) | [<img src="docs/images/sticky-markdown-ja.png" alt="Markdownでメモ" width="280">](docs/images/sticky-markdown-ja.png) | [<img src="docs/images/sticky-daily-ja.png" alt="今日のデイリーと連動" width="280">](docs/images/sticky-daily-ja.png) |
 
-現在の開発版のWPFコントロールで架空のノートを描画した画面例です（デスクトップの撮影ではありません）。[9言語の画面例・再生成手順](docs/SCREENSHOTS.md)。
+v0.0.11のWPFコントロールで架空のノートを描画した画面例です（デスクトップの撮影ではありません）。[9言語の画面例・再生成手順](docs/SCREENSHOTS.md)。
 
 ## 必要なツールと設定
 
@@ -31,7 +33,7 @@
 | Markdown付箋だけ | このアプリ | 設定で **Obsidian CLIを使用する** をオフにし、ローカル保存先を選択 |
 | Obsidianのノートを編集 | 起動中のObsidian＋Obsidian CLI | Obsidianの **設定 → 一般 → コマンドラインインターフェース** を有効化し、アプリにVaultを登録 |
 | 今日のデイリーノート | 上記＋コア **デイリーノート** | Obsidianで保存フォルダ・日付形式を設定し、今日のノートを作成 |
-| Tasks検索・本家のチェック処理 | 上記CLI＋コミュニティプラグイン **Tasks** | 対象Vaultで有効化。現開発版は安定版 **8.2.2以降**が必要 |
+| Tasks検索・本家のチェック処理 | 上記CLI＋コミュニティプラグイン **Tasks** | 対象Vaultで有効化。v0.0.11は安定版 **8.2.2以降**が必要 |
 | Dataview検索 | 上記CLI＋**Dataview** | 対象Vaultで有効化。LIST / TABLE / TASKに対応 |
 | Googleの予定・タスク | Googleアカウント＋利用者自身のOAuth設定 | Calendar API / Tasks API、デスクトップ用OAuth JSONを用意し[認証](docs/GOOGLE-CALENDAR.md#setup) |
 
@@ -44,7 +46,7 @@
 3. アプリの設定で `Obsidian.com` の絶対パスを確認し、Vault名／IDを入力して **Vaultの保存フォルダをCLIから取得**。保存先を選び、**保存して閉じる**。
 4. `… → 作成・開く` から新しい付箋、既存Markdown、ノートの一部分、デイリーノートを選択。
 
-CLIを使わない手順、設定場所、更新・削除は[導入ガイド](docs/INSTALL.md)へ。ここで案内する設定画面・画像は現開発版です。公開ZIPとの差分（複数Vault・Tasks 8.2.2対応など）は[未リリース欄](CHANGELOG.ja.md#未リリース)を確認してください。
+この資料はv0.0.11に対応します。複数Vault・Tasks 8.2.2対応・9言語UIの変更内容は[変更履歴](CHANGELOG.ja.md#v0-0-11)を参照してください。
 
 ## 機能一覧
 
@@ -58,7 +60,7 @@ CLIを使わない手順、設定場所、更新・削除は[導入ガイド](do
 | 表示・ウィンドウ | 色、サイズ、50〜200%表示倍率、最前面、一時前面表示、タスクバー表示 |
 | 付箋管理 | 保存先選択・移行、閉じた付箋の再表示、一覧とプレビュー、ファイル名変更・削除 |
 | データ保護 | 書込み前のバックアップ、外部変更との競合検出 |
-| 複数Vault（未リリース） | Vaultごとのデイリーノート、名前変更、既定Vaultの選択 |
+| 複数Vault（v0.0.11） | Vaultごとのデイリーノート、名前変更、既定Vaultの選択 |
 
 ## 基本操作
 
@@ -72,7 +74,7 @@ CLIを使わない手順、設定場所、更新・削除は[導入ガイド](do
 
 ## 知っておきたい制限
 
-- 現開発版のUI・README・導入ガイド・画面例は**日本語・英語・簡体字中国語・台湾華語（繁体字）・韓国語・ドイツ語・ロシア語・スペイン語・スウェーデン語**の9言語です。詳細資料は原則3言語です。言語変更は保存して再起動すると反映されます。
+- v0.0.11のUI・README・導入ガイド・画面例は**日本語・英語・簡体字中国語・台湾華語（繁体字）・韓国語・ドイツ語・ロシア語・スペイン語・スウェーデン語**の9言語です。詳細資料は原則3言語です。言語変更は保存して再起動すると反映されます。
 - Obsidian連携中はObsidianの常時起動が必要です。内部APIに依存し、更新で互換性が変わる場合があります。
 - デイリーノートは自動作成しません。初回は今日のノートを用意してください。
 - Obsidianのテーマや全プラグインの表示は再現しません。画像は代替テキストで表示。DataviewJS・インライン式・CALENDARは未対応です。

@@ -2,6 +2,8 @@
 
 # Markdown Sticky Notes
 
+[v0.0.11](https://github.com/AvocadoWasabi/StickyNotes/releases/tag/v0.0.11) · Windows 10 / 11 (x64)
+
 **把 Obsidian 的今日任务放到桌面，直接勾选完成。**
 
 将整篇笔记或每日笔记中的一个标题区域变成 Windows 便签，编辑直接保存到原 Markdown。也可随时查看 Tasks、Dataview 查询结果和 Google Calendar 日程。
@@ -20,7 +22,7 @@
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-zh-CN.png" alt="直接勾选任务" width="280">](docs/images/sticky-tasks-zh-CN.png) | [<img src="docs/images/sticky-markdown-zh-CN.png" alt="Markdown 笔记" width="280">](docs/images/sticky-markdown-zh-CN.png) | [<img src="docs/images/sticky-daily-zh-CN.png" alt="关联今日笔记" width="280">](docs/images/sticky-daily-zh-CN.png) |
 
-使用当前开发版 WPF 控件渲染虚构笔记，并非桌面截图。[九种语言的示例与生成步骤](docs/SCREENSHOTS.zh-CN.md)。
+使用v0.0.11 WPF 控件渲染虚构笔记，并非桌面截图。[九种语言的示例与生成步骤](docs/SCREENSHOTS.zh-CN.md)。
 
 ## 所需工具和设置
 
@@ -31,7 +33,7 @@
 | 仅使用 Markdown 便签 | 本应用 | 在设置中关闭 **使用 Obsidian CLI**，选择本地目录 |
 | 编辑 Obsidian 笔记 | 正在运行的 Obsidian＋Obsidian CLI | 启用 Obsidian **设置 → 常规 → 命令行界面**，在本应用连接 Vault |
 | 今日每日笔记 | 上述 CLI＋核心 **日记** 插件 | 在 Obsidian 配置目录和日期格式，创建今日笔记 |
-| Tasks 查询与原生勾选行为 | 上述 CLI＋第三方 **Tasks** 插件 | 在目标 Vault 启用；当前开发版要求稳定版 **8.2.2 或更高版本** |
+| Tasks 查询与原生勾选行为 | 上述 CLI＋第三方 **Tasks** 插件 | 在目标 Vault 启用；v0.0.11要求稳定版 **8.2.2 或更高版本** |
 | Dataview 查询 | 上述 CLI＋**Dataview** | 在目标 Vault 启用；支持 LIST / TABLE / TASK |
 | Google 日程与任务 | Google 账号＋自己的 OAuth 配置 | 启用 Calendar API / Tasks API，准备桌面 OAuth JSON 并[授权](docs/GOOGLE-CALENDAR.zh-CN.md#setup) |
 
@@ -44,7 +46,7 @@
 3. 在应用设置中确认 `Obsidian.com` 的绝对路径，输入 Vault 名称／ID，点击 **通过 CLI 获取 Vault 保存目录**。选择便签目录，再 **保存并关闭**。
 4. 从 `… → 创建与打开` 新建便签、打开 Markdown、关联笔记的一部分或显示每日笔记。
 
-本地模式、设置位置、更新和卸载见[安装指南](docs/INSTALL.zh-CN.md)。此处设置和图片对应当前开发版；与已发布 ZIP 的差异（多 Vault、Tasks 8.2.2 支持等）见[未发布](CHANGELOG.zh-CN.md#未发布)。
+本文档适用于v0.0.11。多 Vault、Tasks 8.2.2支持及九种 UI 语言见[更新日志](CHANGELOG.zh-CN.md#v0-0-11)。
 
 ## 功能列表
 
@@ -58,7 +60,7 @@
 | 外观与窗口 | 颜色、大小、50–200% 缩放、置顶、临时置顶、任务栏显示 |
 | 便签管理 | 选择／迁移保存目录，重新显示已关闭便签，浏览／预览，重命名和删除 |
 | 数据保护 | 写入前备份、外部修改冲突检测 |
-| 多 Vault（未发布） | 各 Vault 的每日笔记、自定义名称和默认 Vault |
+| 多 Vault（v0.0.11） | 各 Vault 的每日笔记、自定义名称和默认 Vault |
 
 ## 基本操作
 
@@ -72,7 +74,7 @@
 
 ## 使用前须知
 
-- 当前开发版的 UI、README、安装指南和界面示例支持**日语、英语、简体中文、台湾华语（繁体中文）、韩语、德语、俄语、西班牙语、瑞典语**九种语言。详细资料通常仍为三种语言。语言更改在保存并重启后生效。
+- v0.0.11的 UI、README、安装指南和界面示例支持**日语、英语、简体中文、台湾华语（繁体中文）、韩语、德语、俄语、西班牙语、瑞典语**九种语言。详细资料通常仍为三种语言。语言更改在保存并重启后生效。
 - CLI 集成需要 Obsidian 持续运行；内部 API 变化可能影响兼容性。
 - 不自动创建每日笔记，首次添加前请准备今日笔记。
 - 不完整复现 Obsidian 主题和插件视图。图片显示替代文字；不支持 DataviewJS、内联表达式、CALENDAR。

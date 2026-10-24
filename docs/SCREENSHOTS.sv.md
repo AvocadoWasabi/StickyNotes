@@ -2,7 +2,7 @@
 
 # Skärmbilder och återskapande
 
-Påhittade anteckningar renderade som PNG med 460 × 580 px genom WPF-kontroller i aktuell utvecklingsversion. Inga skrivbordsbilder eller aktiva Obsidian-/Google-sessioner. Inga personliga anteckningar, inställningar eller inloggningsuppgifter används.
+Påhittade anteckningar renderade som PNG med 460 × 580 px genom WPF-kontroller i v0.0.11. Inga skrivbordsbilder eller aktiva Obsidian-/Google-sessioner. Inga personliga anteckningar, inställningar eller inloggningsuppgifter används.
 
 Efter att nio UI-språk implementerats skapades 27 bilder på nytt med motsvarande anteckningstext och gränssnitt. Taiwanesisk mandarin använder traditionell kinesiska (zh-TW). Den dagliga filens namn visar datumet då bilden skapades.
 

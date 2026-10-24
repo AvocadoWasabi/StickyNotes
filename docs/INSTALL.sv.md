@@ -17,7 +17,7 @@ Windows 10 / 11 (x64). .NET ingår i ZIP-filen; administratörsrättigheter beh�
 
 Du kan också köra `StickyNotes.exe` direkt ur den uppackade mappen och behålla alla medföljande filer. Appen är osignerad och Windows kan be om bekräftelse. Automatisk start registreras inte.
 
-Dokumentationen beskriver den aktuella utvecklingsversionen. Se Unreleased för skillnader mot publicerad ZIP. [Unreleased](../CHANGELOG.md#unreleased)
+Guiden gäller v0.0.11. Se [ändringsloggen (på engelska)](../CHANGELOG.md#v0-0-11) för flera valv, Tasks 8.2.2 och nio UI-språk.
 
 ## 2. Obsidian eller lokala filer
 
