@@ -10,8 +10,11 @@ internal sealed partial class NoteSource
 {
     internal string FolderRoot => cli ? Root : NoteFolderMigration.Normalize(string.IsNullOrWhiteSpace(settings.NotesRoot) ? settings.NotesFolder : settings.NotesRoot);
 
-    private async Task<JsonDocument> FolderRequest(object data, CancellationToken token = default) =>
-        ObsidianTasksClient.ParseEnvelope(await execute(settings, ObsidianTasksClient.BuildFoldersCode(data), token).ConfigureAwait(false));
+    private async Task<JsonDocument> FolderRequest(object data, CancellationToken token = default)
+    {
+        using var command = ObsidianTasksClient.PrepareFolderCommand(settings, data);
+        return ObsidianTasksClient.ParseEnvelope(await execute(settings, command.Code, token).ConfigureAwait(false));
+    }
 
     internal async Task RenameAsync(FileSnapshot expected, string target, string operation)
     {

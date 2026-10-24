@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Fix the CLI command-length error when opening **Manage sticky-note folder…** by using protected temporary transfers for oversized folder requests. Keep the transport limit and add initial folder-loading retries through **Refresh list**. [Details](docs/QUERY-EDITING-AND-BROWSER.md#english).
+
 - Fetch a Vault root via CLI using the entered Vault name/ID. Clarify the explicit button trigger, automatic daily-folder preview and Save timing; show progress/results and discard stale responses after edits or profile switches. [Details](docs/MULTIPLE-VAULTS.md#english).
 
 - Support multiple daily-note Vaults with editable Main/Sub names, per-Vault settings, stable placement IDs, a default picker, independent Tasks/Dataview routing, and guarded registration removal. Settings now use General / Vaults & daily notes / Google categories and commit profile/folder drafts on Save. [Details](docs/MULTIPLE-VAULTS.md#english).

@@ -4,6 +4,8 @@
 
 ## English
 
+Unreleased fix: folder operations now use the same bounded CLI transport as note saves. When the bundled code/request exceeds the inline budget, it is sent through a temporary file restricted to the current user, verified by hash, and removed after success, failure or cancellation. The CLI length limit stays in place. This fixes the length-limit error when opening folder management, including with ordinary Vault names; folder selection, moves, renames and deletions share the fix. **Refresh list** also retries the initial folder catalog after a connection error, without requiring the window to be reopened.
+
 v0.0.8 lets you change checkboxes in Obsidian **Tasks** results and Dataview **TASK** results. Start Obsidian with CLI and the corresponding plugin enabled. Clicking changes the original task's note, not the query text. Results refresh after saving. Sorted, grouped, duplicate and nested results use explicit source paths and line numbers rather than matching visible descriptions. Only rows with verified source mappings are enabled (up to 1,000 per block); missing/stale mappings and arbitrary checkbox text in Dataview LIST/TABLE output remain disabled.
 
 Tasks uses the installed plugin's native status cycle and recurrence output, including its completion dates. Dataview changes only the selected task's checkbox to `x` or space; it does not apply Dataview's optional completion-date tracking or recursive child completion. Original YAML, BOM, newline style and unrelated lines are preserved. A whole-note hash check and backup run before writing through `vault.process`. External changes reject the write; refresh and retry. A failed/timed-out update clears actionable cached results; work already running in Obsidian may still finish, so refresh before retrying. Query source remains editable as before.
@@ -18,6 +20,8 @@ Validation: normal WPF tests cover menus, source validation, successful/failed w
 
 ## 日本語
 
+未リリースの修正：フォルダ操作にも本文保存と同じCLI転送方式を適用しました。同梱コード・要求が引数の上限を超える場合は、現在のユーザーのみがアクセスできる一時ファイルで渡し、ハッシュを検証し、成功・失敗・取消後に削除します。CLIの長さ上限は維持しています。通常のVault名でも付箋管理を開けなくなる長さ上限エラーを解消し、フォルダ選択・移動・名前変更・削除にも適用します。初回のフォルダ取得に失敗した場合も、画面を開き直さず **一覧を更新** で再試行できます。
+
 v0.0.8は、Obsidianの **Tasks** 検索結果とDataviewの **TASK** 検索結果のチェック操作に対応します。CLIと対応プラグインを有効にしてObsidianを起動してください。クリックはクエリ文字列ではなく、元タスクのノートへ反映し、保存後に結果を再取得します。並べ替え・グループ化・同名・入れ子のタスクを、表示文字列で推測せず元のパス・行番号で特定します。元ノートを照合できた行だけ操作できます（1ブロック最大1,000件）。対応付けがない・古い行や、Dataview LIST／TABLEに任意の文字列として含まれるチェックボックスは無効です。
 
 Tasksは、本家プラグインの状態遷移と繰り返し処理を利用し、完了日などもそれに従います。Dataviewは選択したタスクのチェック記号だけを`x`／空白へ変更し、任意設定の完了日記録や子タスクの再帰的な完了処理は適用しません。元のYAML・BOM・改行形式・無関係な行を保持します。`vault.process`でノート全体のハッシュを照合し、バックアップ後に書き込みます。外部変更があれば保存を拒否するため、更新後に再試行してください。失敗・タイムアウト時は操作可能な結果キャッシュを消します。Obsidian内の開始済み処理が後から完了する場合があるため、再試行前に更新してください。クエリ原文は従来どおり編集できます。
@@ -31,6 +35,8 @@ Tasksは、本家プラグインの状態遷移と繰り返し処理を利用し
 検証：通常のWPFテストでメニュー、元ノート情報の検証、保存成功・失敗、連打防止、フォルダ境界、読み取り専用プレビュー、YAML、古い選択応答を確認します。`dotnet run --project tests/StickyNotes.Tests -c Release -- --query-task-smoke`はNode.jsで生成したCLIコマンドを合成ノートと模擬Tasks／Dataview APIに対して実行し、グループ・入れ子・同名タスクの対応、バックアップ、競合、繰り返し出力を確認します。内部APIはTasks 7.23.1とDataviewの上流ソースを参照しました。今回の変更は起動中のObsidianとの実機検証は未実施です。`./build.ps1 -Publish`後に`artifacts/app/Install.cmd`で導入できます。
 
 ## 简体中文
+
+尚未发布的修复：文件夹操作改用与正文保存相同的 CLI 传输方式。同捆代码／请求超过参数预算时，通过仅当前用户可访问的临时文件传递，校验哈希，并在成功、失败或取消后删除。CLI 长度上限保持不变。修复了普通 Vault 名称也可能触发的管理窗口长度超限错误，文件夹选择、移动、重命名及删除同样适用。初次获取文件夹失败后，可点击 **刷新列表** 重试，无需重新打开窗口。
 
 v0.0.8支持修改 Obsidian **Tasks** 和 Dataview **TASK** 查询结果中的复选框。请启动已启用 CLI 及对应插件的 Obsidian。点击会更新原任务所在笔记，不会修改查询文本；保存后重新获取结果。排序、分组、同名及嵌套任务均通过明确的原路径和行号定位，不按显示文字猜测。只有已验证原任务的行可操作（每块最多 1,000 项）。缺失／过期映射及 Dataview LIST／TABLE 中任意文本形式的复选框保持禁用。
 

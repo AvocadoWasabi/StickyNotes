@@ -36,8 +36,9 @@ internal static partial class Program
                 commands.Add(command); ObsidianTasksClient.ValidateCommand(settings.ObsidianVaultId, command.Code); return command.Code;
             }
             var availability = ObsidianTasksClient.PrepareTaskCheckboxCommand(settings, new { root, mode = "availability" }); commands.Add(availability);
+            var folders = ObsidianTasksClient.PrepareFolderCommand(settings, new { mode = "browse", root, path = "." }); commands.Add(folders);
             var payload = new { root, text, backup, denied, availabilityCode = availability.Code, tasksCode = Query(false), dataviewCode = Query(true),
-                folderCode = ObsidianTasksClient.BuildFoldersCode(new { mode = "browse", root, path = "." }),
+                folderCode = folders.Code,
                 dataviewToggle = Toggle("dataview", 4, backup), tasksToggle = Toggle("tasks", 5, backup),
                 deniedToggle = Toggle("dataview", 4, denied), invalidToggle = Toggle("invalid", 4, backup),
                 transform = Transform("- [ ] Recurring `literal` ${notCode} 日本語"), transformDone = Transform("- [x] Done", false),

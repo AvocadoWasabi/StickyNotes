@@ -95,7 +95,8 @@ internal static class ObsidianTasksClient
     }
 
     internal static string BuildDailyCode(object request) => BuildRequestCode(request, DailyScript);
-    internal static string BuildFoldersCode(object request) => BuildRequestCode(request, FoldersScript);
+    internal static NoteCommand PrepareFolderCommand(Settings settings, object request)
+        => PrepareCommand(settings, request, FoldersScript);
 
     private static string BuildRequestCode(object request, string script, bool enforceLimit = true)
     {

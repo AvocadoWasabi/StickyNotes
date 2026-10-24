@@ -9,6 +9,7 @@ internal static partial class Program
 {
     private static void StickyFolderTests(string root)
     {
+        FolderCommandTests(root);
         foreach (var invalid in new[] { "../outside", "C:/outside", "/outside", ".obsidian", "a//b", "CON", "a/b.", "a:b" })
             Throws<InvalidOperationException>(() => StickyFolderPath.Normalize(invalid), "Sticky folder: rejects unsafe relative path " + invalid);
         Check(StickyFolderPath.Normalize("日本語\\付箋") == "日本語/付箋", "Sticky folder: Unicode nested folder names normalized");

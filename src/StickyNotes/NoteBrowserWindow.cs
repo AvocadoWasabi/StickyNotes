@@ -41,7 +41,8 @@ internal sealed class NoteBrowserWindow : Window
         header.Children.Add(Search); header.Children.Add(Status); root.Children.Add(header);
         var footer = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Margin = new Thickness(0, 10, 0, 0) };
         DockPanel.SetDock(footer, Dock.Bottom);
-        refresh = Ui.Button(L10n.Text("NoteBrowser.Refresh"), () => _ = LoadFolderAsync());
+        refresh = Ui.Button(L10n.Text("NoteBrowser.Refresh"), () => _ = (Folder.SelectedItem is null ? InitializeAsync() : LoadFolderAsync()));
+        refresh.Name = "RefreshNotes";
         footer.Children.Add(refresh); footer.Children.Add(Delete);
         footer.Children.Add(Open); root.Children.Add(footer);
         var grid = new Grid(); grid.ColumnDefinitions.Add(new() { Width = new GridLength(2, GridUnitType.Star) });
