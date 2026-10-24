@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="App.xaml.Text01" xml:space="preserve">
+    <value>Ogiltiga startargument.</value>
+  </data>
+  <data name="App.xaml.Text02" xml:space="preserve">
+    <value>Åtgärden kunde inte skickas till appen som körs. Använd menyn i meddelandefältet eller starta om appen.
+</value>
+  </data>
+  <data name="App.xaml.Text03" xml:space="preserve">
+    <value>Sticky Notes körs redan. Använd menyn i meddelandefältet eller aktivitetsfältet.</value>
+  </data>
+  <data name="App.xaml.Text04" xml:space="preserve">
+    <value>Inställningarna kunde inte läsas. Appen avslutas för att skydda originalfilen.
+</value>
+  </data>
+  <data name="AppCommandPipe.Text01" xml:space="preserve">
+    <value>Åtgärden kunde inte skickas till appen som körs.</value>
+  </data>
+  <data name="AppCommands.Text01" xml:space="preserve">
+    <value>Ny anteckning</value>
+  </data>
+  <data name="AppCommands.Text02" xml:space="preserve">
+    <value>Öppna Markdown…</value>
+  </data>
+  <data name="AppCommands.Text03" xml:space="preserve">
+    <value>Länka en del av en anteckning…</value>
+  </data>
+  <data name="AppCommands.Text04" xml:space="preserve">
+    <value>Visa daglig anteckning…</value>
+  </data>
+  <data name="AppCommands.Text05" xml:space="preserve">
+    <value>Visa alla</value>
+  </data>
+  <data name="AppCommands.Text06" xml:space="preserve">
+    <value>Visa alla anteckningar överst (10 sekunder)</value>
+  </data>
+  <data name="AppCommands.Text07" xml:space="preserve">
+    <value>Inställningar…</value>
+  </data>
+  <data name="AppCommands.Text08" xml:space="preserve">
+    <value>Avsluta</value>
+  </data>
+  <data name="CalendarCompletion.Text01" xml:space="preserve">
+    <value>@calendar datum-tid-eller-today [sökord]
+Tidszon är valfri (Windows lokala tid).
+Sökord är valfria. Händelser från angiven tid, eller datorns aktuella dag med today, uppdateras ungefär var 60:e sekund.
+Google Tasks är skrivskyddat. API:et ger bara datum, inte planerade klockslag. Även om en tid anges i Google visar appen ”utan tid”.</value>
+  </data>
+  <data name="CalendarCompletion.Text02" xml:space="preserve">
+    <value>@calendar — Sök i Google Calendar</value>
+  </data>
+  <data name="CalendarCompletion.Text03" xml:space="preserve">
+    <value>Tab / Enter / klick för att infoga · Esc för att stänga
+Ändra markerat datum och klockslag och spara.</value>
+  </data>
+  <data name="CalendarCompletion.Text04" xml:space="preserve">
+    <value>Utan sökord: @calendar {0}
+Filtrera: @calendar {1} möte
+Följ aktuell dag: @calendar today</value>
+  </data>
+  <data name="CalendarService.Text01" xml:space="preserve">
+    <value>Exempel: @calendar today eller @calendar 2026-10-05T09:00 möte (sökord valfritt; utan tidszon används Windows lokala tid)</value>
+  </data>
+  <data name="CalendarService.Text02" xml:space="preserve">
+    <value>En Google-förfrågan pågår. Försök igen när den är klar.</value>
+  </data>
+  <data name="CalendarService.Text03" xml:space="preserve">
+    <value>Välj JSON-filen med inloggningsuppgifter i steg 2.</value>
+  </data>
+  <data name="CalendarService.Text04" xml:space="preserve">
+    <value>Välj en OAuth-JSON för en skrivbordsapp. client_id krävs.</value>
+  </data>
+  <data name="CalendarService.Text05" xml:space="preserve">
+    <value>Konfigurera Google OAuth-JSON först.</value>
+  </data>
+  <data name="CalendarService.Text06" xml:space="preserve">
+    <value>Autentiseringen misslyckades. Återgå till Sticky Notes.</value>
+  </data>
+  <data name="CalendarService.Text07" xml:space="preserve">
+    <value>Autentisering mottagen. Stäng fliken och återgå till Sticky Notes.</value>
+  </data>
+  <data name="CalendarService.Text08" xml:space="preserve">
+    <value>Åtkomst till Google beviljades inte. Försök igen och tillåt Calendar-åtkomst och läsning av Tasks.</value>
+  </data>
+  <data name="CalendarService.Text09" xml:space="preserve">
+    <value>Inloggningen tog längre än 3 minuter. Välj Logga in på Google för att försöka igen.</value>
+  </data>
+  <data name="CalendarService.Text10" xml:space="preserve">
+    <value>Google-autentisering misslyckades ({0}). Logga in igen i inställningarna.</value>
+  </data>
+  <data name="CalendarService.Text11" xml:space="preserve">
+    <value>Ogiltigt autentiseringssvar från Google. Logga in igen.</value>
+  </data>
+  <data name="CalendarService.Text12" xml:space="preserve">
+    <value>Logga in på Google i inställningarna.</value>
+  </data>
+  <data name="CalendarService.Text13" xml:space="preserve">
+    <value>Logga in på Google igen.</value>
+  </data>
+  <data name="CalendarService.Text14" xml:space="preserve">
+    <value>Händelsen har ändrats i Google. Uppdatera händelserna innan du redigerar.</value>
+  </data>
+  <data name="CalendarService.Text15" xml:space="preserve">
+    <value>Calendar API-fel ({0}). Kontrollera anslutning, inloggning och redigeringsbehörigheter.</value>
+  </data>
+  <data name="CalendarService.Text16" xml:space="preserve">
+    <value>Ange ett kalender-ID.</value>
+  </data>
+  <data name="CalendarService.Text17" xml:space="preserve">
+    <value>Kalendersvaret kunde inte verifieras.</value>
+  </data>
+  <data name="CalendarService.Text18" xml:space="preserve">
+    <value>Händelsens version saknas. Sök igen.</value>
+  </data>
+  <data name="DailyNoteResolver.Text01" xml:space="preserve">
+    <value>Ange ett reguljärt uttryck för dagliga anteckningar.</value>
+  </data>
+  <data name="DailyNoteResolver.Text02" xml:space="preserve">
+    <value>Det reguljära uttrycket får vara högst 4096 tecken.</value>
+  </data>
+  <data name="DailyNoteResolver.Text03" xml:space="preserve">
+    <value>Ogiltigt reguljärt uttryck för dagliga anteckningar: </value>
+  </data>
+  <data name="DailyNoteResolver.Text04" xml:space="preserve">
+    <value>Använd namngivna grupper year, month och day för dagens datum. Exempel: </value>
+  </data>
+  <data name="DailyNoteResolver.Text05" xml:space="preserve">
+    <value>Välj en mapp för dagliga anteckningar i inställningarna.</value>
+  </data>
+  <data name="DailyNoteResolver.Text06" xml:space="preserve">
+    <value>Sökning med reguljära uttryck stöder inte mappar med symboliska länkar eller junctions.</value>
+  </data>
+  <data name="DailyNoteResolver.Text07" xml:space="preserve">
+    <value>Sökområdet är för stort. Välj en mindre mapp (10000 poster / 1 sekund).</value>
+  </data>
+  <data name="DailyNoteResolver.Text08" xml:space="preserve">
+    <value>Tidsgränsen för sökningen överskreds. Förenkla uttrycket.</value>
+  </data>
+  <data name="DailyNoteResolver.Text09" xml:space="preserve">
+    <value>Flera dagliga anteckningar matchar idag. Begränsa uttrycket.
+</value>
+  </data>
+  <data name="DailyNoteResolver.Text10" xml:space="preserve">
+    <value>Ingen daglig anteckning matchar dagens datum.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text01" xml:space="preserve">
+    <value>Målet för JSON-filen med inloggningsuppgifter får inte vara en länk.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text02" xml:space="preserve">
+    <value>Inställningarna kunde inte sparas och JSON-filen kunde inte återställas. Kontrollera återställningsfilen: {0}</value>
+  </data>
+  <data name="HeadingPicker.Text01" xml:space="preserve">
+    <value>Rubrik att visa</value>
+  </data>
+  <data name="HeadingPicker.Text02" xml:space="preserve">
+    <value>Välj en rubrik eller ange ett nytt namn utan #. Lämna tomt för hela texten. Visa lägger till en ny rubrik sist i källfilen.</value>
+  </data>
+  <data name="Language.Automatic" xml:space="preserve">
+    <value>Använd Windows språk</value>
+  </data>
+  <data name="Language.Label" xml:space="preserve">
+    <value>Visningsspråk</value>
+  </data>
+  <data name="Language.Restart" xml:space="preserve">
+    <value>Gäller vid nästa start efter att du sparat. Anteckningstext, rubriker och taggar ändras inte.</value>
+  </data>
+  <data name="MarkdownView.Text01" xml:space="preserve">
+    <value>[Bild: </value>
+  </data>
+  <data name="NoteFolderMigration.Text01" xml:space="preserve">
+    <value>Använd en absolut sökväg för anteckningsmappen.</value>
+  </data>
+  <data name="NoteFolderMigration.Text02" xml:space="preserve">
+    <value>Sökvägar med länkar eller junctions kan inte flyttas: </value>
+  </data>
+  <data name="NoteFolderMigration.Text03" xml:space="preserve">
+    <value>Käll- och målmapparna får inte ligga inuti varandra.</value>
+  </data>
+  <data name="NoteFolderMigration.Text04" xml:space="preserve">
+    <value>Källan är inte en mapp: </value>
+  </data>
+  <data name="NoteFolderMigration.Text05" xml:space="preserve">
+    <value>En fil eller mapp med samma namn finns redan i målet. Inget skrivs över: </value>
+  </data>
+  <data name="NoteFolderMigration.Text06" xml:space="preserve">
+    <value>Flytten misslyckades och vissa filer kunde inte återställas. Kontrollera dessa mål och ursprungsmappen. Inga filer skrevs över.
+</value>
+  </data>
+  <data name="NoteFolderMigration.Text07" xml:space="preserve">
+    <value>
+Orsak: </value>
+  </data>
+  <data name="NoteLink.Text01" xml:space="preserve">
+    <value>Källanteckningen har ändrats. Läs in den igen innan den visas.</value>
+  </data>
+  <data name="NoteLinkPreview.Text01" xml:space="preserve">
+    <value>Förhandsvisning (Markdown, skrivskyddad)</value>
+  </data>
+  <data name="NoteLinkPreview.Text02" xml:space="preserve">
+    <value>Läs in en anteckning för att förhandsvisa den.</value>
+  </data>
+  <data name="NoteLinkPreview.Text03" xml:space="preserve">
+    <value> — Ny rubrik läggs till sist (inte sparad)</value>
+  </data>
+  <data name="NoteLinkPreview.Text04" xml:space="preserve">
+    <value> — Hela texten</value>
+  </data>
+  <data name="NoteLinkPreview.Text05" xml:space="preserve">
+    <value> — Första 4000 tecknen</value>
+  </data>
+  <data name="NoteLinkPreview.Text06" xml:space="preserve">
+    <value>Kan inte förhandsvisa: </value>
+  </data>
+  <data name="NoteLinkWindow.Text01" xml:space="preserve">
+    <value>Välj en Markdown-fil.</value>
+  </data>
+  <data name="NoteLinkWindow.Text02" xml:space="preserve">
+    <value>Visa daglig anteckning</value>
+  </data>
+  <data name="NoteLinkWindow.Text03" xml:space="preserve">
+    <value>Länka en del av en anteckning</value>
+  </data>
+  <data name="NoteLinkWindow.Text04" xml:space="preserve">
+    <value>Använd inställd mapp och mönster för att hitta dagens anteckning och växla automatiskt när datumet ändras.</value>
+  </data>
+  <data name="NoteLinkWindow.Text05" xml:space="preserve">
+    <value>Välj mapp…</value>
+  </data>
+  <data name="NoteLinkWindow.Text06" xml:space="preserve">
+    <value>Välj Markdown-fil…</value>
+  </data>
+  <data name="NoteLinkWindow.Text07" xml:space="preserve">
+    <value>Läs in igen</value>
+  </data>
+  <data name="NoteLinkWindow.Text08" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="NoteLinkWindow.Text09" xml:space="preserve">
+    <value>Visa</value>
+  </data>
+  <data name="NoteLinkWindow.Text10" xml:space="preserve">
+    <value>Källanteckningen kan inte läsas in.</value>
+  </data>
+  <data name="NoteLinkWindow.Text11" xml:space="preserve">
+    <value>Välj en befintlig Markdown-fil.</value>
+  </data>
+  <data name="NoteLinkWindow.Text12" xml:space="preserve">
+    <value>Dagens anteckning: </value>
+  </data>
+  <data name="NoteLinkWindow.Text13" xml:space="preserve">
+    <value>Vald anteckning: </value>
+  </data>
+  <data name="NoteLinkWindow.Text14" xml:space="preserve">
+    <value>Läs in en Markdown-fil först.</value>
+  </data>
+  <data name="NoteLinkWindow.Text15" xml:space="preserve">
+    <value>Dagens anteckning har ändrats. Läs in igen och välj en rubrik.</value>
+  </data>
+  <data name="NoteStore.Text01" xml:space="preserve">
+    <value>Filen har ändrats externt. Kopiera ditt utkast innan du läser in igen.</value>
+  </data>
+  <data name="NoteStore.Text02" xml:space="preserve">
+    <value>YAML-egenskaper måste vara en mappning.</value>
+  </data>
+  <data name="NoteStore.Text03" xml:space="preserve">
+    <value>Anteckning</value>
+  </data>
+  <data name="NoteStore.Text04" xml:space="preserve">
+    <value>Anteckning-{0:yyyyMMdd-HHmmss}-{1}.md</value>
+  </data>
+  <data name="NoteStore.Text05" xml:space="preserve">
+    <value>---
+type: sticky
+id: {0}
+created: {1:o}
+---
+# Ny anteckning
+
+- [ ] Skriv en uppgift
+
+Anteckna med **Markdown**.
+</value>
+  </data>
+  <data name="NoteStore.Text06" xml:space="preserve">
+    <value>Ny anteckning</value>
+  </data>
+  <data name="NoteWindow.Text01" xml:space="preserve">
+    <value>Dra för att flytta anteckningen</value>
+  </data>
+  <data name="NoteWindow.Text02" xml:space="preserve">
+    <value>Dagens anteckning har inte skapats.
+Skapa den i Obsidian för att visa den automatiskt.
+
+Inställningarna kan behålla gårdagens anteckning tills 1. dagens skapas eller 2. du väljer Läs in igen.</value>
+  </data>
+  <data name="NoteWindow.Text03" xml:space="preserve">
+    <value>Redigera</value>
+  </data>
+  <data name="NoteWindow.Text04" xml:space="preserve">
+    <value>Redigera Markdown (Ctrl+E)</value>
+  </data>
+  <data name="NoteWindow.Text05" xml:space="preserve">
+    <value>Spara</value>
+  </data>
+  <data name="NoteWindow.Text06" xml:space="preserve">
+    <value>Spara och avsluta redigering (Ctrl+S / Esc)</value>
+  </data>
+  <data name="NoteWindow.Text07" xml:space="preserve">
+    <value>Läs in igen</value>
+  </data>
+  <data name="NoteWindow.Text08" xml:space="preserve">
+    <value>Fler åtgärder</value>
+  </data>
+  <data name="NoteWindow.Text09" xml:space="preserve">
+    <value>Ny anteckning</value>
+  </data>
+  <data name="NoteWindow.Text10" xml:space="preserve">
+    <value>Växla alltid överst</value>
+  </data>
+  <data name="NoteWindow.Text11" xml:space="preserve">
+    <value>Stäng anteckningen (behåll filen)</value>
+  </data>
+  <data name="NoteWindow.Text12" xml:space="preserve">
+    <value>Redigerar • Ctrl+S för att spara</value>
+  </data>
+  <data name="NoteWindow.Text13" xml:space="preserve">
+    <value>Visningsskala ({0}%)</value>
+  </data>
+  <data name="NoteWindow.Text14" xml:space="preserve">
+    <value>Zooma in (Ctrl++ / Ctrl+rulla upp)</value>
+  </data>
+  <data name="NoteWindow.Text15" xml:space="preserve">
+    <value>Zooma ut (Ctrl+- / Ctrl+rulla ned)</value>
+  </data>
+  <data name="NoteWindow.Text16" xml:space="preserve">
+    <value>Återställ (Ctrl+0)</value>
+  </data>
+  <data name="NoteWindow.Text17" xml:space="preserve">
+    <value>Daglig anteckning • </value>
+  </data>
+  <data name="NoteWindow.Text18" xml:space="preserve">
+    <value>Sparat • </value>
+  </data>
+  <data name="NoteWindow.Text19" xml:space="preserve">
+    <value>Väntar på dagens anteckning</value>
+  </data>
+  <data name="NoteWindow.Text20" xml:space="preserve">
+    <value>Källanteckningen kan inte läsas in</value>
+  </data>
+  <data name="NoteWindow.Text21" xml:space="preserve">
+    <value>Visar gårdagens anteckning ({0:yyyy-MM-dd}). Ändringar sparas i den dagens fil.
+</value>
+  </data>
+  <data name="NoteWindow.Text22" xml:space="preserve">
+    <value>Välj Läs in igen för att växla till dagens anteckning.</value>
+  </data>
+  <data name="NoteWindow.Text23" xml:space="preserve">
+    <value>Skapa dagens anteckning i Obsidian för att växla automatiskt.</value>
+  </data>
+  <data name="NoteWindow.Text24" xml:space="preserve">
+    <value>Igår / </value>
+  </data>
+  <data name="NoteWindow.Text25" xml:space="preserve">
+    <value>Idag / </value>
+  </data>
+  <data name="NoteWindow.Text26" xml:space="preserve">
+    <value>Länkad / </value>
+  </data>
+  <data name="NoteWindow.Text27" xml:space="preserve">
+    <value>Redigera Markdown • Ctrl+S / Esc för att spara och avsluta • @ för komplettering (tidszon och sökord valfria)</value>
+  </data>
+  <data name="NoteWindow.Text28" xml:space="preserve">
+    <value>Sparat</value>
+  </data>
+  <data name="NoteWindow.Text29" xml:space="preserve">
+    <value>Kunde inte spara</value>
+  </data>
+  <data name="NoteWindow.Text30" xml:space="preserve">
+    <value>Spara ändringar?
+
+Ja: Spara och återgå till läsläget.
+Nej: Kasta ändringarna och läs in igen.
+Avbryt: Behåll utkastet och fortsätt redigera.</value>
+  </data>
+  <data name="NoteWindow.Text31" xml:space="preserve">
+    <value>Spara ändringar</value>
+  </data>
+  <data name="NoteWindow.Text32" xml:space="preserve">
+    <value>Källfilen kan inte läsas.</value>
+  </data>
+  <data name="NoteWindow.Text33" xml:space="preserve">
+    <value>Spara dina ändringar först.</value>
+  </data>
+  <data name="NoteWindow.Text34" xml:space="preserve">
+    <value>Uppgiften sparad</value>
+  </data>
+  <data name="NoteWindow.Text35" xml:space="preserve">
+    <value>Kasta osparade ändringar och läsa in igen?</value>
+  </data>
+  <data name="NoteWindow.Text36" xml:space="preserve">
+    <value>Läs in igen</value>
+  </data>
+  <data name="NoteWindow.Text37" xml:space="preserve">
+    <value>Källanteckningen eller datumet har ändrats. Spara eller kopiera utkastet innan du läser in igen.</value>
+  </data>
+  <data name="NoteWindow.Text38" xml:space="preserve">
+    <value>GOOGLE CALENDAR · {0} händelser (högst 100)</value>
+  </data>
+  <data name="NoteWindow.Text39" xml:space="preserve">
+    <value>Klicka för att ändra titel och beskrivning</value>
+  </data>
+  <data name="NoteWindow.Text40" xml:space="preserve">
+    <value>Inga matchande händelser.</value>
+  </data>
+  <data name="NoteWindow.Text41" xml:space="preserve">
+    <value>Händelser uppdaterade • </value>
+  </data>
+  <data name="NoteWindow.Text42" xml:space="preserve">
+    <value>Redigera händelse</value>
+  </data>
+  <data name="NoteWindow.Text43" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="NoteWindow.Text44" xml:space="preserve">
+    <value>Beskrivning (Googles källdata)</value>
+  </data>
+  <data name="NoteWindow.Text45" xml:space="preserve">
+    <value>Skicka ändringarna till Google Calendar.
+Eventuella deltagare meddelas.
+
+Tid: {0}
+
+Titel (före): {1}
+Titel (efter): {2}
+
+Beskrivning (före):
+{3}
+
+Beskrivning (efter):
+{4}</value>
+  </data>
+  <data name="NoteWindow.Text46" xml:space="preserve">
+    <value>Uppdatera Google Calendar?</value>
+  </data>
+  <data name="NoteWindow.Text47" xml:space="preserve">
+    <value>Google Calendar uppdaterad</value>
+  </data>
+  <data name="NoteWindow.Text48" xml:space="preserve">
+    <value>Kunde inte uppdatera</value>
+  </data>
+  <data name="NoteWindow.Text49" xml:space="preserve">
+    <value>Taggar, titel, status och färg</value>
+  </data>
+  <data name="NoteWindow.Text50" xml:space="preserve">
+    <value>Visa alla anteckningar överst (10 sekunder)</value>
+  </data>
+  <data name="NoteWindow.Text51" xml:space="preserve">
+    <value>Hämta händelser nu</value>
+  </data>
+  <data name="NoteWindow.Text52" xml:space="preserve">
+    <value>Öppna källan i standardappen</value>
+  </data>
+  <data name="NoteWindow.Text53" xml:space="preserve">
+    <value>Öppna Markdown…</value>
+  </data>
+  <data name="NoteWindow.Text54" xml:space="preserve">
+    <value>Länka en del av en anteckning…</value>
+  </data>
+  <data name="NoteWindow.Text55" xml:space="preserve">
+    <value>Visa daglig anteckning…</value>
+  </data>
+  <data name="NoteWindow.Text56" xml:space="preserve">
+    <value>Inställningar…</value>
+  </data>
+  <data name="NoteWindow.Text57" xml:space="preserve">
+    <value>Avsluta appen (spara placering)</value>
+  </data>
+  <data name="NoteWindow.Text58" xml:space="preserve">
+    <value>Länkade anteckningar visar källans taggar. Ändra dem i källanteckningen.</value>
+  </data>
+  <data name="NoteWindow.Text59" xml:space="preserve">
+    <value>Anteckningsegenskaper</value>
+  </data>
+  <data name="NoteWindow.Text60" xml:space="preserve">
+    <value>YAML-titel (metadata)</value>
+  </data>
+  <data name="NoteWindow.Text61" xml:space="preserve">
+    <value>Taggar (blanksteg/kommatecken; hierarki: project/name)</value>
+  </data>
+  <data name="NoteWindow.Text62" xml:space="preserve">
+    <value>Status (t.ex. active / done / archived)</value>
+  </data>
+  <data name="NoteWindow.Text63" xml:space="preserve">
+    <value>Färg: yellow / green / blue / pink / gray</value>
+  </data>
+  <data name="NoteWindow.Text64" xml:space="preserve">
+    <value>Taggar får innehålla bokstäver, siffror, _, - och /. Enbart siffror är inte tillåtet.</value>
+  </data>
+  <data name="NoteWindow.Text65" xml:space="preserve">
+    <value>Spara ändringar?</value>
+  </data>
+  <data name="SectionEditor.Text01" xml:space="preserve">
+    <value>Ange rubriken på en rad utan radbrytningar.</value>
+  </data>
+  <data name="SectionEditor.Text02" xml:space="preserve">
+    <value>Rubriken kan inte läggas till. Kontrollera namnet och oavslutade kodblock i källan.</value>
+  </data>
+  <data name="SectionEditor.Text03" xml:space="preserve">
+    <value>Rubriken ”{0}” hittades inte. Skapa den i källanteckningen.</value>
+  </data>
+  <data name="SectionEditor.Text04" xml:space="preserve">
+    <value>Det finns flera rubriker med namnet ”{0}”. Använd ett unikt namn.</value>
+  </data>
+  <data name="SectionEditor.Text05" xml:space="preserve">
+    <value>Avsnittet får inte innehålla rubriker på samma eller högre nivå än dess egen rubrik.</value>
+  </data>
+  <data name="SectionEditor.Text06" xml:space="preserve">
+    <value>Den valda raden är inte en uppgift.</value>
+  </data>
+  <data name="SettingsWindow.Text01" xml:space="preserve">
+    <value>Inställningar för Sticky Notes</value>
+  </data>
+  <data name="SettingsWindow.Text02" xml:space="preserve">
+    <value>Spara automatiskt när redigeraren tappar fokus</value>
+  </data>
+  <data name="SettingsWindow.Text03" xml:space="preserve">
+    <value>När detta är avstängt tillfrågas du innan ändringar sparas. Texten behålls om sparandet misslyckas.</value>
+  </data>
+  <data name="SettingsWindow.Text04" xml:space="preserve">
+    <value>Visa anteckningsikoner i aktivitetsfältet</value>
+  </data>
+  <data name="SettingsWindow.Text05" xml:space="preserve">
+    <value>Spara för att tillämpa på alla öppna anteckningar. Ikonen i meddelandefältet finns kvar.</value>
+  </data>
+  <data name="SettingsWindow.Text06" xml:space="preserve">
+    <value>Visa knappar när pekaren är över titeln</value>
+  </data>
+  <data name="SettingsWindow.Text07" xml:space="preserve">
+    <value>På: Knappar över titeln vid pekaren eller F6-fokus. Flytta med vänstra handtaget. Av: Visa alltid knappar under titeln (standard). Spara för alla öppna anteckningar.</value>
+  </data>
+  <data name="SettingsWindow.Text08" xml:space="preserve">
+    <value>Anteckningsmapp (t.ex. Sticky Notes i ditt valv)</value>
+  </data>
+  <data name="SettingsWindow.Text09" xml:space="preserve">
+    <value>Välj anteckningsmapp</value>
+  </data>
+  <data name="SettingsWindow.Text10" xml:space="preserve">
+    <value>Mapp för dagliga anteckningar</value>
+  </data>
+  <data name="SettingsWindow.Text11" xml:space="preserve">
+    <value>Välj mapp för dagliga anteckningar</value>
+  </data>
+  <data name="SettingsWindow.Text12" xml:space="preserve">
+    <value>Mönster för dagliga anteckningar (datumgrupper + reguljärt uttryck)</value>
+  </data>
+  <data name="SettingsWindow.Text13" xml:space="preserve">
+    <value>Använd year, month och day för dagens datum. Matcha hela den relativa sökvägen inklusive .md; använd / för mappar.
+Exempel: </value>
+  </data>
+  <data name="SettingsWindow.Text14" xml:space="preserve">
+    <value>Efter att du sparat, öppna Fler åtgärder → Visa daglig anteckning för förhandsvisning längst ned. För fasta anteckningar, använd Länka en del av en anteckning.</value>
+  </data>
+  <data name="SettingsWindow.Text15" xml:space="preserve">
+    <value>När dagens anteckning saknas</value>
+  </data>
+  <data name="SettingsWindow.Text16" xml:space="preserve">
+    <value>Visa väntemeddelande (standard)</value>
+  </data>
+  <data name="SettingsWindow.Text17" xml:space="preserve">
+    <value>1. Behåll gårdagen tills dagens skapas</value>
+  </data>
+  <data name="SettingsWindow.Text18" xml:space="preserve">
+    <value>2. Behåll gårdagen tills du läser in igen</value>
+  </data>
+  <data name="SettingsWindow.Text19" xml:space="preserve">
+    <value>Skapa dagens anteckning i Obsidian för automatisk visning. Alternativ 1 behåller gårdagen tills dagens finns; alternativ 2 tills du läser in igen. Omläsning utan dagens fil ger vänteläge. Saknas gårdagen väntar appen också.</value>
+  </data>
+  <data name="SettingsWindow.Text20" xml:space="preserve">
+    <value>Kontrollerar dagens anteckning…</value>
+  </data>
+  <data name="SettingsWindow.Text21" xml:space="preserve">
+    <value>Dagens anteckning hittad: </value>
+  </data>
+  <data name="SettingsWindow.Text22" xml:space="preserve">
+    <value>Kan inte kontrollera: </value>
+  </data>
+  <data name="SettingsWindow.Text23" xml:space="preserve">
+    <value>Infoga standardmönster med datumgrupper</value>
+  </data>
+  <data name="SettingsWindow.Text24" xml:space="preserve">
+    <value>Infoga ett reguljärt uttryck med grupperna year, month och day?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text25" xml:space="preserve">
+    <value>
+
+Ja: Ersätt hela fältet med denna standard.
+Nej: Behåll befintligt uttryck.</value>
+  </data>
+  <data name="SettingsWindow.Text26" xml:space="preserve">
+    <value>Infoga uttryck med datumgrupper</value>
+  </data>
+  <data name="SettingsWindow.Text27" xml:space="preserve">
+    <value>Anslutningsguide och autentisering (valfritt)</value>
+  </data>
+  <data name="SettingsWindow.Text28" xml:space="preserve">
+    <value>Skriv @ i början av ett eget stycke för komplettering och exempel (lämna en tom rad efter föregående text).
+Exempel: @calendar 2026-10-06T09:00
+Tidszon och sökord är valfria (Windows lokala tid).
+Google Tasks är skrivskyddat. API:et ger bara datum, inte planerade klockslag. Även om en tid anges i Google visas ”utan tid”.</value>
+  </data>
+  <data name="SettingsWindow.Text29" xml:space="preserve">
+    <value>Steg 1: Förbered Google (kontrollerat mot officiell dokumentation 2026-10-06)
+För personligt bruk med ditt Google-konto. Knappar öppnar standardwebbläsaren. Behåll samma projekt i 1-1 till 1-5. Namnen beror på Googles visningsspråk.</value>
+  </data>
+  <data name="SettingsWindow.Text30" xml:space="preserve">
+    <value>1-1. Öppna Google Calendar API</value>
+  </data>
+  <data name="SettingsWindow.Text31" xml:space="preserve">
+    <value>Välj ett projekt högst upp eller skapa och välj med New project (t.ex. StickyNotes Personal). Klicka på Enable på sidan Google Calendar API. Manage betyder redan aktiverat.</value>
+  </data>
+  <data name="SettingsWindow.Text32" xml:space="preserve">
+    <value>1-2. Öppna Branding</value>
+  </data>
+  <data name="SettingsWindow.Text33" xml:space="preserve">
+    <value>Om det inte är konfigurerat, välj Get started.
+• App name: t.ex. StickyNotes Personal
+• User support email: en adress du kan ta emot på → Next
+• Audience: External för privata Google-konton → Next
+• Contact information: din e-post → Next
+• Läs policyn för användardata och godkänn om lämpligt → Continue → Create
+Om redan konfigurerat, granska och fortsätt till 1-3. Internal begränsar åtkomst till din Google Cloud-organisation.</value>
+  </data>
+  <data name="SettingsWindow.Text34" xml:space="preserve">
+    <value>1-3. Öppna Audience</value>
+  </data>
+  <data name="SettingsWindow.Text35" xml:space="preserve">
+    <value>För External-appar i Testing: Test users → Add users, ange Google-kontot som ska nå kalendern och välj Save. Om Cloud-administratörskontot är ett annat, lägg till kalenderkontot. Appen behöver inte publiceras.</value>
+  </data>
+  <data name="SettingsWindow.Text36" xml:space="preserve">
+    <value>1-4. Öppna Data Access</value>
+  </data>
+  <data name="SettingsWindow.Text37" xml:space="preserve">
+    <value>För en extern app, välj Add or Remove Scopes och båda behörigheterna nedan. Saknas de, ange varje URL under Manually add scopes. Välj Update och sedan Save.</value>
+  </data>
+  <data name="SettingsWindow.Text38" xml:space="preserve">
+    <value>Du kan kopiera URL:erna ovan. calendar.events tillåter visning/redigering av händelser; tasks.readonly endast läsning av Tasks. Kalender-ID begränsar inte OAuth-behörigheten och väljer inte uppgiftslistor.</value>
+  </data>
+  <data name="SettingsWindow.Text39" xml:space="preserve">
+    <value>1-5. Öppna Clients</value>
+  </data>
+  <data name="SettingsWindow.Text40" xml:space="preserve">
+    <value>Create client → Application type: Desktop app → namn (t.ex. StickyNotes Desktop) → Create. Välj Download JSON innan du stänger; hemligheten kanske inte går att hämta senare. Konfigurera inte webbappens omdirigerings-URI:er eller JavaScript-ursprung.
+Välj JSON-filen i steg 2 och Importera till appen för att kopiera till appdata. Namnbyte behövs inte. API-nycklar och tjänstekonto-JSON stöds inte.</value>
+  </data>
+  <data name="SettingsWindow.Text41" xml:space="preserve">
+    <value>Nästa: Välj JSON → Importera till appen → Kalender-ID: primary för huvudkalendern → steg 3 för inloggning. Välj kontot från 1-3 i webbläsaren, kontrollera appnamnet och tillåt Calendar samt läsning av Tasks. Resultatet tas emot automatiskt. Stäng fliken och kontrollera anslutningsbekräftelsen i inställningarna.
+Google Tasks är skrivskyddat. API:et ger bara datum, inte planerade klockslag. Även om Google har en tid visas ”utan tid”.</value>
+  </data>
+  <data name="SettingsWindow.Text42" xml:space="preserve">
+    <value>Felsökning
+• access_denied: Kontrollera testanvändare och inloggat konto. Fråga administratören om organisationspolicy blockerar.
+• Overifierad app: Kontrollera eget klientnamn och konto. Avbryt om du är osäker.
+• Fel efter inloggning: Kontrollera kalender-ID, API:er i samma projekt och behörigheter. Steg 3 ger åtkomst igen; steg 4 kontrollerar bara anslutningen.
+• External/Testing-uppdateringstoken för dessa behörigheter går ut efter 7 dagar. Logga in igen med steg 3.
+• Steg 3 och 4 sparar alla inställningar, även de som inte rör Google.</value>
+  </data>
+  <data name="SettingsWindow.Text43" xml:space="preserve">
+    <value>Google-dokumentation: Konfigurera samtycke</value>
+  </data>
+  <data name="SettingsWindow.Text44" xml:space="preserve">
+    <value>Google-dokumentation: Hantera OAuth-klienter</value>
+  </data>
+  <data name="SettingsWindow.Text45" xml:space="preserve">
+    <value>Steg 1: Öppna installationsguiden</value>
+  </data>
+  <data name="SettingsWindow.Text46" xml:space="preserve">
+    <value>Steg 2: Google OAuth-JSON för skrivbordsapp</value>
+  </data>
+  <data name="SettingsWindow.Text47" xml:space="preserve">
+    <value>JSON-filen valideras vid inloggning eller anslutningskontroll.</value>
+  </data>
+  <data name="SettingsWindow.Text48" xml:space="preserve">
+    <value>Välj och kontrollera JSON</value>
+  </data>
+  <data name="SettingsWindow.Text49" xml:space="preserve">
+    <value>JSON för skrivbordsapp verifierad. Klicka på Importera till appen och fortsätt till steg 3.</value>
+  </data>
+  <data name="SettingsWindow.Text50" xml:space="preserve">
+    <value>Importera till appen</value>
+  </data>
+  <data name="SettingsWindow.Text51" xml:space="preserve">
+    <value>Inställningen att fortsätta använda importerad JSON har sparats.</value>
+  </data>
+  <data name="SettingsWindow.Text52" xml:space="preserve">
+    <value>Kopierat till appdata och sökvägen sparad. Du kan nu flytta eller ta bort ursprunglig JSON.</value>
+  </data>
+  <data name="SettingsWindow.Text53" xml:space="preserve">
+    <value>Ta bort importerad JSON</value>
+  </data>
+  <data name="SettingsWindow.Text54" xml:space="preserve">
+    <value>Ta bort den importerade JSON-kopian?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text55" xml:space="preserve">
+    <value>
+
+Ursprunglig JSON behålls. Token och behörigheter hos Google tas inte bort.</value>
+  </data>
+  <data name="SettingsWindow.Text56" xml:space="preserve">
+    <value>Ta bort importerad JSON</value>
+  </data>
+  <data name="SettingsWindow.Text57" xml:space="preserve">
+    <value>Importerad JSON borttagen. Originalfil och token behölls.</value>
+  </data>
+  <data name="SettingsWindow.Text58" xml:space="preserve">
+    <value>Mål: %LOCALAPPDATA%\StickyNotes\credentials-google.json
+Import och borttagning gäller direkt utan att spara andra fält. Endast den hanterade kopian kan tas bort.</value>
+  </data>
+  <data name="SettingsWindow.Text59" xml:space="preserve">
+    <value>Kalender-ID (primary för huvudkalendern)</value>
+  </data>
+  <data name="SettingsWindow.Text60" xml:space="preserve">
+    <value>Använd en absolut sökväg för anteckningsmappen.</value>
+  </data>
+  <data name="SettingsWindow.Text61" xml:space="preserve">
+    <value>Använd en absolut sökväg för mappen med dagliga anteckningar.</value>
+  </data>
+  <data name="SettingsWindow.Text62" xml:space="preserve">
+    <value>Ange ett kalender-ID.</value>
+  </data>
+  <data name="SettingsWindow.Text63" xml:space="preserve">
+    <value>Flytta alla sparade anteckningsfiler?
+
+Från: {0}
+Till: {1}
+
+Ja: Flytta alla .md-filer i den gamla mappen, inklusive undermappar och stängda anteckningar. Befintliga filer skrivs aldrig över.
+Mappen för dagliga anteckningar ändras inte automatiskt. Uppdatera den separat om de filerna också flyttas.
+Nej: Ändra bara mappen för nya anteckningar och behåll befintliga filer.
+Avbryt: Spara inte inställningarna.</value>
+  </data>
+  <data name="SettingsWindow.Text64" xml:space="preserve">
+    <value>Flytta anteckningsfiler</value>
+  </data>
+  <data name="SettingsWindow.Text65" xml:space="preserve">
+    <value>Steg 3: Logga in på Google</value>
+  </data>
+  <data name="SettingsWindow.Text66" xml:space="preserve">
+    <value>Steg 4: Kontrollera anslutning (inloggad)</value>
+  </data>
+  <data name="SettingsWindow.Text67" xml:space="preserve">
+    <value>Avbryt inloggning / anslutningskontroll</value>
+  </data>
+  <data name="SettingsWindow.Text68" xml:space="preserve">
+    <value>Spara och stäng</value>
+  </data>
+  <data name="SettingsWindow.Text69" xml:space="preserve">
+    <value>Logga in på Google inom 3 minuter och tillåt Calendar-åtkomst och läsning av Tasks. Anslutningen kontrolleras automatiskt därefter.</value>
+  </data>
+  <data name="SettingsWindow.Text70" xml:space="preserve">
+    <value>Kontrollerar anslutningar till Calendar och Tasks…</value>
+  </data>
+  <data name="SettingsWindow.Text71" xml:space="preserve">
+    <value>Anslutningen verifierad. Prova @calendar today i en anteckning. Inga händelser eller uppgifter ändrades.</value>
+  </data>
+  <data name="SettingsWindow.Text72" xml:space="preserve">
+    <value>Avbrutet. Stäng inloggningsfliken i webbläsaren. Slutförd autentisering behålls.</value>
+  </data>
+  <data name="SettingsWindow.Text73" xml:space="preserve">
+    <value>Inloggningen sparades men kontrollen misslyckades. Kontrollera kalender-ID, API-aktivering och behörigheter, och försök med steg 4 igen.
+</value>
+  </data>
+  <data name="SettingsWindow.Text74" xml:space="preserve">
+    <value>När anteckningsmappen ändras tillfrågas du om att flytta befintliga filer.
+Säkerhetskopior, placering och inloggningsuppgifter lagras i %LOCALAPPDATA%\StickyNotes.</value>
+  </data>
+  <data name="Ui.Text01" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="GoogleTasks.Access" xml:space="preserve">
+    <value>Google Tasks kan inte läsas. Aktivera Tasks API i samma Cloud-projekt, lägg till tasks.readonly och logga in igen med steg 3.</value>
+  </data>
+  <data name="GoogleTasks.Error" xml:space="preserve">
+    <value>Kunde inte hämta Google Tasks (HTTP {0}). Nästa uppdatering försöker igen.</value>
+  </data>
+  <data name="GoogleTasks.Invalid" xml:space="preserve">
+    <value>Ogiltigt svar från Google Tasks.</value>
+  </data>
+  <data name="GoogleTasks.Timeout" xml:space="preserve">
+    <value>Hämtningen från Google Tasks tog längre än 30 sekunder. Nästa uppdatering försöker igen.</value>
+  </data>
+  <data name="GoogleTasks.Enable" xml:space="preserve">
+    <value>1-1: Aktivera Google Tasks API</value>
+  </data>
+  <data name="GoogleTasks.Setup" xml:space="preserve">
+    <value>Aktivera Google Tasks API i samma projekt som Calendar och lägg till calendar.events och tasks.readonly. Befintliga användare måste logga in igen i steg 3 och tillåta läsning av Tasks. Ny JSON behövs inte. Ofärdiga uppgifter med datum från alla listor visas skrivskyddat. Kalender-ID väljer inte uppgiftslistor.
+Google Tasks API ger bara datum, inte planerade klockslag. Även om Google har en tid visas ”utan tid”.</value>
+  </data>
+  <data name="GoogleTasks.Loading" xml:space="preserve">
+    <value>Läser in Google Tasks…</value>
+  </data>
+  <data name="GoogleTasks.Count" xml:space="preserve">
+    <value>Google Tasks: {0} (skrivskyddat)</value>
+  </data>
+  <data name="GoogleTasks.Item" xml:space="preserve">
+    <value>{0} (utan tid) · {1}
+{2}</value>
+  </data>
+  <data name="GoogleTasks.Empty" xml:space="preserve">
+    <value>Inga matchande ofärdiga uppgifter med datum.</value>
+  </data>
+  <data name="GoogleTasks.Truncated" xml:space="preserve">
+    <value>Visar delresultat eftersom gränsen nåddes (100 uppgifter / 20 förfrågningar).</value>
+  </data>
+  <data name="GoogleTasks.Partial" xml:space="preserve">
+    <value>Vissa data kunde inte hämtas. Kontrollera meddelandena från Calendar / Tasks.</value>
+  </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>Använd Obsidian CLI (standard)</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>Starta Obsidian och välj valv. CLI hanterar text, sparande och dagliga inställningar. Tasks / Dataview-frågor kräver respektive insticksprogram; Dataview stöder LIST, TABLE och TASK. Fel leder aldrig till lokal läsning. Stäng av CLI för lokala inställningar. Använd betrodda Tasks-frågor: deras JavaScript körs i Obsidian.</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Absolut sökväg till Obsidian.com</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>Målvalvets mapp</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>Obsidian-valvets namn / ID (anslutningsmål)</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>Absoluta sökvägar till valv och anteckning krävs.</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>Anteckningen är inte en Markdown-fil i det inställda valvet.</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>Högst 20 frågor / 8 000 tecken per anteckning. Korta ned långa sökvägar eller frågor.</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>Ange absolut sökväg till officiella Obsidian.com.</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>Inget giltigt CLI-resultat. Kontrollera CLI-inställningar och målvalv.</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>Starta Obsidian. Förhandsvisningen startar inte avsiktligt en stängd app.</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>Gränsen för CLI-utdata överskreds. Begränsa frågan.</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>Uppdatera Tasks (förhandsvisning)</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI — väntar</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — hämtat {1}</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Fel vid hämtning av Tasks (visade resultat är inte aktuella): </value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>Inga resultat att visa</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Tasks-förfrågan tog för lång tid. Arbetet i Obsidian kan fortfarande pågå.</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>Anteckningens källa har ändrats. Kopiera utkastet och läs in igen innan du sparar.</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>Läser anteckningen via Obsidian CLI…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>Anteckningen kontrollerad via Obsidian CLI.</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>CLI-läsning misslyckades (ingen lokal reserv): </value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>Gränsen för CLI-kommandots längd överskreds. Kontrollera valvnamn, sökvägar och frågor.</value>
+  </data>
+  <data name="CliDaily.Detect" xml:space="preserve">
+    <value>Hämta valvmapp via CLI</value>
+  </data>
+  <data name="CliDaily.Help" xml:space="preserve">
+    <value>Mapp, datumformat och mall följer Obsidian. Bara dagens och gårdagens sökvägar kontrolleras; saknade anteckningar skapas inte. Välj anteckningsmapp för att ändra plats för nya anteckningar; annars följs Obsidian.</value>
+  </data>
+  <data name="CliDaily.Summary" xml:space="preserve">
+    <value>Mapp: {0}
+Datumformat: {1}
+Mall: {2}
+Idag: {3} ({4})</value>
+  </data>
+  <data name="CliDaily.Default" xml:space="preserve">
+    <value>Obsidian-standard</value>
+  </data>
+  <data name="CliDaily.None" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="CliDaily.Exists" xml:space="preserve">
+    <value>finns</value>
+  </data>
+  <data name="CliDaily.Missing" xml:space="preserve">
+    <value>inte skapad; väntar</value>
+  </data>
+  <data name="CliDaily.DISABLED" xml:space="preserve">
+    <value>Aktivera Obsidians kärninsticksprogram Daily notes.</value>
+  </data>
+  <data name="CliDaily.UNSUPPORTED" xml:space="preserve">
+    <value>Detta Obsidian Daily notes-API stöds inte.</value>
+  </data>
+  <data name="CliDaily.PATH" xml:space="preserve">
+    <value>Kontrollera mapp och datumformat för dagliga anteckningar i Obsidian.</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>Basmapp (lokalt läge)</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>Välj mapp för fästisar…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>Fästismapp: {0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>Välj en mapp eller ange en ny relativ sökväg. ”.” är roten ovan. Bekräfta frågar om befintliga fästisar ska flyttas och sparar inställningar. Avbryt skapar inget.</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>Bekräfta</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>Spara fästisar här?
+{0}
+
+Ja: Flytta även appskapade fästisar från föregående mapp, inklusive undermappar.
+Nej: Ändra bara var nya anteckningar sparas.
+Avbryt: Ändra inget.
+
+Vanliga länkade och dagliga anteckningar undantas. Relativa länkar i flyttade anteckningar skrivs inte om.</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>Uppdaterar fästismappen. Vänta.</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>Ange en relativ mappsökväg inom vald rot. Överordnade, dolda och reserverade sökvägar tillåts inte.</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>För många poster. Välj en mindre basmapp (10 000 poster / 1 000 fästisar).</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>En fil finns redan eller ändrades under flytten. Inget skrivs över.</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>Flytt mellan olika valv eller åtkomstlägen stöds inte. Välj Nej för att bara ändra sparplatsen.</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>Vissa flyttar kunde inte återställas. Behåll loggen och kontrollera båda sökvägarna innan du försöker igen:</value>
+  </data>
+  <data name="Editing.Activation" xml:space="preserve">
+    <value>Börja redigera text med</value>
+  </data>
+  <data name="Editing.SingleClick" xml:space="preserve">
+    <value>Enkelklick</value>
+  </data>
+  <data name="Editing.DoubleClick" xml:space="preserve">
+    <value>Dubbelklick</value>
+  </data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>Uppdatera Tasks / Dataview</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — väntar</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — hämtat {1}</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Fel vid hämtning av Dataview (visade resultat är inte aktuella): </value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>Inga resultat att visa</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Dataview-förfrågan tog för lång tid. Arbetet i Obsidian kan fortfarande pågå.</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>Aktivera Dataview i valt valv.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>Detta Dataview-API stöds inte. Uppdatera insticksprogrammet.</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataview indexerar. Nästa uppdatering försöker igen.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDAR kan inte exporteras till Markdown. Använd LIST, TABLE eller TASK.</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataview gav ett ogiltigt svar.</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Dataview-utdata överstiger 200 000 tecken per block. Begränsa med LIMIT.</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>Dataview-frågor begränsas till 20 block och totalt 8 000 tecken per anteckning.</value>
+  </data>
+  <data name="NoteBrowser.Title" xml:space="preserve">
+    <value>Hantera fästismapp…</value>
+  </data>
+  <data name="NoteBrowser.Help" xml:space="preserve">
+    <value>Välj en Markdown-anteckning att öppna eller ta bort. Förhandsvisning och YAML är skrivskyddade; frågor körs inte.</value>
+  </data>
+  <data name="NoteBrowser.Open" xml:space="preserve">
+    <value>Öppna som fästis</value>
+  </data>
+  <data name="NoteBrowser.Search" xml:space="preserve">
+    <value>Filtrera på filnamn eller sökväg</value>
+  </data>
+  <data name="NoteBrowser.Preview" xml:space="preserve">
+    <value>Förhandsvisning av text</value>
+  </data>
+  <data name="NoteBrowser.Loading" xml:space="preserve">
+    <value>Läser in…</value>
+  </data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve">
+    <value>Uppdatera lista</value>
+  </data>
+  <data name="NoteBrowser.Count" xml:space="preserve">
+    <value>{0} Markdown-anteckningar</value>
+  </data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve">
+    <value> (första 50 000 tecknen)</value>
+  </data>
+  <data name="TaskEditing.Keys" xml:space="preserve">
+    <value>↑↓ Välj · Enter Infoga · Tab Indrag · Esc Stäng</value>
+  </data>
+  <data name="TaskEditing.Label" xml:space="preserve">
+    <value>Komplettering av uppgifter</value>
+  </data>
+  <data name="TaskEditing.Automatic" xml:space="preserve">
+    <value>Automatiskt (bara med Tasks aktiverat i Obsidian)</value>
+  </data>
+  <data name="TaskEditing.On" xml:space="preserve">
+    <value>PÅ (föreslå även utan Tasks)</value>
+  </data>
+  <data name="TaskEditing.Off" xml:space="preserve">
+    <value>AV (inga förslag)</value>
+  </data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve">
+    <value>Automatiskt är standard. Om Tasks saknas, är avstängt eller inte kan nås, eller i lokalt läge, är förslag avstängda tills du väljer PÅ manuellt. Fortsättning med Enter och kryssrutor fungerar separat.</value>
+  </data>
+  <data name="Hotkey.Unavailable" xml:space="preserve">
+    <value>Alt + Z kunde inte registreras. En annan app kan använda det. Tillfällig överstvisning finns fortfarande i meddelandefältets eller anteckningens meny. Lös konflikten och starta om appen.</value>
+  </data>
+  <data name="HeadingFilter.Title" xml:space="preserve">
+    <value>Rubrikfilter</value>
+  </data>
+  <data name="HeadingFilter.Search" xml:space="preserve">
+    <value>Sök rubriker</value>
+  </data>
+  <data name="HeadingFilter.Clear" xml:space="preserve">
+    <value>Visa alla</value>
+  </data>
+  <data name="HeadingFilter.Empty" xml:space="preserve">
+    <value>Inga rubriker hittades.</value>
+  </data>
+  <data name="HeadingFilter.Missing" xml:space="preserve">
+    <value>En vald rubrik saknas eller är tvetydig. Öppna Rubriker, välj Visa alla och välj igen.</value>
+  </data>
+  <data name="NoteWindow.Details" xml:space="preserve">
+    <value>Visa/dölj detaljer</value>
+  </data>
+  <data name="HeadingFilter.Short" xml:space="preserve">
+    <value>Rubriker</value>
+  </data>
+  <data name="HeadingFilter.Count" xml:space="preserve">
+    <value>{0} avsnitt</value>
+  </data>
+  <data name="TaskEditing.ToggleShortcut" xml:space="preserve">
+    <value>Kortkommando för kryssruta</value>
+  </data>
+  <data name="TaskEditing.ShortcutHelp" xml:space="preserve">
+    <value>Fokusera fältet och tryck Ctrl eller Alt med bokstav, siffra, Enter, mellanslag eller F1–F12 (Shift valfritt), t.ex. Ctrl+Enter. Ej tilldelat som standard. Växlar kryssrutan på markörraden under redigering. Delete/Backspace eller Rensa inaktiverar det.</value>
+  </data>
+  <data name="TaskEditing.ShortcutInvalid" xml:space="preserve">
+    <value>Tangentkombinationen är inte tillgänglig. Inkludera Ctrl eller Alt. Spara, redigera, kopiera/klistra in/ångra och andra reserverade kommandon kan inte tilldelas.</value>
+  </data>
+  <data name="TaskEditing.ShortcutClear" xml:space="preserve">
+    <value>Rensa kortkommando</value>
+  </data>
+  <data name="AppCommands.RestoreClosed" xml:space="preserve">
+    <value>Öppna nyligen stängda anteckningar</value>
+  </data>
+  <data name="NoteWindow.Saving" xml:space="preserve">
+    <value>Sparar. Vänta tills det är klart.</value>
+  </data>
+  <data name="Rename.Menu" xml:space="preserve">
+    <value>Byt filnamn…</value>
+  </data>
+  <data name="Rename.Hint" xml:space="preserve">
+    <value>Dubbelklicka för att byta filnamn</value>
+  </data>
+  <data name="Rename.Daily" xml:space="preserve">
+    <value>Dagliga anteckningsfiler kan inte döpas om här.</value>
+  </data>
+  <data name="Rename.Label" xml:space="preserve">
+    <value>Nytt filnamn (utan filändelse). Uppdaterar även fästisens titel.</value>
+  </data>
+  <data name="Rename.Invalid" xml:space="preserve">
+    <value>Ange ett giltigt filnamn. Tomma namn, sökvägsavgränsare, reserverade namn och avslutande blanksteg eller punkter tillåts inte.</value>
+  </data>
+  <data name="Rename.Draft" xml:space="preserve">
+    <value>Spara ändringar i andra fästisar som visar filen och försök igen.</value>
+  </data>
+  <data name="Rename.Recovery" xml:space="preserve">
+    <value>Namnbyte eller sparande av inställningar kunde inte bekräftas. Kontrollera käll-/målfiler och återställningsposten nedan. Om filen flyttats, öppna målet igen.</value>
+  </data>
+  <data name="Rename.Unavailable" xml:space="preserve">
+    <value>Filen kan inte döpas om innan anteckningen lästs in. Försök igen när den är klar.</value>
+  </data>
+  <data name="NoteBrowser.Delete" xml:space="preserve">
+    <value>Ta bort anteckning</value>
+  </data>
+  <data name="NoteBrowser.DeleteConfirm" xml:space="preserve">
+    <value>Ta bort hela denna Markdown-fil?
+{0}
+
+Anteckningar som visar filen stängs också. En återställningsfil finns kvar i deleted-notes under appdatamappen.</value>
+  </data>
+  <data name="NoteBrowser.Deleting" xml:space="preserve">
+    <value>Tar bort anteckningen…</value>
+  </data>
+  <data name="NoteBrowser.DeleteDraft" xml:space="preserve">
+    <value>En anteckning som visar filen har osparade ändringar. Spara eller kasta dem innan du tar bort filen.</value>
+  </data>
+  <data name="NoteBrowser.SettingsChanged" xml:space="preserve">
+    <value>Inställningarna har ändrats. Öppna hanteringsfönstret igen.</value>
+  </data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>Huvud</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>Det registrerade valvet saknas. Kontrollera inställningarna.</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>Kontrollera valvens visningsnamn och interna ID:n.</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>Källinställningarna har ändrats. Spara eller kopiera utkastet och läs in anteckningen igen.</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>Huvudvalvet och valv som används av öppna eller nyligen stängda anteckningar kan inte tas bort.</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>För flera valv, ange varje CLI-namn/ID. Med tomt namn fyller Hämta valvmapp via CLI även i namnet på valvet som Obsidian valt.</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>Samma mapp kan inte registreras som flera valv.</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>Valv</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>Lägg till valv</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>Ta bort registrering</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>Standardvalv för nya dagliga anteckningar</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>Befintliga anteckningar behåller sitt valv. Att ta bort registreringen tar inte bort filer.</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>Visningsnamn (kan ändras senare)</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>Dagliga inställningar sparas per valv. Nya vanliga anteckningar och deras målmapp använder huvudregistreringen.</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>Kontrollera anslutning / dagens anteckning</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>Allmänt</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>Valv och dagliga anteckningar</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>Ange Obsidian-valvets namn/ID (separat från visningsnamnet) och tryck på knappen ovan för att hämta rotmappen. Att bara skriva hämtar inget. Tomt använder Obsidians val. Därefter kontrolleras den dagliga mappen automatiskt. Välj vanlig fästismapp separat och tillämpa med Spara och stäng.</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>Hämtar valvmapp via CLI… (inställningarna kan inte sparas förrän detta är klart)</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>Hämtat: {0} → {1}. Inte sparat än. Tillämpa med Spara och stäng.</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>Mappen kunde inte hämtas. Inmatningen är oförändrad. {0}</value>
+  </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>Stäng</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>Visning och egenskaper</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>Uppdatera länkade data</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>Skapa och öppna</value>
+  </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>Tasks {0} stöds inte. Uppdatera till 8.2.2 eller senare. I Obsidian för detta valv, öppna Inställningar → Community-insticksprogram → Sök efter uppdateringar och uppdatera Tasks. Välj sedan Uppdatera länkade data → Uppdatera Tasks / Dataview i fästismenyn.</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>Detta interna Tasks-API stöds inte. Kontrollera uppdateringar för Tasks och fästisappen. Källuppgifterna har inte ändrats.</value>
+  </data>
+</root>

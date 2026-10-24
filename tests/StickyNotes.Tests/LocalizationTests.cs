@@ -16,10 +16,27 @@ internal static partial class Program
     private static void LocalizationTests(string root)
     {
         Check(L10n.ResolveLanguage("", CultureInfo.GetCultureInfo("ja-JP")) == "ja" &&
-            L10n.ResolveLanguage(null, CultureInfo.GetCultureInfo("zh-TW")) == "zh-CN" &&
+            L10n.ResolveLanguage(null, CultureInfo.GetCultureInfo("zh-TW")) == "zh-TW" &&
             L10n.ResolveLanguage("invalid", CultureInfo.GetCultureInfo("fr-FR")) == "en" &&
             L10n.ResolveLanguage("en", CultureInfo.GetCultureInfo("ja-JP")) == "en",
             "language resolution supports Windows defaults, unsupported languages and explicit overrides");
+        foreach (var (windows, expected) in new[] {
+            ("zh-Hant", "zh-TW"), ("zh-HK", "zh-TW"), ("zh-MO", "zh-TW"),
+            ("zh-Hans", "zh-CN"), ("zh-SG", "zh-CN"), ("zh-CN", "zh-CN"),
+            ("ko-KR", "ko"), ("de-AT", "de"), ("ru-RU", "ru"), ("es-MX", "es"), ("sv-FI", "sv") })
+            Check(L10n.ResolveLanguage(null, CultureInfo.GetCultureInfo(windows)) == expected,
+                windows + ": Windows region/script resolves to the supported UI language");
+        Check(L10n.ResolveLanguage("zh-CN", CultureInfo.GetCultureInfo("zh-TW")) == "zh-CN",
+            "existing explicit Simplified Chinese preference remains unchanged on Taiwan Windows");
+        var expectedLabels = new Dictionary<string, (string NewNote, string Keyword)> {
+            ["ja"] = ("新しい付箋", "キーワード"), ["en"] = ("New note", "keyword"),
+            ["zh-CN"] = ("新便签", "关键词"), ["zh-TW"] = ("新便利貼", "關鍵字"),
+            ["ko"] = ("새 메모", "검색어"), ["de"] = ("Neue Notiz", "Suchwort"),
+            ["ru"] = ("Новая заметка", "поисковое"), ["es"] = ("Nueva nota", "palabra"),
+            ["sv"] = ("Ny anteckning", "sökord")
+        };
+        Check(L10n.SupportedLanguages.Select(l => l.Code).Order().SequenceEqual(expectedLabels.Keys.Order()),
+            "language catalog contains exactly the nine supported languages");
         Check(JsonSerializer.Deserialize<Settings>("{}")!.Language == "", "old settings default to Windows language");
         var manager = new ResourceManager("StickyNotes.Core.Strings", typeof(L10n).Assembly);
         var neutral = manager.GetResourceSet(CultureInfo.InvariantCulture, true, false)!
@@ -36,7 +53,7 @@ internal static partial class Program
             App.Current.Resources.MergedDictionaries.Add(new ResourceDictionary {
                 Source = new Uri("/StickyNotes;component/AppStyles.xaml", UriKind.Relative) });
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ar-SA");
-            foreach (var code in new[] { "ja", "en", "zh-CN" })
+            foreach (var code in expectedLabels.Keys)
             {
                 L10n.Initialize(code);
                 var updateMessage = L10n.Format("TasksPreview.UpdateRequired", "7.23.1");
@@ -53,25 +70,33 @@ internal static partial class Program
                     code + ": complete compiled translation catalog without fallback");
                 Check(values.All(p => CompositeFormat.Parse(p.Value).MinimumArgumentCount == CompositeFormat.Parse(neutral[p.Key]).MinimumArgumentCount),
                     code + ": formatting placeholders match the source catalog");
+                Check(values.All(p => System.Text.RegularExpressions.Regex.Matches(p.Value, @"\{\d+(?:[^{}]*)\}")
+                    .Select(m => m.Value).Order().SequenceEqual(System.Text.RegularExpressions.Regex.Matches(neutral[p.Key], @"\{\d+(?:[^{}]*)\}")
+                    .Select(m => m.Value).Order())), code + ": placeholder indices and format specifiers are preserved");
                 Check(L10n.Format("NoteWindow.Text21", new DateTime(2026, 10, 6)).Contains("2026-10-06"),
                     code + ": date formats remain stable under non-Gregorian regional settings");
                 var created = NoteStore.Read(NoteStore.Create(Path.Combine(root, "localized-notes")));
-                Check(created.Text.Contains(code switch { "en" => "# New note", "zh-CN" => "# 新便签", _ => "# 新しい付箋" }) &&
+                Check(created.Text.Contains("# " + expectedLabels[code].NewNote) &&
                     NoteStore.Metadata(created.Text).Tags.SequenceEqual(new[] { "sticky" }), code + ": new note uses localized template and stable metadata");
                 var metadata = NoteStore.Metadata(NoteStore.Read(preserved).Text);
                 Check(metadata.Title == "My 日本語标题" && metadata.Tags.SequenceEqual(new[] { "仕事", "项目" }) && File.ReadAllBytes(preserved).SequenceEqual(before),
                     code + ": existing title, tags, headings and body are preserved byte for byte");
                 using var menu = AppCommands.CreateTrayMenu(_ => { });
-                Check(menu.Items[0].Text == (code switch { "en" => "New note", "zh-CN" => "新便签", _ => "新しい付箋" }),
+                Check(menu.Items[0].Text == expectedLabels[code].NewNote,
                     code + ": tray commands reflect the initialized language, not a cached startup language");
-                Check(CalendarCompletion.Usage.Contains(code switch { "en" => "keyword", "zh-CN" => "关键词", _ => "キーワード" }),
+                Check(CalendarCompletion.Usage.Contains(expectedLabels[code].Keyword),
                     code + ": calendar completion explains keyword-free search");
+                Check(L10n.Text("HeadingFilter.Missing").Contains(L10n.Text("HeadingFilter.Short")) &&
+                    L10n.Text("HeadingFilter.Missing").Contains(L10n.Text("HeadingFilter.Clear")),
+                    code + ": missing-heading guidance names the actual toolbar and reset controls");
                 var settings = new SettingsWindow();
                 var general = SettingsPanel(settings);
                 var cliPanel = general.Children.OfType<Expander>().Single(p => (string)p.Header == "Obsidian CLI");
                 Check(((StackPanel)cliPanel.Content).Children.OfType<CheckBox>().Single().IsChecked == false,
                     code + ": CLI integration settings preserve the explicitly selected local mode");
                 var selector = general.Children.OfType<StackPanel>().SelectMany(p => p.Children.OfType<ComboBox>()).Single(c => c.Name == "DisplayLanguage");
+                Check(selector.Items.Count == 10 && L10n.SupportedLanguages.All(l => selector.Items.Contains(l.Name)),
+                    code + ": settings lists all native language names and automatic selection");
                 var layout = (Grid)settings.Content;
                 layout.Measure(new Size(1100, 700)); layout.Arrange(new Rect(0, 0, 1100, 700)); layout.UpdateLayout();
                 var panes = LogicalDescendants(settings.Categories).OfType<ScrollViewer>().ToArray();
@@ -81,8 +106,9 @@ internal static partial class Program
                 SettingsPanel(settings, true).Children.OfType<Expander>().Single().IsExpanded = true;
                 layout.UpdateLayout();
                 RenderLocalizationPreview(layout, code + "-guide");
-                var expected = code == "en" ? "zh-CN" : "en";
-                selector.SelectedIndex = expected == "en" ? 2 : 3;
+                var nextIndex = (Array.IndexOf(L10n.SupportedLanguages.Select(l => l.Code).ToArray(), code) + 1) % L10n.SupportedLanguages.Count;
+                var expected = L10n.SupportedLanguages[nextIndex].Code;
+                selector.SelectedIndex = nextIndex + 1;
                 general.Children.OfType<Button>().Single(b => (string)b.Content == L10n.Text("SettingsWindow.Text68"))
                     .RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
                 Check(App.Current.Config.Language == expected && L10n.Language == code &&

@@ -1,4 +1,4 @@
-[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md)
+[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
 # Installation and first setup
 
@@ -45,7 +45,7 @@ Ordinary Markdown checkboxes do not require Tasks. Task suggestions default to A
 
 ## 4. Use your first note
 
-Use `… → Create & open` to create or open Markdown. Click the body / press `Ctrl+E` to edit and `Ctrl+S` / `Esc` to save. Daily linking initially needs today's file; the app does not create it. Change the display language in Settings and restart (UI: Japanese, English, Simplified Chinese).
+Use `… → Create & open` to create or open Markdown. Click the body / press `Ctrl+E` to edit and `Ctrl+S` / `Esc` to save. Daily linking initially needs today's file; the app does not create it. Choose a display language in Settings, save and restart. The current development UI supports the nine languages listed in the README.
 
 ## Troubleshooting
 

@@ -8,7 +8,7 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
-- Rebuild the README around benefits, required tools/settings, features and current sample images. Provide README, setup guides and screenshots in Japanese, English, Simplified Chinese, Traditional Chinese and Korean; detailed references remain in the original three languages. Regenerate 15 images from isolated WPF sample notes and fix demo settings to select the intended UI language and disable CLI. Traditional Chinese/Korean samples use English UI; app UI languages are unchanged. Include the new guides, examples and READMEs in packages.
+- Expand the UI to nine languages with all 378 strings in Taiwanese Mandarin (Traditional Chinese, zh-TW), Korean, German, Russian, Spanish and Swedish. Verify Windows region/script selection and explicit preferences; apply saved changes after restart. After implementing UI translations, regenerate 27 images with matching UI and note text. Expand README, setup and screenshot guides to nine languages and include them in packages. Detailed references remain in the original three languages.
 
 - Support Tasks 8.2.2 query exports, including grouped and nested source mappings, without changing the shared Tasks cache. Tasks versions older than 8.2.2 are rejected for queries and native checkbox edits with instructions to update the plugin in the affected Vault. [Setup and limits](docs/TASKS-CLI-PREVIEW.md#english).
 

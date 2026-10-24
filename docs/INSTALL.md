@@ -1,4 +1,4 @@
-[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md)
+[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
 # インストールと最初の設定
 
@@ -45,7 +45,7 @@ Windows 10 / 11（x64）用です。管理者権限・.NETの追加インスト�
 
 ## 4. 最初の付箋を使う
 
-`… → 作成・開く` から新規作成または既存Markdownを開きます。本文クリック／`Ctrl+E`で編集、`Ctrl+S`／`Esc`で保存します。デイリーは初回に今日のファイルが必要で、自動作成しません。表示言語は設定から変更し、再起動で反映します（UIは日本語・英語・簡体字中国語）。
+`… → 作成・開く` から新規作成または既存Markdownを開きます。本文クリック／`Ctrl+E`で編集、`Ctrl+S`／`Esc`で保存します。デイリーは初回に今日のファイルが必要で、自動作成しません。表示言語は設定から変更し、保存後の再起動で反映します。現開発版のUIはREADMEに記載した9言語に対応します。
 
 ## 困ったとき
 

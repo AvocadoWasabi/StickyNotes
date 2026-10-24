@@ -2,7 +2,7 @@
 
 # 開発と公開
 
-README・導入ガイド・スクリーンショットは日本語／英語／簡体字中国語／繁体字中国語／韓国語の5言語を同期します。詳細資料とUIは従来の3言語です。繁体字・韓国語のサンプルは英語UIを使います。画像は個人データを使わない任意実行の `--render-screenshots` で生成します。[生成・目視確認手順](SCREENSHOTS.md)。`build.ps1` は5言語のREADMEと、docs／examples配下を同梱します。
+UI・README・導入ガイド・スクリーンショットは日本語／英語／簡体字中国語／台湾華語（繁体字）／韓国語／ドイツ語／ロシア語／スペイン語／スウェーデン語の9言語を同期します。詳細資料は従来の3言語です。UI対応後、架空データを使う任意実行の `--render-screenshots` で27枚を生成します。[生成・目視確認手順](SCREENSHOTS.md)。`build.ps1` は9言語のREADMEとdocs／examples配下を同梱します。
 
 未リリース：複数Vaultのデイリーノートに対応。初期表示名は「メイン」「サブ」で変更可能です。**設定 → Vault・デイリーノート**で登録・既定Vaultを設定します。[複数Vaultの設定と制約](MULTIPLE-VAULTS.md#日本語)。
 
@@ -61,7 +61,7 @@ README・変更履歴・導入／開発ガイド・関連資料・リリース�
 
 機能追加・修正の完了時に [日本語のバージョン履歴](../CHANGELOG.ja.md)、[英語の変更履歴](../CHANGELOG.md)、[簡体字中国語の変更履歴](../CHANGELOG.zh-CN.md) の未リリース欄を更新します。正式公開時には実際のバージョン番号・公開日・Releaseリンクを記録し、3言語の内容を揃えます。下書きや予定を公開済みとして記載しないでください。`docs/RELEASE-NOTES.md` にも、そのリリースでの主な変更を反映します。
 
-1. `src/StickyNotes/StickyNotes.csproj` の `Version`、5言語READMEのダウンロード案内、変更履歴、リリースノートを公開バージョンに揃えます。`./build.ps1 -Publish` と両レビューを完了し、ローカルコミット後、指示されたブランチをmainにマージしてpushします。
+1. `src/StickyNotes/StickyNotes.csproj` の `Version`、9言語READMEのダウンロード案内、変更履歴、リリースノートを公開バージョンに揃えます。`./build.ps1 -Publish` と両レビューを完了し、ローカルコミット後、指示されたブランチをmainにマージしてpushします。
 2. GitHub Actionsの「Build and test」が成功したことを確認します。
 3. Releaseの公開指示を受けたら、「Package release」をmain上で手動実行し、新しいタグ（例: `v1.0.0`）を指定します。
 4. ワークフローが検証とZIP生成を実行し、**下書きRelease**を作成します。添付ZIPのSHA256、実行ファイルのバージョン、タグの対象コミット、同梱資料、個人設定などの混入がないことを確認してから公開します。
@@ -80,4 +80,4 @@ pushだけでReleaseは作成・公開されません。ZIPはGit履歴には含
 
 ## 表示言語
 
-UI文言は `src/StickyNotes.Core/Strings.resx`（日本語）、`Strings.en.resx`、`Strings.zh-CN.resx` で管理します。キーと書式の引数を揃え、`L10n` から取得してください。言語は起動時に初期化し、設定保存時の変更は次回起動まで保留します。保存済みノートや通信のキーは翻訳しません。テストではリソースの不足、言語設定の永続化、メニュー、データ保持を確認します。配布には `en/StickyNotes.Core.resources.dll` と `zh-CN/StickyNotes.Core.resources.dll` が必要です。
+UI文言は `src/StickyNotes.Core/Strings.resx`（日本語）と `Strings.<locale>.resx`（en / zh-CN / zh-TW / ko / de / ru / es / sv）で管理し、`L10n.SupportedLanguages` を言語一覧の共通定義とします。全378キーと書式の引数・指定子を揃え、`L10n` から取得します。起動時に言語を初期化し、設定変更は保存後の再起動で適用します。保存済みノート・通信キー・日付形式は翻訳しません。テストで地域／文字体系判定、明示選択の優先、全リソース、設定永続化、メニュー、レイアウトとデータ保持を検証します。配布には上記8ロケールの `<locale>/StickyNotes.Core.resources.dll` が必要です。

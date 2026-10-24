@@ -1,4 +1,4 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文（台灣）](README.zh-TW.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Русский](README.ru.md) | [Español](README.es.md) | [Svenska](README.sv.md)
 
 # Markdown Sticky Notes
 
@@ -20,7 +20,7 @@
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-ja.png" alt="タスクをその場でチェック" width="280">](docs/images/sticky-tasks-ja.png) | [<img src="docs/images/sticky-markdown-ja.png" alt="Markdownでメモ" width="280">](docs/images/sticky-markdown-ja.png) | [<img src="docs/images/sticky-daily-ja.png" alt="今日のデイリーと連動" width="280">](docs/images/sticky-daily-ja.png) |
 
-現在の開発版のWPFコントロールで架空のノートを描画した画面例です（デスクトップの撮影ではありません）。[5言語の画面例・再生成手順](docs/SCREENSHOTS.md)。
+現在の開発版のWPFコントロールで架空のノートを描画した画面例です（デスクトップの撮影ではありません）。[9言語の画面例・再生成手順](docs/SCREENSHOTS.md)。
 
 ## 必要なツールと設定
 
@@ -72,7 +72,7 @@ CLIを使わない手順、設定場所、更新・削除は[導入ガイド](do
 
 ## 知っておきたい制限
 
-- UIは**日本語・英語・簡体字中国語**。README・導入・画面例は**繁体字中国語・韓国語**も用意しています。詳細資料は原則3言語です。
+- 現開発版のUI・README・導入ガイド・画面例は**日本語・英語・簡体字中国語・台湾華語（繁体字）・韓国語・ドイツ語・ロシア語・スペイン語・スウェーデン語**の9言語です。詳細資料は原則3言語です。言語変更は保存して再起動すると反映されます。
 - Obsidian連携中はObsidianの常時起動が必要です。内部APIに依存し、更新で互換性が変わる場合があります。
 - デイリーノートは自動作成しません。初回は今日のノートを用意してください。
 - Obsidianのテーマや全プラグインの表示は再現しません。画像は代替テキストで表示。DataviewJS・インライン式・CALENDARは未対応です。

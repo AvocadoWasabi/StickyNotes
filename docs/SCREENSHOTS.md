@@ -1,22 +1,26 @@
-[日本語](SCREENSHOTS.md) | [English](SCREENSHOTS.en.md) | [简体中文](SCREENSHOTS.zh-CN.md) | [繁體中文](SCREENSHOTS.zh-TW.md) | [한국어](SCREENSHOTS.ko.md)
+[日本語](SCREENSHOTS.md) | [English](SCREENSHOTS.en.md) | [简体中文](SCREENSHOTS.zh-CN.md) | [繁體中文（台灣）](SCREENSHOTS.zh-TW.md) | [한국어](SCREENSHOTS.ko.md) | [Deutsch](SCREENSHOTS.de.md) | [Русский](SCREENSHOTS.ru.md) | [Español](SCREENSHOTS.es.md) | [Svenska](SCREENSHOTS.sv.md)
 
 # スクリーンショットと再生成
 
-現在の開発版のWPFコントロールで、架空のサンプルを460 × 580 pxのPNGに描画しています。デスクトップ撮影・Obsidian／Googleへの接続ではありません。個人ノート・設定・認証情報は使いません。
+現在の開発版のWPFコントロールで、架空のノートを460 × 580 pxのPNGに描画しています。デスクトップの実写やObsidian／Googleの接続画面ではありません。個人のノート・設定・認証情報は使いません。
 
-日本語・英語・簡体字中国語は本文とUIを合わせています。繁体字中国語・韓国語は本文のみ翻訳し、UIは英語です。UIの対応言語は増えていません。画像のファイル名の日付は生成日のものです。
+UIの9言語対応を実装してから、本文とUIを各言語に揃えて27枚を再生成しました。台湾華語は繁体字（zh-TW）です。デイリーノートのファイル名は生成日です。
 
-| Language / 言語 / 语言 | Tasks | Markdown | Daily |
+| Language | Tasks | Markdown | Daily |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |
 | 简体中文 | [![简体中文 tasks](images/sticky-tasks-zh-CN.png)](images/sticky-tasks-zh-CN.png) | [![简体中文 markdown](images/sticky-markdown-zh-CN.png)](images/sticky-markdown-zh-CN.png) | [![简体中文 daily](images/sticky-daily-zh-CN.png)](images/sticky-daily-zh-CN.png) |
-| 繁體中文 | [![繁體中文 tasks](images/sticky-tasks-zh-TW.png)](images/sticky-tasks-zh-TW.png) | [![繁體中文 markdown](images/sticky-markdown-zh-TW.png)](images/sticky-markdown-zh-TW.png) | [![繁體中文 daily](images/sticky-daily-zh-TW.png)](images/sticky-daily-zh-TW.png) |
+| 繁體中文（台灣） | [![繁體中文（台灣） tasks](images/sticky-tasks-zh-TW.png)](images/sticky-tasks-zh-TW.png) | [![繁體中文（台灣） markdown](images/sticky-markdown-zh-TW.png)](images/sticky-markdown-zh-TW.png) | [![繁體中文（台灣） daily](images/sticky-daily-zh-TW.png)](images/sticky-daily-zh-TW.png) |
 | 한국어 | [![한국어 tasks](images/sticky-tasks-ko.png)](images/sticky-tasks-ko.png) | [![한국어 markdown](images/sticky-markdown-ko.png)](images/sticky-markdown-ko.png) | [![한국어 daily](images/sticky-daily-ko.png)](images/sticky-daily-ko.png) |
+| Deutsch | [![Deutsch tasks](images/sticky-tasks-de.png)](images/sticky-tasks-de.png) | [![Deutsch markdown](images/sticky-markdown-de.png)](images/sticky-markdown-de.png) | [![Deutsch daily](images/sticky-daily-de.png)](images/sticky-daily-de.png) |
+| Русский | [![Русский tasks](images/sticky-tasks-ru.png)](images/sticky-tasks-ru.png) | [![Русский markdown](images/sticky-markdown-ru.png)](images/sticky-markdown-ru.png) | [![Русский daily](images/sticky-daily-ru.png)](images/sticky-daily-ru.png) |
+| Español | [![Español tasks](images/sticky-tasks-es.png)](images/sticky-tasks-es.png) | [![Español markdown](images/sticky-markdown-es.png)](images/sticky-markdown-es.png) | [![Español daily](images/sticky-daily-es.png)](images/sticky-daily-es.png) |
+| Svenska | [![Svenska tasks](images/sticky-tasks-sv.png)](images/sticky-tasks-sv.png) | [![Svenska markdown](images/sticky-markdown-sv.png)](images/sticky-markdown-sv.png) | [![Svenska daily](images/sticky-daily-sv.png)](images/sticky-daily-sv.png) |
 
 ## 再生成（開発者向け）
 
-Windowsと.NET 8 SDKでリポジトリのルートから実行します。ローカルSDKを使う場合はdotnetを.tools/dotnet/dotnet.exeに読み替えてください。15枚を生成します。生成後は全画像の折返し・欠け・文字化けを確認し、3言語以上の説明を同期してください。
+Windowsと.NET 8 SDKを用意し、リポジトリ直下で実行します。ローカルSDKなら dotnet を .tools/dotnet/dotnet.exe に置き換えます。27枚すべての折り返し・文字欠け・未表示文字を確認し、9言語の説明を同期してください。
 
 ```powershell
 ./build.ps1
@@ -25,13 +29,13 @@ dotnet run --project tests/StickyNotes.Tests -c Release --no-build -- --render-s
 
 ## アプリで試す
 
-Languageにはja / en / zh-CN / zh-TW / koを指定できます。毎回artifacts内に新しいデータフォルダを作り、CLIを無効にした独立設定を使います。既存アプリが動作中なら未保存の内容を保存して終了後に起動してください。
+Language は ja / en / zh-CN / zh-TW / ko / de / ru / es / sv に対応。実行ごとに artifacts 内へ独立したデータフォルダを作成し、指定言語とCLI無効を設定します。起動中のアプリで編集中の内容を保存して終了してからデモを開いてください。
 
 ```powershell
-$demoData = ./scripts/Prepare-ScreenshotDemo.ps1 -Language ko
+$demoData = ./scripts/Prepare-ScreenshotDemo.ps1 -Language ja
 & ./artifacts/app/StickyNotes.exe --data-dir $demoData
 ```
 
-[日本語](../examples/screenshots/Tasks.md) · [English](../examples/screenshots/en/Tasks.md) · [简体中文](../examples/screenshots/zh-CN/Tasks.md) · [繁體中文](../examples/screenshots/zh-TW/Tasks.md) · [한국어](../examples/screenshots/ko/Tasks.md)
+[日本語](../examples/screenshots/Tasks.md) · [English](../examples/screenshots/en/Tasks.md) · [简体中文](../examples/screenshots/zh-CN/Tasks.md) · [繁體中文（台灣）](../examples/screenshots/zh-TW/Tasks.md) · [한국어](../examples/screenshots/ko/Tasks.md) · [Deutsch](../examples/screenshots/de/Tasks.md) · [Русский](../examples/screenshots/ru/Tasks.md) · [Español](../examples/screenshots/es/Tasks.md) · [Svenska](../examples/screenshots/sv/Tasks.md)
 
-過去のJPEGとcompact-body-v0.0.9.pngは旧版の参考画像として保持しています。READMEは今回生成したPNGを参照します。
+古いJPEGと compact-body-v0.0.9.png は過去の参考画像として残しています。READMEでは新しいPNGを使用します。

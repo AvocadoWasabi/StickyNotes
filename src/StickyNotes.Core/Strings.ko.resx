@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="App.xaml.Text01" xml:space="preserve">
+    <value>시작 인수가 올바르지 않습니다.</value>
+  </data>
+  <data name="App.xaml.Text02" xml:space="preserve">
+    <value>실행 중인 앱에 작업을 전달하지 못했습니다. 알림 영역 메뉴를 사용하거나 앱을 다시 시작하세요.
+</value>
+  </data>
+  <data name="App.xaml.Text03" xml:space="preserve">
+    <value>Sticky Notes가 이미 실행 중입니다. 알림 영역이나 작업 표시줄 메뉴를 사용하세요.</value>
+  </data>
+  <data name="App.xaml.Text04" xml:space="preserve">
+    <value>설정을 불러오지 못했습니다. 원본 파일을 보호하기 위해 종료합니다.
+</value>
+  </data>
+  <data name="AppCommandPipe.Text01" xml:space="preserve">
+    <value>실행 중인 앱에 작업을 전달하지 못했습니다.</value>
+  </data>
+  <data name="AppCommands.Text01" xml:space="preserve">
+    <value>새 메모</value>
+  </data>
+  <data name="AppCommands.Text02" xml:space="preserve">
+    <value>Markdown 열기…</value>
+  </data>
+  <data name="AppCommands.Text03" xml:space="preserve">
+    <value>노트 일부 연결…</value>
+  </data>
+  <data name="AppCommands.Text04" xml:space="preserve">
+    <value>데일리 노트 표시…</value>
+  </data>
+  <data name="AppCommands.Text05" xml:space="preserve">
+    <value>모두 표시</value>
+  </data>
+  <data name="AppCommands.Text06" xml:space="preserve">
+    <value>모든 메모를 앞으로 가져오기(10초)</value>
+  </data>
+  <data name="AppCommands.Text07" xml:space="preserve">
+    <value>설정…</value>
+  </data>
+  <data name="AppCommands.Text08" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="CalendarCompletion.Text01" xml:space="preserve">
+    <value>@calendar 날짜-시간-또는-today [검색어]
+시간대는 생략할 수 있습니다(Windows 현지 시간).
+검색어도 선택 사항입니다. 지정 시각부터의 일정 또는 today로 PC의 오늘 일정을 약 60초마다 새로 고칩니다.
+Google Tasks는 읽기 전용입니다. API는 날짜만 제공하며 예약 시각을 가져올 수 없습니다. Google에서 시간을 설정해도 이 앱은 “시간 없음”으로 표시합니다.</value>
+  </data>
+  <data name="CalendarCompletion.Text02" xml:space="preserve">
+    <value>@calendar — Google Calendar 검색</value>
+  </data>
+  <data name="CalendarCompletion.Text03" xml:space="preserve">
+    <value>Tab / Enter / 클릭으로 삽입 · Esc로 닫기
+선택된 날짜와 시간을 수정한 뒤 저장하세요.</value>
+  </data>
+  <data name="CalendarCompletion.Text04" xml:space="preserve">
+    <value>검색어 없음: @calendar {0}
+필터: @calendar {1} 회의
+현재 날짜 따라가기: @calendar today</value>
+  </data>
+  <data name="CalendarService.Text01" xml:space="preserve">
+    <value>예: @calendar today 또는 @calendar 2026-10-05T09:00 회의 (검색어 선택 사항, 시간대 생략 시 Windows 현지 시간)</value>
+  </data>
+  <data name="CalendarService.Text02" xml:space="preserve">
+    <value>Google 요청이 진행 중입니다. 완료 후 다시 시도하세요.</value>
+  </data>
+  <data name="CalendarService.Text03" xml:space="preserve">
+    <value>2단계에서 인증 정보 JSON을 선택하세요.</value>
+  </data>
+  <data name="CalendarService.Text04" xml:space="preserve">
+    <value>데스크톱 앱용 OAuth JSON을 선택하세요. client_id가 필요합니다.</value>
+  </data>
+  <data name="CalendarService.Text05" xml:space="preserve">
+    <value>먼저 Google OAuth JSON을 설정하세요.</value>
+  </data>
+  <data name="CalendarService.Text06" xml:space="preserve">
+    <value>인증에 실패했습니다. Sticky Notes로 돌아가세요.</value>
+  </data>
+  <data name="CalendarService.Text07" xml:space="preserve">
+    <value>인증 결과를 받았습니다. 이 탭을 닫고 Sticky Notes로 돌아가세요.</value>
+  </data>
+  <data name="CalendarService.Text08" xml:space="preserve">
+    <value>Google 접근이 허용되지 않았습니다. 다시 시도하여 Calendar 접근과 Tasks 읽기를 허용하세요.</value>
+  </data>
+  <data name="CalendarService.Text09" xml:space="preserve">
+    <value>로그인이 3분 후 시간 초과되었습니다. Google 로그인을 선택하여 다시 시도하세요.</value>
+  </data>
+  <data name="CalendarService.Text10" xml:space="preserve">
+    <value>Google 인증 실패({0}). 설정에서 다시 로그인하세요.</value>
+  </data>
+  <data name="CalendarService.Text11" xml:space="preserve">
+    <value>Google 인증 응답이 올바르지 않습니다. 다시 로그인하세요.</value>
+  </data>
+  <data name="CalendarService.Text12" xml:space="preserve">
+    <value>설정에서 Google에 로그인하세요.</value>
+  </data>
+  <data name="CalendarService.Text13" xml:space="preserve">
+    <value>Google에 다시 로그인하세요.</value>
+  </data>
+  <data name="CalendarService.Text14" xml:space="preserve">
+    <value>Google에서 이 일정이 변경되었습니다. 편집 전에 일정을 새로 고치세요.</value>
+  </data>
+  <data name="CalendarService.Text15" xml:space="preserve">
+    <value>Calendar API 오류({0}). 연결, 로그인 및 일정 편집 권한을 확인하세요.</value>
+  </data>
+  <data name="CalendarService.Text16" xml:space="preserve">
+    <value>캘린더 ID를 입력하세요.</value>
+  </data>
+  <data name="CalendarService.Text17" xml:space="preserve">
+    <value>캘린더 응답을 확인하지 못했습니다.</value>
+  </data>
+  <data name="CalendarService.Text18" xml:space="preserve">
+    <value>일정 버전을 확인할 수 없습니다. 다시 검색하세요.</value>
+  </data>
+  <data name="DailyNoteResolver.Text01" xml:space="preserve">
+    <value>데일리 노트 정규식을 입력하세요.</value>
+  </data>
+  <data name="DailyNoteResolver.Text02" xml:space="preserve">
+    <value>정규식은 최대 4096자입니다.</value>
+  </data>
+  <data name="DailyNoteResolver.Text03" xml:space="preserve">
+    <value>잘못된 데일리 노트 정규식: </value>
+  </data>
+  <data name="DailyNoteResolver.Text04" xml:space="preserve">
+    <value>오늘 날짜를 식별하려면 year, month, day 이름의 그룹을 사용하세요. 예: </value>
+  </data>
+  <data name="DailyNoteResolver.Text05" xml:space="preserve">
+    <value>설정에서 데일리 노트 폴더를 선택하세요.</value>
+  </data>
+  <data name="DailyNoteResolver.Text06" xml:space="preserve">
+    <value>정규식 검색에는 심볼릭 링크나 정션이 포함된 폴더를 사용할 수 없습니다.</value>
+  </data>
+  <data name="DailyNoteResolver.Text07" xml:space="preserve">
+    <value>데일리 검색 범위가 너무 큽니다. 더 좁은 폴더를 선택하세요(10000개 항목 / 1초).</value>
+  </data>
+  <data name="DailyNoteResolver.Text08" xml:space="preserve">
+    <value>정규식 검색 시간이 초과되었습니다. 식을 단순화하세요.</value>
+  </data>
+  <data name="DailyNoteResolver.Text09" xml:space="preserve">
+    <value>오늘과 일치하는 데일리 노트가 여러 개입니다. 정규식 범위를 좁히세요.
+</value>
+  </data>
+  <data name="DailyNoteResolver.Text10" xml:space="preserve">
+    <value>오늘 날짜와 일치하는 데일리 노트가 없습니다.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text01" xml:space="preserve">
+    <value>인증 JSON 저장 위치는 링크일 수 없습니다.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text02" xml:space="preserve">
+    <value>설정 저장과 인증 JSON 복원에 실패했습니다. 복구 파일 확인: {0}</value>
+  </data>
+  <data name="HeadingPicker.Text01" xml:space="preserve">
+    <value>표시할 제목</value>
+  </data>
+  <data name="HeadingPicker.Text02" xml:space="preserve">
+    <value>제목을 선택하거나 # 없이 새 이름을 입력하세요. 비우면 전체 본문을 표시합니다. 표시를 누르면 새 제목이 원본 파일 끝에 추가됩니다.</value>
+  </data>
+  <data name="Language.Automatic" xml:space="preserve">
+    <value>Windows 언어 사용</value>
+  </data>
+  <data name="Language.Label" xml:space="preserve">
+    <value>표시 언어</value>
+  </data>
+  <data name="Language.Restart" xml:space="preserve">
+    <value>저장 후 다음 실행부터 적용됩니다. 노트 본문, 제목, 태그는 변경되지 않습니다.</value>
+  </data>
+  <data name="MarkdownView.Text01" xml:space="preserve">
+    <value>[이미지: </value>
+  </data>
+  <data name="NoteFolderMigration.Text01" xml:space="preserve">
+    <value>메모 폴더의 절대 경로를 사용하세요.</value>
+  </data>
+  <data name="NoteFolderMigration.Text02" xml:space="preserve">
+    <value>링크나 정션이 포함된 경로는 이동할 수 없습니다: </value>
+  </data>
+  <data name="NoteFolderMigration.Text03" xml:space="preserve">
+    <value>원본 폴더와 대상 폴더는 서로 포함할 수 없습니다.</value>
+  </data>
+  <data name="NoteFolderMigration.Text04" xml:space="preserve">
+    <value>원본이 폴더가 아닙니다: </value>
+  </data>
+  <data name="NoteFolderMigration.Text05" xml:space="preserve">
+    <value>대상에 같은 이름의 파일이나 폴더가 있습니다. 덮어쓰지 않습니다: </value>
+  </data>
+  <data name="NoteFolderMigration.Text06" xml:space="preserve">
+    <value>이동에 실패했고 일부 파일을 복원하지 못했습니다. 아래 대상과 원본 폴더를 확인하세요. 파일을 덮어쓰지 않았습니다.
+</value>
+  </data>
+  <data name="NoteFolderMigration.Text07" xml:space="preserve">
+    <value>
+원인: </value>
+  </data>
+  <data name="NoteLink.Text01" xml:space="preserve">
+    <value>원본 노트가 변경되었습니다. 표시하기 전에 다시 불러오세요.</value>
+  </data>
+  <data name="NoteLinkPreview.Text01" xml:space="preserve">
+    <value>본문 미리 보기(Markdown, 읽기 전용)</value>
+  </data>
+  <data name="NoteLinkPreview.Text02" xml:space="preserve">
+    <value>미리 볼 노트를 불러오세요.</value>
+  </data>
+  <data name="NoteLinkPreview.Text03" xml:space="preserve">
+    <value> — 새 제목을 끝에 추가합니다(저장 안 됨)</value>
+  </data>
+  <data name="NoteLinkPreview.Text04" xml:space="preserve">
+    <value> — 전체 본문</value>
+  </data>
+  <data name="NoteLinkPreview.Text05" xml:space="preserve">
+    <value> — 처음 4000자</value>
+  </data>
+  <data name="NoteLinkPreview.Text06" xml:space="preserve">
+    <value>미리 볼 수 없음: </value>
+  </data>
+  <data name="NoteLinkWindow.Text01" xml:space="preserve">
+    <value>Markdown 파일을 선택하세요.</value>
+  </data>
+  <data name="NoteLinkWindow.Text02" xml:space="preserve">
+    <value>데일리 노트 표시</value>
+  </data>
+  <data name="NoteLinkWindow.Text03" xml:space="preserve">
+    <value>노트 일부 연결</value>
+  </data>
+  <data name="NoteLinkWindow.Text04" xml:space="preserve">
+    <value>설정된 폴더와 패턴으로 오늘 노트를 찾고 날짜가 바뀌면 자동 전환합니다.</value>
+  </data>
+  <data name="NoteLinkWindow.Text05" xml:space="preserve">
+    <value>폴더 선택…</value>
+  </data>
+  <data name="NoteLinkWindow.Text06" xml:space="preserve">
+    <value>Markdown 파일 선택…</value>
+  </data>
+  <data name="NoteLinkWindow.Text07" xml:space="preserve">
+    <value>다시 불러오기</value>
+  </data>
+  <data name="NoteLinkWindow.Text08" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="NoteLinkWindow.Text09" xml:space="preserve">
+    <value>표시</value>
+  </data>
+  <data name="NoteLinkWindow.Text10" xml:space="preserve">
+    <value>원본 노트를 불러올 수 없습니다.</value>
+  </data>
+  <data name="NoteLinkWindow.Text11" xml:space="preserve">
+    <value>기존 Markdown 파일을 선택하세요.</value>
+  </data>
+  <data name="NoteLinkWindow.Text12" xml:space="preserve">
+    <value>오늘 노트: </value>
+  </data>
+  <data name="NoteLinkWindow.Text13" xml:space="preserve">
+    <value>선택한 노트: </value>
+  </data>
+  <data name="NoteLinkWindow.Text14" xml:space="preserve">
+    <value>먼저 Markdown 파일을 불러오세요.</value>
+  </data>
+  <data name="NoteLinkWindow.Text15" xml:space="preserve">
+    <value>오늘 노트가 변경되었습니다. 다시 불러와 제목을 선택하세요.</value>
+  </data>
+  <data name="NoteStore.Text01" xml:space="preserve">
+    <value>파일이 외부에서 변경되었습니다. 다시 불러오기 전에 작성 내용을 복사하세요.</value>
+  </data>
+  <data name="NoteStore.Text02" xml:space="preserve">
+    <value>YAML 속성은 매핑이어야 합니다.</value>
+  </data>
+  <data name="NoteStore.Text03" xml:space="preserve">
+    <value>메모</value>
+  </data>
+  <data name="NoteStore.Text04" xml:space="preserve">
+    <value>메모-{0:yyyyMMdd-HHmmss}-{1}.md</value>
+  </data>
+  <data name="NoteStore.Text05" xml:space="preserve">
+    <value>---
+type: sticky
+id: {0}
+created: {1:o}
+---
+# 새 메모
+
+- [ ] 할 일 적기
+
+**Markdown**으로 메모하세요.
+</value>
+  </data>
+  <data name="NoteStore.Text06" xml:space="preserve">
+    <value>새 메모</value>
+  </data>
+  <data name="NoteWindow.Text01" xml:space="preserve">
+    <value>드래그하여 메모 이동</value>
+  </data>
+  <data name="NoteWindow.Text02" xml:space="preserve">
+    <value>오늘 데일리 노트가 아직 없습니다.
+Obsidian에서 만들면 자동으로 표시됩니다.
+
+설정에서 어제 노트를 1. 오늘 노트가 생길 때까지 또는 2. 다시 불러오기를 누를 때까지 유지할 수 있습니다.</value>
+  </data>
+  <data name="NoteWindow.Text03" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="NoteWindow.Text04" xml:space="preserve">
+    <value>Markdown 편집(Ctrl+E)</value>
+  </data>
+  <data name="NoteWindow.Text05" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="NoteWindow.Text06" xml:space="preserve">
+    <value>저장 후 편집 종료(Ctrl+S / Esc)</value>
+  </data>
+  <data name="NoteWindow.Text07" xml:space="preserve">
+    <value>다시 불러오기</value>
+  </data>
+  <data name="NoteWindow.Text08" xml:space="preserve">
+    <value>추가 작업</value>
+  </data>
+  <data name="NoteWindow.Text09" xml:space="preserve">
+    <value>새 메모</value>
+  </data>
+  <data name="NoteWindow.Text10" xml:space="preserve">
+    <value>항상 위 전환</value>
+  </data>
+  <data name="NoteWindow.Text11" xml:space="preserve">
+    <value>이 메모 닫기(파일 유지)</value>
+  </data>
+  <data name="NoteWindow.Text12" xml:space="preserve">
+    <value>편집 중 • Ctrl+S로 저장</value>
+  </data>
+  <data name="NoteWindow.Text13" xml:space="preserve">
+    <value>표시 배율({0}%)</value>
+  </data>
+  <data name="NoteWindow.Text14" xml:space="preserve">
+    <value>확대(Ctrl++ / Ctrl+휠 위)</value>
+  </data>
+  <data name="NoteWindow.Text15" xml:space="preserve">
+    <value>축소(Ctrl+- / Ctrl+휠 아래)</value>
+  </data>
+  <data name="NoteWindow.Text16" xml:space="preserve">
+    <value>초기화(Ctrl+0)</value>
+  </data>
+  <data name="NoteWindow.Text17" xml:space="preserve">
+    <value>데일리 노트 • </value>
+  </data>
+  <data name="NoteWindow.Text18" xml:space="preserve">
+    <value>저장됨 • </value>
+  </data>
+  <data name="NoteWindow.Text19" xml:space="preserve">
+    <value>오늘 노트 대기 중</value>
+  </data>
+  <data name="NoteWindow.Text20" xml:space="preserve">
+    <value>원본 노트를 불러올 수 없음</value>
+  </data>
+  <data name="NoteWindow.Text21" xml:space="preserve">
+    <value>어제 노트를 표시 중입니다({0:yyyy-MM-dd}). 수정 내용은 해당 날짜 파일에 저장됩니다.
+</value>
+  </data>
+  <data name="NoteWindow.Text22" xml:space="preserve">
+    <value>오늘 노트로 전환하려면 다시 불러오기를 선택하세요.</value>
+  </data>
+  <data name="NoteWindow.Text23" xml:space="preserve">
+    <value>Obsidian에서 오늘 노트를 만들면 자동 전환됩니다.</value>
+  </data>
+  <data name="NoteWindow.Text24" xml:space="preserve">
+    <value>어제 / </value>
+  </data>
+  <data name="NoteWindow.Text25" xml:space="preserve">
+    <value>오늘 / </value>
+  </data>
+  <data name="NoteWindow.Text26" xml:space="preserve">
+    <value>연결됨 / </value>
+  </data>
+  <data name="NoteWindow.Text27" xml:space="preserve">
+    <value>Markdown 편집 • Ctrl+S / Esc로 저장 후 종료 • @로 자동 완성(시간대와 검색어 선택 사항)</value>
+  </data>
+  <data name="NoteWindow.Text28" xml:space="preserve">
+    <value>저장됨</value>
+  </data>
+  <data name="NoteWindow.Text29" xml:space="preserve">
+    <value>저장 실패</value>
+  </data>
+  <data name="NoteWindow.Text30" xml:space="preserve">
+    <value>변경 사항을 저장할까요?
+
+예: 저장 후 읽기 모드로 전환.
+아니요: 변경을 버리고 다시 불러오기.
+취소: 작성 내용을 유지하며 계속 편집.</value>
+  </data>
+  <data name="NoteWindow.Text31" xml:space="preserve">
+    <value>편집 내용 저장</value>
+  </data>
+  <data name="NoteWindow.Text32" xml:space="preserve">
+    <value>원본 파일을 읽을 수 없습니다.</value>
+  </data>
+  <data name="NoteWindow.Text33" xml:space="preserve">
+    <value>현재 편집 내용을 먼저 저장하세요.</value>
+  </data>
+  <data name="NoteWindow.Text34" xml:space="preserve">
+    <value>할 일 저장됨</value>
+  </data>
+  <data name="NoteWindow.Text35" xml:space="preserve">
+    <value>저장하지 않은 편집을 버리고 다시 불러올까요?</value>
+  </data>
+  <data name="NoteWindow.Text36" xml:space="preserve">
+    <value>다시 불러오기</value>
+  </data>
+  <data name="NoteWindow.Text37" xml:space="preserve">
+    <value>원본 노트 또는 날짜가 변경되었습니다. 다시 불러오기 전에 저장하거나 작성 내용을 복사하세요.</value>
+  </data>
+  <data name="NoteWindow.Text38" xml:space="preserve">
+    <value>GOOGLE CALENDAR · 일정 {0}개(최대 100개)</value>
+  </data>
+  <data name="NoteWindow.Text39" xml:space="preserve">
+    <value>클릭하여 제목과 설명 편집</value>
+  </data>
+  <data name="NoteWindow.Text40" xml:space="preserve">
+    <value>일치하는 일정이 없습니다.</value>
+  </data>
+  <data name="NoteWindow.Text41" xml:space="preserve">
+    <value>일정 새로 고침 완료 • </value>
+  </data>
+  <data name="NoteWindow.Text42" xml:space="preserve">
+    <value>일정 편집</value>
+  </data>
+  <data name="NoteWindow.Text43" xml:space="preserve">
+    <value>제목</value>
+  </data>
+  <data name="NoteWindow.Text44" xml:space="preserve">
+    <value>설명(Google 원본 데이터)</value>
+  </data>
+  <data name="NoteWindow.Text45" xml:space="preserve">
+    <value>이 변경을 Google Calendar에 전송합니다.
+참석자가 있으면 알림이 전달됩니다.
+
+시간: {0}
+
+제목(변경 전): {1}
+제목(변경 후): {2}
+
+설명(변경 전):
+{3}
+
+설명(변경 후):
+{4}</value>
+  </data>
+  <data name="NoteWindow.Text46" xml:space="preserve">
+    <value>Google Calendar를 업데이트할까요?</value>
+  </data>
+  <data name="NoteWindow.Text47" xml:space="preserve">
+    <value>Google Calendar 업데이트 완료</value>
+  </data>
+  <data name="NoteWindow.Text48" xml:space="preserve">
+    <value>업데이트 실패</value>
+  </data>
+  <data name="NoteWindow.Text49" xml:space="preserve">
+    <value>태그, 제목, 상태, 색상</value>
+  </data>
+  <data name="NoteWindow.Text50" xml:space="preserve">
+    <value>모든 메모를 앞으로 가져오기(10초)</value>
+  </data>
+  <data name="NoteWindow.Text51" xml:space="preserve">
+    <value>지금 일정 가져오기</value>
+  </data>
+  <data name="NoteWindow.Text52" xml:space="preserve">
+    <value>기본 앱에서 원본 열기</value>
+  </data>
+  <data name="NoteWindow.Text53" xml:space="preserve">
+    <value>Markdown 열기…</value>
+  </data>
+  <data name="NoteWindow.Text54" xml:space="preserve">
+    <value>노트 일부 연결…</value>
+  </data>
+  <data name="NoteWindow.Text55" xml:space="preserve">
+    <value>데일리 노트 표시…</value>
+  </data>
+  <data name="NoteWindow.Text56" xml:space="preserve">
+    <value>설정…</value>
+  </data>
+  <data name="NoteWindow.Text57" xml:space="preserve">
+    <value>앱 종료(배치 저장)</value>
+  </data>
+  <data name="NoteWindow.Text58" xml:space="preserve">
+    <value>연결된 메모는 원본 태그를 표시합니다. 원본 노트에서 태그를 편집하세요.</value>
+  </data>
+  <data name="NoteWindow.Text59" xml:space="preserve">
+    <value>메모 속성</value>
+  </data>
+  <data name="NoteWindow.Text60" xml:space="preserve">
+    <value>YAML 제목(메타데이터)</value>
+  </data>
+  <data name="NoteWindow.Text61" xml:space="preserve">
+    <value>태그(공백 또는 쉼표, 계층: project/name)</value>
+  </data>
+  <data name="NoteWindow.Text62" xml:space="preserve">
+    <value>상태(예: active / done / archived)</value>
+  </data>
+  <data name="NoteWindow.Text63" xml:space="preserve">
+    <value>색상: yellow / green / blue / pink / gray</value>
+  </data>
+  <data name="NoteWindow.Text64" xml:space="preserve">
+    <value>태그에는 문자, 숫자, _, -, /를 사용할 수 있습니다. 숫자만으로는 만들 수 없습니다.</value>
+  </data>
+  <data name="NoteWindow.Text65" xml:space="preserve">
+    <value>변경 사항을 저장할까요?</value>
+  </data>
+  <data name="SectionEditor.Text01" xml:space="preserve">
+    <value>줄바꿈 없이 한 줄로 제목을 입력하세요.</value>
+  </data>
+  <data name="SectionEditor.Text02" xml:space="preserve">
+    <value>제목을 추가할 수 없습니다. 원본 노트의 이름과 닫히지 않은 코드 블록을 확인하세요.</value>
+  </data>
+  <data name="SectionEditor.Text03" xml:space="preserve">
+    <value>제목 “{0}”을 찾을 수 없습니다. 원본 노트에 만드세요.</value>
+  </data>
+  <data name="SectionEditor.Text04" xml:space="preserve">
+    <value>“{0}” 제목이 여러 개입니다. 고유한 이름을 사용하세요.</value>
+  </data>
+  <data name="SectionEditor.Text05" xml:space="preserve">
+    <value>이 구역에는 자체 제목과 같거나 상위 단계의 제목을 넣을 수 없습니다.</value>
+  </data>
+  <data name="SectionEditor.Text06" xml:space="preserve">
+    <value>선택한 줄이 할 일이 아닙니다.</value>
+  </data>
+  <data name="SettingsWindow.Text01" xml:space="preserve">
+    <value>Sticky Notes 설정</value>
+  </data>
+  <data name="SettingsWindow.Text02" xml:space="preserve">
+    <value>편집창에서 포커스가 벗어나면 자동 저장</value>
+  </data>
+  <data name="SettingsWindow.Text03" xml:space="preserve">
+    <value>끄면 저장 전에 확인합니다. 저장 실패 시 입력 내용은 유지됩니다.</value>
+  </data>
+  <data name="SettingsWindow.Text04" xml:space="preserve">
+    <value>작업 표시줄에 메모 아이콘 표시</value>
+  </data>
+  <data name="SettingsWindow.Text05" xml:space="preserve">
+    <value>저장하면 열린 모든 메모에 적용됩니다. 알림 영역 아이콘은 계속 사용할 수 있습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text06" xml:space="preserve">
+    <value>제목에 마우스를 올리면 버튼 표시</value>
+  </data>
+  <data name="SettingsWindow.Text07" xml:space="preserve">
+    <value>켜짐: 제목에 마우스를 올리거나 F6로 포커스하면 버튼을 겹쳐 표시합니다. 왼쪽 손잡이로 이동합니다. 꺼짐: 제목 아래에 버튼을 항상 표시합니다(기본값). 저장하면 열린 모든 메모에 적용됩니다.</value>
+  </data>
+  <data name="SettingsWindow.Text08" xml:space="preserve">
+    <value>메모 폴더(예: 보관함의 Sticky Notes)</value>
+  </data>
+  <data name="SettingsWindow.Text09" xml:space="preserve">
+    <value>메모 폴더 선택</value>
+  </data>
+  <data name="SettingsWindow.Text10" xml:space="preserve">
+    <value>데일리 노트 폴더</value>
+  </data>
+  <data name="SettingsWindow.Text11" xml:space="preserve">
+    <value>데일리 노트 폴더 선택</value>
+  </data>
+  <data name="SettingsWindow.Text12" xml:space="preserve">
+    <value>데일리 패턴(날짜 그룹 + 정규식)</value>
+  </data>
+  <data name="SettingsWindow.Text13" xml:space="preserve">
+    <value>year, month, day 그룹으로 오늘 날짜를 식별합니다. .md를 포함한 전체 상대 경로와 일치해야 하며 폴더는 /로 구분합니다.
+예: </value>
+  </data>
+  <data name="SettingsWindow.Text14" xml:space="preserve">
+    <value>설정 저장 후 추가 작업 → 데일리 노트 표시에서 아래 미리 보기를 확인하세요. 고정 노트는 노트 일부 연결을 사용하세요.</value>
+  </data>
+  <data name="SettingsWindow.Text15" xml:space="preserve">
+    <value>오늘 데일리 노트가 없을 때</value>
+  </data>
+  <data name="SettingsWindow.Text16" xml:space="preserve">
+    <value>대기 메시지 표시(기본값)</value>
+  </data>
+  <data name="SettingsWindow.Text17" xml:space="preserve">
+    <value>1. 오늘 노트 생성까지 어제 유지</value>
+  </data>
+  <data name="SettingsWindow.Text18" xml:space="preserve">
+    <value>2. 다시 불러오기까지 어제 유지</value>
+  </data>
+  <data name="SettingsWindow.Text19" xml:space="preserve">
+    <value>Obsidian에서 오늘 노트를 만들면 자동 표시됩니다. 1번은 오늘 노트가 생길 때까지, 2번은 다시 불러오기까지 어제를 유지합니다. 오늘 파일 없이 다시 불러오거나 어제 파일도 없으면 대기합니다.</value>
+  </data>
+  <data name="SettingsWindow.Text20" xml:space="preserve">
+    <value>오늘 데일리 노트 확인 중…</value>
+  </data>
+  <data name="SettingsWindow.Text21" xml:space="preserve">
+    <value>오늘 노트를 찾음: </value>
+  </data>
+  <data name="SettingsWindow.Text22" xml:space="preserve">
+    <value>확인할 수 없음: </value>
+  </data>
+  <data name="SettingsWindow.Text23" xml:space="preserve">
+    <value>날짜 그룹이 있는 기본 패턴 삽입</value>
+  </data>
+  <data name="SettingsWindow.Text24" xml:space="preserve">
+    <value>year, month, day 그룹이 있는 정규식을 삽입할까요?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text25" xml:space="preserve">
+    <value>
+
+예: 필드 전체를 이 기본값으로 변경.
+아니요: 기존 식 유지.</value>
+  </data>
+  <data name="SettingsWindow.Text26" xml:space="preserve">
+    <value>날짜 그룹 정규식 삽입</value>
+  </data>
+  <data name="SettingsWindow.Text27" xml:space="preserve">
+    <value>연결 안내 및 인증(선택 사항)</value>
+  </data>
+  <data name="SettingsWindow.Text28" xml:space="preserve">
+    <value>독립 문단의 시작에 @를 입력하면 자동 완성과 예시가 표시됩니다(앞의 글 뒤에 빈 줄을 두세요).
+예: @calendar 2026-10-06T09:00
+시간대와 검색어는 선택 사항입니다(Windows 현지 시간).
+Google Tasks는 읽기 전용입니다. API는 날짜만 제공하며 예약 시각은 가져올 수 없습니다. Google에 시간이 있어도 “시간 없음”으로 표시합니다.</value>
+  </data>
+  <data name="SettingsWindow.Text29" xml:space="preserve">
+    <value>1단계: Google 준비(2026-10-06 공식 문서와 대조)
+본인 Google 계정의 개인 사용 기준입니다. 버튼은 기본 브라우저를 엽니다. 1-1부터 1-5까지 같은 프로젝트를 선택하세요. 항목 이름은 Google 표시 언어에 따라 다릅니다.</value>
+  </data>
+  <data name="SettingsWindow.Text30" xml:space="preserve">
+    <value>1-1. Google Calendar API 열기</value>
+  </data>
+  <data name="SettingsWindow.Text31" xml:space="preserve">
+    <value>상단에서 프로젝트를 선택하거나 New project로 만들고 선택하세요(예: StickyNotes Personal). Google Calendar API 페이지에서 Enable을 누릅니다. Manage가 보이면 이미 활성화되어 있습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text32" xml:space="preserve">
+    <value>1-2. Branding 열기</value>
+  </data>
+  <data name="SettingsWindow.Text33" xml:space="preserve">
+    <value>미설정이면 Get started를 선택합니다.
+• App name: 예: StickyNotes Personal
+• User support email: 수신 가능한 주소 → Next
+• Audience: 개인 Google 계정은 External → Next
+• Contact information: 본인 이메일 → Next
+• 사용자 데이터 정책을 확인하고 적절하면 동의 → Continue → Create
+이미 설정했다면 확인 후 1-3으로 진행하세요. Internal은 Google Cloud 조직 내부로 접근을 제한합니다.</value>
+  </data>
+  <data name="SettingsWindow.Text34" xml:space="preserve">
+    <value>1-3. Audience 열기</value>
+  </data>
+  <data name="SettingsWindow.Text35" xml:space="preserve">
+    <value>External 앱이 Testing 상태이면 Test users → Add users에서 캘린더를 사용할 Google 계정을 입력하고 Save를 누르세요. Cloud 관리 계정과 다르면 캘린더 계정을 추가하세요. 앱을 공개할 필요는 없습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text36" xml:space="preserve">
+    <value>1-4. Data Access 열기</value>
+  </data>
+  <data name="SettingsWindow.Text37" xml:space="preserve">
+    <value>외부 앱은 Add or Remove Scopes에서 아래 두 범위를 선택하세요. 없으면 Manually add scopes에 각 URL을 입력합니다. Update 후 Save를 누르세요.</value>
+  </data>
+  <data name="SettingsWindow.Text38" xml:space="preserve">
+    <value>위 URL을 선택하여 복사할 수 있습니다. calendar.events는 일정 조회/편집, tasks.readonly는 Tasks 읽기만 허용합니다. 캘린더 ID는 OAuth 권한을 제한하거나 할 일 목록을 선택하지 않습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text39" xml:space="preserve">
+    <value>1-5. Clients 열기</value>
+  </data>
+  <data name="SettingsWindow.Text40" xml:space="preserve">
+    <value>Create client → Application type: Desktop app → 이름(예: StickyNotes Desktop) → Create를 선택합니다. 결과 창을 닫기 전에 Download JSON을 사용하세요. 비밀 값은 나중에 다시 받을 수 없을 수 있습니다. 웹 앱 리디렉션 URI나 JavaScript 출처는 설정하지 마세요.
+2단계에서 받은 JSON을 선택하고 앱으로 가져오기로 앱 데이터에 복사합니다. 이름 변경은 필요 없습니다. API 키와 서비스 계정 JSON은 지원하지 않습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text41" xml:space="preserve">
+    <value>다음: JSON 선택 → 앱으로 가져오기 → 기본 캘린더 ID: primary → 3단계 로그인. 브라우저에서 1-3의 계정을 선택하고 앱 이름을 확인한 뒤 Calendar 접근과 Tasks 읽기를 허용하세요. 앱이 결과를 자동 수신합니다. 탭을 닫고 설정에서 연결 확인 완료를 확인하세요.
+Google Tasks는 읽기 전용입니다. API는 날짜만 제공하며 예약 시각은 가져올 수 없습니다. Google에 시간이 있어도 “시간 없음”으로 표시합니다.</value>
+  </data>
+  <data name="SettingsWindow.Text42" xml:space="preserve">
+    <value>문제 해결
+• access_denied: 테스트 사용자와 로그인 계정을 확인하세요. 조직 정책 차단은 관리자에게 문의하세요.
+• 미확인 앱: 본인 클라이언트 이름과 계정을 확인하고, 확실하지 않으면 중단하세요.
+• 로그인 후 연결 오류: 캘린더 ID, 같은 프로젝트의 API 활성화와 권한을 확인하세요. 3단계는 재인증, 4단계는 연결 확인만 합니다.
+• External/Testing의 이 범위 갱신 토큰은 7일 후 만료됩니다. 3단계로 다시 로그인하세요.
+• 3·4단계는 Google 외 항목을 포함한 모든 설정을 저장합니다.</value>
+  </data>
+  <data name="SettingsWindow.Text43" xml:space="preserve">
+    <value>Google 문서: 동의 설정</value>
+  </data>
+  <data name="SettingsWindow.Text44" xml:space="preserve">
+    <value>Google 문서: OAuth 클라이언트 관리</value>
+  </data>
+  <data name="SettingsWindow.Text45" xml:space="preserve">
+    <value>1단계: 초기 설정 안내 열기</value>
+  </data>
+  <data name="SettingsWindow.Text46" xml:space="preserve">
+    <value>2단계: Google OAuth 데스크톱 앱 JSON</value>
+  </data>
+  <data name="SettingsWindow.Text47" xml:space="preserve">
+    <value>JSON은 로그인 또는 연결 확인 시 검증됩니다.</value>
+  </data>
+  <data name="SettingsWindow.Text48" xml:space="preserve">
+    <value>JSON 선택 및 확인</value>
+  </data>
+  <data name="SettingsWindow.Text49" xml:space="preserve">
+    <value>데스크톱 JSON 확인 완료. 앱으로 가져오기를 누르고 3단계로 진행하세요.</value>
+  </data>
+  <data name="SettingsWindow.Text50" xml:space="preserve">
+    <value>앱으로 가져오기</value>
+  </data>
+  <data name="SettingsWindow.Text51" xml:space="preserve">
+    <value>가져온 JSON을 계속 사용하도록 설정을 저장했습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text52" xml:space="preserve">
+    <value>앱 데이터에 복사하고 경로를 저장했습니다. 이제 원본 JSON을 이동하거나 삭제할 수 있습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text53" xml:space="preserve">
+    <value>가져온 JSON 삭제</value>
+  </data>
+  <data name="SettingsWindow.Text54" xml:space="preserve">
+    <value>가져온 JSON 사본을 삭제할까요?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text55" xml:space="preserve">
+    <value>
+
+원본 JSON은 유지됩니다. 토큰과 Google 측 권한은 제거하지 않습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text56" xml:space="preserve">
+    <value>가져온 JSON 삭제</value>
+  </data>
+  <data name="SettingsWindow.Text57" xml:space="preserve">
+    <value>가져온 JSON을 삭제했습니다. 원본 파일과 토큰은 유지됩니다.</value>
+  </data>
+  <data name="SettingsWindow.Text58" xml:space="preserve">
+    <value>대상: %LOCALAPPDATA%\StickyNotes\credentials-google.json
+가져오기와 삭제는 다른 필드 저장 없이 즉시 적용됩니다. 관리되는 사본만 삭제할 수 있습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text59" xml:space="preserve">
+    <value>캘린더 ID(기본 캘린더는 primary)</value>
+  </data>
+  <data name="SettingsWindow.Text60" xml:space="preserve">
+    <value>메모 폴더의 절대 경로를 사용하세요.</value>
+  </data>
+  <data name="SettingsWindow.Text61" xml:space="preserve">
+    <value>데일리 노트 폴더의 절대 경로를 사용하세요.</value>
+  </data>
+  <data name="SettingsWindow.Text62" xml:space="preserve">
+    <value>캘린더 ID를 입력하세요.</value>
+  </data>
+  <data name="SettingsWindow.Text63" xml:space="preserve">
+    <value>저장된 모든 메모 파일을 이동할까요?
+
+원본: {0}
+대상: {1}
+
+예: 하위 폴더와 닫은 메모를 포함해 이전 폴더의 모든 .md 파일을 이동합니다. 기존 파일은 덮어쓰지 않습니다.
+데일리 폴더 설정은 자동으로 바뀌지 않습니다. 해당 파일도 이동하면 따로 변경하세요.
+아니요: 새 메모 폴더만 바꾸고 기존 파일은 유지합니다.
+취소: 설정을 저장하지 않습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text64" xml:space="preserve">
+    <value>메모 파일 이동</value>
+  </data>
+  <data name="SettingsWindow.Text65" xml:space="preserve">
+    <value>3단계: Google 로그인</value>
+  </data>
+  <data name="SettingsWindow.Text66" xml:space="preserve">
+    <value>4단계: 연결 확인(로그인 상태)</value>
+  </data>
+  <data name="SettingsWindow.Text67" xml:space="preserve">
+    <value>로그인 / 연결 확인 취소</value>
+  </data>
+  <data name="SettingsWindow.Text68" xml:space="preserve">
+    <value>저장 후 닫기</value>
+  </data>
+  <data name="SettingsWindow.Text69" xml:space="preserve">
+    <value>3분 이내에 Google에 로그인하여 Calendar 접근과 Tasks 읽기를 허용하세요. 이후 연결을 자동 확인합니다.</value>
+  </data>
+  <data name="SettingsWindow.Text70" xml:space="preserve">
+    <value>Calendar 및 Tasks 연결 확인 중…</value>
+  </data>
+  <data name="SettingsWindow.Text71" xml:space="preserve">
+    <value>연결 확인 완료. 메모에서 @calendar today를 사용해 보세요. 일정이나 할 일을 변경하지 않았습니다.</value>
+  </data>
+  <data name="SettingsWindow.Text72" xml:space="preserve">
+    <value>취소되었습니다. 브라우저 로그인 탭을 닫으세요. 완료된 인증은 유지됩니다.</value>
+  </data>
+  <data name="SettingsWindow.Text73" xml:space="preserve">
+    <value>로그인은 저장했으나 연결 확인에 실패했습니다. 캘린더 ID, API 활성화와 권한을 확인한 뒤 4단계를 재시도하세요.
+</value>
+  </data>
+  <data name="SettingsWindow.Text74" xml:space="preserve">
+    <value>메모 폴더를 바꾸면 기존 파일 이동 여부를 묻습니다.
+백업, 배치와 인증 정보는 %LOCALAPPDATA%\StickyNotes에 저장됩니다.</value>
+  </data>
+  <data name="Ui.Text01" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="GoogleTasks.Access" xml:space="preserve">
+    <value>Google Tasks를 읽을 수 없습니다. 같은 Cloud 프로젝트에서 Tasks API를 켜고 tasks.readonly를 추가한 뒤 설정의 3단계로 다시 로그인하세요.</value>
+  </data>
+  <data name="GoogleTasks.Error" xml:space="preserve">
+    <value>Google Tasks 가져오기 실패(HTTP {0}). 다음 새로 고침에서 재시도합니다.</value>
+  </data>
+  <data name="GoogleTasks.Invalid" xml:space="preserve">
+    <value>Google Tasks 응답이 올바르지 않습니다.</value>
+  </data>
+  <data name="GoogleTasks.Timeout" xml:space="preserve">
+    <value>Google Tasks 가져오기가 30초 후 시간 초과되었습니다. 다음 새로 고침에서 재시도합니다.</value>
+  </data>
+  <data name="GoogleTasks.Enable" xml:space="preserve">
+    <value>1-1: Google Tasks API 활성화</value>
+  </data>
+  <data name="GoogleTasks.Setup" xml:space="preserve">
+    <value>Calendar와 같은 Cloud 프로젝트에서 Google Tasks API를 켜고 calendar.events와 tasks.readonly를 추가하세요. 기존 사용자도 3단계로 다시 로그인하여 Tasks 읽기를 허용해야 합니다. 새 JSON은 필요 없습니다. 모든 목록의 날짜가 있는 미완료 할 일을 읽기 전용으로 표시합니다. 캘린더 ID는 할 일 목록을 선택하지 않습니다.
+Google Tasks API는 날짜만 제공하며 예약 시각은 가져올 수 없습니다. Google에 시간이 있어도 “시간 없음”으로 표시합니다.</value>
+  </data>
+  <data name="GoogleTasks.Loading" xml:space="preserve">
+    <value>Google Tasks 불러오는 중…</value>
+  </data>
+  <data name="GoogleTasks.Count" xml:space="preserve">
+    <value>Google Tasks: {0}개(읽기 전용)</value>
+  </data>
+  <data name="GoogleTasks.Item" xml:space="preserve">
+    <value>{0}(시간 없음) · {1}
+{2}</value>
+  </data>
+  <data name="GoogleTasks.Empty" xml:space="preserve">
+    <value>일치하는 날짜 지정 미완료 할 일이 없습니다.</value>
+  </data>
+  <data name="GoogleTasks.Truncated" xml:space="preserve">
+    <value>가져오기 한도에 도달하여 일부 결과만 표시합니다(할 일 100개 / 요청 20회).</value>
+  </data>
+  <data name="GoogleTasks.Partial" xml:space="preserve">
+    <value>일부 데이터를 가져오지 못했습니다. Calendar / Tasks 메시지를 확인하세요.</value>
+  </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>Obsidian CLI 사용(기본값)</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>Obsidian을 실행하고 보관함을 선택하세요. CLI가 노트 본문, 저장, 데일리 설정을 처리합니다. Tasks / Dataview 쿼리는 각 플러그인이 필요하며 Dataview는 LIST, TABLE, TASK를 지원합니다. 실패 시 로컬 읽기로 전환하지 않습니다. CLI를 끄면 로컬 설정이 보입니다. Tasks 쿼리의 JavaScript는 Obsidian 안에서 실행되므로 신뢰할 수 있는 쿼리만 사용하세요.</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Obsidian.com 절대 경로</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>대상 보관함 폴더</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>Obsidian 보관함 이름 / ID(연결 대상)</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>보관함과 노트의 절대 경로가 필요합니다.</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>이 노트는 설정된 보관함 안의 Markdown 파일이 아닙니다.</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>노트당 최대 쿼리 20개 / 8,000자입니다. 긴 경로나 쿼리를 줄이세요.</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>공식 Obsidian.com의 절대 경로를 설정하세요.</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>유효한 CLI 결과가 없습니다. Obsidian CLI 설정과 대상 보관함을 확인하세요.</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>Obsidian을 실행하세요. 미리 보기는 종료된 앱을 의도적으로 실행하지 않습니다.</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>CLI 출력 한도를 초과했습니다. 쿼리에 제한을 추가하세요.</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>Tasks 새로 고침(미리 보기)</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI — 대기 중</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — 가져옴 {1}</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Tasks 가져오기 오류(표시 결과는 최신이 아님): </value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>표시할 결과 없음</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Tasks 요청 시간이 초과되었습니다. Obsidian 내부 작업은 계속 실행 중일 수 있습니다.</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>노트 원본이 변경되었습니다. 작성 내용을 복사하고 다시 불러온 뒤 저장하세요.</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>Obsidian CLI로 노트 읽는 중…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>Obsidian CLI로 노트를 확인했습니다.</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>CLI 노트 읽기 실패(로컬 대체 없음): </value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>CLI 명령 길이 한도를 초과했습니다. 보관함 이름, 경로 또는 쿼리 길이를 확인하세요.</value>
+  </data>
+  <data name="CliDaily.Detect" xml:space="preserve">
+    <value>CLI로 보관함 폴더 가져오기</value>
+  </data>
+  <data name="CliDaily.Help" xml:space="preserve">
+    <value>폴더, 날짜 형식과 템플릿은 Obsidian을 따릅니다. 오늘과 어제 경로만 확인하며 없는 데일리 노트는 만들지 않습니다. 새 노트 저장 위치는 메모 폴더 선택으로 지정할 수 있으며, 미지정 시 Obsidian을 따릅니다.</value>
+  </data>
+  <data name="CliDaily.Summary" xml:space="preserve">
+    <value>폴더: {0}
+날짜 형식: {1}
+템플릿: {2}
+오늘: {3} ({4})</value>
+  </data>
+  <data name="CliDaily.Default" xml:space="preserve">
+    <value>Obsidian 기본값</value>
+  </data>
+  <data name="CliDaily.None" xml:space="preserve">
+    <value>없음</value>
+  </data>
+  <data name="CliDaily.Exists" xml:space="preserve">
+    <value>존재함</value>
+  </data>
+  <data name="CliDaily.Missing" xml:space="preserve">
+    <value>생성되지 않음, 대기 중</value>
+  </data>
+  <data name="CliDaily.DISABLED" xml:space="preserve">
+    <value>Obsidian 코어 Daily notes 플러그인을 켜세요.</value>
+  </data>
+  <data name="CliDaily.UNSUPPORTED" xml:space="preserve">
+    <value>이 Obsidian Daily notes API는 지원하지 않습니다.</value>
+  </data>
+  <data name="CliDaily.PATH" xml:space="preserve">
+    <value>Obsidian의 데일리 폴더와 날짜 형식을 확인하세요.</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>기준 폴더(로컬 모드)</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>메모 저장 폴더 선택…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>메모 저장 폴더: {0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>폴더를 선택하거나 새 상대 경로를 입력하세요. “.”은 위의 루트입니다. 확인은 기존 메모 이동 여부를 묻고 설정을 저장합니다. 취소하면 아무것도 만들지 않습니다.</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>여기에 메모를 저장할까요?
+{0}
+
+예: 이전 저장 폴더의 앱 생성 메모도 이동합니다(하위 폴더 포함).
+아니요: 새 메모 저장 위치만 변경합니다.
+취소: 변경하지 않습니다.
+
+일반 연결 노트와 데일리 노트는 제외합니다. 이동한 노트 안의 상대 링크는 변경하지 않습니다.</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>메모 저장 폴더를 변경 중입니다. 기다려 주세요.</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>선택한 루트 안의 상대 폴더 경로를 입력하세요. 상위, 숨김, 예약 경로는 허용하지 않습니다.</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>항목이 너무 많습니다. 더 작은 기준 폴더를 선택하세요(10,000개 항목 / 메모 1,000개).</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>파일이 이미 있거나 이동 중 변경되었습니다. 덮어쓰지 않습니다.</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>다른 보관함 또는 접근 모드 간 이동은 지원하지 않습니다. 아니요를 선택하면 저장 위치만 변경합니다.</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>일부 이동을 되돌리지 못했습니다. 복구 기록을 보관하고 재시도 전에 두 경로를 확인하세요:</value>
+  </data>
+  <data name="Editing.Activation" xml:space="preserve">
+    <value>본문 편집 시작 방식</value>
+  </data>
+  <data name="Editing.SingleClick" xml:space="preserve">
+    <value>한 번 클릭</value>
+  </data>
+  <data name="Editing.DoubleClick" xml:space="preserve">
+    <value>두 번 클릭</value>
+  </data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>Tasks / Dataview 새로 고침</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — 대기 중</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — 가져옴 {1}</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Dataview 가져오기 오류(표시 결과는 최신이 아님): </value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>표시할 결과 없음</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Dataview 요청 시간이 초과되었습니다. Obsidian 내부 작업은 계속 실행 중일 수 있습니다.</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>선택한 보관함에서 Dataview 플러그인을 켜세요.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>이 Dataview API는 지원하지 않습니다. 플러그인을 업데이트하세요.</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataview가 색인 중입니다. 다음 새로 고침에서 재시도합니다.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDAR는 Markdown으로 내보낼 수 없습니다. LIST, TABLE, TASK를 사용하세요.</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataview가 잘못된 응답을 반환했습니다.</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Dataview 출력이 블록당 200,000자를 초과했습니다. LIMIT으로 범위를 줄이세요.</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>Dataview 쿼리는 노트당 20블록, 총 8,000자로 제한됩니다.</value>
+  </data>
+  <data name="NoteBrowser.Title" xml:space="preserve">
+    <value>메모 폴더 관리…</value>
+  </data>
+  <data name="NoteBrowser.Help" xml:space="preserve">
+    <value>다시 열거나 삭제할 Markdown 노트를 선택하세요. 미리 보기와 YAML은 읽기 전용이며 쿼리를 실행하지 않습니다.</value>
+  </data>
+  <data name="NoteBrowser.Open" xml:space="preserve">
+    <value>메모로 열기</value>
+  </data>
+  <data name="NoteBrowser.Search" xml:space="preserve">
+    <value>파일명 또는 경로로 필터</value>
+  </data>
+  <data name="NoteBrowser.Preview" xml:space="preserve">
+    <value>본문 미리 보기</value>
+  </data>
+  <data name="NoteBrowser.Loading" xml:space="preserve">
+    <value>불러오는 중…</value>
+  </data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve">
+    <value>목록 새로 고침</value>
+  </data>
+  <data name="NoteBrowser.Count" xml:space="preserve">
+    <value>Markdown 노트 {0}개</value>
+  </data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve">
+    <value> (처음 50,000자)</value>
+  </data>
+  <data name="TaskEditing.Keys" xml:space="preserve">
+    <value>↑↓ 선택 · Enter 삽입 · Tab 들여쓰기 · Esc 닫기</value>
+  </data>
+  <data name="TaskEditing.Label" xml:space="preserve">
+    <value>할 일 입력 자동 완성</value>
+  </data>
+  <data name="TaskEditing.Automatic" xml:space="preserve">
+    <value>자동(Obsidian에서 Tasks 활성화 시)</value>
+  </data>
+  <data name="TaskEditing.On" xml:space="preserve">
+    <value>켜짐(Tasks 없이도 제안)</value>
+  </data>
+  <data name="TaskEditing.Off" xml:space="preserve">
+    <value>꺼짐(제안 없음)</value>
+  </data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve">
+    <value>기본값은 자동입니다. Tasks가 없거나 꺼졌거나 연결할 수 없거나 로컬 모드이면 수동으로 켜기 전까지 제안하지 않습니다. Enter로 목록을 이어 쓰거나 체크박스를 조작하는 기능은 별도로 사용할 수 있습니다.</value>
+  </data>
+  <data name="Hotkey.Unavailable" xml:space="preserve">
+    <value>Alt + Z를 등록하지 못했습니다. 다른 앱이 사용 중일 수 있습니다. 임시 항상 위는 알림 영역 또는 메모 메뉴에서 계속 사용할 수 있습니다. 충돌을 해결하고 앱을 다시 시작하세요.</value>
+  </data>
+  <data name="HeadingFilter.Title" xml:space="preserve">
+    <value>제목 필터</value>
+  </data>
+  <data name="HeadingFilter.Search" xml:space="preserve">
+    <value>제목 검색</value>
+  </data>
+  <data name="HeadingFilter.Clear" xml:space="preserve">
+    <value>모두 표시</value>
+  </data>
+  <data name="HeadingFilter.Empty" xml:space="preserve">
+    <value>제목을 찾을 수 없습니다.</value>
+  </data>
+  <data name="HeadingFilter.Missing" xml:space="preserve">
+    <value>선택한 제목이 없거나 중복됩니다. 제목 메뉴에서 모두 표시를 선택하고 다시 선택하세요.</value>
+  </data>
+  <data name="NoteWindow.Details" xml:space="preserve">
+    <value>상세 정보 표시/숨기기</value>
+  </data>
+  <data name="HeadingFilter.Short" xml:space="preserve">
+    <value>제목</value>
+  </data>
+  <data name="HeadingFilter.Count" xml:space="preserve">
+    <value>구역 {0}개</value>
+  </data>
+  <data name="TaskEditing.ToggleShortcut" xml:space="preserve">
+    <value>체크박스 전환 단축키</value>
+  </data>
+  <data name="TaskEditing.ShortcutHelp" xml:space="preserve">
+    <value>필드를 선택하고 Ctrl 또는 Alt와 문자, 숫자, Enter, Space, F1–F12를 함께 누르세요(Shift 선택 사항). 예: Ctrl+Enter. 기본값은 미지정입니다. 편집 중 커서 줄의 체크를 전환합니다. Delete/Backspace 또는 단축키 지우기로 해제합니다.</value>
+  </data>
+  <data name="TaskEditing.ShortcutInvalid" xml:space="preserve">
+    <value>사용할 수 없는 키 조합입니다. Ctrl 또는 Alt가 필요합니다. 저장, 편집, 기본 복사/붙여넣기/실행 취소와 예약 명령은 지정할 수 없습니다.</value>
+  </data>
+  <data name="TaskEditing.ShortcutClear" xml:space="preserve">
+    <value>단축키 지우기</value>
+  </data>
+  <data name="AppCommands.RestoreClosed" xml:space="preserve">
+    <value>최근 닫은 메모 다시 열기</value>
+  </data>
+  <data name="NoteWindow.Saving" xml:space="preserve">
+    <value>저장 중입니다. 완료될 때까지 기다려 주세요.</value>
+  </data>
+  <data name="Rename.Menu" xml:space="preserve">
+    <value>파일 이름 변경…</value>
+  </data>
+  <data name="Rename.Hint" xml:space="preserve">
+    <value>두 번 클릭하여 파일 이름 변경</value>
+  </data>
+  <data name="Rename.Daily" xml:space="preserve">
+    <value>데일리 노트 파일은 여기서 이름을 바꿀 수 없습니다.</value>
+  </data>
+  <data name="Rename.Label" xml:space="preserve">
+    <value>새 파일명(확장자 제외). 메모 제목도 변경됩니다.</value>
+  </data>
+  <data name="Rename.Invalid" xml:space="preserve">
+    <value>유효한 파일명을 입력하세요. 빈 이름, 경로 구분자, 예약 이름, 끝의 공백이나 마침표는 허용하지 않습니다.</value>
+  </data>
+  <data name="Rename.Draft" xml:space="preserve">
+    <value>이 파일을 표시하는 다른 메모의 편집 내용을 저장하고 다시 시도하세요.</value>
+  </data>
+  <data name="Rename.Recovery" xml:space="preserve">
+    <value>이름 변경 또는 설정 저장을 확인하지 못했습니다. 원본/대상 파일과 아래 복구 기록을 확인하세요. 파일이 이동했다면 대상 파일을 다시 여세요.</value>
+  </data>
+  <data name="Rename.Unavailable" xml:space="preserve">
+    <value>노트를 아직 불러오지 않아 이름을 바꿀 수 없습니다. 완료 후 다시 시도하세요.</value>
+  </data>
+  <data name="NoteBrowser.Delete" xml:space="preserve">
+    <value>메모 삭제</value>
+  </data>
+  <data name="NoteBrowser.DeleteConfirm" xml:space="preserve">
+    <value>이 Markdown 파일 전체를 삭제할까요?
+{0}
+
+이 파일을 표시하는 메모도 닫힙니다. 앱 데이터 폴더의 deleted-notes에 복구 파일이 남습니다.</value>
+  </data>
+  <data name="NoteBrowser.Deleting" xml:space="preserve">
+    <value>메모 삭제 중…</value>
+  </data>
+  <data name="NoteBrowser.DeleteDraft" xml:space="preserve">
+    <value>이 파일을 표시하는 메모에 저장하지 않은 편집이 있습니다. 저장하거나 버린 뒤 삭제하세요.</value>
+  </data>
+  <data name="NoteBrowser.SettingsChanged" xml:space="preserve">
+    <value>설정이 변경되었습니다. 관리 창을 다시 여세요.</value>
+  </data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>메인</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>보조</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>등록된 보관함이 없습니다. 설정을 확인하세요.</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>보관함 표시 이름과 내부 ID를 확인하세요.</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>원본 설정이 변경되었습니다. 작성 내용을 저장하거나 복사한 뒤 노트를 다시 불러오세요.</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>메인 보관함과 열려 있거나 최근 닫은 메모에서 사용 중인 보관함은 제거할 수 없습니다.</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>여러 보관함 사용 시 각각의 CLI 이름/ID를 지정하세요. 이름이 비어 있으면 CLI로 보관함 폴더 가져오기가 Obsidian에서 선택된 보관함 이름도 채웁니다.</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>같은 폴더를 여러 보관함으로 등록할 수 없습니다.</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>보관함</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>보관함 추가</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>등록 제거</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>새 데일리 노트의 기본 보관함</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>기존 메모의 보관함은 유지됩니다. 등록을 제거해도 파일은 삭제되지 않습니다.</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>표시 이름(나중에 변경 가능)</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>데일리 설정은 보관함별로 저장됩니다. 새 일반 메모와 저장 폴더는 메인 등록을 사용합니다.</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>연결 / 오늘 노트 확인</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>보관함 및 데일리 노트</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>Obsidian 보관함 이름/ID를 입력하고(표시 이름과 별개) 위 버튼으로 보관함 루트 폴더를 가져오세요. 입력만으로는 가져오지 않습니다. 비우면 Obsidian의 선택을 사용합니다. 가져온 뒤 데일리 폴더를 자동 확인합니다. 일반 메모 폴더는 따로 선택하고 저장 후 닫기로 적용하세요.</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>CLI로 보관함 폴더 가져오는 중…(완료 전에는 설정을 저장할 수 없음)</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>가져옴: {0} → {1}. 아직 저장하지 않았습니다. 저장 후 닫기로 적용하세요.</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>폴더를 가져오지 못했습니다. 입력 내용은 유지됩니다. {0}</value>
+  </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>표시 및 속성</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>연결 데이터 새로 고침</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>만들기 및 열기</value>
+  </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>Tasks {0}은 지원하지 않습니다. 8.2.2 이상으로 업데이트하세요. 해당 보관함의 Obsidian에서 설정 → 커뮤니티 플러그인 → 업데이트 확인으로 Tasks를 업데이트한 뒤, 메모 메뉴의 연결 데이터 새로 고침 → Tasks / Dataview 새로 고침을 실행하세요.</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>이 Tasks 내부 API는 지원하지 않습니다. Tasks와 메모 앱 업데이트를 확인하세요. 원본 할 일은 변경되지 않았습니다.</value>
+  </data>
+</root>

@@ -1,22 +1,26 @@
-[日本語](SCREENSHOTS.md) | [English](SCREENSHOTS.en.md) | [简体中文](SCREENSHOTS.zh-CN.md) | [繁體中文](SCREENSHOTS.zh-TW.md) | [한국어](SCREENSHOTS.ko.md)
+[日本語](SCREENSHOTS.md) | [English](SCREENSHOTS.en.md) | [简体中文](SCREENSHOTS.zh-CN.md) | [繁體中文（台灣）](SCREENSHOTS.zh-TW.md) | [한국어](SCREENSHOTS.ko.md) | [Deutsch](SCREENSHOTS.de.md) | [Русский](SCREENSHOTS.ru.md) | [Español](SCREENSHOTS.es.md) | [Svenska](SCREENSHOTS.sv.md)
 
-# 界面示例与生成方法
+# 界面示例与重新生成
 
-使用当前开发版 WPF 控件将虚构示例渲染为460 × 580像素 PNG。并非桌面截图，也未连接实际 Obsidian／Google。不使用个人笔记、设置或凭据。
+使用当前开发版的 WPF 控件，将虚构笔记渲染为460 × 580 px PNG。这不是桌面截图或实际连接 Obsidian／Google 的画面，不使用个人笔记、设置或凭据。
 
-日语、英语和简体中文的正文与 UI 语言一致。繁体中文和韩语仅翻译正文，使用英文 UI，并未增加 UI 语言。每日文件名中的日期为生成日期。
+先完成九种 UI 语言支持，再重新生成正文与界面语言一致的27张图片。台湾华语使用繁体中文（zh-TW）。每日笔记文件名为生成日期。
 
-| Language / 言語 / 语言 | Tasks | Markdown | Daily |
+| Language | Tasks | Markdown | Daily |
 | --- | --- | --- | --- |
 | 日本語 | [![日本語 tasks](images/sticky-tasks-ja.png)](images/sticky-tasks-ja.png) | [![日本語 markdown](images/sticky-markdown-ja.png)](images/sticky-markdown-ja.png) | [![日本語 daily](images/sticky-daily-ja.png)](images/sticky-daily-ja.png) |
 | English | [![English tasks](images/sticky-tasks-en.png)](images/sticky-tasks-en.png) | [![English markdown](images/sticky-markdown-en.png)](images/sticky-markdown-en.png) | [![English daily](images/sticky-daily-en.png)](images/sticky-daily-en.png) |
 | 简体中文 | [![简体中文 tasks](images/sticky-tasks-zh-CN.png)](images/sticky-tasks-zh-CN.png) | [![简体中文 markdown](images/sticky-markdown-zh-CN.png)](images/sticky-markdown-zh-CN.png) | [![简体中文 daily](images/sticky-daily-zh-CN.png)](images/sticky-daily-zh-CN.png) |
-| 繁體中文 | [![繁體中文 tasks](images/sticky-tasks-zh-TW.png)](images/sticky-tasks-zh-TW.png) | [![繁體中文 markdown](images/sticky-markdown-zh-TW.png)](images/sticky-markdown-zh-TW.png) | [![繁體中文 daily](images/sticky-daily-zh-TW.png)](images/sticky-daily-zh-TW.png) |
+| 繁體中文（台灣） | [![繁體中文（台灣） tasks](images/sticky-tasks-zh-TW.png)](images/sticky-tasks-zh-TW.png) | [![繁體中文（台灣） markdown](images/sticky-markdown-zh-TW.png)](images/sticky-markdown-zh-TW.png) | [![繁體中文（台灣） daily](images/sticky-daily-zh-TW.png)](images/sticky-daily-zh-TW.png) |
 | 한국어 | [![한국어 tasks](images/sticky-tasks-ko.png)](images/sticky-tasks-ko.png) | [![한국어 markdown](images/sticky-markdown-ko.png)](images/sticky-markdown-ko.png) | [![한국어 daily](images/sticky-daily-ko.png)](images/sticky-daily-ko.png) |
+| Deutsch | [![Deutsch tasks](images/sticky-tasks-de.png)](images/sticky-tasks-de.png) | [![Deutsch markdown](images/sticky-markdown-de.png)](images/sticky-markdown-de.png) | [![Deutsch daily](images/sticky-daily-de.png)](images/sticky-daily-de.png) |
+| Русский | [![Русский tasks](images/sticky-tasks-ru.png)](images/sticky-tasks-ru.png) | [![Русский markdown](images/sticky-markdown-ru.png)](images/sticky-markdown-ru.png) | [![Русский daily](images/sticky-daily-ru.png)](images/sticky-daily-ru.png) |
+| Español | [![Español tasks](images/sticky-tasks-es.png)](images/sticky-tasks-es.png) | [![Español markdown](images/sticky-markdown-es.png)](images/sticky-markdown-es.png) | [![Español daily](images/sticky-daily-es.png)](images/sticky-daily-es.png) |
+| Svenska | [![Svenska tasks](images/sticky-tasks-sv.png)](images/sticky-tasks-sv.png) | [![Svenska markdown](images/sticky-markdown-sv.png)](images/sticky-markdown-sv.png) | [![Svenska daily](images/sticky-daily-sv.png)](images/sticky-daily-sv.png) |
 
 ## 重新生成（开发者）
 
-在 Windows 上使用.NET 8 SDK，从仓库根目录运行。如使用本地 SDK，将dotnet替换为.tools/dotnet/dotnet.exe。共生成15张图片。生成后检查所有图片的换行、裁切和缺字，并同步至少三种参考语言的说明。
+在 Windows 上安装 .NET 8 SDK，从仓库根目录执行。如使用本地 SDK，将 dotnet 替换为 .tools/dotnet/dotnet.exe。逐一检查27张图片的换行、裁切及缺字，并同步九种语言说明。
 
 ```powershell
 ./build.ps1
@@ -25,13 +29,13 @@ dotnet run --project tests/StickyNotes.Tests -c Release --no-build -- --render-s
 
 ## 在应用中试用
 
-Language支持ja / en / zh-CN / zh-TW / ko。每次在artifacts内新建数据目录，采用隔离设置并关闭CLI。如果应用正在运行，请先保存并退出，再启动示例。
+Language 支持 ja / en / zh-CN / zh-TW / ko / de / ru / es / sv。每次执行均在 artifacts 中创建新的独立数据目录，使用所选 UI 语言并禁用 CLI。启动演示前，请保存并退出正在运行的应用。
 
 ```powershell
-$demoData = ./scripts/Prepare-ScreenshotDemo.ps1 -Language ko
+$demoData = ./scripts/Prepare-ScreenshotDemo.ps1 -Language zh-CN
 & ./artifacts/app/StickyNotes.exe --data-dir $demoData
 ```
 
-[日本語](../examples/screenshots/Tasks.md) · [English](../examples/screenshots/en/Tasks.md) · [简体中文](../examples/screenshots/zh-CN/Tasks.md) · [繁體中文](../examples/screenshots/zh-TW/Tasks.md) · [한국어](../examples/screenshots/ko/Tasks.md)
+[日本語](../examples/screenshots/Tasks.md) · [English](../examples/screenshots/en/Tasks.md) · [简体中文](../examples/screenshots/zh-CN/Tasks.md) · [繁體中文（台灣）](../examples/screenshots/zh-TW/Tasks.md) · [한국어](../examples/screenshots/ko/Tasks.md) · [Deutsch](../examples/screenshots/de/Tasks.md) · [Русский](../examples/screenshots/ru/Tasks.md) · [Español](../examples/screenshots/es/Tasks.md) · [Svenska](../examples/screenshots/sv/Tasks.md)
 
-旧JPEG和compact-body-v0.0.9.png作为历史参考保留。README使用本次生成的PNG。
+旧 JPEG 与 compact-body-v0.0.9.png 保留为历史参考，README 使用新生成的 PNG。

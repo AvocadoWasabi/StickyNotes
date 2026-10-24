@@ -1,4 +1,4 @@
-[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md)
+[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
 # 安裝與首次設定
 
@@ -14,29 +14,29 @@
 
 免安裝使用時，直接執行解壓縮資料夾內的 `StickyNotes.exe`，請保留整個資料夾。應用程式未簽署，Windows 可能顯示確認。程式不會登錄自動啟動。
 
-以下使用目前開發版的英文 UI 名稱；與公開 ZIP 不同時請查看[未發布紀錄（英文）](../CHANGELOG.md#unreleased)。
+以下使用目前開發版的台灣華語 UI 名稱；與公開 ZIP 不同時請查看[未發布紀錄（英文）](../CHANGELOG.md#unreleased)。
 
 ## 2. 選擇儲存方式
 
 ### 使用 Obsidian（新設定預設）
 
-1. 啟用 Obsidian **Settings → General → Command line interface**，依提示註冊。如無此項，請確認[官方 CLI 指南](https://obsidian.md/help/cli)的安裝程式更新需求。
+1. 啟用 Obsidian **設定 → 一般 → Command line interface**，依提示註冊。如無此項，請確認[官方 CLI 指南](https://obsidian.md/help/cli)的安裝程式更新需求。
 2. 開啟目標 Vault，保持 Obsidian 執行。
-3. 在便利貼 **Settings → General** 確認 `Obsidian.com` 的絕對路徑，通常為 `C:\Program Files\Obsidian\Obsidian.com`。安裝在其他位置時請調整。
-4. 在 **Vaults & daily notes** 為選取的項目啟用 CLI，輸入 Obsidian Vault 名稱／ID，按 **Get Vault folder via CLI**。留空使用 Obsidian 預設選擇；僅輸入不會取得資料。
-5. 確認回傳的 Vault 與每日設定，按 **Select sticky-note folder…** 選擇儲存位置，最後 **Save and close**。
+3. 在便利貼 **設定 → 一般** 確認 `Obsidian.com` 的絕對路徑，通常為 `C:\Program Files\Obsidian\Obsidian.com`。安裝在其他位置時請調整。
+4. 在 **Vault 與每日筆記** 為選取的項目啟用 CLI，輸入 Obsidian Vault 名稱／ID，按 **透過 CLI 取得 Vault 儲存目錄**。留空使用 Obsidian 預設選擇；僅輸入不會取得資料。
+5. 確認回傳的 Vault 與每日設定，按 **選擇便利貼儲存資料夾…** 選擇儲存位置，最後 **儲存並關閉**。
 
 變更資料夾時，Yes 同時搬移既有應用程式便利貼，No 只變更未來的儲存位置，Cancel 中止。[搬移範圍與復原（英文）](STICKY-FOLDERS.md#english)。CLI 失敗不會自動改用本機讀取。
 
 ### 不使用 Obsidian
 
-關閉 **Use Obsidian CLI**，選擇本機基準資料夾與便利貼儲存資料夾，再儲存。初始位置為 `Documents/StickyNotesData`。無法使用 Tasks／Dataview 查詢。本機每日筆記可透過資料夾與日期擷取正規表示式設定。[每日設定範例（英文）](USAGE.en.md#daily)。
+關閉 **使用 Obsidian CLI（預設）**，選擇本機基準資料夾與便利貼儲存資料夾，再儲存。初始位置為 `Documents/StickyNotesData`。無法使用 Tasks／Dataview 查詢。本機每日筆記可透過資料夾與日期擷取正規表示式設定。[每日設定範例（英文）](USAGE.en.md#daily)。
 
 ## 3. 僅啟用需要的整合
 
 | 整合 | Obsidian／Google 端 | 便利貼端 |
 | --- | --- | --- |
-| 每日筆記 | 啟用核心 Daily notes、設定資料夾／日期格式並建立今日筆記 | `… → Create & open → Display a daily note…` 選擇標題，留空顯示整篇 |
+| 每日筆記 | 啟用核心 Daily notes、設定資料夾／日期格式並建立今日筆記 | `… → 建立與開啟 → 顯示每日筆記…` 選擇標題，留空顯示整篇 |
 | Tasks | 在目標 Vault 啟用 Tasks；目前開發版需要穩定版8.2.2以上 | 開啟含 `tasks` 程式碼區塊的筆記。[步驟與限制（英文）](TASKS-CLI-PREVIEW.md#english) |
 | Dataview | 在目標 Vault 啟用 Dataview | 顯示 `dataview` 的 LIST / TABLE / TASK。[步驟與限制（英文）](DATAVIEW.md#english) |
 | Google | 在自己的 Cloud 專案設定 Calendar API、Tasks API 與桌面 OAuth | 匯入 JSON 並授權，在獨立段落輸入 `@calendar today`。[連線指南（英文）](GOOGLE-CALENDAR.en.md#setup) |
@@ -45,7 +45,7 @@
 
 ## 4. 使用第一張便利貼
 
-從 `… → Create & open` 新增或開啟 Markdown。點擊內文／`Ctrl+E` 編輯，`Ctrl+S`／`Esc` 儲存。首次連結每日筆記需有今日檔案，不會自動建立。顯示語言可在設定中變更並重新啟動生效；UI 僅支援日文、英文、簡體中文。繁體中文範例使用英文 UI。
+從 `… → 建立與開啟` 新增或開啟 Markdown。點擊內文／`Ctrl+E` 編輯，`Ctrl+S`／`Esc` 儲存。首次連結每日筆記需有今日檔案，不會自動建立。在設定中選擇顯示語言，儲存後重新啟動即可套用。目前開發版 UI 支援 README 列出的九種語言。台灣華語範例使用繁體中文 UI。
 
 ## 常見問題
 

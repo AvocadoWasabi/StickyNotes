@@ -2,7 +2,7 @@
 
 # 开发与发布
 
-README、安装指南和界面示例需同步日语／英语／简体中文／繁体中文／韩语五种语言。详细资料和 UI 保留原三种语言；繁体中文／韩语示例使用英文 UI。通过可选的 `--render-screenshots` 命令使用隔离的虚构数据生成图片。[生成与目视检查步骤](SCREENSHOTS.zh-CN.md)。`build.ps1` 打包五种语言的 README 及 docs／examples 目录。
+UI、README、安装指南和界面示例同步日语／英语／简体中文／台湾华语（繁体）／韩语／德语／俄语／西班牙语／瑞典语九种语言。详细资料保留原三种语言。完成 UI 翻译后，使用隔离的虚构数据，通过可选 `--render-screenshots` 命令生成27张图片。[生成与目视检查](SCREENSHOTS.zh-CN.md)。`build.ps1` 打包九种语言的 README 和 docs／examples。
 
 未发布：每日笔记支持多个 Vault，初始显示名称为“主 Vault／副 Vault”并可修改。在 **设置 → Vault 与每日笔记** 注册及选择新便签默认来源。参见[设置与限制](MULTIPLE-VAULTS.md#简体中文)。
 
@@ -61,7 +61,7 @@ Google Tasks 复用同一 OAuth 客户端和令牌，增加 `tasks.readonly` 范
 
 功能或修复完成后，更新[英语](../CHANGELOG.md)、[日语](../CHANGELOG.ja.md)、[简体中文](../CHANGELOG.zh-CN.md)更新日志的 Unreleased 部分。正式发布时一致记录实际版本、日期及 Release 链接，不把草稿或计划写成已发布。`docs/RELEASE-NOTES.md` 也应反映该版本的主要变化。
 
-1. 统一 `src/StickyNotes/StickyNotes.csproj` 中的 `Version`、五种语言 README 下载说明、更新日志和发布说明。完成 `./build.ps1 -Publish` 和两项审查，本地提交后将指定分支合并到 main 并推送。
+1. 统一 `src/StickyNotes/StickyNotes.csproj` 中的 `Version`、九种语言 README 下载说明、更新日志和发布说明。完成 `./build.ps1 -Publish` 和两项审查，本地提交后将指定分支合并到 main 并推送。
 2. 确认 GitHub Actions 的 **Build and test** 成功。
 3. 获得发布指示后，在 main 手动运行 **Package release**，指定新标签，如 `v1.0.0`。
 4. 工作流验证并生成 ZIP 和 **Release 草稿**。发布前检查 ZIP 的 SHA256、程序版本、标签目标提交、附带文档，以及是否混入个人设置等文件。
@@ -80,4 +80,4 @@ Google Tasks 复用同一 OAuth 客户端和令牌，增加 `tasks.readonly` 范
 
 ## 显示语言
 
-UI 文本存放于 `src/StickyNotes.Core/Strings.resx`（日语）、`Strings.en.resx` 和 `Strings.zh-CN.resx`。保持键名和格式占位符一致，通过 `L10n` 读取。启动时初始化语言，保存设置后到下次启动才应用。不要翻译已保存笔记的数据或协议键名。测试检查资源完整性、语言设置持久化、菜单及数据保留。分发包必须包含 `en/StickyNotes.Core.resources.dll` 和 `zh-CN/StickyNotes.Core.resources.dll`。
+UI 文本位于 `src/StickyNotes.Core/Strings.resx`（日语）及 `Strings.<locale>.resx`（en / zh-CN / zh-TW / ko / de / ru / es / sv），语言列表统一由 `L10n.SupportedLanguages` 定义。保持全部378个键、参数序号和格式说明符一致，通过 `L10n` 读取。启动时初始化语言，保存修改后重启才应用。不要翻译已保存笔记、协议键和日期格式。测试涵盖地区／文字体系判定、手动选择优先、资源完整性、持久化、菜单、布局和数据保留。分发包必须包含上述八个区域的 `<locale>/StickyNotes.Core.resources.dll`。

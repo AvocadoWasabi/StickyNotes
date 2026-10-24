@@ -28,11 +28,11 @@ Choose the section you need.
 
 ## Display language
 
-In Settings, choose **Display language → Use Windows language / 日本語 / English / 简体中文**, save, and restart the app. Windows language is the default: Japanese uses Japanese, Chinese uses Simplified Chinese, and other languages use English.
+In Settings, choose **Display language**: Windows language, or 日本語 / English / 简体中文 / 繁體中文（台灣） / 한국어 / Deutsch / Русский / Español / Svenska. Save and restart. Automatic follows Windows: Traditional Chinese (Taiwan, Hong Kong, Macao or zh-Hant) uses Taiwanese Mandarin; other Chinese uses Simplified Chinese; other supported languages use their matching UI, and unsupported languages use English. Explicit preferences take priority. The six added languages are available in the current development build.
 
 Menus, settings, guidance, app error messages, and new-note templates are translated. Existing note text, titles, headings, tags, and Google event content stay unchanged. Windows dialog buttons, external pages, and system/library errors may use another language.
 
-Available from v0.0.5. Control names below follow the English UI.
+Japanese, English and Simplified Chinese are available from v0.0.5. The six additional languages are unreleased. Control names below follow the English UI.
 
 <a id="editing"></a>
 

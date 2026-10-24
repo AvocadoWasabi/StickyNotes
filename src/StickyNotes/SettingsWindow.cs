@@ -43,9 +43,9 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(new TextBlock { Text = "Markdown Sticky Notes", FontSize = 24, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 0, 0, 16) });
         var languagePanel = new StackPanel { Margin = new Thickness(0, 0, 0, 16) };
         languagePanel.Children.Add(new TextBlock { Text = L10n.Text("Language.Label") });
-        var languageCodes = new[] { "", "ja", "en", "zh-CN" };
+        var languageCodes = new[] { "" }.Concat(L10n.SupportedLanguages.Select(item => item.Code)).ToArray();
         var language = new ComboBox { Name = "DisplayLanguage", ItemsSource = new[] {
-            L10n.Text("Language.Automatic"), "日本語", "English", "简体中文" },
+            L10n.Text("Language.Automatic") }.Concat(L10n.SupportedLanguages.Select(item => item.Name)).ToArray(),
             SelectedIndex = Math.Max(0, Array.IndexOf(languageCodes, app.Config.Language)) };
         languagePanel.Children.Add(language);
         languagePanel.Children.Add(new TextBlock { Text = L10n.Text("Language.Restart"), TextWrapping = TextWrapping.Wrap, Foreground = Brushes.DimGray });

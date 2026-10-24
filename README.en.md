@@ -1,4 +1,4 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文（台灣）](README.zh-TW.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Русский](README.ru.md) | [Español](README.es.md) | [Svenska](README.sv.md)
 
 # Markdown Sticky Notes
 
@@ -20,7 +20,7 @@ Turn a whole note or a single daily-note heading into a Windows sticky note. Edi
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-en.png" alt="Check off tasks" width="280">](docs/images/sticky-tasks-en.png) | [<img src="docs/images/sticky-markdown-en.png" alt="Write in Markdown" width="280">](docs/images/sticky-markdown-en.png) | [<img src="docs/images/sticky-daily-en.png" alt="Follow today's daily note" width="280">](docs/images/sticky-daily-en.png) |
 
-Fictional notes rendered with the current development build's WPF controls, rather than desktop captures. [Five languages and reproduction steps](docs/SCREENSHOTS.en.md).
+Fictional notes rendered with the current development build's WPF controls, rather than desktop captures. [Nine languages and reproduction steps](docs/SCREENSHOTS.en.md).
 
 ## Tools and settings you need
 
@@ -72,7 +72,7 @@ See [Setup](docs/INSTALL.en.md) for local mode, setting locations, updating and 
 
 ## Before you start
 
-- App UI: **Japanese, English and Simplified Chinese**. README, setup and screenshots also cover **Traditional Chinese and Korean**. Detailed references generally remain in three languages.
+- The current development build’s UI, README, setup and screenshots support **Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish**. Detailed references generally remain in three languages. Save and restart to apply a language change.
 - Obsidian must stay running for CLI integration. Internal API changes can affect compatibility.
 - Daily notes are not created automatically. Prepare today's note before adding the first daily sticky.
 - Obsidian themes and all plugin views are not reproduced. Images show alt text. DataviewJS, inline expressions and CALENDAR are unsupported.

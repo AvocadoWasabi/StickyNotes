@@ -1,5 +1,5 @@
 # Creates isolated sample data; does not launch the app or change personal settings.
-param([ValidateSet('ja', 'en', 'zh-CN', 'zh-TW', 'ko')][string]$Language = 'ja')
+param([ValidateSet('ja', 'en', 'zh-CN', 'zh-TW', 'ko', 'de', 'ru', 'es', 'sv')][string]$Language = 'ja')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $data = Join-Path $root ('artifacts/screenshot-demo-' + [Guid]::NewGuid().ToString('N'))
@@ -15,7 +15,6 @@ $windows = @(
     @{ Path = (Join-Path $notes 'Project.md'); Width = 460; Height = 580; PixelLeft = 600; PixelTop = 100; HasPixelPosition = $true; Color = 'blue' },
     @{ Path = ''; Heading = 'Tasks'; Daily = $true; Width = 460; Height = 580; PixelLeft = 1100; PixelTop = 100; HasPixelPosition = $true; Color = 'green' }
 )
-$uiLanguage = if ($Language -in 'zh-TW', 'ko') { 'en' } else { $Language }
-@{ Language = $uiLanguage; ObsidianTasksEnabled = $false; NotesFolder = $notes; DailyFolder = $daily; DailyPattern = '(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\.md'; Windows = $windows } |
+@{ Language = $Language; ObsidianTasksEnabled = $false; NotesFolder = $notes; DailyFolder = $daily; DailyPattern = '(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\.md'; Windows = $windows } |
     ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $data 'settings.json') -Encoding utf8
 Write-Output $data

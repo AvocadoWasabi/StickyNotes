@@ -1,4 +1,4 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文（台灣）](README.zh-TW.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Русский](README.ru.md) | [Español](README.es.md) | [Svenska](README.sv.md)
 
 # Markdown Sticky Notes
 
@@ -20,7 +20,7 @@
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-zh-TW.png" alt="直接勾選待辦" width="280">](docs/images/sticky-tasks-zh-TW.png) | [<img src="docs/images/sticky-markdown-zh-TW.png" alt="Markdown 筆記" width="280">](docs/images/sticky-markdown-zh-TW.png) | [<img src="docs/images/sticky-daily-zh-TW.png" alt="連結今日筆記" width="280">](docs/images/sticky-daily-zh-TW.png) |
 
-以目前開發版 WPF 控制項繪製虛構筆記，並非桌面擷取。此處筆記為繁體中文，**介面為英文**。[五種語言的範例與產生步驟](docs/SCREENSHOTS.zh-TW.md)。
+以目前開發版 WPF 控制項繪製虛構筆記，並非桌面擷取。此處筆記與介面皆為台灣華語（繁體中文）。[九種語言的範例與產生步驟](docs/SCREENSHOTS.zh-TW.md)。
 
 ## 所需工具與設定
 
@@ -28,7 +28,7 @@
 
 | 使用目的 | 所需工具 | 初始設定 |
 | --- | --- | --- |
-| 僅使用 Markdown 便利貼 | 本應用程式 | 在設定中關閉 **Use Obsidian CLI**，選擇本機資料夾 |
+| 僅使用 Markdown 便利貼 | 本應用程式 | 在設定中關閉 **使用 Obsidian CLI（預設）**，選擇本機資料夾 |
 | 編輯 Obsidian 筆記 | 執行中的 Obsidian＋Obsidian CLI | 啟用 Obsidian **Settings → General → Command line interface**，在本應用程式連接 Vault |
 | 今日每日筆記 | 上述 CLI＋核心 **Daily notes** 外掛 | 在 Obsidian 設定資料夾與日期格式，建立今日筆記 |
 | Tasks 查詢與原生勾選行為 | 上述 CLI＋社群 **Tasks** 外掛 | 在目標 Vault 啟用；目前開發版需要穩定版 **8.2.2 以上** |
@@ -41,8 +41,8 @@
 
 1. 從 [Releases](https://github.com/AvocadoWasabi/StickyNotes/releases/latest) 下載 `StickyNotes-win-x64.zip`，完整解壓縮後執行 `Install.cmd`。
 2. 在 Obsidian 啟用 CLI、開啟目標 Vault，再啟動 Markdown Sticky Notes。
-3. 在應用程式設定中確認 `Obsidian.com` 的絕對路徑，輸入 Vault 名稱／ID，按 **Get Vault folder via CLI**。選擇儲存資料夾，再按 **Save and close**。
-4. 從 `… → Create & open` 新增便利貼、開啟 Markdown、連結筆記區段或顯示每日筆記。
+3. 在應用程式設定中確認 `Obsidian.com` 的絕對路徑，輸入 Vault 名稱／ID，按 **透過 CLI 取得 Vault 儲存目錄**。選擇儲存資料夾，再按 **儲存並關閉**。
+4. 從 `… → 建立與開啟` 新增便利貼、開啟 Markdown、連結筆記區段或顯示每日筆記。
 
 本機模式、設定位置、更新與移除請見[安裝指南](docs/INSTALL.zh-TW.md)。此處設定與圖片對應目前開發版；與已發布 ZIP 的差異（多 Vault、Tasks 8.2.2 支援等）請見[未發布紀錄（英文）](CHANGELOG.md#unreleased)。
 
@@ -68,11 +68,11 @@
 | 儲存並結束編輯 | `Ctrl+S` / `Esc`；補全候選開啟時，第一次 Esc 關閉候選 |
 | 勾選任務 | 在閱讀模式點擊核取方塊 |
 | 置頂 | `○ / ●` 固定；`Alt+Z` 將所有便利貼置頂 10 秒 |
-| 關閉／結束 | `… → Close this note`／從通知區域結束應用程式 |
+| 關閉／結束 | `… → 關閉此便利貼（保留檔案）`／從通知區域結束應用程式 |
 
 ## 使用前須知
 
-- UI 支援**日文、英文、簡體中文**。README、安裝與畫面範例另提供**繁體中文、韓文**，不代表 UI 已翻譯。詳細參考資料通常為三種語言。
+- 目前開發版的 UI、README、安裝指南與畫面範例支援**日文、英文、簡體中文、台灣華語（繁體中文）、韓文、德文、俄文、西班牙文、瑞典文**九種語言。詳細參考資料通常仍為三種語言。變更語言後請儲存並重新啟動。
 - CLI 整合需要 Obsidian 持續執行；內部 API 變動可能影響相容性。
 - 不會自動建立每日筆記，首次新增前請準備今日筆記。
 - 不完整重現 Obsidian 主題與外掛檢視。圖片顯示替代文字；不支援 DataviewJS、行內運算式與 CALENDAR。

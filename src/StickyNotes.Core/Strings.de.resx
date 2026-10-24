@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="App.xaml.Text01" xml:space="preserve">
+    <value>Ungültige Startargumente.</value>
+  </data>
+  <data name="App.xaml.Text02" xml:space="preserve">
+    <value>Die Aktion konnte nicht an die laufende App gesendet werden. Verwenden Sie das Infobereich-Menü oder starten Sie die App neu.
+</value>
+  </data>
+  <data name="App.xaml.Text03" xml:space="preserve">
+    <value>Sticky Notes läuft bereits. Verwenden Sie das Menü im Infobereich oder in der Taskleiste.</value>
+  </data>
+  <data name="App.xaml.Text04" xml:space="preserve">
+    <value>Einstellungen konnten nicht geladen werden. Die App wird zum Schutz der Originaldatei beendet.
+</value>
+  </data>
+  <data name="AppCommandPipe.Text01" xml:space="preserve">
+    <value>Die Aktion konnte nicht an die laufende App gesendet werden.</value>
+  </data>
+  <data name="AppCommands.Text01" xml:space="preserve">
+    <value>Neue Notiz</value>
+  </data>
+  <data name="AppCommands.Text02" xml:space="preserve">
+    <value>Markdown öffnen…</value>
+  </data>
+  <data name="AppCommands.Text03" xml:space="preserve">
+    <value>Notizabschnitt verknüpfen…</value>
+  </data>
+  <data name="AppCommands.Text04" xml:space="preserve">
+    <value>Tagesnotiz anzeigen…</value>
+  </data>
+  <data name="AppCommands.Text05" xml:space="preserve">
+    <value>Alle anzeigen</value>
+  </data>
+  <data name="AppCommands.Text06" xml:space="preserve">
+    <value>Alle Notizen nach vorn holen (10 Sekunden)</value>
+  </data>
+  <data name="AppCommands.Text07" xml:space="preserve">
+    <value>Einstellungen…</value>
+  </data>
+  <data name="AppCommands.Text08" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="CalendarCompletion.Text01" xml:space="preserve">
+    <value>@calendar Datum-Uhrzeit-oder-today [Suchwort]
+Zeitzone optional (Windows-Ortszeit).
+Suchwörter sind optional. Termine ab der angegebenen Zeit oder mit today für den aktuellen PC-Tag werden etwa alle 60 Sekunden aktualisiert.
+Google Tasks ist schreibgeschützt. Die API liefert nur Datumsangaben, keine geplanten Uhrzeiten. Auch bei einer Uhrzeit in Google zeigt diese App „ohne Uhrzeit“.</value>
+  </data>
+  <data name="CalendarCompletion.Text02" xml:space="preserve">
+    <value>@calendar — Google Calendar durchsuchen</value>
+  </data>
+  <data name="CalendarCompletion.Text03" xml:space="preserve">
+    <value>Tab / Enter / Klick zum Einfügen · Esc zum Schließen
+Markiertes Datum und Uhrzeit bearbeiten, dann speichern.</value>
+  </data>
+  <data name="CalendarCompletion.Text04" xml:space="preserve">
+    <value>Ohne Suchwort: @calendar {0}
+Filtern: @calendar {1} Besprechung
+Aktuellen Tag verfolgen: @calendar today</value>
+  </data>
+  <data name="CalendarService.Text01" xml:space="preserve">
+    <value>Beispiel: @calendar today oder @calendar 2026-10-05T09:00 Besprechung (Suchwort optional; ohne Zeitzone gilt Windows-Ortszeit)</value>
+  </data>
+  <data name="CalendarService.Text02" xml:space="preserve">
+    <value>Eine Google-Anfrage läuft. Warten Sie auf den Abschluss.</value>
+  </data>
+  <data name="CalendarService.Text03" xml:space="preserve">
+    <value>Wählen Sie die Zugangsdaten-JSON in Schritt 2.</value>
+  </data>
+  <data name="CalendarService.Text04" xml:space="preserve">
+    <value>Wählen Sie eine OAuth-JSON für eine Desktop-App. client_id ist erforderlich.</value>
+  </data>
+  <data name="CalendarService.Text05" xml:space="preserve">
+    <value>Richten Sie zuerst die Google-OAuth-JSON ein.</value>
+  </data>
+  <data name="CalendarService.Text06" xml:space="preserve">
+    <value>Anmeldung fehlgeschlagen. Kehren Sie zu Sticky Notes zurück.</value>
+  </data>
+  <data name="CalendarService.Text07" xml:space="preserve">
+    <value>Anmeldung empfangen. Schließen Sie diesen Tab und kehren Sie zu Sticky Notes zurück.</value>
+  </data>
+  <data name="CalendarService.Text08" xml:space="preserve">
+    <value>Google-Zugriff wurde nicht erlaubt. Wiederholen Sie die Anmeldung und erlauben Sie Calendar-Zugriff sowie Tasks-Lesezugriff.</value>
+  </data>
+  <data name="CalendarService.Text09" xml:space="preserve">
+    <value>Anmeldung nach 3 Minuten abgebrochen. Wählen Sie „Bei Google anmelden“, um es erneut zu versuchen.</value>
+  </data>
+  <data name="CalendarService.Text10" xml:space="preserve">
+    <value>Google-Anmeldung fehlgeschlagen ({0}). Melden Sie sich in den Einstellungen erneut an.</value>
+  </data>
+  <data name="CalendarService.Text11" xml:space="preserve">
+    <value>Ungültige Google-Anmeldeantwort. Melden Sie sich erneut an.</value>
+  </data>
+  <data name="CalendarService.Text12" xml:space="preserve">
+    <value>Melden Sie sich in den Einstellungen bei Google an.</value>
+  </data>
+  <data name="CalendarService.Text13" xml:space="preserve">
+    <value>Melden Sie sich erneut bei Google an.</value>
+  </data>
+  <data name="CalendarService.Text14" xml:space="preserve">
+    <value>Dieser Termin wurde in Google geändert. Aktualisieren Sie die Termine vor dem Bearbeiten.</value>
+  </data>
+  <data name="CalendarService.Text15" xml:space="preserve">
+    <value>Calendar-API-Fehler ({0}). Prüfen Sie Verbindung, Anmeldung und Bearbeitungsrechte.</value>
+  </data>
+  <data name="CalendarService.Text16" xml:space="preserve">
+    <value>Geben Sie eine Kalender-ID ein.</value>
+  </data>
+  <data name="CalendarService.Text17" xml:space="preserve">
+    <value>Die Kalenderantwort konnte nicht geprüft werden.</value>
+  </data>
+  <data name="CalendarService.Text18" xml:space="preserve">
+    <value>Die Terminversion fehlt. Suchen Sie erneut.</value>
+  </data>
+  <data name="DailyNoteResolver.Text01" xml:space="preserve">
+    <value>Geben Sie einen regulären Ausdruck für Tagesnotizen ein.</value>
+  </data>
+  <data name="DailyNoteResolver.Text02" xml:space="preserve">
+    <value>Der reguläre Ausdruck darf höchstens 4096 Zeichen enthalten.</value>
+  </data>
+  <data name="DailyNoteResolver.Text03" xml:space="preserve">
+    <value>Ungültiger regulärer Ausdruck für Tagesnotizen: </value>
+  </data>
+  <data name="DailyNoteResolver.Text04" xml:space="preserve">
+    <value>Verwenden Sie die benannten Gruppen year, month und day für das heutige Datum. Beispiel: </value>
+  </data>
+  <data name="DailyNoteResolver.Text05" xml:space="preserve">
+    <value>Wählen Sie in den Einstellungen einen Tagesnotizordner.</value>
+  </data>
+  <data name="DailyNoteResolver.Text06" xml:space="preserve">
+    <value>Regex-Suchen dürfen keine Ordner mit symbolischen Links oder Junctions verwenden.</value>
+  </data>
+  <data name="DailyNoteResolver.Text07" xml:space="preserve">
+    <value>Zu großer Suchbereich. Wählen Sie einen kleineren Ordner (10000 Einträge / 1 Sekunde).</value>
+  </data>
+  <data name="DailyNoteResolver.Text08" xml:space="preserve">
+    <value>Zeitüberschreitung bei Regex-Suche. Vereinfachen Sie den Ausdruck.</value>
+  </data>
+  <data name="DailyNoteResolver.Text09" xml:space="preserve">
+    <value>Mehrere Tagesnotizen passen zu heute. Grenzen Sie den Ausdruck ein.
+</value>
+  </data>
+  <data name="DailyNoteResolver.Text10" xml:space="preserve">
+    <value>Keine Tagesnotiz passt zum heutigen Datum.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text01" xml:space="preserve">
+    <value>Das Ziel der Zugangsdaten-JSON darf kein Link sein.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text02" xml:space="preserve">
+    <value>Einstellungen speichern und Zugangsdaten-JSON wiederherstellen fehlgeschlagen. Prüfen Sie die Wiederherstellungsdatei: {0}</value>
+  </data>
+  <data name="HeadingPicker.Text01" xml:space="preserve">
+    <value>Anzuzeigende Überschrift</value>
+  </data>
+  <data name="HeadingPicker.Text02" xml:space="preserve">
+    <value>Wählen Sie eine Überschrift oder geben Sie einen neuen Namen ohne # ein. Leer zeigt den ganzen Inhalt. „Anzeigen“ fügt neue Überschriften an die Quelldatei an.</value>
+  </data>
+  <data name="Language.Automatic" xml:space="preserve">
+    <value>Windows-Sprache verwenden</value>
+  </data>
+  <data name="Language.Label" xml:space="preserve">
+    <value>Anzeigesprache</value>
+  </data>
+  <data name="Language.Restart" xml:space="preserve">
+    <value>Nach dem Speichern beim nächsten Start wirksam. Notiztext, Überschriften und Tags bleiben unverändert.</value>
+  </data>
+  <data name="MarkdownView.Text01" xml:space="preserve">
+    <value>[Bild: </value>
+  </data>
+  <data name="NoteFolderMigration.Text01" xml:space="preserve">
+    <value>Verwenden Sie einen absoluten Pfad für den Notizordner.</value>
+  </data>
+  <data name="NoteFolderMigration.Text02" xml:space="preserve">
+    <value>Pfade mit Links oder Junctions können nicht migriert werden: </value>
+  </data>
+  <data name="NoteFolderMigration.Text03" xml:space="preserve">
+    <value>Quell- und Zielordner dürfen nicht ineinander liegen.</value>
+  </data>
+  <data name="NoteFolderMigration.Text04" xml:space="preserve">
+    <value>Die Quelle ist kein Ordner: </value>
+  </data>
+  <data name="NoteFolderMigration.Text05" xml:space="preserve">
+    <value>Im Ziel existiert bereits eine Datei oder ein Ordner gleichen Namens. Es wird nichts überschrieben: </value>
+  </data>
+  <data name="NoteFolderMigration.Text06" xml:space="preserve">
+    <value>Migration fehlgeschlagen; einige Dateien konnten nicht wiederhergestellt werden. Prüfen Sie diese Ziele und den Quellordner. Keine Dateien wurden überschrieben.
+</value>
+  </data>
+  <data name="NoteFolderMigration.Text07" xml:space="preserve">
+    <value>
+Ursache: </value>
+  </data>
+  <data name="NoteLink.Text01" xml:space="preserve">
+    <value>Die Quellnotiz wurde geändert. Laden Sie sie vor dem Anzeigen neu.</value>
+  </data>
+  <data name="NoteLinkPreview.Text01" xml:space="preserve">
+    <value>Inhaltsvorschau (Markdown, schreibgeschützt)</value>
+  </data>
+  <data name="NoteLinkPreview.Text02" xml:space="preserve">
+    <value>Laden Sie eine Notiz für die Vorschau.</value>
+  </data>
+  <data name="NoteLinkPreview.Text03" xml:space="preserve">
+    <value> — Neue Überschrift wird angehängt (ungespeichert)</value>
+  </data>
+  <data name="NoteLinkPreview.Text04" xml:space="preserve">
+    <value> — Gesamter Inhalt</value>
+  </data>
+  <data name="NoteLinkPreview.Text05" xml:space="preserve">
+    <value> — Erste 4000 Zeichen</value>
+  </data>
+  <data name="NoteLinkPreview.Text06" xml:space="preserve">
+    <value>Vorschau nicht möglich: </value>
+  </data>
+  <data name="NoteLinkWindow.Text01" xml:space="preserve">
+    <value>Wählen Sie eine Markdown-Datei.</value>
+  </data>
+  <data name="NoteLinkWindow.Text02" xml:space="preserve">
+    <value>Tagesnotiz anzeigen</value>
+  </data>
+  <data name="NoteLinkWindow.Text03" xml:space="preserve">
+    <value>Notizabschnitt verknüpfen</value>
+  </data>
+  <data name="NoteLinkWindow.Text04" xml:space="preserve">
+    <value>Ordner und Muster aus den Einstellungen bestimmen die heutige Notiz. Bei Datumswechsel wird automatisch umgeschaltet.</value>
+  </data>
+  <data name="NoteLinkWindow.Text05" xml:space="preserve">
+    <value>Ordner wählen…</value>
+  </data>
+  <data name="NoteLinkWindow.Text06" xml:space="preserve">
+    <value>Markdown-Datei wählen…</value>
+  </data>
+  <data name="NoteLinkWindow.Text07" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="NoteLinkWindow.Text08" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="NoteLinkWindow.Text09" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="NoteLinkWindow.Text10" xml:space="preserve">
+    <value>Die Quellnotiz kann nicht geladen werden.</value>
+  </data>
+  <data name="NoteLinkWindow.Text11" xml:space="preserve">
+    <value>Wählen Sie eine vorhandene Markdown-Datei.</value>
+  </data>
+  <data name="NoteLinkWindow.Text12" xml:space="preserve">
+    <value>Heutige Notiz: </value>
+  </data>
+  <data name="NoteLinkWindow.Text13" xml:space="preserve">
+    <value>Gewählte Notiz: </value>
+  </data>
+  <data name="NoteLinkWindow.Text14" xml:space="preserve">
+    <value>Laden Sie zuerst eine Markdown-Datei.</value>
+  </data>
+  <data name="NoteLinkWindow.Text15" xml:space="preserve">
+    <value>Die heutige Notiz hat sich geändert. Laden Sie neu und wählen Sie eine Überschrift.</value>
+  </data>
+  <data name="NoteStore.Text01" xml:space="preserve">
+    <value>Die Datei wurde extern geändert. Kopieren Sie Ihren Entwurf vor dem Neuladen.</value>
+  </data>
+  <data name="NoteStore.Text02" xml:space="preserve">
+    <value>YAML-Eigenschaften müssen eine Zuordnung sein.</value>
+  </data>
+  <data name="NoteStore.Text03" xml:space="preserve">
+    <value>Notiz</value>
+  </data>
+  <data name="NoteStore.Text04" xml:space="preserve">
+    <value>Notiz-{0:yyyyMMdd-HHmmss}-{1}.md</value>
+  </data>
+  <data name="NoteStore.Text05" xml:space="preserve">
+    <value>---
+type: sticky
+id: {0}
+created: {1:o}
+---
+# Neue Notiz
+
+- [ ] Aufgabe notieren
+
+Notizen mit **Markdown** schreiben.
+</value>
+  </data>
+  <data name="NoteStore.Text06" xml:space="preserve">
+    <value>Neue Notiz</value>
+  </data>
+  <data name="NoteWindow.Text01" xml:space="preserve">
+    <value>Ziehen, um die Notiz zu verschieben</value>
+  </data>
+  <data name="NoteWindow.Text02" xml:space="preserve">
+    <value>Die heutige Tagesnotiz wurde noch nicht erstellt.
+Erstellen Sie sie in Obsidian zur automatischen Anzeige.
+
+Sie können die gestrige Notiz behalten, bis 1. die heutige erstellt wird oder 2. Sie „Neu laden“ wählen.</value>
+  </data>
+  <data name="NoteWindow.Text03" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="NoteWindow.Text04" xml:space="preserve">
+    <value>Markdown bearbeiten (Ctrl+E)</value>
+  </data>
+  <data name="NoteWindow.Text05" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="NoteWindow.Text06" xml:space="preserve">
+    <value>Speichern und Bearbeitung beenden (Ctrl+S / Esc)</value>
+  </data>
+  <data name="NoteWindow.Text07" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="NoteWindow.Text08" xml:space="preserve">
+    <value>Weitere Aktionen</value>
+  </data>
+  <data name="NoteWindow.Text09" xml:space="preserve">
+    <value>Neue Notiz</value>
+  </data>
+  <data name="NoteWindow.Text10" xml:space="preserve">
+    <value>Immer im Vordergrund umschalten</value>
+  </data>
+  <data name="NoteWindow.Text11" xml:space="preserve">
+    <value>Diese Notiz schließen (Datei behalten)</value>
+  </data>
+  <data name="NoteWindow.Text12" xml:space="preserve">
+    <value>Bearbeiten • Ctrl+S zum Speichern</value>
+  </data>
+  <data name="NoteWindow.Text13" xml:space="preserve">
+    <value>Anzeigeskalierung ({0}%)</value>
+  </data>
+  <data name="NoteWindow.Text14" xml:space="preserve">
+    <value>Vergrößern (Ctrl++ / Ctrl+Mausrad hoch)</value>
+  </data>
+  <data name="NoteWindow.Text15" xml:space="preserve">
+    <value>Verkleinern (Ctrl+- / Ctrl+Mausrad runter)</value>
+  </data>
+  <data name="NoteWindow.Text16" xml:space="preserve">
+    <value>Zurücksetzen (Ctrl+0)</value>
+  </data>
+  <data name="NoteWindow.Text17" xml:space="preserve">
+    <value>Tagesnotiz • </value>
+  </data>
+  <data name="NoteWindow.Text18" xml:space="preserve">
+    <value>Gespeichert • </value>
+  </data>
+  <data name="NoteWindow.Text19" xml:space="preserve">
+    <value>Warte auf die heutige Notiz</value>
+  </data>
+  <data name="NoteWindow.Text20" xml:space="preserve">
+    <value>Quellnotiz kann nicht geladen werden</value>
+  </data>
+  <data name="NoteWindow.Text21" xml:space="preserve">
+    <value>Gestrige Notiz wird angezeigt ({0:yyyy-MM-dd}). Änderungen werden in der Datei dieses Tages gespeichert.
+</value>
+  </data>
+  <data name="NoteWindow.Text22" xml:space="preserve">
+    <value>Wählen Sie „Neu laden“, um zur heutigen Notiz zu wechseln.</value>
+  </data>
+  <data name="NoteWindow.Text23" xml:space="preserve">
+    <value>Erstellen Sie die heutige Notiz in Obsidian für den automatischen Wechsel.</value>
+  </data>
+  <data name="NoteWindow.Text24" xml:space="preserve">
+    <value>Gestern / </value>
+  </data>
+  <data name="NoteWindow.Text25" xml:space="preserve">
+    <value>Heute / </value>
+  </data>
+  <data name="NoteWindow.Text26" xml:space="preserve">
+    <value>Verknüpft / </value>
+  </data>
+  <data name="NoteWindow.Text27" xml:space="preserve">
+    <value>Markdown bearbeiten • Ctrl+S / Esc zum Speichern und Beenden • @ für Ergänzungen (Zeitzone und Suchwort optional)</value>
+  </data>
+  <data name="NoteWindow.Text28" xml:space="preserve">
+    <value>Gespeichert</value>
+  </data>
+  <data name="NoteWindow.Text29" xml:space="preserve">
+    <value>Speichern fehlgeschlagen</value>
+  </data>
+  <data name="NoteWindow.Text30" xml:space="preserve">
+    <value>Änderungen speichern?
+
+Ja: Speichern und zur Ansicht zurückkehren.
+Nein: Änderungen verwerfen und neu laden.
+Abbrechen: Entwurf behalten und weiterbearbeiten.</value>
+  </data>
+  <data name="NoteWindow.Text31" xml:space="preserve">
+    <value>Änderungen speichern</value>
+  </data>
+  <data name="NoteWindow.Text32" xml:space="preserve">
+    <value>Die Quelldatei kann nicht gelesen werden.</value>
+  </data>
+  <data name="NoteWindow.Text33" xml:space="preserve">
+    <value>Speichern Sie zuerst Ihre Änderungen.</value>
+  </data>
+  <data name="NoteWindow.Text34" xml:space="preserve">
+    <value>Aufgabe gespeichert</value>
+  </data>
+  <data name="NoteWindow.Text35" xml:space="preserve">
+    <value>Ungespeicherte Änderungen verwerfen und neu laden?</value>
+  </data>
+  <data name="NoteWindow.Text36" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="NoteWindow.Text37" xml:space="preserve">
+    <value>Die Quellnotiz oder das Datum hat sich geändert. Speichern oder kopieren Sie Ihren Entwurf vor dem Neuladen.</value>
+  </data>
+  <data name="NoteWindow.Text38" xml:space="preserve">
+    <value>GOOGLE CALENDAR · {0} Termine (max. 100)</value>
+  </data>
+  <data name="NoteWindow.Text39" xml:space="preserve">
+    <value>Klicken, um Titel und Beschreibung zu bearbeiten</value>
+  </data>
+  <data name="NoteWindow.Text40" xml:space="preserve">
+    <value>Keine passenden Termine.</value>
+  </data>
+  <data name="NoteWindow.Text41" xml:space="preserve">
+    <value>Termine aktualisiert • </value>
+  </data>
+  <data name="NoteWindow.Text42" xml:space="preserve">
+    <value>Termin bearbeiten</value>
+  </data>
+  <data name="NoteWindow.Text43" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="NoteWindow.Text44" xml:space="preserve">
+    <value>Beschreibung (Google-Quelldaten)</value>
+  </data>
+  <data name="NoteWindow.Text45" xml:space="preserve">
+    <value>Diese Änderungen an Google Calendar senden.
+Teilnehmende werden gegebenenfalls benachrichtigt.
+
+Zeit: {0}
+
+Titel (vorher): {1}
+Titel (nachher): {2}
+
+Beschreibung (vorher):
+{3}
+
+Beschreibung (nachher):
+{4}</value>
+  </data>
+  <data name="NoteWindow.Text46" xml:space="preserve">
+    <value>Google Calendar aktualisieren?</value>
+  </data>
+  <data name="NoteWindow.Text47" xml:space="preserve">
+    <value>Google Calendar aktualisiert</value>
+  </data>
+  <data name="NoteWindow.Text48" xml:space="preserve">
+    <value>Aktualisieren fehlgeschlagen</value>
+  </data>
+  <data name="NoteWindow.Text49" xml:space="preserve">
+    <value>Tags, Titel, Status und Farbe</value>
+  </data>
+  <data name="NoteWindow.Text50" xml:space="preserve">
+    <value>Alle Notizen nach vorn holen (10 Sekunden)</value>
+  </data>
+  <data name="NoteWindow.Text51" xml:space="preserve">
+    <value>Termine jetzt abrufen</value>
+  </data>
+  <data name="NoteWindow.Text52" xml:space="preserve">
+    <value>Quelle in Standard-App öffnen</value>
+  </data>
+  <data name="NoteWindow.Text53" xml:space="preserve">
+    <value>Markdown öffnen…</value>
+  </data>
+  <data name="NoteWindow.Text54" xml:space="preserve">
+    <value>Notizabschnitt verknüpfen…</value>
+  </data>
+  <data name="NoteWindow.Text55" xml:space="preserve">
+    <value>Tagesnotiz anzeigen…</value>
+  </data>
+  <data name="NoteWindow.Text56" xml:space="preserve">
+    <value>Einstellungen…</value>
+  </data>
+  <data name="NoteWindow.Text57" xml:space="preserve">
+    <value>App beenden (Anordnung speichern)</value>
+  </data>
+  <data name="NoteWindow.Text58" xml:space="preserve">
+    <value>Verknüpfte Notizen zeigen Tags der Quelle. Bearbeiten Sie diese in der Quellnotiz.</value>
+  </data>
+  <data name="NoteWindow.Text59" xml:space="preserve">
+    <value>Notizeigenschaften</value>
+  </data>
+  <data name="NoteWindow.Text60" xml:space="preserve">
+    <value>YAML-Titel (Metadaten)</value>
+  </data>
+  <data name="NoteWindow.Text61" xml:space="preserve">
+    <value>Tags (Leerzeichen/Kommas; Hierarchie: project/name)</value>
+  </data>
+  <data name="NoteWindow.Text62" xml:space="preserve">
+    <value>Status (z. B. active / done / archived)</value>
+  </data>
+  <data name="NoteWindow.Text63" xml:space="preserve">
+    <value>Farbe: yellow / green / blue / pink / gray</value>
+  </data>
+  <data name="NoteWindow.Text64" xml:space="preserve">
+    <value>Tags erlauben Buchstaben, Ziffern, _, - und /. Nur Ziffern sind nicht erlaubt.</value>
+  </data>
+  <data name="NoteWindow.Text65" xml:space="preserve">
+    <value>Änderungen speichern?</value>
+  </data>
+  <data name="SectionEditor.Text01" xml:space="preserve">
+    <value>Geben Sie die Überschrift in einer Zeile ohne Zeilenumbrüche ein.</value>
+  </data>
+  <data name="SectionEditor.Text02" xml:space="preserve">
+    <value>Die Überschrift kann nicht angehängt werden. Prüfen Sie Namen und nicht geschlossene Codeblöcke in der Quelle.</value>
+  </data>
+  <data name="SectionEditor.Text03" xml:space="preserve">
+    <value>Überschrift „{0}“ fehlt. Erstellen Sie sie in der Quellnotiz.</value>
+  </data>
+  <data name="SectionEditor.Text04" xml:space="preserve">
+    <value>Mehrere Überschriften heißen „{0}“. Verwenden Sie einen eindeutigen Namen.</value>
+  </data>
+  <data name="SectionEditor.Text05" xml:space="preserve">
+    <value>Dieser Abschnitt darf keine Überschriften gleicher oder höherer Ebene enthalten.</value>
+  </data>
+  <data name="SectionEditor.Text06" xml:space="preserve">
+    <value>Die gewählte Zeile ist keine Aufgabe.</value>
+  </data>
+  <data name="SettingsWindow.Text01" xml:space="preserve">
+    <value>Sticky Notes – Einstellungen</value>
+  </data>
+  <data name="SettingsWindow.Text02" xml:space="preserve">
+    <value>Bei Fokusverlust automatisch speichern</value>
+  </data>
+  <data name="SettingsWindow.Text03" xml:space="preserve">
+    <value>Wenn aus, vor dem Speichern nachfragen. Bei Fehlern bleibt Ihre Eingabe erhalten.</value>
+  </data>
+  <data name="SettingsWindow.Text04" xml:space="preserve">
+    <value>Notizsymbole in der Taskleiste anzeigen</value>
+  </data>
+  <data name="SettingsWindow.Text05" xml:space="preserve">
+    <value>Speichern gilt für alle offenen Notizen. Das Symbol im Infobereich bleibt verfügbar.</value>
+  </data>
+  <data name="SettingsWindow.Text06" xml:space="preserve">
+    <value>Schaltflächen beim Zeigen auf den Titel einblenden</value>
+  </data>
+  <data name="SettingsWindow.Text07" xml:space="preserve">
+    <value>Ein: Schaltflächen über dem Titel bei Mauszeiger oder F6-Fokus. Am linken Griff verschieben. Aus: Schaltflächen immer unter dem Titel anzeigen (Standard). Speichern gilt für alle offenen Notizen.</value>
+  </data>
+  <data name="SettingsWindow.Text08" xml:space="preserve">
+    <value>Notizordner (z. B. Sticky Notes im Vault)</value>
+  </data>
+  <data name="SettingsWindow.Text09" xml:space="preserve">
+    <value>Notizordner wählen</value>
+  </data>
+  <data name="SettingsWindow.Text10" xml:space="preserve">
+    <value>Tagesnotizordner</value>
+  </data>
+  <data name="SettingsWindow.Text11" xml:space="preserve">
+    <value>Tagesnotizordner wählen</value>
+  </data>
+  <data name="SettingsWindow.Text12" xml:space="preserve">
+    <value>Tagesnotizmuster (Datumsgruppen + Regex)</value>
+  </data>
+  <data name="SettingsWindow.Text13" xml:space="preserve">
+    <value>Verwenden Sie year, month und day für das heutige Datum. Der gesamte relative Pfad mit .md muss passen; / trennt Ordner.
+Beispiel: </value>
+  </data>
+  <data name="SettingsWindow.Text14" xml:space="preserve">
+    <value>Nach dem Speichern unter Weitere Aktionen → Tagesnotiz anzeigen die Vorschau unten öffnen. Für feste Notizen „Notizabschnitt verknüpfen“ nutzen.</value>
+  </data>
+  <data name="SettingsWindow.Text15" xml:space="preserve">
+    <value>Wenn die heutige Tagesnotiz fehlt</value>
+  </data>
+  <data name="SettingsWindow.Text16" xml:space="preserve">
+    <value>Wartemeldung anzeigen (Standard)</value>
+  </data>
+  <data name="SettingsWindow.Text17" xml:space="preserve">
+    <value>1. Gestern behalten, bis heute erstellt ist</value>
+  </data>
+  <data name="SettingsWindow.Text18" xml:space="preserve">
+    <value>2. Gestern bis zum Neuladen behalten</value>
+  </data>
+  <data name="SettingsWindow.Text19" xml:space="preserve">
+    <value>Erstellen Sie die heutige Notiz in Obsidian zur automatischen Anzeige. Option 1 behält gestern, bis heute vorhanden ist; Option 2 bis zum Neuladen. Neuladen ohne heutige Datei oder eine fehlende gestrige Datei führt zum Wartemodus.</value>
+  </data>
+  <data name="SettingsWindow.Text20" xml:space="preserve">
+    <value>Heutige Tagesnotiz wird geprüft…</value>
+  </data>
+  <data name="SettingsWindow.Text21" xml:space="preserve">
+    <value>Heutige Notiz gefunden: </value>
+  </data>
+  <data name="SettingsWindow.Text22" xml:space="preserve">
+    <value>Prüfung nicht möglich: </value>
+  </data>
+  <data name="SettingsWindow.Text23" xml:space="preserve">
+    <value>Standardmuster mit Datumsgruppen einfügen</value>
+  </data>
+  <data name="SettingsWindow.Text24" xml:space="preserve">
+    <value>Regulären Ausdruck mit year-, month- und day-Gruppen einfügen?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text25" xml:space="preserve">
+    <value>
+
+Ja: Das gesamte Feld durch diesen Standard ersetzen.
+Nein: Bestehenden Ausdruck behalten.</value>
+  </data>
+  <data name="SettingsWindow.Text26" xml:space="preserve">
+    <value>Regex mit Datumsgruppen einfügen</value>
+  </data>
+  <data name="SettingsWindow.Text27" xml:space="preserve">
+    <value>Verbindungsanleitung und Anmeldung (optional)</value>
+  </data>
+  <data name="SettingsWindow.Text28" xml:space="preserve">
+    <value>Geben Sie @ am Anfang eines eigenen Absatzes ein, um Ergänzungen und Beispiele zu sehen (Leerzeile nach vorherigem Text).
+Beispiel: @calendar 2026-10-06T09:00
+Zeitzone optional (Windows-Ortszeit), Suchwörter ebenfalls.
+Google Tasks ist schreibgeschützt. Die API liefert nur Daten, keine geplanten Uhrzeiten. Auch bei einer Uhrzeit in Google wird „ohne Uhrzeit“ angezeigt.</value>
+  </data>
+  <data name="SettingsWindow.Text29" xml:space="preserve">
+    <value>Schritt 1: Google vorbereiten (am 2026-10-06 mit offizieller Dokumentation abgeglichen)
+Für private Nutzung mit Ihrem Google-Konto. Schaltflächen öffnen den Standardbrowser. In 1-1 bis 1-5 dasselbe Projekt wählen. Bezeichnungen hängen von Googles Sprache ab.</value>
+  </data>
+  <data name="SettingsWindow.Text30" xml:space="preserve">
+    <value>1-1. Google Calendar API öffnen</value>
+  </data>
+  <data name="SettingsWindow.Text31" xml:space="preserve">
+    <value>Oben ein Projekt wählen oder mit New project erstellen und auswählen (z. B. StickyNotes Personal). Auf der Google Calendar API-Seite Enable wählen. Manage bedeutet bereits aktiviert.</value>
+  </data>
+  <data name="SettingsWindow.Text32" xml:space="preserve">
+    <value>1-2. Branding öffnen</value>
+  </data>
+  <data name="SettingsWindow.Text33" xml:space="preserve">
+    <value>Falls nicht eingerichtet, Get started wählen.
+• App name: z. B. StickyNotes Personal
+• User support email: erreichbare Adresse → Next
+• Audience: External für private Google-Konten → Next
+• Contact information: Ihre E-Mail → Next
+• Richtlinie für Nutzerdaten prüfen und gegebenenfalls zustimmen → Continue → Create
+Falls eingerichtet, prüfen und mit 1-3 fortfahren. Internal beschränkt den Zugriff auf Ihre Google-Cloud-Organisation.</value>
+  </data>
+  <data name="SettingsWindow.Text34" xml:space="preserve">
+    <value>1-3. Audience öffnen</value>
+  </data>
+  <data name="SettingsWindow.Text35" xml:space="preserve">
+    <value>Bei External-Apps im Status Testing: Test users → Add users, Google-Konto für den Kalender eintragen und Save. Falls Ihr Cloud-Administrationskonto abweicht, das Kalenderkonto hinzufügen. Veröffentlichen ist nicht nötig.</value>
+  </data>
+  <data name="SettingsWindow.Text36" xml:space="preserve">
+    <value>1-4. Data Access öffnen</value>
+  </data>
+  <data name="SettingsWindow.Text37" xml:space="preserve">
+    <value>Bei einer externen App Add or Remove Scopes wählen und beide Bereiche unten markieren. Fehlen sie, jede URL unter Manually add scopes eintragen. Update, dann Save wählen.</value>
+  </data>
+  <data name="SettingsWindow.Text38" xml:space="preserve">
+    <value>Die URLs oben können kopiert werden. calendar.events erlaubt Lesen/Bearbeiten von Terminen, tasks.readonly nur Lesen von Tasks. Die Kalender-ID beschränkt weder die OAuth-Freigabe noch wählt sie Aufgabenlisten.</value>
+  </data>
+  <data name="SettingsWindow.Text39" xml:space="preserve">
+    <value>1-5. Clients öffnen</value>
+  </data>
+  <data name="SettingsWindow.Text40" xml:space="preserve">
+    <value>Create client → Application type: Desktop app → Name (z. B. StickyNotes Desktop) → Create. Vor dem Schließen Download JSON wählen; das Geheimnis ist später eventuell nicht abrufbar. Keine Web-App-Weiterleitungs-URIs oder JavaScript-Ursprünge einrichten.
+Die JSON in Schritt 2 auswählen und mit „In App importieren“ in die App-Daten kopieren. Umbenennen ist unnötig. API-Schlüssel und Dienstkonto-JSON sind nicht unterstützt.</value>
+  </data>
+  <data name="SettingsWindow.Text41" xml:space="preserve">
+    <value>Weiter: JSON wählen → In App importieren → Kalender-ID: primary für den Hauptkalender → Schritt 3 zur Anmeldung. Im Browser das Konto aus 1-3 wählen, App-Namen prüfen und Calendar-Zugriff sowie Tasks-Lesezugriff erlauben. Das Ergebnis wird automatisch empfangen. Tab schließen und Verbindungsbestätigung in den Einstellungen prüfen.
+Google Tasks ist schreibgeschützt. Die API liefert nur Datumsangaben, keine geplanten Uhrzeiten. Auch bei gesetzter Zeit in Google erscheint „ohne Uhrzeit“.</value>
+  </data>
+  <data name="SettingsWindow.Text42" xml:space="preserve">
+    <value>Fehlerbehebung
+• access_denied: Testnutzer und angemeldetes Konto prüfen. Bei Organisationssperren die Administration fragen.
+• Ungeprüfte App: Eigenen Client-Namen und Konto prüfen. Bei Unsicherheit abbrechen.
+• Fehler nach Anmeldung: Kalender-ID, APIs im selben Projekt und Rechte prüfen. Schritt 3 erteilt erneut Zugriff; Schritt 4 prüft nur die Verbindung.
+• External/Testing-Aktualisierungstokens für diese Berechtigungen laufen nach 7 Tagen ab. Mit Schritt 3 erneut anmelden.
+• Schritte 3 und 4 speichern alle Einstellungen, auch außerhalb von Google.</value>
+  </data>
+  <data name="SettingsWindow.Text43" xml:space="preserve">
+    <value>Google-Dokumentation: Einwilligung einrichten</value>
+  </data>
+  <data name="SettingsWindow.Text44" xml:space="preserve">
+    <value>Google-Dokumentation: OAuth-Clients verwalten</value>
+  </data>
+  <data name="SettingsWindow.Text45" xml:space="preserve">
+    <value>Schritt 1: Einrichtungsanleitung öffnen</value>
+  </data>
+  <data name="SettingsWindow.Text46" xml:space="preserve">
+    <value>Schritt 2: Google-OAuth-JSON für Desktop-App</value>
+  </data>
+  <data name="SettingsWindow.Text47" xml:space="preserve">
+    <value>Die JSON wird bei Anmeldung oder Verbindungsprüfung validiert.</value>
+  </data>
+  <data name="SettingsWindow.Text48" xml:space="preserve">
+    <value>JSON auswählen und prüfen</value>
+  </data>
+  <data name="SettingsWindow.Text49" xml:space="preserve">
+    <value>Desktop-JSON geprüft. Wählen Sie „In App importieren“ und fahren Sie mit Schritt 3 fort.</value>
+  </data>
+  <data name="SettingsWindow.Text50" xml:space="preserve">
+    <value>In App importieren</value>
+  </data>
+  <data name="SettingsWindow.Text51" xml:space="preserve">
+    <value>Einstellung zur weiteren Verwendung der importierten JSON gespeichert.</value>
+  </data>
+  <data name="SettingsWindow.Text52" xml:space="preserve">
+    <value>In App-Daten kopiert und Pfad gespeichert. Die Quell-JSON kann jetzt verschoben oder gelöscht werden.</value>
+  </data>
+  <data name="SettingsWindow.Text53" xml:space="preserve">
+    <value>Importierte JSON löschen</value>
+  </data>
+  <data name="SettingsWindow.Text54" xml:space="preserve">
+    <value>Importierte JSON-Kopie löschen?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text55" xml:space="preserve">
+    <value>
+
+Die Original-JSON bleibt erhalten. Tokens und Google-Autorisierung werden nicht entfernt.</value>
+  </data>
+  <data name="SettingsWindow.Text56" xml:space="preserve">
+    <value>Importierte JSON löschen</value>
+  </data>
+  <data name="SettingsWindow.Text57" xml:space="preserve">
+    <value>Importierte JSON gelöscht. Originaldatei und Tokens bleiben erhalten.</value>
+  </data>
+  <data name="SettingsWindow.Text58" xml:space="preserve">
+    <value>Ziel: %LOCALAPPDATA%\StickyNotes\credentials-google.json
+Import und Löschen wirken sofort, ohne andere Felder zu speichern. Nur die verwaltete Kopie kann gelöscht werden.</value>
+  </data>
+  <data name="SettingsWindow.Text59" xml:space="preserve">
+    <value>Kalender-ID (primary für den Hauptkalender)</value>
+  </data>
+  <data name="SettingsWindow.Text60" xml:space="preserve">
+    <value>Verwenden Sie einen absoluten Pfad für den Notizordner.</value>
+  </data>
+  <data name="SettingsWindow.Text61" xml:space="preserve">
+    <value>Verwenden Sie einen absoluten Pfad für den Tagesnotizordner.</value>
+  </data>
+  <data name="SettingsWindow.Text62" xml:space="preserve">
+    <value>Geben Sie eine Kalender-ID ein.</value>
+  </data>
+  <data name="SettingsWindow.Text63" xml:space="preserve">
+    <value>Alle gespeicherten Notizdateien migrieren?
+
+Von: {0}
+Nach: {1}
+
+Ja: Alle .md-Dateien im alten Ordner verschieben, auch Unterordner und geschlossene Notizen. Vorhandene Dateien werden nie überschrieben.
+Der Tagesnotizordner wird nicht automatisch geändert. Falls diese Dateien mitziehen, separat anpassen.
+Nein: Nur Ordner für neue Notizen ändern, bestehende Dateien behalten.
+Abbrechen: Einstellungen nicht speichern.</value>
+  </data>
+  <data name="SettingsWindow.Text64" xml:space="preserve">
+    <value>Notizdateien migrieren</value>
+  </data>
+  <data name="SettingsWindow.Text65" xml:space="preserve">
+    <value>Schritt 3: Bei Google anmelden</value>
+  </data>
+  <data name="SettingsWindow.Text66" xml:space="preserve">
+    <value>Schritt 4: Verbindung prüfen (angemeldet)</value>
+  </data>
+  <data name="SettingsWindow.Text67" xml:space="preserve">
+    <value>Anmeldung / Verbindungsprüfung abbrechen</value>
+  </data>
+  <data name="SettingsWindow.Text68" xml:space="preserve">
+    <value>Speichern und schließen</value>
+  </data>
+  <data name="SettingsWindow.Text69" xml:space="preserve">
+    <value>Innerhalb von 3 Minuten bei Google anmelden und Calendar-Zugriff sowie Tasks-Lesezugriff erlauben. Die Verbindung wird danach automatisch geprüft.</value>
+  </data>
+  <data name="SettingsWindow.Text70" xml:space="preserve">
+    <value>Calendar- und Tasks-Verbindungen werden geprüft…</value>
+  </data>
+  <data name="SettingsWindow.Text71" xml:space="preserve">
+    <value>Verbindung bestätigt. Probieren Sie @calendar today in einer Notiz. Termine und Aufgaben wurden nicht geändert.</value>
+  </data>
+  <data name="SettingsWindow.Text72" xml:space="preserve">
+    <value>Abgebrochen. Schließen Sie den Anmelde-Tab im Browser. Bereits abgeschlossene Anmeldung bleibt erhalten.</value>
+  </data>
+  <data name="SettingsWindow.Text73" xml:space="preserve">
+    <value>Anmeldung gespeichert, Prüfung fehlgeschlagen. Kalender-ID, API-Aktivierung und Rechte prüfen, dann Schritt 4 wiederholen.
+</value>
+  </data>
+  <data name="SettingsWindow.Text74" xml:space="preserve">
+    <value>Beim Ändern des Notizordners wird nach Migration gefragt.
+Backups, Anordnung und Zugangsdaten liegen in %LOCALAPPDATA%\StickyNotes.</value>
+  </data>
+  <data name="Ui.Text01" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="GoogleTasks.Access" xml:space="preserve">
+    <value>Google Tasks kann nicht gelesen werden. Aktivieren Sie Tasks API im selben Cloud-Projekt, fügen Sie tasks.readonly hinzu und melden Sie sich in Schritt 3 erneut an.</value>
+  </data>
+  <data name="GoogleTasks.Error" xml:space="preserve">
+    <value>Abruf von Google Tasks fehlgeschlagen (HTTP {0}). Beim nächsten Aktualisieren wird es erneut versucht.</value>
+  </data>
+  <data name="GoogleTasks.Invalid" xml:space="preserve">
+    <value>Ungültige Google-Tasks-Antwort.</value>
+  </data>
+  <data name="GoogleTasks.Timeout" xml:space="preserve">
+    <value>Google-Tasks-Abruf nach 30 Sekunden abgebrochen. Beim nächsten Aktualisieren wird es erneut versucht.</value>
+  </data>
+  <data name="GoogleTasks.Enable" xml:space="preserve">
+    <value>1-1: Google Tasks API aktivieren</value>
+  </data>
+  <data name="GoogleTasks.Setup" xml:space="preserve">
+    <value>Aktivieren Sie Google Tasks API im selben Cloud-Projekt wie Calendar und fügen Sie calendar.events sowie tasks.readonly hinzu. Bestehende Nutzer müssen sich in Schritt 3 erneut anmelden und Tasks-Lesezugriff erlauben. Keine neue JSON nötig. Datierte, offene Aufgaben aller Listen werden schreibgeschützt angezeigt. Die Kalender-ID wählt keine Aufgabenlisten.
+Die Google Tasks API liefert nur Daten, keine geplanten Uhrzeiten. Auch bei gesetzter Zeit in Google erscheint „ohne Uhrzeit“.</value>
+  </data>
+  <data name="GoogleTasks.Loading" xml:space="preserve">
+    <value>Google Tasks wird geladen…</value>
+  </data>
+  <data name="GoogleTasks.Count" xml:space="preserve">
+    <value>Google Tasks: {0} (schreibgeschützt)</value>
+  </data>
+  <data name="GoogleTasks.Item" xml:space="preserve">
+    <value>{0} (ohne Uhrzeit) · {1}
+{2}</value>
+  </data>
+  <data name="GoogleTasks.Empty" xml:space="preserve">
+    <value>Keine passenden offenen Aufgaben mit Datum.</value>
+  </data>
+  <data name="GoogleTasks.Truncated" xml:space="preserve">
+    <value>Teilergebnisse: Abrufgrenze erreicht (100 Aufgaben / 20 Anfragen).</value>
+  </data>
+  <data name="GoogleTasks.Partial" xml:space="preserve">
+    <value>Einige Daten konnten nicht abgerufen werden. Prüfen Sie die Calendar-/Tasks-Meldungen.</value>
+  </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>Obsidian CLI verwenden (Standard)</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>Starten Sie Obsidian und wählen Sie den Vault. CLI übernimmt Text, Speichern und Tagesnotizeinstellungen. Tasks-/Dataview-Abfragen benötigen die jeweiligen Plugins; Dataview unterstützt LIST, TABLE und TASK. Bei Fehlern kein lokaler Lesezugriff. CLI deaktivieren, um lokale Einstellungen zu zeigen. Nur vertrauenswürdige Tasks-Abfragen verwenden: Ihr JavaScript läuft in Obsidian.</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Absoluter Pfad zu Obsidian.com</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>Ziel-Vault-Ordner</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>Obsidian-Vault-Name / ID (Verbindungsziel)</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>Absolute Vault- und Notizpfade sind erforderlich.</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>Diese Notiz ist keine Markdown-Datei im eingerichteten Vault.</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>Maximal 20 Abfragen / 8.000 Zeichen pro Notiz. Kürzen Sie lange Pfade oder Abfragen.</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>Richten Sie den absoluten Pfad zur offiziellen Obsidian.com ein.</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>Kein gültiges CLI-Ergebnis. Prüfen Sie CLI-Einstellungen und Ziel-Vault.</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>Starten Sie Obsidian. Die Vorschau startet eine beendete App nicht absichtlich.</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>CLI-Ausgabegrenze überschritten. Begrenzen Sie die Abfrage.</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>Tasks aktualisieren (Vorschau)</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI — wartet</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — abgerufen {1}</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Tasks-Abruffehler (angezeigte Ergebnisse sind veraltet): </value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>Keine angezeigten Ergebnisse</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Tasks-Anfrage abgelaufen. Die Verarbeitung in Obsidian läuft möglicherweise weiter.</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>Die Notizquelle hat sich geändert. Kopieren Sie Ihren Entwurf und laden Sie vor dem Speichern neu.</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>Notiz wird über Obsidian CLI gelesen…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>Notiz über Obsidian CLI geprüft.</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>CLI-Lesefehler (kein lokaler Ersatz): </value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>CLI-Befehlslänge überschritten. Prüfen Sie Vault-Namen, Pfade oder Abfragen.</value>
+  </data>
+  <data name="CliDaily.Detect" xml:space="preserve">
+    <value>Vault-Ordner über CLI abrufen</value>
+  </data>
+  <data name="CliDaily.Help" xml:space="preserve">
+    <value>Ordner, Datumsformat und Vorlage folgen Obsidian. Nur heutige und gestrige Pfade werden geprüft; fehlende Tagesnotizen werden nicht erstellt. Mit der Ordnerauswahl den Speicherort neuer Notizen ändern; sonst gilt Obsidian.</value>
+  </data>
+  <data name="CliDaily.Summary" xml:space="preserve">
+    <value>Ordner: {0}
+Datumsformat: {1}
+Vorlage: {2}
+Heute: {3} ({4})</value>
+  </data>
+  <data name="CliDaily.Default" xml:space="preserve">
+    <value>Obsidian-Standard</value>
+  </data>
+  <data name="CliDaily.None" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="CliDaily.Exists" xml:space="preserve">
+    <value>vorhanden</value>
+  </data>
+  <data name="CliDaily.Missing" xml:space="preserve">
+    <value>nicht erstellt; wartet</value>
+  </data>
+  <data name="CliDaily.DISABLED" xml:space="preserve">
+    <value>Aktivieren Sie Obsidian-Kernplugin Daily notes.</value>
+  </data>
+  <data name="CliDaily.UNSUPPORTED" xml:space="preserve">
+    <value>Diese Obsidian-Daily-notes-API wird nicht unterstützt.</value>
+  </data>
+  <data name="CliDaily.PATH" xml:space="preserve">
+    <value>Prüfen Sie Tagesnotizordner und Datumsformat in Obsidian.</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>Basisordner (lokaler Modus)</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>Ordner für Haftnotizen wählen…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>Haftnotizordner: {0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>Ordner wählen oder neuen relativen Pfad eingeben. „.“ ist das obige Stammverzeichnis. Bestätigen fragt nach dem Verschieben vorhandener Haftnotizen und speichert die Einstellungen. Abbrechen erstellt nichts.</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>Haftnotizen hier speichern?
+{0}
+
+Ja: Auch von der App erstellte Haftnotizen aus dem bisherigen Ordner verschieben (mit Unterordnern).
+Nein: Nur Speicherort neuer Notizen ändern.
+Abbrechen: Keine Änderung.
+
+Gewöhnliche verknüpfte Notizen und Tagesnotizen sind ausgenommen. Relative Links in verschobenen Notizen werden nicht angepasst.</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>Haftnotizordner wird aktualisiert. Bitte warten.</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>Relativen Pfad innerhalb der gewählten Wurzel eingeben. Übergeordnete, versteckte und reservierte Pfade sind unzulässig.</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>Zu viele Einträge. Kleineren Basisordner wählen (10.000 Einträge / 1.000 Haftnotizen).</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>Eine Datei existiert bereits oder wurde während der Migration geändert. Nichts wird überschrieben.</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>Migration zwischen Vaults oder Zugriffsmodi wird nicht unterstützt. „Nein“ ändert nur den Speicherort.</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>Einige Verschiebungen konnten nicht rückgängig gemacht werden. Protokoll behalten und beide Pfade vor erneutem Versuch prüfen:</value>
+  </data>
+  <data name="Editing.Activation" xml:space="preserve">
+    <value>Textbearbeitung starten mit</value>
+  </data>
+  <data name="Editing.SingleClick" xml:space="preserve">
+    <value>Einfachklick</value>
+  </data>
+  <data name="Editing.DoubleClick" xml:space="preserve">
+    <value>Doppelklick</value>
+  </data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>Tasks / Dataview aktualisieren</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — wartet</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — abgerufen {1}</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Dataview-Abruffehler (angezeigte Ergebnisse sind veraltet): </value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>Keine angezeigten Ergebnisse</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Dataview-Anfrage abgelaufen. Die Verarbeitung in Obsidian läuft möglicherweise weiter.</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>Aktivieren Sie Dataview im gewählten Vault.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>Diese Dataview-API wird nicht unterstützt. Aktualisieren Sie das Plugin.</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataview indiziert. Beim nächsten Aktualisieren wird es erneut versucht.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDAR lässt sich nicht als Markdown exportieren. Verwenden Sie LIST, TABLE oder TASK.</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataview lieferte eine ungültige Antwort.</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Dataview-Ausgabe überschreitet 200.000 Zeichen pro Block. Mit LIMIT einschränken.</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>Dataview: maximal 20 Blöcke und insgesamt 8.000 Zeichen pro Notiz.</value>
+  </data>
+  <data name="NoteBrowser.Title" xml:space="preserve">
+    <value>Haftnotizordner verwalten…</value>
+  </data>
+  <data name="NoteBrowser.Help" xml:space="preserve">
+    <value>Markdown-Notiz zum Öffnen oder Löschen auswählen. Vorschau und YAML sind schreibgeschützt; Abfragen werden nicht ausgeführt.</value>
+  </data>
+  <data name="NoteBrowser.Open" xml:space="preserve">
+    <value>Als Haftnotiz öffnen</value>
+  </data>
+  <data name="NoteBrowser.Search" xml:space="preserve">
+    <value>Nach Dateiname oder Pfad filtern</value>
+  </data>
+  <data name="NoteBrowser.Preview" xml:space="preserve">
+    <value>Inhaltsvorschau</value>
+  </data>
+  <data name="NoteBrowser.Loading" xml:space="preserve">
+    <value>Wird geladen…</value>
+  </data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve">
+    <value>Liste aktualisieren</value>
+  </data>
+  <data name="NoteBrowser.Count" xml:space="preserve">
+    <value>{0} Markdown-Notizen</value>
+  </data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve">
+    <value> (erste 50.000 Zeichen)</value>
+  </data>
+  <data name="TaskEditing.Keys" xml:space="preserve">
+    <value>↑↓ Auswählen · Enter Einfügen · Tab Einrücken · Esc Schließen</value>
+  </data>
+  <data name="TaskEditing.Label" xml:space="preserve">
+    <value>Aufgabenergänzungen</value>
+  </data>
+  <data name="TaskEditing.Automatic" xml:space="preserve">
+    <value>Automatisch (nur mit Tasks in Obsidian)</value>
+  </data>
+  <data name="TaskEditing.On" xml:space="preserve">
+    <value>EIN (auch ohne Tasks vorschlagen)</value>
+  </data>
+  <data name="TaskEditing.Off" xml:space="preserve">
+    <value>AUS (keine Vorschläge)</value>
+  </data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve">
+    <value>Standard ist Automatisch. Ohne erreichbares, aktives Tasks oder im lokalen Modus bleiben Vorschläge aus, bis Sie EIN wählen. Listenfortsetzung mit Enter und Checkbox-Aktionen bleiben unabhängig verfügbar.</value>
+  </data>
+  <data name="Hotkey.Unavailable" xml:space="preserve">
+    <value>Alt + Z konnte nicht registriert werden. Möglicherweise belegt eine andere App die Taste. Temporärer Vordergrund bleibt im Infobereich-/Notizmenü verfügbar. Konflikt lösen und App neu starten.</value>
+  </data>
+  <data name="HeadingFilter.Title" xml:space="preserve">
+    <value>Überschriftenfilter</value>
+  </data>
+  <data name="HeadingFilter.Search" xml:space="preserve">
+    <value>Überschriften suchen</value>
+  </data>
+  <data name="HeadingFilter.Clear" xml:space="preserve">
+    <value>Alle anzeigen</value>
+  </data>
+  <data name="HeadingFilter.Empty" xml:space="preserve">
+    <value>Keine Überschriften gefunden.</value>
+  </data>
+  <data name="HeadingFilter.Missing" xml:space="preserve">
+    <value>Eine gewählte Überschrift fehlt oder ist mehrdeutig. Öffnen Sie Gliederung, wählen Sie Alle anzeigen und wählen Sie erneut.</value>
+  </data>
+  <data name="NoteWindow.Details" xml:space="preserve">
+    <value>Details ein-/ausblenden</value>
+  </data>
+  <data name="HeadingFilter.Short" xml:space="preserve">
+    <value>Gliederung</value>
+  </data>
+  <data name="HeadingFilter.Count" xml:space="preserve">
+    <value>{0} Abschnitte</value>
+  </data>
+  <data name="TaskEditing.ToggleShortcut" xml:space="preserve">
+    <value>Tastenkürzel zum Umschalten von Aufgaben</value>
+  </data>
+  <data name="TaskEditing.ShortcutHelp" xml:space="preserve">
+    <value>Feld fokussieren und Ctrl oder Alt mit Buchstabe, Ziffer, Enter, Leertaste oder F1–F12 drücken (Shift optional), z. B. Ctrl+Enter. Standardmäßig unbelegt. Schaltet beim Bearbeiten die Aufgabe in der Cursorzeile um. Delete/Backspace oder Löschen deaktiviert es.</value>
+  </data>
+  <data name="TaskEditing.ShortcutInvalid" xml:space="preserve">
+    <value>Diese Tastenkombination ist nicht verfügbar. Ctrl oder Alt ist nötig. Speichern, Bearbeiten, Kopieren/Einfügen/Rückgängig und weitere reservierte Befehle sind ausgeschlossen.</value>
+  </data>
+  <data name="TaskEditing.ShortcutClear" xml:space="preserve">
+    <value>Tastenkürzel löschen</value>
+  </data>
+  <data name="AppCommands.RestoreClosed" xml:space="preserve">
+    <value>Zuletzt geschlossene Notizen öffnen</value>
+  </data>
+  <data name="NoteWindow.Saving" xml:space="preserve">
+    <value>Wird gespeichert. Warten Sie auf den Abschluss.</value>
+  </data>
+  <data name="Rename.Menu" xml:space="preserve">
+    <value>Datei umbenennen…</value>
+  </data>
+  <data name="Rename.Hint" xml:space="preserve">
+    <value>Doppelklicken zum Umbenennen</value>
+  </data>
+  <data name="Rename.Daily" xml:space="preserve">
+    <value>Tagesnotizdateien können hier nicht umbenannt werden.</value>
+  </data>
+  <data name="Rename.Label" xml:space="preserve">
+    <value>Neuer Dateiname (ohne Erweiterung). Ändert auch den Haftnotiztitel.</value>
+  </data>
+  <data name="Rename.Invalid" xml:space="preserve">
+    <value>Gültigen Dateinamen eingeben. Leere Namen, Pfadtrenner, reservierte Namen und Leerzeichen/Punkte am Ende sind unzulässig.</value>
+  </data>
+  <data name="Rename.Draft" xml:space="preserve">
+    <value>Speichern Sie Änderungen in anderen Haftnotizen dieser Datei und versuchen Sie es erneut.</value>
+  </data>
+  <data name="Rename.Recovery" xml:space="preserve">
+    <value>Umbenennung oder Speichern der Einstellungen konnte nicht bestätigt werden. Prüfen Sie Quell-/Zieldateien und den Wiederherstellungseintrag unten. Falls verschoben, öffnen Sie das Ziel erneut.</value>
+  </data>
+  <data name="Rename.Unavailable" xml:space="preserve">
+    <value>Umbenennen ist vor dem Laden der Notiz nicht möglich. Danach erneut versuchen.</value>
+  </data>
+  <data name="NoteBrowser.Delete" xml:space="preserve">
+    <value>Notiz löschen</value>
+  </data>
+  <data name="NoteBrowser.DeleteConfirm" xml:space="preserve">
+    <value>Diese gesamte Markdown-Datei löschen?
+{0}
+
+Notizen mit dieser Datei werden ebenfalls geschlossen. Eine Wiederherstellungsdatei bleibt in deleted-notes im App-Datenordner.</value>
+  </data>
+  <data name="NoteBrowser.Deleting" xml:space="preserve">
+    <value>Notiz wird gelöscht…</value>
+  </data>
+  <data name="NoteBrowser.DeleteDraft" xml:space="preserve">
+    <value>Eine Notiz dieser Datei enthält ungespeicherte Änderungen. Vor dem Löschen speichern oder verwerfen.</value>
+  </data>
+  <data name="NoteBrowser.SettingsChanged" xml:space="preserve">
+    <value>Einstellungen wurden geändert. Öffnen Sie die Verwaltung erneut.</value>
+  </data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>Haupt</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>Zusatz</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>Der registrierte Vault fehlt. Prüfen Sie die Einstellungen.</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>Prüfen Sie Vault-Anzeigenamen und interne IDs.</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>Quelleinstellungen geändert. Entwurf speichern oder kopieren, dann Notiz neu laden.</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>Haupt-Vault und Vaults offener oder zuletzt geschlossener Notizen können nicht entfernt werden.</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>Bei mehreren Vaults jeden CLI-Namen / jede ID angeben. Bei leerem Namen ergänzt „Vault-Ordner über CLI abrufen“ den von Obsidian gewählten Vault-Namen.</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>Derselbe Ordner kann nicht als mehrere Vaults registriert werden.</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>Vault</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>Vault hinzufügen</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>Registrierung entfernen</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>Standard-Vault für neue Tagesnotizen</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>Vorhandene Notizen behalten ihren Vault. Entfernen der Registrierung löscht keine Dateien.</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>Anzeigename (später änderbar)</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>Tageseinstellungen werden pro Vault gespeichert. Neue gewöhnliche Notizen und ihr Zielordner verwenden die Hauptregistrierung.</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>Verbindung / heutige Notiz prüfen</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>Vaults und Tagesnotizen</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>Obsidian-Vault-Name / ID eingeben (unabhängig vom Anzeigenamen), dann oben die Schaltfläche für den Vault-Stammordner drücken. Eingeben allein ruft nichts ab. Leer verwendet Obsidians Auswahl. Danach wird der Tagesnotizordner automatisch geprüft. Ordner für gewöhnliche Haftnotizen separat wählen und mit „Speichern und schließen“ übernehmen.</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>Vault-Ordner wird über CLI abgerufen… (bis zum Abschluss kein Speichern möglich)</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>Abgerufen: {0} → {1}. Noch nicht gespeichert. Mit „Speichern und schließen“ übernehmen.</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>Ordner konnte nicht abgerufen werden. Eingaben bleiben unverändert. {0}</value>
+  </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>Anzeige und Eigenschaften</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>Verknüpfte Daten aktualisieren</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>Erstellen und öffnen</value>
+  </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>Tasks {0} wird nicht unterstützt. Auf 8.2.2 oder neuer aktualisieren. In Obsidian für diesen Vault Einstellungen → Community-Plugins → Nach Updates suchen öffnen und Tasks aktualisieren. Danach im Haftnotizmenü Verknüpfte Daten aktualisieren → Tasks / Dataview aktualisieren wählen.</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>Diese interne Tasks-API wird nicht unterstützt. Prüfen Sie Updates für Tasks und die Haftnotiz-App. Quellaufgaben wurden nicht geändert.</value>
+  </data>
+</root>

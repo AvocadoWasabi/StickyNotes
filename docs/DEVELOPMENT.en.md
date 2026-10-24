@@ -2,7 +2,7 @@
 
 # Development and releases
 
-Keep README, setup guides and screenshots aligned in Japanese, English, Simplified Chinese, Traditional Chinese and Korean. Detailed references and UI remain in the original three languages; Traditional Chinese/Korean samples use English UI. Generate images through the opt-in `--render-screenshots` command using isolated fictional data. [Generation and visual review](SCREENSHOTS.en.md). `build.ps1` packages all five README languages and the docs/examples directories.
+Keep UI, README, setup and screenshots aligned in Japanese, English, Simplified Chinese, Taiwanese Mandarin (Traditional Chinese), Korean, German, Russian, Spanish and Swedish. Detailed references remain in the original three languages. After implementing UI translations, generate 27 images using isolated fictional data with the opt-in `--render-screenshots` command. [Generation and visual review](SCREENSHOTS.en.md). `build.ps1` packages all nine README languages and docs/examples.
 
 Unreleased: daily notes support multiple Vaults with editable Main/Sub display names. Register Vaults and choose the new-note default in **Settings → Vaults & daily notes**. See [setup and limitations](MULTIPLE-VAULTS.md#english).
 
@@ -61,7 +61,7 @@ Update English, Japanese, and Simplified Chinese (zh-CN) together for READMEs, c
 
 Record completed features and fixes under Unreleased in the [English](../CHANGELOG.md), [Japanese](../CHANGELOG.ja.md), and [Simplified Chinese](../CHANGELOG.zh-CN.md) changelogs. On publication, record the actual version, date, and Release link consistently. Do not present drafts or plans as published. Update `docs/RELEASE-NOTES.md` for that release too.
 
-1. Align `Version` in `src/StickyNotes/StickyNotes.csproj`, download guidance in all five README languages, changelogs, and release notes. Complete `./build.ps1 -Publish` and both reviews, commit locally, then merge the requested branch into main and push.
+1. Align `Version` in `src/StickyNotes/StickyNotes.csproj`, download guidance in all nine README languages, changelogs, and release notes. Complete `./build.ps1 -Publish` and both reviews, commit locally, then merge the requested branch into main and push.
 2. Confirm GitHub Actions **Build and test** succeeds.
 3. When release publication is authorized, manually run **Package release** on main with a new tag, for example `v1.0.0`.
 4. The workflow validates, packages, and creates a **draft release**. Before publishing, check the ZIP's SHA256, executable version, tag target commit, bundled documentation, and absence of personal settings or other private files.
@@ -80,4 +80,4 @@ The source image is `docs/images/StickyNotes.png`, with the ICO under `src/Stick
 
 ## Display language
 
-UI strings live in `src/StickyNotes.Core/Strings.resx` (Japanese), `Strings.en.resx`, and `Strings.zh-CN.resx`. Keep keys and format placeholders aligned, and retrieve strings through `L10n`. Initialize the language at startup; saving Settings defers the change until restart. Do not translate persisted note data or protocol keys. Build tests cover resource completeness, language persistence, menus, and data preservation. Distributions must include `en/StickyNotes.Core.resources.dll` and `zh-CN/StickyNotes.Core.resources.dll`.
+UI text lives in `src/StickyNotes.Core/Strings.resx` (Japanese) and `Strings.<locale>.resx` (en / zh-CN / zh-TW / ko / de / ru / es / sv). `L10n.SupportedLanguages` is the shared registry. Keep all 378 keys, argument indices and format specifiers aligned and access through `L10n`. Initialize at startup; apply saved language changes after restart. Do not translate persisted notes, protocol keys or date formats. Tests cover region/script resolution, explicit preferences, complete resources, persistence, menus, layout and data preservation. Packages require `<locale>/StickyNotes.Core.resources.dll` for all eight satellite locales.

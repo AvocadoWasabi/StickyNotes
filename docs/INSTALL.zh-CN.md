@@ -1,4 +1,4 @@
-[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md)
+[日本語](INSTALL.md) | [English](INSTALL.en.md) | [简体中文](INSTALL.zh-CN.md) | [繁體中文（台灣）](INSTALL.zh-TW.md) | [한국어](INSTALL.ko.md) | [Deutsch](INSTALL.de.md) | [Русский](INSTALL.ru.md) | [Español](INSTALL.es.md) | [Svenska](INSTALL.sv.md)
 
 # 安装与首次设置
 
@@ -45,7 +45,7 @@
 
 ## 4. 使用第一个便签
 
-从 `… → 创建与打开` 新建或打开 Markdown。点击正文／`Ctrl+E` 编辑，`Ctrl+S`／`Esc` 保存。首次关联每日笔记需要今日文件，不会自动创建。显示语言可在设置中更改，重启生效（UI：日语、英语、简体中文）。
+从 `… → 创建与打开` 新建或打开 Markdown。点击正文／`Ctrl+E` 编辑，`Ctrl+S`／`Esc` 保存。首次关联每日笔记需要今日文件，不会自动创建。在设置中选择显示语言，保存并重启后生效。当前开发版 UI 支持 README 列出的九种语言。
 
 ## 常见问题
 

@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="App.xaml.Text01" xml:space="preserve">
+    <value>Недопустимые параметры запуска.</value>
+  </data>
+  <data name="App.xaml.Text02" xml:space="preserve">
+    <value>Не удалось передать действие запущенному приложению. Используйте меню в области уведомлений или перезапустите приложение.
+</value>
+  </data>
+  <data name="App.xaml.Text03" xml:space="preserve">
+    <value>Sticky Notes уже запущено. Используйте меню в области уведомлений или на панели задач.</value>
+  </data>
+  <data name="App.xaml.Text04" xml:space="preserve">
+    <value>Не удалось загрузить настройки. Приложение закрывается для защиты исходного файла.
+</value>
+  </data>
+  <data name="AppCommandPipe.Text01" xml:space="preserve">
+    <value>Не удалось передать действие запущенному приложению.</value>
+  </data>
+  <data name="AppCommands.Text01" xml:space="preserve">
+    <value>Новая заметка</value>
+  </data>
+  <data name="AppCommands.Text02" xml:space="preserve">
+    <value>Открыть Markdown…</value>
+  </data>
+  <data name="AppCommands.Text03" xml:space="preserve">
+    <value>Связать раздел заметки…</value>
+  </data>
+  <data name="AppCommands.Text04" xml:space="preserve">
+    <value>Показать ежедневную заметку…</value>
+  </data>
+  <data name="AppCommands.Text05" xml:space="preserve">
+    <value>Показать все</value>
+  </data>
+  <data name="AppCommands.Text06" xml:space="preserve">
+    <value>Показать все заметки поверх окон (10 секунд)</value>
+  </data>
+  <data name="AppCommands.Text07" xml:space="preserve">
+    <value>Настройки…</value>
+  </data>
+  <data name="AppCommands.Text08" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="CalendarCompletion.Text01" xml:space="preserve">
+    <value>@calendar дата-время-или-today [поисковое-слово]
+Часовой пояс необязателен (местное время Windows).
+Поисковое слово необязательно. События с указанного времени или за текущий день ПК при today обновляются примерно раз в 60 секунд.
+Google Tasks доступен только для чтения. API передаёт только даты, без запланированного времени. Даже если время задано в Google, приложение показывает «без времени».</value>
+  </data>
+  <data name="CalendarCompletion.Text02" xml:space="preserve">
+    <value>@calendar — Поиск в Google Calendar</value>
+  </data>
+  <data name="CalendarCompletion.Text03" xml:space="preserve">
+    <value>Tab / Enter / щелчок — вставить · Esc — закрыть
+Измените выделенные дату и время, затем сохраните.</value>
+  </data>
+  <data name="CalendarCompletion.Text04" xml:space="preserve">
+    <value>Без фильтра: @calendar {0}
+Фильтр: @calendar {1} встреча
+Текущий день: @calendar today</value>
+  </data>
+  <data name="CalendarService.Text01" xml:space="preserve">
+    <value>Пример: @calendar today или @calendar 2026-10-05T09:00 встреча (фильтр необязателен; без часового пояса используется местное время Windows)</value>
+  </data>
+  <data name="CalendarService.Text02" xml:space="preserve">
+    <value>Выполняется запрос к Google. Повторите после его завершения.</value>
+  </data>
+  <data name="CalendarService.Text03" xml:space="preserve">
+    <value>Выберите JSON с учётными данными на шаге 2.</value>
+  </data>
+  <data name="CalendarService.Text04" xml:space="preserve">
+    <value>Выберите OAuth JSON для настольного приложения. Требуется client_id.</value>
+  </data>
+  <data name="CalendarService.Text05" xml:space="preserve">
+    <value>Сначала настройте Google OAuth JSON.</value>
+  </data>
+  <data name="CalendarService.Text06" xml:space="preserve">
+    <value>Ошибка авторизации. Вернитесь в Sticky Notes.</value>
+  </data>
+  <data name="CalendarService.Text07" xml:space="preserve">
+    <value>Авторизация получена. Закройте вкладку и вернитесь в Sticky Notes.</value>
+  </data>
+  <data name="CalendarService.Text08" xml:space="preserve">
+    <value>Доступ к Google не предоставлен. Повторите вход и разрешите доступ к Calendar и чтение Tasks.</value>
+  </data>
+  <data name="CalendarService.Text09" xml:space="preserve">
+    <value>Время входа истекло через 3 минуты. Повторите вход в Google.</value>
+  </data>
+  <data name="CalendarService.Text10" xml:space="preserve">
+    <value>Ошибка авторизации Google ({0}). Войдите снова в настройках.</value>
+  </data>
+  <data name="CalendarService.Text11" xml:space="preserve">
+    <value>Недопустимый ответ авторизации Google. Войдите снова.</value>
+  </data>
+  <data name="CalendarService.Text12" xml:space="preserve">
+    <value>Войдите в Google в настройках.</value>
+  </data>
+  <data name="CalendarService.Text13" xml:space="preserve">
+    <value>Войдите в Google снова.</value>
+  </data>
+  <data name="CalendarService.Text14" xml:space="preserve">
+    <value>Событие изменилось в Google. Обновите события перед редактированием.</value>
+  </data>
+  <data name="CalendarService.Text15" xml:space="preserve">
+    <value>Ошибка Calendar API ({0}). Проверьте соединение, вход и права редактирования календаря.</value>
+  </data>
+  <data name="CalendarService.Text16" xml:space="preserve">
+    <value>Введите ID календаря.</value>
+  </data>
+  <data name="CalendarService.Text17" xml:space="preserve">
+    <value>Не удалось проверить ответ календаря.</value>
+  </data>
+  <data name="CalendarService.Text18" xml:space="preserve">
+    <value>Версия события недоступна. Повторите поиск.</value>
+  </data>
+  <data name="DailyNoteResolver.Text01" xml:space="preserve">
+    <value>Введите регулярное выражение для ежедневных заметок.</value>
+  </data>
+  <data name="DailyNoteResolver.Text02" xml:space="preserve">
+    <value>Регулярное выражение не должно превышать 4096 символов.</value>
+  </data>
+  <data name="DailyNoteResolver.Text03" xml:space="preserve">
+    <value>Недопустимое выражение для ежедневных заметок: </value>
+  </data>
+  <data name="DailyNoteResolver.Text04" xml:space="preserve">
+    <value>Используйте именованные группы year, month и day для текущей даты. Пример: </value>
+  </data>
+  <data name="DailyNoteResolver.Text05" xml:space="preserve">
+    <value>Выберите папку ежедневных заметок в настройках.</value>
+  </data>
+  <data name="DailyNoteResolver.Text06" xml:space="preserve">
+    <value>Поиск по регулярному выражению не поддерживает папки с символическими ссылками или точками соединения.</value>
+  </data>
+  <data name="DailyNoteResolver.Text07" xml:space="preserve">
+    <value>Слишком большой объём поиска. Выберите меньшую папку (10000 элементов / 1 секунда).</value>
+  </data>
+  <data name="DailyNoteResolver.Text08" xml:space="preserve">
+    <value>Истекло время поиска. Упростите регулярное выражение.</value>
+  </data>
+  <data name="DailyNoteResolver.Text09" xml:space="preserve">
+    <value>Сегодняшней дате соответствуют несколько заметок. Уточните выражение.
+</value>
+  </data>
+  <data name="DailyNoteResolver.Text10" xml:space="preserve">
+    <value>Нет ежедневной заметки для сегодняшней даты.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text01" xml:space="preserve">
+    <value>Путь сохранения JSON с учётными данными не может быть ссылкой.</value>
+  </data>
+  <data name="GoogleCredentialsStore.Text02" xml:space="preserve">
+    <value>Не удалось сохранить настройки и восстановить JSON с учётными данными. Проверьте файл восстановления: {0}</value>
+  </data>
+  <data name="HeadingPicker.Text01" xml:space="preserve">
+    <value>Заголовок для показа</value>
+  </data>
+  <data name="HeadingPicker.Text02" xml:space="preserve">
+    <value>Выберите заголовок или введите новый без #. Пустое поле означает весь текст. Кнопка «Показать» добавляет новый заголовок в конец исходного файла.</value>
+  </data>
+  <data name="Language.Automatic" xml:space="preserve">
+    <value>Язык Windows</value>
+  </data>
+  <data name="Language.Label" xml:space="preserve">
+    <value>Язык интерфейса</value>
+  </data>
+  <data name="Language.Restart" xml:space="preserve">
+    <value>Применяется при следующем запуске после сохранения. Текст, заголовки и теги заметок не меняются.</value>
+  </data>
+  <data name="MarkdownView.Text01" xml:space="preserve">
+    <value>[Изображение: </value>
+  </data>
+  <data name="NoteFolderMigration.Text01" xml:space="preserve">
+    <value>Укажите абсолютный путь к папке заметок.</value>
+  </data>
+  <data name="NoteFolderMigration.Text02" xml:space="preserve">
+    <value>Нельзя перенести пути со ссылками или точками соединения: </value>
+  </data>
+  <data name="NoteFolderMigration.Text03" xml:space="preserve">
+    <value>Исходная и целевая папки не могут быть вложены друг в друга.</value>
+  </data>
+  <data name="NoteFolderMigration.Text04" xml:space="preserve">
+    <value>Источник не является папкой: </value>
+  </data>
+  <data name="NoteFolderMigration.Text05" xml:space="preserve">
+    <value>В целевой папке уже есть файл или папка с таким именем. Ничего не будет перезаписано: </value>
+  </data>
+  <data name="NoteFolderMigration.Text06" xml:space="preserve">
+    <value>Перенос не выполнен; часть файлов не удалось восстановить. Проверьте указанные пути и исходную папку. Файлы не перезаписывались.
+</value>
+  </data>
+  <data name="NoteFolderMigration.Text07" xml:space="preserve">
+    <value>
+Причина: </value>
+  </data>
+  <data name="NoteLink.Text01" xml:space="preserve">
+    <value>Исходная заметка изменилась. Перезагрузите её перед показом.</value>
+  </data>
+  <data name="NoteLinkPreview.Text01" xml:space="preserve">
+    <value>Просмотр содержимого (Markdown, только чтение)</value>
+  </data>
+  <data name="NoteLinkPreview.Text02" xml:space="preserve">
+    <value>Загрузите заметку для просмотра.</value>
+  </data>
+  <data name="NoteLinkPreview.Text03" xml:space="preserve">
+    <value> — Новый заголовок будет добавлен в конец (не сохранено)</value>
+  </data>
+  <data name="NoteLinkPreview.Text04" xml:space="preserve">
+    <value> — Весь текст</value>
+  </data>
+  <data name="NoteLinkPreview.Text05" xml:space="preserve">
+    <value> — Первые 4000 символов</value>
+  </data>
+  <data name="NoteLinkPreview.Text06" xml:space="preserve">
+    <value>Не удалось показать: </value>
+  </data>
+  <data name="NoteLinkWindow.Text01" xml:space="preserve">
+    <value>Выберите файл Markdown.</value>
+  </data>
+  <data name="NoteLinkWindow.Text02" xml:space="preserve">
+    <value>Показать ежедневную заметку</value>
+  </data>
+  <data name="NoteLinkWindow.Text03" xml:space="preserve">
+    <value>Связать раздел заметки</value>
+  </data>
+  <data name="NoteLinkWindow.Text04" xml:space="preserve">
+    <value>Сегодняшняя заметка определяется по папке и шаблону из настроек; при смене даты переключается автоматически.</value>
+  </data>
+  <data name="NoteLinkWindow.Text05" xml:space="preserve">
+    <value>Выбрать папку…</value>
+  </data>
+  <data name="NoteLinkWindow.Text06" xml:space="preserve">
+    <value>Выбрать файл Markdown…</value>
+  </data>
+  <data name="NoteLinkWindow.Text07" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="NoteLinkWindow.Text08" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="NoteLinkWindow.Text09" xml:space="preserve">
+    <value>Показать</value>
+  </data>
+  <data name="NoteLinkWindow.Text10" xml:space="preserve">
+    <value>Не удалось загрузить исходную заметку.</value>
+  </data>
+  <data name="NoteLinkWindow.Text11" xml:space="preserve">
+    <value>Выберите существующий файл Markdown.</value>
+  </data>
+  <data name="NoteLinkWindow.Text12" xml:space="preserve">
+    <value>Сегодняшняя заметка: </value>
+  </data>
+  <data name="NoteLinkWindow.Text13" xml:space="preserve">
+    <value>Выбранная заметка: </value>
+  </data>
+  <data name="NoteLinkWindow.Text14" xml:space="preserve">
+    <value>Сначала загрузите файл Markdown.</value>
+  </data>
+  <data name="NoteLinkWindow.Text15" xml:space="preserve">
+    <value>Сегодняшняя заметка изменилась. Перезагрузите и выберите заголовок.</value>
+  </data>
+  <data name="NoteStore.Text01" xml:space="preserve">
+    <value>Файл изменён извне. Скопируйте черновик перед перезагрузкой.</value>
+  </data>
+  <data name="NoteStore.Text02" xml:space="preserve">
+    <value>Свойства YAML должны быть отображением ключей в значения.</value>
+  </data>
+  <data name="NoteStore.Text03" xml:space="preserve">
+    <value>Заметка</value>
+  </data>
+  <data name="NoteStore.Text04" xml:space="preserve">
+    <value>Заметка-{0:yyyyMMdd-HHmmss}-{1}.md</value>
+  </data>
+  <data name="NoteStore.Text05" xml:space="preserve">
+    <value>---
+type: sticky
+id: {0}
+created: {1:o}
+---
+# Новая заметка
+
+- [ ] Записать задачу
+
+Создавайте заметки с **Markdown**.
+</value>
+  </data>
+  <data name="NoteStore.Text06" xml:space="preserve">
+    <value>Новая заметка</value>
+  </data>
+  <data name="NoteWindow.Text01" xml:space="preserve">
+    <value>Перетащите для перемещения заметки</value>
+  </data>
+  <data name="NoteWindow.Text02" xml:space="preserve">
+    <value>Сегодняшняя заметка ещё не создана.
+Создайте её в Obsidian для автоматического показа.
+
+В настройках можно оставить вчерашнюю заметку до 1. создания сегодняшней или 2. нажатия «Перезагрузить».</value>
+  </data>
+  <data name="NoteWindow.Text03" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="NoteWindow.Text04" xml:space="preserve">
+    <value>Изменить Markdown (Ctrl+E)</value>
+  </data>
+  <data name="NoteWindow.Text05" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="NoteWindow.Text06" xml:space="preserve">
+    <value>Сохранить и завершить редактирование (Ctrl+S / Esc)</value>
+  </data>
+  <data name="NoteWindow.Text07" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="NoteWindow.Text08" xml:space="preserve">
+    <value>Другие действия</value>
+  </data>
+  <data name="NoteWindow.Text09" xml:space="preserve">
+    <value>Новая заметка</value>
+  </data>
+  <data name="NoteWindow.Text10" xml:space="preserve">
+    <value>Поверх всех окон: вкл./выкл.</value>
+  </data>
+  <data name="NoteWindow.Text11" xml:space="preserve">
+    <value>Закрыть заметку (сохранить файл)</value>
+  </data>
+  <data name="NoteWindow.Text12" xml:space="preserve">
+    <value>Редактирование • Ctrl+S — сохранить</value>
+  </data>
+  <data name="NoteWindow.Text13" xml:space="preserve">
+    <value>Масштаб ({0}%)</value>
+  </data>
+  <data name="NoteWindow.Text14" xml:space="preserve">
+    <value>Увеличить (Ctrl++ / Ctrl+колесо вверх)</value>
+  </data>
+  <data name="NoteWindow.Text15" xml:space="preserve">
+    <value>Уменьшить (Ctrl+- / Ctrl+колесо вниз)</value>
+  </data>
+  <data name="NoteWindow.Text16" xml:space="preserve">
+    <value>Сбросить (Ctrl+0)</value>
+  </data>
+  <data name="NoteWindow.Text17" xml:space="preserve">
+    <value>Ежедневная заметка • </value>
+  </data>
+  <data name="NoteWindow.Text18" xml:space="preserve">
+    <value>Сохранено • </value>
+  </data>
+  <data name="NoteWindow.Text19" xml:space="preserve">
+    <value>Ожидание сегодняшней заметки</value>
+  </data>
+  <data name="NoteWindow.Text20" xml:space="preserve">
+    <value>Не удалось загрузить исходную заметку</value>
+  </data>
+  <data name="NoteWindow.Text21" xml:space="preserve">
+    <value>Показана вчерашняя заметка ({0:yyyy-MM-dd}). Изменения сохраняются в файл этого дня.
+</value>
+  </data>
+  <data name="NoteWindow.Text22" xml:space="preserve">
+    <value>Выберите «Перезагрузить» для перехода к сегодняшней заметке.</value>
+  </data>
+  <data name="NoteWindow.Text23" xml:space="preserve">
+    <value>Создайте сегодняшнюю заметку в Obsidian для автоматического перехода.</value>
+  </data>
+  <data name="NoteWindow.Text24" xml:space="preserve">
+    <value>Вчера / </value>
+  </data>
+  <data name="NoteWindow.Text25" xml:space="preserve">
+    <value>Сегодня / </value>
+  </data>
+  <data name="NoteWindow.Text26" xml:space="preserve">
+    <value>Связано / </value>
+  </data>
+  <data name="NoteWindow.Text27" xml:space="preserve">
+    <value>Редактирование Markdown • Ctrl+S / Esc — сохранить и завершить • @ — подсказки (часовой пояс и фильтр необязательны)</value>
+  </data>
+  <data name="NoteWindow.Text28" xml:space="preserve">
+    <value>Сохранено</value>
+  </data>
+  <data name="NoteWindow.Text29" xml:space="preserve">
+    <value>Не удалось сохранить</value>
+  </data>
+  <data name="NoteWindow.Text30" xml:space="preserve">
+    <value>Сохранить изменения?
+
+Да: сохранить и вернуться к чтению.
+Нет: отменить изменения и перезагрузить.
+Отмена: оставить черновик и продолжить редактирование.</value>
+  </data>
+  <data name="NoteWindow.Text31" xml:space="preserve">
+    <value>Сохранить правки</value>
+  </data>
+  <data name="NoteWindow.Text32" xml:space="preserve">
+    <value>Не удалось прочитать исходный файл.</value>
+  </data>
+  <data name="NoteWindow.Text33" xml:space="preserve">
+    <value>Сначала сохраните текущие изменения.</value>
+  </data>
+  <data name="NoteWindow.Text34" xml:space="preserve">
+    <value>Задача сохранена</value>
+  </data>
+  <data name="NoteWindow.Text35" xml:space="preserve">
+    <value>Отменить несохранённые правки и перезагрузить?</value>
+  </data>
+  <data name="NoteWindow.Text36" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="NoteWindow.Text37" xml:space="preserve">
+    <value>Исходная заметка или дата изменилась. Сохраните или скопируйте черновик перед перезагрузкой.</value>
+  </data>
+  <data name="NoteWindow.Text38" xml:space="preserve">
+    <value>GOOGLE CALENDAR · событий: {0} (до 100)</value>
+  </data>
+  <data name="NoteWindow.Text39" xml:space="preserve">
+    <value>Нажмите для изменения названия и описания</value>
+  </data>
+  <data name="NoteWindow.Text40" xml:space="preserve">
+    <value>Нет подходящих событий.</value>
+  </data>
+  <data name="NoteWindow.Text41" xml:space="preserve">
+    <value>События обновлены • </value>
+  </data>
+  <data name="NoteWindow.Text42" xml:space="preserve">
+    <value>Изменить событие</value>
+  </data>
+  <data name="NoteWindow.Text43" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="NoteWindow.Text44" xml:space="preserve">
+    <value>Описание (исходные данные Google)</value>
+  </data>
+  <data name="NoteWindow.Text45" xml:space="preserve">
+    <value>Отправить изменения в Google Calendar.
+Участники события, если они есть, получат уведомление.
+
+Время: {0}
+
+Название (до): {1}
+Название (после): {2}
+
+Описание (до):
+{3}
+
+Описание (после):
+{4}</value>
+  </data>
+  <data name="NoteWindow.Text46" xml:space="preserve">
+    <value>Обновить Google Calendar?</value>
+  </data>
+  <data name="NoteWindow.Text47" xml:space="preserve">
+    <value>Google Calendar обновлён</value>
+  </data>
+  <data name="NoteWindow.Text48" xml:space="preserve">
+    <value>Не удалось обновить</value>
+  </data>
+  <data name="NoteWindow.Text49" xml:space="preserve">
+    <value>Теги, название, статус и цвет</value>
+  </data>
+  <data name="NoteWindow.Text50" xml:space="preserve">
+    <value>Показать все заметки поверх окон (10 секунд)</value>
+  </data>
+  <data name="NoteWindow.Text51" xml:space="preserve">
+    <value>Загрузить события сейчас</value>
+  </data>
+  <data name="NoteWindow.Text52" xml:space="preserve">
+    <value>Открыть источник в приложении по умолчанию</value>
+  </data>
+  <data name="NoteWindow.Text53" xml:space="preserve">
+    <value>Открыть Markdown…</value>
+  </data>
+  <data name="NoteWindow.Text54" xml:space="preserve">
+    <value>Связать раздел заметки…</value>
+  </data>
+  <data name="NoteWindow.Text55" xml:space="preserve">
+    <value>Показать ежедневную заметку…</value>
+  </data>
+  <data name="NoteWindow.Text56" xml:space="preserve">
+    <value>Настройки…</value>
+  </data>
+  <data name="NoteWindow.Text57" xml:space="preserve">
+    <value>Выйти (сохранить расположение)</value>
+  </data>
+  <data name="NoteWindow.Text58" xml:space="preserve">
+    <value>Связанные заметки показывают теги источника. Меняйте их в исходной заметке.</value>
+  </data>
+  <data name="NoteWindow.Text59" xml:space="preserve">
+    <value>Свойства заметки</value>
+  </data>
+  <data name="NoteWindow.Text60" xml:space="preserve">
+    <value>Название YAML (метаданные)</value>
+  </data>
+  <data name="NoteWindow.Text61" xml:space="preserve">
+    <value>Теги (пробелы/запятые; иерархия: project/name)</value>
+  </data>
+  <data name="NoteWindow.Text62" xml:space="preserve">
+    <value>Статус (например, active / done / archived)</value>
+  </data>
+  <data name="NoteWindow.Text63" xml:space="preserve">
+    <value>Цвет: yellow / green / blue / pink / gray</value>
+  </data>
+  <data name="NoteWindow.Text64" xml:space="preserve">
+    <value>В тегах разрешены буквы, цифры, _, - и /. Только цифры не допускаются.</value>
+  </data>
+  <data name="NoteWindow.Text65" xml:space="preserve">
+    <value>Сохранить изменения?</value>
+  </data>
+  <data name="SectionEditor.Text01" xml:space="preserve">
+    <value>Введите заголовок одной строкой без переносов.</value>
+  </data>
+  <data name="SectionEditor.Text02" xml:space="preserve">
+    <value>Не удалось добавить заголовок. Проверьте имя и незакрытые блоки кода в источнике.</value>
+  </data>
+  <data name="SectionEditor.Text03" xml:space="preserve">
+    <value>Заголовок «{0}» не найден. Создайте его в исходной заметке.</value>
+  </data>
+  <data name="SectionEditor.Text04" xml:space="preserve">
+    <value>Найдено несколько заголовков «{0}». Используйте уникальное имя.</value>
+  </data>
+  <data name="SectionEditor.Text05" xml:space="preserve">
+    <value>Раздел не может содержать заголовки того же или более высокого уровня.</value>
+  </data>
+  <data name="SectionEditor.Text06" xml:space="preserve">
+    <value>Выбранная строка не является задачей.</value>
+  </data>
+  <data name="SettingsWindow.Text01" xml:space="preserve">
+    <value>Настройки Sticky Notes</value>
+  </data>
+  <data name="SettingsWindow.Text02" xml:space="preserve">
+    <value>Сохранять автоматически при потере фокуса редактора</value>
+  </data>
+  <data name="SettingsWindow.Text03" xml:space="preserve">
+    <value>Если выключено, запрашивать сохранение. При ошибке введённый текст сохраняется в редакторе.</value>
+  </data>
+  <data name="SettingsWindow.Text04" xml:space="preserve">
+    <value>Показывать значки заметок на панели задач</value>
+  </data>
+  <data name="SettingsWindow.Text05" xml:space="preserve">
+    <value>Сохранение применяет настройку ко всем открытым заметкам. Значок в области уведомлений остаётся доступен.</value>
+  </data>
+  <data name="SettingsWindow.Text06" xml:space="preserve">
+    <value>Показывать кнопки при наведении на заголовок</value>
+  </data>
+  <data name="SettingsWindow.Text07" xml:space="preserve">
+    <value>Вкл.: кнопки поверх заголовка при наведении или фокусе F6. Для перемещения используйте левую ручку. Выкл.: кнопки всегда под заголовком (по умолчанию). Сохраните для всех открытых заметок.</value>
+  </data>
+  <data name="SettingsWindow.Text08" xml:space="preserve">
+    <value>Папка заметок (например, Sticky Notes в хранилище)</value>
+  </data>
+  <data name="SettingsWindow.Text09" xml:space="preserve">
+    <value>Выбрать папку заметок</value>
+  </data>
+  <data name="SettingsWindow.Text10" xml:space="preserve">
+    <value>Папка ежедневных заметок</value>
+  </data>
+  <data name="SettingsWindow.Text11" xml:space="preserve">
+    <value>Выбрать папку ежедневных заметок</value>
+  </data>
+  <data name="SettingsWindow.Text12" xml:space="preserve">
+    <value>Шаблон ежедневных заметок (группы даты + регулярное выражение)</value>
+  </data>
+  <data name="SettingsWindow.Text13" xml:space="preserve">
+    <value>Используйте группы year, month и day для текущей даты. Сопоставляйте весь относительный путь с .md; для папок используйте /.
+Пример: </value>
+  </data>
+  <data name="SettingsWindow.Text14" xml:space="preserve">
+    <value>После сохранения откройте Другие действия → Показать ежедневную заметку для просмотра внизу. Для постоянных заметок используйте «Связать раздел заметки».</value>
+  </data>
+  <data name="SettingsWindow.Text15" xml:space="preserve">
+    <value>Если сегодняшней заметки нет</value>
+  </data>
+  <data name="SettingsWindow.Text16" xml:space="preserve">
+    <value>Показать сообщение ожидания (по умолчанию)</value>
+  </data>
+  <data name="SettingsWindow.Text17" xml:space="preserve">
+    <value>1. Оставить вчерашнюю до создания сегодняшней</value>
+  </data>
+  <data name="SettingsWindow.Text18" xml:space="preserve">
+    <value>2. Оставить вчерашнюю до перезагрузки</value>
+  </data>
+  <data name="SettingsWindow.Text19" xml:space="preserve">
+    <value>Создайте сегодняшнюю заметку в Obsidian для автоматического показа. Вариант 1 оставляет вчерашнюю до появления сегодняшней, вариант 2 — до перезагрузки. Перезагрузка без сегодняшнего файла или отсутствие вчерашнего включает ожидание.</value>
+  </data>
+  <data name="SettingsWindow.Text20" xml:space="preserve">
+    <value>Проверка сегодняшней заметки…</value>
+  </data>
+  <data name="SettingsWindow.Text21" xml:space="preserve">
+    <value>Сегодняшняя заметка найдена: </value>
+  </data>
+  <data name="SettingsWindow.Text22" xml:space="preserve">
+    <value>Не удалось проверить: </value>
+  </data>
+  <data name="SettingsWindow.Text23" xml:space="preserve">
+    <value>Вставить стандартный шаблон с группами даты</value>
+  </data>
+  <data name="SettingsWindow.Text24" xml:space="preserve">
+    <value>Вставить выражение с группами year, month и day?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text25" xml:space="preserve">
+    <value>
+
+Да: заменить всё поле этим шаблоном.
+Нет: оставить текущее выражение.</value>
+  </data>
+  <data name="SettingsWindow.Text26" xml:space="preserve">
+    <value>Вставить выражение с группами даты</value>
+  </data>
+  <data name="SettingsWindow.Text27" xml:space="preserve">
+    <value>Подключение и авторизация (необязательно)</value>
+  </data>
+  <data name="SettingsWindow.Text28" xml:space="preserve">
+    <value>Введите @ в начале отдельного абзаца для подсказок и примеров (оставьте пустую строку после предыдущего текста).
+Пример: @calendar 2026-10-06T09:00
+Часовой пояс и фильтр необязательны (местное время Windows).
+Google Tasks доступен только для чтения. API передаёт только даты, без запланированного времени. Даже если время задано в Google, показано «без времени».</value>
+  </data>
+  <data name="SettingsWindow.Text29" xml:space="preserve">
+    <value>Шаг 1: подготовка Google (проверено по официальной документации 2026-10-06)
+Для личного использования со своим аккаунтом Google. Кнопки открывают браузер по умолчанию. В пунктах 1-1–1-5 выбирайте один проект. Названия зависят от языка Google.</value>
+  </data>
+  <data name="SettingsWindow.Text30" xml:space="preserve">
+    <value>1-1. Открыть Google Calendar API</value>
+  </data>
+  <data name="SettingsWindow.Text31" xml:space="preserve">
+    <value>Выберите проект сверху или создайте и выберите через New project (например, StickyNotes Personal). На странице Google Calendar API нажмите Enable. Manage означает, что API уже включён.</value>
+  </data>
+  <data name="SettingsWindow.Text32" xml:space="preserve">
+    <value>1-2. Открыть Branding</value>
+  </data>
+  <data name="SettingsWindow.Text33" xml:space="preserve">
+    <value>Если не настроено, выберите Get started.
+• App name: например, StickyNotes Personal
+• User support email: доступная вам почта → Next
+• Audience: External для личных аккаунтов Google → Next
+• Contact information: ваша почта → Next
+• Изучите политику пользовательских данных и согласитесь, если принимаете её → Continue → Create
+Если уже настроено, проверьте и перейдите к 1-3. Internal ограничивает доступ организацией Google Cloud.</value>
+  </data>
+  <data name="SettingsWindow.Text34" xml:space="preserve">
+    <value>1-3. Открыть Audience</value>
+  </data>
+  <data name="SettingsWindow.Text35" xml:space="preserve">
+    <value>Для External в режиме Testing: Test users → Add users, укажите аккаунт доступа к календарю и Save. Если аккаунт администратора Cloud другой, добавьте аккаунт календаря. Публиковать приложение не нужно.</value>
+  </data>
+  <data name="SettingsWindow.Text36" xml:space="preserve">
+    <value>1-4. Открыть Data Access</value>
+  </data>
+  <data name="SettingsWindow.Text37" xml:space="preserve">
+    <value>Для внешнего приложения выберите Add or Remove Scopes и оба разрешения ниже. Если их нет, введите каждый URL в Manually add scopes. Нажмите Update, затем Save.</value>
+  </data>
+  <data name="SettingsWindow.Text38" xml:space="preserve">
+    <value>URL выше можно скопировать. calendar.events разрешает просмотр/изменение событий, tasks.readonly — только чтение Tasks. ID календаря не ограничивает разрешение OAuth и не выбирает списки задач.</value>
+  </data>
+  <data name="SettingsWindow.Text39" xml:space="preserve">
+    <value>1-5. Открыть Clients</value>
+  </data>
+  <data name="SettingsWindow.Text40" xml:space="preserve">
+    <value>Create client → Application type: Desktop app → имя (например, StickyNotes Desktop) → Create. До закрытия результата выберите Download JSON: секрет позже может быть недоступен. Не настраивайте URI перенаправления веб-приложения и источники JavaScript.
+На шаге 2 выберите JSON и импортируйте в данные приложения. Переименование не требуется. API-ключи и JSON сервисных аккаунтов не поддерживаются.</value>
+  </data>
+  <data name="SettingsWindow.Text41" xml:space="preserve">
+    <value>Далее: выбрать JSON → импортировать → ID календаря: primary для основного → шаг 3 для входа. В браузере выберите аккаунт из 1-3, проверьте имя приложения и разрешите доступ к Calendar и чтение Tasks. Результат поступит автоматически. Закройте вкладку и проверьте подтверждение подключения в настройках.
+Google Tasks доступен только для чтения. API даёт даты без запланированного времени. Даже при заданном времени в Google показано «без времени».</value>
+  </data>
+  <data name="SettingsWindow.Text42" xml:space="preserve">
+    <value>Устранение проблем
+• access_denied: проверьте тестовых пользователей и аккаунт входа. При блокировке политикой организации обратитесь к администратору.
+• Непроверенное приложение: проверьте имя своего клиента и аккаунт. При сомнениях остановитесь.
+• Ошибка после входа: проверьте ID календаря, API в том же проекте и разрешения. Шаг 3 выдаёт доступ заново; шаг 4 лишь проверяет соединение.
+• Токены обновления External/Testing для этих разрешений истекают через 7 дней. Повторите шаг 3.
+• Шаги 3 и 4 сохраняют все настройки, включая не связанные с Google.</value>
+  </data>
+  <data name="SettingsWindow.Text43" xml:space="preserve">
+    <value>Документация Google: настройка согласия</value>
+  </data>
+  <data name="SettingsWindow.Text44" xml:space="preserve">
+    <value>Документация Google: управление OAuth-клиентами</value>
+  </data>
+  <data name="SettingsWindow.Text45" xml:space="preserve">
+    <value>Шаг 1: открыть руководство по настройке</value>
+  </data>
+  <data name="SettingsWindow.Text46" xml:space="preserve">
+    <value>Шаг 2: Google OAuth JSON настольного приложения</value>
+  </data>
+  <data name="SettingsWindow.Text47" xml:space="preserve">
+    <value>JSON проверяется при входе или проверке подключения.</value>
+  </data>
+  <data name="SettingsWindow.Text48" xml:space="preserve">
+    <value>Выбрать и проверить JSON</value>
+  </data>
+  <data name="SettingsWindow.Text49" xml:space="preserve">
+    <value>JSON настольного приложения проверен. Импортируйте в приложение и перейдите к шагу 3.</value>
+  </data>
+  <data name="SettingsWindow.Text50" xml:space="preserve">
+    <value>Импортировать в приложение</value>
+  </data>
+  <data name="SettingsWindow.Text51" xml:space="preserve">
+    <value>Настройка использования импортированного JSON сохранена.</value>
+  </data>
+  <data name="SettingsWindow.Text52" xml:space="preserve">
+    <value>Скопировано в данные приложения, путь сохранён. Исходный JSON теперь можно переместить или удалить.</value>
+  </data>
+  <data name="SettingsWindow.Text53" xml:space="preserve">
+    <value>Удалить импортированный JSON</value>
+  </data>
+  <data name="SettingsWindow.Text54" xml:space="preserve">
+    <value>Удалить импортированную копию JSON?
+
+</value>
+  </data>
+  <data name="SettingsWindow.Text55" xml:space="preserve">
+    <value>
+
+Исходный JSON останется. Токены и разрешения на стороне Google не удаляются.</value>
+  </data>
+  <data name="SettingsWindow.Text56" xml:space="preserve">
+    <value>Удалить импортированный JSON</value>
+  </data>
+  <data name="SettingsWindow.Text57" xml:space="preserve">
+    <value>Импортированный JSON удалён. Исходный файл и токены сохранены.</value>
+  </data>
+  <data name="SettingsWindow.Text58" xml:space="preserve">
+    <value>Путь: %LOCALAPPDATA%\StickyNotes\credentials-google.json
+Импорт и удаление выполняются сразу, без сохранения других полей. Удалить можно только управляемую копию.</value>
+  </data>
+  <data name="SettingsWindow.Text59" xml:space="preserve">
+    <value>ID календаря (primary для основного)</value>
+  </data>
+  <data name="SettingsWindow.Text60" xml:space="preserve">
+    <value>Укажите абсолютный путь к папке заметок.</value>
+  </data>
+  <data name="SettingsWindow.Text61" xml:space="preserve">
+    <value>Укажите абсолютный путь к папке ежедневных заметок.</value>
+  </data>
+  <data name="SettingsWindow.Text62" xml:space="preserve">
+    <value>Введите ID календаря.</value>
+  </data>
+  <data name="SettingsWindow.Text63" xml:space="preserve">
+    <value>Перенести все сохранённые файлы заметок?
+
+Из: {0}
+В: {1}
+
+Да: перенести все .md из старой папки, включая подпапки и закрытые заметки. Существующие файлы не перезаписываются.
+Папка ежедневных заметок не меняется автоматически. Если их файлы тоже переместятся, измените настройку отдельно.
+Нет: изменить только папку новых заметок, оставив файлы на месте.
+Отмена: не сохранять настройки.</value>
+  </data>
+  <data name="SettingsWindow.Text64" xml:space="preserve">
+    <value>Перенести файлы заметок</value>
+  </data>
+  <data name="SettingsWindow.Text65" xml:space="preserve">
+    <value>Шаг 3: войти в Google</value>
+  </data>
+  <data name="SettingsWindow.Text66" xml:space="preserve">
+    <value>Шаг 4: проверить соединение (после входа)</value>
+  </data>
+  <data name="SettingsWindow.Text67" xml:space="preserve">
+    <value>Отменить вход / проверку соединения</value>
+  </data>
+  <data name="SettingsWindow.Text68" xml:space="preserve">
+    <value>Сохранить и закрыть</value>
+  </data>
+  <data name="SettingsWindow.Text69" xml:space="preserve">
+    <value>В течение 3 минут войдите в Google и разрешите доступ к Calendar и чтение Tasks. Соединение проверится автоматически.</value>
+  </data>
+  <data name="SettingsWindow.Text70" xml:space="preserve">
+    <value>Проверка подключения Calendar и Tasks…</value>
+  </data>
+  <data name="SettingsWindow.Text71" xml:space="preserve">
+    <value>Соединение проверено. Попробуйте @calendar today в заметке. События и задачи не изменялись.</value>
+  </data>
+  <data name="SettingsWindow.Text72" xml:space="preserve">
+    <value>Отменено. Закройте вкладку входа в браузере. Завершённая авторизация сохраняется.</value>
+  </data>
+  <data name="SettingsWindow.Text73" xml:space="preserve">
+    <value>Вход сохранён, но проверка не удалась. Проверьте ID календаря, включение API и разрешения, затем повторите шаг 4.
+</value>
+  </data>
+  <data name="SettingsWindow.Text74" xml:space="preserve">
+    <value>При смене папки заметок запрашивается перенос файлов.
+Резервные копии, расположение и учётные данные хранятся в %LOCALAPPDATA%\StickyNotes.</value>
+  </data>
+  <data name="Ui.Text01" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="GoogleTasks.Access" xml:space="preserve">
+    <value>Не удалось прочитать Google Tasks. Включите Tasks API в том же Cloud-проекте, добавьте tasks.readonly и повторите вход на шаге 3.</value>
+  </data>
+  <data name="GoogleTasks.Error" xml:space="preserve">
+    <value>Ошибка загрузки Google Tasks (HTTP {0}). Повтор при следующем обновлении.</value>
+  </data>
+  <data name="GoogleTasks.Invalid" xml:space="preserve">
+    <value>Недопустимый ответ Google Tasks.</value>
+  </data>
+  <data name="GoogleTasks.Timeout" xml:space="preserve">
+    <value>Загрузка Google Tasks превысила 30 секунд. Повтор при следующем обновлении.</value>
+  </data>
+  <data name="GoogleTasks.Enable" xml:space="preserve">
+    <value>1-1: включить Google Tasks API</value>
+  </data>
+  <data name="GoogleTasks.Setup" xml:space="preserve">
+    <value>Включите Google Tasks API в том же Cloud-проекте, что и Calendar, и добавьте calendar.events и tasks.readonly. Существующим пользователям нужно повторить шаг 3 и разрешить чтение Tasks. Новый JSON не нужен. Незавершённые задачи с датой из всех списков показаны только для чтения. ID календаря не выбирает списки задач.
+API Google Tasks даёт даты без запланированного времени. Даже при заданном времени в Google показано «без времени».</value>
+  </data>
+  <data name="GoogleTasks.Loading" xml:space="preserve">
+    <value>Загрузка Google Tasks…</value>
+  </data>
+  <data name="GoogleTasks.Count" xml:space="preserve">
+    <value>Google Tasks: {0} (только чтение)</value>
+  </data>
+  <data name="GoogleTasks.Item" xml:space="preserve">
+    <value>{0} (без времени) · {1}
+{2}</value>
+  </data>
+  <data name="GoogleTasks.Empty" xml:space="preserve">
+    <value>Нет подходящих незавершённых задач с датой.</value>
+  </data>
+  <data name="GoogleTasks.Truncated" xml:space="preserve">
+    <value>Показаны частичные результаты: достигнут лимит (100 задач / 20 запросов).</value>
+  </data>
+  <data name="GoogleTasks.Partial" xml:space="preserve">
+    <value>Часть данных не загружена. Проверьте сообщения Calendar / Tasks.</value>
+  </data>
+  <data name="TasksPreview.Enable" xml:space="preserve">
+    <value>Использовать Obsidian CLI (по умолчанию)</value>
+  </data>
+  <data name="TasksPreview.Help" xml:space="preserve">
+    <value>Запустите Obsidian и выберите хранилище. CLI обрабатывает текст, сохранение и настройки ежедневных заметок. Запросам Tasks / Dataview нужны соответствующие плагины; Dataview поддерживает LIST, TABLE и TASK. При ошибке локальное чтение не используется. Выключите CLI для локальных настроек. Используйте доверенные запросы Tasks: их JavaScript выполняется в Obsidian.</value>
+  </data>
+  <data name="TasksPreview.Cli" xml:space="preserve">
+    <value>Абсолютный путь к Obsidian.com</value>
+  </data>
+  <data name="TasksPreview.Vault" xml:space="preserve">
+    <value>Папка целевого хранилища</value>
+  </data>
+  <data name="TasksPreview.VaultId" xml:space="preserve">
+    <value>Имя / ID хранилища Obsidian (цель подключения)</value>
+  </data>
+  <data name="TasksPreview.VaultRequired" xml:space="preserve">
+    <value>Требуются абсолютные пути к хранилищу и заметке.</value>
+  </data>
+  <data name="TasksPreview.OutsideVault" xml:space="preserve">
+    <value>Заметка не является Markdown-файлом в указанном хранилище.</value>
+  </data>
+  <data name="TasksPreview.QueryLimit" xml:space="preserve">
+    <value>Не более 20 запросов / 8000 символов на заметку. Сократите пути или запросы.</value>
+  </data>
+  <data name="TasksPreview.CliRequired" xml:space="preserve">
+    <value>Укажите абсолютный путь к официальному Obsidian.com.</value>
+  </data>
+  <data name="TasksPreview.NoResponse" xml:space="preserve">
+    <value>Нет корректного результата CLI. Проверьте настройки CLI и целевое хранилище.</value>
+  </data>
+  <data name="TasksPreview.NotRunning" xml:space="preserve">
+    <value>Запустите Obsidian. Просмотр не запускает закрытое приложение намеренно.</value>
+  </data>
+  <data name="TasksPreview.OutputLimit" xml:space="preserve">
+    <value>Превышен лимит вывода CLI. Ограничьте запрос.</value>
+  </data>
+  <data name="TasksPreview.Refresh" xml:space="preserve">
+    <value>Обновить Tasks (предпросмотр)</value>
+  </data>
+  <data name="TasksPreview.Waiting" xml:space="preserve">
+    <value>Tasks CLI — ожидание</value>
+  </data>
+  <data name="TasksPreview.Updated" xml:space="preserve">
+    <value>Tasks {0} — получено {1}</value>
+  </data>
+  <data name="TasksPreview.Error" xml:space="preserve">
+    <value>Ошибка загрузки Tasks (результаты устарели): </value>
+  </data>
+  <data name="TasksPreview.Empty" xml:space="preserve">
+    <value>Нет результатов для показа</value>
+  </data>
+  <data name="TasksPreview.Timeout" xml:space="preserve">
+    <value>Время запроса Tasks истекло. Обработка в Obsidian может продолжаться.</value>
+  </data>
+  <data name="CliNote.ReloadBeforeSave" xml:space="preserve">
+    <value>Источник заметки изменился. Скопируйте черновик и перезагрузите перед сохранением.</value>
+  </data>
+  <data name="CliNote.Loading" xml:space="preserve">
+    <value>Чтение заметки через Obsidian CLI…</value>
+  </data>
+  <data name="CliNote.Loaded" xml:space="preserve">
+    <value>Заметка проверена через Obsidian CLI.</value>
+  </data>
+  <data name="CliNote.Error" xml:space="preserve">
+    <value>Ошибка чтения CLI (без локальной замены): </value>
+  </data>
+  <data name="CliNote.CommandLimit" xml:space="preserve">
+    <value>Превышен лимит длины команды CLI. Проверьте длину имени хранилища, путей и запросов.</value>
+  </data>
+  <data name="CliDaily.Detect" xml:space="preserve">
+    <value>Получить папку хранилища через CLI</value>
+  </data>
+  <data name="CliDaily.Help" xml:space="preserve">
+    <value>Папка, формат даты и шаблон берутся из Obsidian. Проверяются только пути сегодня/вчера; отсутствующие заметки не создаются. Выбор папки заметок меняет место новых файлов, иначе используется Obsidian.</value>
+  </data>
+  <data name="CliDaily.Summary" xml:space="preserve">
+    <value>Папка: {0}
+Формат даты: {1}
+Шаблон: {2}
+Сегодня: {3} ({4})</value>
+  </data>
+  <data name="CliDaily.Default" xml:space="preserve">
+    <value>По умолчанию в Obsidian</value>
+  </data>
+  <data name="CliDaily.None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="CliDaily.Exists" xml:space="preserve">
+    <value>существует</value>
+  </data>
+  <data name="CliDaily.Missing" xml:space="preserve">
+    <value>не создана; ожидание</value>
+  </data>
+  <data name="CliDaily.DISABLED" xml:space="preserve">
+    <value>Включите основной плагин Daily notes в Obsidian.</value>
+  </data>
+  <data name="CliDaily.UNSUPPORTED" xml:space="preserve">
+    <value>Этот API Daily notes Obsidian не поддерживается.</value>
+  </data>
+  <data name="CliDaily.PATH" xml:space="preserve">
+    <value>Проверьте папку ежедневных заметок и формат даты в Obsidian.</value>
+  </data>
+  <data name="StickyFolder.Root" xml:space="preserve">
+    <value>Базовая папка (локальный режим)</value>
+  </data>
+  <data name="StickyFolder.Title" xml:space="preserve">
+    <value>Выбрать папку стикеров…</value>
+  </data>
+  <data name="StickyFolder.Current" xml:space="preserve">
+    <value>Папка стикеров: {0}</value>
+  </data>
+  <data name="StickyFolder.Help" xml:space="preserve">
+    <value>Выберите папку или введите новый относительный путь. «.» — корень выше. Подтверждение запрашивает перенос существующих стикеров и сохраняет настройки. Отмена ничего не создаёт.</value>
+  </data>
+  <data name="StickyFolder.Confirm" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="StickyFolder.Ask" xml:space="preserve">
+    <value>Сохранять стикеры здесь?
+{0}
+
+Да: также перенести созданные приложением стикеры из прежней папки, включая подпапки.
+Нет: изменить только место новых заметок.
+Отмена: ничего не менять.
+
+Обычные связанные и ежедневные заметки исключены. Относительные ссылки в перенесённых заметках не меняются.</value>
+  </data>
+  <data name="StickyFolder.Working" xml:space="preserve">
+    <value>Обновление папки стикеров. Подождите.</value>
+  </data>
+  <data name="StickyFolder.Invalid" xml:space="preserve">
+    <value>Введите относительный путь внутри выбранного корня. Родительские, скрытые и зарезервированные пути запрещены.</value>
+  </data>
+  <data name="StickyFolder.Limit" xml:space="preserve">
+    <value>Слишком много элементов. Выберите меньшую папку (10000 элементов / 1000 стикеров).</value>
+  </data>
+  <data name="StickyFolder.Conflict" xml:space="preserve">
+    <value>Файл уже существует или изменился при переносе. Ничего не перезаписывается.</value>
+  </data>
+  <data name="StickyFolder.CrossSource" xml:space="preserve">
+    <value>Перенос между хранилищами или режимами доступа не поддерживается. Выберите «Нет» для смены только места сохранения.</value>
+  </data>
+  <data name="StickyFolder.Recovery" xml:space="preserve">
+    <value>Часть перемещений не удалось отменить. Сохраните журнал и проверьте оба пути перед повтором:</value>
+  </data>
+  <data name="Editing.Activation" xml:space="preserve">
+    <value>Начинать редактирование текста</value>
+  </data>
+  <data name="Editing.SingleClick" xml:space="preserve">
+    <value>Один щелчок</value>
+  </data>
+  <data name="Editing.DoubleClick" xml:space="preserve">
+    <value>Двойной щелчок</value>
+  </data>
+  <data name="QueryPreview.Refresh" xml:space="preserve">
+    <value>Обновить Tasks / Dataview</value>
+  </data>
+  <data name="DataviewPreview.Waiting" xml:space="preserve">
+    <value>Dataview CLI — ожидание</value>
+  </data>
+  <data name="DataviewPreview.Updated" xml:space="preserve">
+    <value>Dataview {0} — получено {1}</value>
+  </data>
+  <data name="DataviewPreview.Error" xml:space="preserve">
+    <value>Ошибка загрузки Dataview (результаты устарели): </value>
+  </data>
+  <data name="DataviewPreview.Empty" xml:space="preserve">
+    <value>Нет результатов для показа</value>
+  </data>
+  <data name="DataviewPreview.Timeout" xml:space="preserve">
+    <value>Время запроса Dataview истекло. Обработка в Obsidian может продолжаться.</value>
+  </data>
+  <data name="DataviewPreview.MissingPlugin" xml:space="preserve">
+    <value>Включите Dataview в выбранном хранилище.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedApi" xml:space="preserve">
+    <value>Этот API Dataview не поддерживается. Обновите плагин.</value>
+  </data>
+  <data name="DataviewPreview.Loading" xml:space="preserve">
+    <value>Dataview индексирует данные. Повтор при следующем обновлении.</value>
+  </data>
+  <data name="DataviewPreview.UnsupportedQuery" xml:space="preserve">
+    <value>CALENDAR нельзя экспортировать в Markdown. Используйте LIST, TABLE или TASK.</value>
+  </data>
+  <data name="DataviewPreview.InvalidResponse" xml:space="preserve">
+    <value>Dataview вернул недопустимый ответ.</value>
+  </data>
+  <data name="DataviewPreview.OutputLimit" xml:space="preserve">
+    <value>Вывод Dataview превышает 200000 символов на блок. Сузьте запрос с LIMIT.</value>
+  </data>
+  <data name="DataviewPreview.QueryLimit" xml:space="preserve">
+    <value>Dataview: не более 20 блоков и 8000 символов на заметку.</value>
+  </data>
+  <data name="NoteBrowser.Title" xml:space="preserve">
+    <value>Управление папкой стикеров…</value>
+  </data>
+  <data name="NoteBrowser.Help" xml:space="preserve">
+    <value>Выберите Markdown-заметку для открытия или удаления. Просмотр и YAML — только чтение; запросы не выполняются.</value>
+  </data>
+  <data name="NoteBrowser.Open" xml:space="preserve">
+    <value>Открыть как стикер</value>
+  </data>
+  <data name="NoteBrowser.Search" xml:space="preserve">
+    <value>Фильтр по имени файла или пути</value>
+  </data>
+  <data name="NoteBrowser.Preview" xml:space="preserve">
+    <value>Просмотр текста</value>
+  </data>
+  <data name="NoteBrowser.Loading" xml:space="preserve">
+    <value>Загрузка…</value>
+  </data>
+  <data name="NoteBrowser.Refresh" xml:space="preserve">
+    <value>Обновить список</value>
+  </data>
+  <data name="NoteBrowser.Count" xml:space="preserve">
+    <value>Заметок Markdown: {0}</value>
+  </data>
+  <data name="NoteBrowser.Truncated" xml:space="preserve">
+    <value> (первые 50000 символов)</value>
+  </data>
+  <data name="TaskEditing.Keys" xml:space="preserve">
+    <value>↑↓ Выбор · Enter Вставить · Tab Отступ · Esc Закрыть</value>
+  </data>
+  <data name="TaskEditing.Label" xml:space="preserve">
+    <value>Подсказки при вводе задач</value>
+  </data>
+  <data name="TaskEditing.Automatic" xml:space="preserve">
+    <value>Автоматически (только с Tasks в Obsidian)</value>
+  </data>
+  <data name="TaskEditing.On" xml:space="preserve">
+    <value>ВКЛ. (подсказки даже без Tasks)</value>
+  </data>
+  <data name="TaskEditing.Off" xml:space="preserve">
+    <value>ВЫКЛ. (без подсказок)</value>
+  </data>
+  <data name="TaskEditing.PolicyHelp" xml:space="preserve">
+    <value>По умолчанию — автоматически. Если Tasks отсутствует, выключен, недоступен или используется локальный режим, подсказки отключены до ручного включения. Продолжение списка Enter и работа с флажками доступны отдельно.</value>
+  </data>
+  <data name="Hotkey.Unavailable" xml:space="preserve">
+    <value>Не удалось зарегистрировать Alt + Z. Возможно, сочетание занято другой программой. Временный показ поверх окон доступен через меню заметки или области уведомлений. Устраните конфликт и перезапустите приложение.</value>
+  </data>
+  <data name="HeadingFilter.Title" xml:space="preserve">
+    <value>Фильтр заголовков</value>
+  </data>
+  <data name="HeadingFilter.Search" xml:space="preserve">
+    <value>Поиск заголовков</value>
+  </data>
+  <data name="HeadingFilter.Clear" xml:space="preserve">
+    <value>Показать все</value>
+  </data>
+  <data name="HeadingFilter.Empty" xml:space="preserve">
+    <value>Заголовки не найдены.</value>
+  </data>
+  <data name="HeadingFilter.Missing" xml:space="preserve">
+    <value>Выбранный заголовок отсутствует или неоднозначен. Откройте Разделы, выберите Показать все и повторите выбор.</value>
+  </data>
+  <data name="NoteWindow.Details" xml:space="preserve">
+    <value>Показать/скрыть сведения</value>
+  </data>
+  <data name="HeadingFilter.Short" xml:space="preserve">
+    <value>Разделы</value>
+  </data>
+  <data name="HeadingFilter.Count" xml:space="preserve">
+    <value>Разделов: {0}</value>
+  </data>
+  <data name="TaskEditing.ToggleShortcut" xml:space="preserve">
+    <value>Сочетание для переключения флажка</value>
+  </data>
+  <data name="TaskEditing.ShortcutHelp" xml:space="preserve">
+    <value>Выберите поле и нажмите Ctrl или Alt с буквой, цифрой, Enter, Space или F1–F12 (Shift необязателен), например Ctrl+Enter. По умолчанию не назначено. Переключает флажок в строке курсора при редактировании. Delete/Backspace или Очистить отключает сочетание.</value>
+  </data>
+  <data name="TaskEditing.ShortcutInvalid" xml:space="preserve">
+    <value>Сочетание недоступно. Нужен Ctrl или Alt. Сохранение, редактирование, копирование/вставка/отмена и другие зарезервированные команды назначать нельзя.</value>
+  </data>
+  <data name="TaskEditing.ShortcutClear" xml:space="preserve">
+    <value>Очистить сочетание</value>
+  </data>
+  <data name="AppCommands.RestoreClosed" xml:space="preserve">
+    <value>Открыть недавно закрытые заметки</value>
+  </data>
+  <data name="NoteWindow.Saving" xml:space="preserve">
+    <value>Сохранение. Дождитесь завершения.</value>
+  </data>
+  <data name="Rename.Menu" xml:space="preserve">
+    <value>Переименовать файл…</value>
+  </data>
+  <data name="Rename.Hint" xml:space="preserve">
+    <value>Дважды щёлкните для переименования</value>
+  </data>
+  <data name="Rename.Daily" xml:space="preserve">
+    <value>Файлы ежедневных заметок нельзя переименовать здесь.</value>
+  </data>
+  <data name="Rename.Label" xml:space="preserve">
+    <value>Новое имя файла (без расширения). Также меняет заголовок стикера.</value>
+  </data>
+  <data name="Rename.Invalid" xml:space="preserve">
+    <value>Введите корректное имя файла. Пустые и зарезервированные имена, разделители пути, пробелы и точки в конце запрещены.</value>
+  </data>
+  <data name="Rename.Draft" xml:space="preserve">
+    <value>Сохраните правки в других стикерах с этим файлом и повторите.</value>
+  </data>
+  <data name="Rename.Recovery" xml:space="preserve">
+    <value>Не удалось подтвердить переименование или сохранение настроек. Проверьте исходный/целевой файлы и запись восстановления ниже. Если файл перемещён, откройте целевой файл заново.</value>
+  </data>
+  <data name="Rename.Unavailable" xml:space="preserve">
+    <value>Переименование недоступно, пока заметка не загружена. Повторите после загрузки.</value>
+  </data>
+  <data name="NoteBrowser.Delete" xml:space="preserve">
+    <value>Удалить заметку</value>
+  </data>
+  <data name="NoteBrowser.DeleteConfirm" xml:space="preserve">
+    <value>Удалить весь этот файл Markdown?
+{0}
+
+Заметки, показывающие этот файл, тоже закроются. Файл восстановления останется в deleted-notes в папке данных приложения.</value>
+  </data>
+  <data name="NoteBrowser.Deleting" xml:space="preserve">
+    <value>Удаление заметки…</value>
+  </data>
+  <data name="NoteBrowser.DeleteDraft" xml:space="preserve">
+    <value>В заметке с этим файлом есть несохранённые правки. Сохраните или отмените их перед удалением.</value>
+  </data>
+  <data name="NoteBrowser.SettingsChanged" xml:space="preserve">
+    <value>Настройки изменились. Откройте окно управления заново.</value>
+  </data>
+  <data name="Vault.Main" xml:space="preserve">
+    <value>Основное</value>
+  </data>
+  <data name="Vault.Sub" xml:space="preserve">
+    <value>Дополнительное</value>
+  </data>
+  <data name="Vault.Missing" xml:space="preserve">
+    <value>Зарегистрированное хранилище отсутствует. Проверьте настройки.</value>
+  </data>
+  <data name="Vault.Invalid" xml:space="preserve">
+    <value>Проверьте отображаемые имена и внутренние ID хранилищ.</value>
+  </data>
+  <data name="Vault.SourceChanged" xml:space="preserve">
+    <value>Настройки источника изменились. Сохраните или скопируйте черновик и перезагрузите заметку.</value>
+  </data>
+  <data name="Vault.InUse" xml:space="preserve">
+    <value>Нельзя удалить основное хранилище и хранилища открытых или недавно закрытых заметок.</value>
+  </data>
+  <data name="Vault.TargetRequired" xml:space="preserve">
+    <value>Для нескольких хранилищ укажите имя/ID CLI каждого. Если имя пустое, получение папки через CLI также заполнит имя выбранного в Obsidian хранилища.</value>
+  </data>
+  <data name="Vault.Duplicate" xml:space="preserve">
+    <value>Одну папку нельзя зарегистрировать как несколько хранилищ.</value>
+  </data>
+  <data name="Vault.Select" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="Vault.Add" xml:space="preserve">
+    <value>Добавить хранилище</value>
+  </data>
+  <data name="Vault.Remove" xml:space="preserve">
+    <value>Удалить регистрацию</value>
+  </data>
+  <data name="Vault.Default" xml:space="preserve">
+    <value>Хранилище по умолчанию для новых ежедневных заметок</value>
+  </data>
+  <data name="Vault.DefaultHelp" xml:space="preserve">
+    <value>Существующие заметки сохраняют своё хранилище. Удаление регистрации не удаляет файлы.</value>
+  </data>
+  <data name="Vault.Name" xml:space="preserve">
+    <value>Отображаемое имя (можно изменить)</value>
+  </data>
+  <data name="Vault.FolderHelp" xml:space="preserve">
+    <value>Настройки ежедневных заметок сохраняются для каждого хранилища. Новые обычные заметки и их папка используют основную регистрацию.</value>
+  </data>
+  <data name="Vault.Check" xml:space="preserve">
+    <value>Проверить соединение / сегодняшнюю заметку</value>
+  </data>
+  <data name="Vault.General" xml:space="preserve">
+    <value>Общие</value>
+  </data>
+  <data name="Vault.Category" xml:space="preserve">
+    <value>Хранилища и ежедневные заметки</value>
+  </data>
+  <data name="Vault.DiscoveryHelp" xml:space="preserve">
+    <value>Введите имя/ID хранилища Obsidian (отдельно от отображаемого имени) и нажмите кнопку выше для получения корневой папки. Один ввод ничего не загружает. Пустое поле использует выбор Obsidian. Затем папка ежедневных заметок проверяется автоматически. Папку обычных стикеров выберите отдельно и нажмите «Сохранить и закрыть».</value>
+  </data>
+  <data name="Vault.DiscoveryPending" xml:space="preserve">
+    <value>Получение папки через CLI… (до завершения настройки сохранить нельзя)</value>
+  </data>
+  <data name="Vault.DiscoverySuccess" xml:space="preserve">
+    <value>Получено: {0} → {1}. Ещё не сохранено. Нажмите «Сохранить и закрыть».</value>
+  </data>
+  <data name="Vault.DiscoveryFailed" xml:space="preserve">
+    <value>Не удалось получить папку. Введённые данные не изменены. {0}</value>
+  </data>
+  <data name="NoteBrowser.Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="NoteMenu.Display" xml:space="preserve">
+    <value>Вид и свойства</value>
+  </data>
+  <data name="NoteMenu.Refresh" xml:space="preserve">
+    <value>Обновить связанные данные</value>
+  </data>
+  <data name="NoteMenu.Open" xml:space="preserve">
+    <value>Создать и открыть</value>
+  </data>
+  <data name="TasksPreview.UpdateRequired" xml:space="preserve">
+    <value>Tasks {0} не поддерживается. Обновите до 8.2.2 или новее. В Obsidian для этого хранилища откройте Настройки → Сторонние плагины → Проверить обновления и обновите Tasks. Затем в меню стикера выберите Обновить связанные данные → Обновить Tasks / Dataview.</value>
+  </data>
+  <data name="TasksPreview.UnsupportedApi" xml:space="preserve">
+    <value>Этот внутренний API Tasks не поддерживается. Проверьте обновления Tasks и приложения стикеров. Исходные задачи не изменялись.</value>
+  </data>
+</root>

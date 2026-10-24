@@ -1,4 +1,4 @@
-[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)
+[日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md) | [繁體中文（台灣）](README.zh-TW.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Русский](README.ru.md) | [Español](README.es.md) | [Svenska](README.sv.md)
 
 # Markdown Sticky Notes
 
@@ -20,7 +20,7 @@
 | :---: | :---: | :---: |
 | [<img src="docs/images/sticky-tasks-zh-CN.png" alt="直接勾选任务" width="280">](docs/images/sticky-tasks-zh-CN.png) | [<img src="docs/images/sticky-markdown-zh-CN.png" alt="Markdown 笔记" width="280">](docs/images/sticky-markdown-zh-CN.png) | [<img src="docs/images/sticky-daily-zh-CN.png" alt="关联今日笔记" width="280">](docs/images/sticky-daily-zh-CN.png) |
 
-使用当前开发版 WPF 控件渲染虚构笔记，并非桌面截图。[五种语言的示例与生成步骤](docs/SCREENSHOTS.zh-CN.md)。
+使用当前开发版 WPF 控件渲染虚构笔记，并非桌面截图。[九种语言的示例与生成步骤](docs/SCREENSHOTS.zh-CN.md)。
 
 ## 所需工具和设置
 
@@ -72,7 +72,7 @@
 
 ## 使用前须知
 
-- UI 支持**日语、英语、简体中文**。README、安装和界面示例还提供**繁体中文、韩语**。详细参考资料通常为三种语言。
+- 当前开发版的 UI、README、安装指南和界面示例支持**日语、英语、简体中文、台湾华语（繁体中文）、韩语、德语、俄语、西班牙语、瑞典语**九种语言。详细资料通常仍为三种语言。语言更改在保存并重启后生效。
 - CLI 集成需要 Obsidian 持续运行；内部 API 变化可能影响兼容性。
 - 不自动创建每日笔记，首次添加前请准备今日笔记。
 - 不完整复现 Obsidian 主题和插件视图。图片显示替代文字；不支持 DataviewJS、内联表达式、CALENDAR。

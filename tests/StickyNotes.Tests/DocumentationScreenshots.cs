@@ -23,10 +23,9 @@ internal static partial class Program
             Source = new Uri("/StickyNotes;component/AppStyles.xaml", UriKind.Relative) });
         try
         {
-            foreach (var language in new[] { "ja", "en", "zh-CN", "zh-TW", "ko" })
+            foreach (var (language, _) in L10n.SupportedLanguages)
             {
-                // Traditional Chinese and Korean are sample-text translations, not new UI locales.
-                L10n.Initialize(language is "zh-TW" or "ko" ? "en" : language);
+                L10n.Initialize(language);
                 var source = language == "ja" ? samples : Path.Combine(samples, language);
                 var notes = Path.Combine(root, language);
                 Directory.CreateDirectory(notes);
@@ -70,7 +69,7 @@ internal static partial class Program
                     finally { window.Close(); }
                 }
             }
-            Console.WriteLine("Rendered 15 documentation images from isolated sample notes.");
+            Console.WriteLine($"Rendered {L10n.SupportedLanguages.Count * 3} documentation images from isolated sample notes.");
         }
         finally
         {
