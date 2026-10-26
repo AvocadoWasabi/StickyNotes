@@ -80,3 +80,9 @@ Inställningar för lokala filer, uppdatering och avinstallation beskrivs i [ins
 [Användning](docs/USAGE.en.md) · [Lagring och flytt](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Uppgiftsinmatning](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Flera valv](docs/MULTIPLE-VAULTS.md#english) · [Anteckningshantering](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Utveckling](docs/DEVELOPMENT.en.md) · [Licensinformation](THIRD-PARTY-NOTICES.txt)
 
 Vid felrapportering: ange app-/Windows-/tilläggsversioner, CLI eller lokalt läge och steg för att återskapa felet. Bifoga inte personliga anteckningar, OAuth-JSON eller token. [Issues](https://github.com/AvocadoWasabi/StickyNotes/issues)
+
+## Licens
+
+Den kod och dokumentation i projektet som AvocadoWasabi har upphovsrätten till omfattas av [MIT-licensen](LICENSE). Kod och bibliotek från tredje part behåller sina respektive licenser.
+
+Markdig använder BSD 2-Clause. YamlDotNet, kompletteringskod och testmaterial som härletts från Obsidian Tasks samt .NET / Windows Desktop / System.Security.Cryptography.ProtectedData använder MIT. Upphovsrätt och villkor finns i [tredjepartsinformationen](THIRD-PARTY-NOTICES.txt). ZIP-paketet innehåller projektets LICENSE, tredjepartsinformationen samt .NET-licenser och ytterligare tredjepartsinformation i licenses/.

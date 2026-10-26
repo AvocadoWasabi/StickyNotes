@@ -80,3 +80,9 @@ Obsidianを使用しない場合の設定、更新、アンインストールは
 [保存先と移行](docs/STICKY-FOLDERS.md#日本語) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#日本語) · [タスク入力](docs/TASK-EDITING.md#日本語) · [Dataview](docs/DATAVIEW.md#日本語) · [複数Vault](docs/MULTIPLE-VAULTS.md#日本語) · [付箋管理](docs/QUERY-EDITING-AND-BROWSER.md#日本語) · [Google連携](docs/GOOGLE-CALENDAR.md) · [開発](docs/DEVELOPMENT.md) · [ライセンス表記](THIRD-PARTY-NOTICES.txt)
 
 [不具合・要望](https://github.com/AvocadoWasabi/StickyNotes/issues)には、アプリ／Windows／関連プラグインのバージョン、CLIまたはローカルの利用方式、再現手順を添えてください。個人ノート・OAuth JSON・トークンは添付しないでください。
+
+## ライセンス
+
+AvocadoWasabiが著作権を持つ本プロジェクトのコードと資料には、[MITライセンス](LICENSE)を適用します。第三者のコード・ライブラリには、それぞれのライセンスが適用されます。
+
+MarkdigはBSD 2-Clause、YamlDotNet、Obsidian Tasks由来の補完コード・テスト資料、.NET / Windows Desktop / System.Security.Cryptography.ProtectedDataはMITです。著作権表示と条件は[第三者ライセンス表記](THIRD-PARTY-NOTICES.txt)を参照してください。配布ZIPには、本体のLICENSE、第三者表記、licenses/内の.NETライセンスと追加の第三者表記を同梱します。

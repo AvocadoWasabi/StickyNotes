@@ -80,3 +80,9 @@ Einstellungen für lokale Dateien, Updates und Deinstallation beschreibt die [In
 [Bedienung](docs/USAGE.en.md) · [Speicherort und Umzug](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Aufgabeneingabe](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Mehrere Vaults](docs/MULTIPLE-VAULTS.md#english) · [Notizverwaltung](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Entwicklung](docs/DEVELOPMENT.en.md) · [Lizenzhinweise](THIRD-PARTY-NOTICES.txt)
 
 Bei Fehlern App-/Windows-/Plugin-Versionen, CLI- oder lokalen Modus und Schritte zum Nachstellen angeben. Keine persönlichen Notizen, OAuth-JSON-Dateien oder Tokens anhängen. [Issues](https://github.com/AvocadoWasabi/StickyNotes/issues)
+
+## Lizenz
+
+Der Code und die Dokumentation dieses Projekts, deren Urheberrecht bei AvocadoWasabi liegt, stehen unter der [MIT-Lizenz](LICENSE). Für Code und Bibliotheken Dritter gelten deren jeweilige Lizenzen.
+
+Markdig verwendet BSD 2-Clause. YamlDotNet, der von Obsidian Tasks abgeleitete Ergänzungscode und das Testmaterial sowie .NET / Windows Desktop / System.Security.Cryptography.ProtectedData verwenden MIT. Urheberrechtshinweise und Bedingungen stehen in den [Drittanbieterhinweisen](THIRD-PARTY-NOTICES.txt). Das ZIP-Paket enthält die LICENSE des Projekts, die Drittanbieterhinweise sowie .NET-Lizenzen und weitere Drittanbieterhinweise unter licenses/.

@@ -80,3 +80,9 @@ La configuración de archivos locales, las actualizaciones y la desinstalación 
 [Uso](docs/USAGE.en.md) · [Almacenamiento y traslado](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Entrada de tareas](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Varias bóvedas](docs/MULTIPLE-VAULTS.md#english) · [Gestión de notas](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Desarrollo](docs/DEVELOPMENT.en.md) · [Licencias](THIRD-PARTY-NOTICES.txt)
 
 Para informar de errores, indica versiones de aplicación/Windows/complementos, modo CLI o local y pasos para reproducirlos. No adjuntes notas personales, JSON OAuth ni tokens. [Issues](https://github.com/AvocadoWasabi/StickyNotes/issues)
+
+## Licencia
+
+El código y la documentación de este proyecto cuyos derechos de autor pertenecen a AvocadoWasabi se publican bajo la [licencia MIT](LICENSE). El código y las bibliotecas de terceros conservan sus respectivas licencias.
+
+Markdig utiliza BSD 2-Clause. YamlDotNet, el código de sugerencias y los materiales de prueba derivados de Obsidian Tasks, y .NET / Windows Desktop / System.Security.Cryptography.ProtectedData utilizan MIT. Los derechos de autor y las condiciones figuran en los [avisos de terceros](THIRD-PARTY-NOTICES.txt). El ZIP incluye LICENSE del proyecto, los avisos de terceros y las licencias de .NET y avisos adicionales de terceros en licenses/.

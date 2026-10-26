@@ -8,6 +8,8 @@ See the [README](README.en.md) for usage and [GitHub Releases](https://github.co
 
 ## Unreleased
 
+- Declare the AvocadoWasabi-owned code and documentation under MIT, distinguish third-party licenses in all README languages, preserve upstream copyright notices, and include LICENSE in distribution ZIPs.
+
 - Use Japanese as the documentation source and describe functions, requirements, procedures and limitations objectively. Align README, setup, screenshot descriptions and sample notes in the other eight languages with the Japanese original. Regenerate and review all 27 screenshot examples.
 
 <a id="v0-0-11"></a>

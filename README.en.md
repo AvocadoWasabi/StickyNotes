@@ -80,3 +80,9 @@ For local-file settings, updates and removal, see the [installation guide](docs/
 [Storage and migration](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Task entry](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Multiple vaults](docs/MULTIPLE-VAULTS.md#english) · [Note management](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Development](docs/DEVELOPMENT.en.md) · [License notices](THIRD-PARTY-NOTICES.txt)
 
 For [bugs and requests](https://github.com/AvocadoWasabi/StickyNotes/issues), include app/Windows/plugin versions, CLI or local mode, and reproduction steps. Do not attach personal notes, OAuth JSON or tokens.
+
+## License
+
+The code and documentation in this project copyrighted by AvocadoWasabi are licensed under the [MIT License](LICENSE). Third-party code and libraries retain their respective licenses.
+
+Markdig uses BSD 2-Clause. YamlDotNet, suggestion code and test material derived from Obsidian Tasks, and .NET / Windows Desktop / System.Security.Cryptography.ProtectedData use MIT. See [third-party notices](THIRD-PARTY-NOTICES.txt) for copyright notices and terms. Distribution ZIPs include the project's LICENSE, third-party notices, and .NET licenses and additional third-party notices in licenses/.

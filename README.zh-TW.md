@@ -80,3 +80,9 @@
 以下參考資料為英文：[儲存與搬移](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [任務輸入](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [多 Vault](docs/MULTIPLE-VAULTS.md#english) · [便利貼管理](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [開發](docs/DEVELOPMENT.en.md) · [授權聲明](THIRD-PARTY-NOTICES.txt)
 
 [回報問題或建議](https://github.com/AvocadoWasabi/StickyNotes/issues)時，請附上應用程式／Windows／外掛版本、CLI 或本機模式與重現步驟。請勿上傳個人筆記、OAuth JSON 或權杖。
+
+## 授權條款
+
+本專案中由 AvocadoWasabi 持有著作權的程式碼與文件採用 [MIT 授權條款](LICENSE)。第三方程式碼與程式庫仍適用各自的授權條款。
+
+Markdig 採用 BSD 2-Clause。YamlDotNet、源自 Obsidian Tasks 的補全程式碼與測試資料，以及 .NET / Windows Desktop / System.Security.Cryptography.ProtectedData 採用 MIT。著作權聲明與條款請參閱[第三方授權聲明](THIRD-PARTY-NOTICES.txt)。發布 ZIP 包含本專案的 LICENSE、第三方聲明，以及 licenses/ 中的 .NET 授權條款與其他第三方聲明。

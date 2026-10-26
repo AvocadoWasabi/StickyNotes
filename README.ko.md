@@ -80,3 +80,9 @@ Obsidian CLI를 통한 Tasks·Dataview 쿼리 결과 표시와 Google Calendar·
 아래 참고 문서는 영어입니다. [저장과 이동](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [할 일 입력](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [여러 보관함](docs/MULTIPLE-VAULTS.md#english) · [메모 관리](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [개발](docs/DEVELOPMENT.en.md) · [라이선스 고지](THIRD-PARTY-NOTICES.txt)
 
 [문제와 제안](https://github.com/AvocadoWasabi/StickyNotes/issues)을 등록할 때 앱／Windows／플러그인 버전, CLI 또는 로컬 모드, 재현 절차를 알려 주세요. 개인 노트·OAuth JSON·토큰은 첨부하지 마세요.
+
+## 라이선스
+
+이 프로젝트에서 AvocadoWasabi가 저작권을 보유한 코드와 문서에는 [MIT 라이선스](LICENSE)가 적용됩니다. 타사 코드와 라이브러리에는 각각의 라이선스가 적용됩니다.
+
+Markdig는 BSD 2-Clause를 사용합니다. YamlDotNet, Obsidian Tasks에서 파생된 자동 완성 코드와 테스트 자료, .NET / Windows Desktop / System.Security.Cryptography.ProtectedData는 MIT를 사용합니다. 저작권 표시와 조건은 [타사 라이선스 고지](THIRD-PARTY-NOTICES.txt)를 참조하세요. 배포 ZIP에는 프로젝트의 LICENSE, 타사 고지, licenses/ 폴더의 .NET 라이선스와 추가 타사 고지가 포함됩니다.

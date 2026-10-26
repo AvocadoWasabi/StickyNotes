@@ -80,3 +80,9 @@ Windows 10 / 11 (x64). .NET входит в ZIP; права администра
 [Использование](docs/USAGE.en.md) · [Хранение и перенос](docs/STICKY-FOLDERS.md#english) · [Tasks / CLI](docs/TASKS-CLI-PREVIEW.md#english) · [Ввод задач](docs/TASK-EDITING.md#english) · [Dataview](docs/DATAVIEW.md#english) · [Несколько хранилищ](docs/MULTIPLE-VAULTS.md#english) · [Управление заметками](docs/QUERY-EDITING-AND-BROWSER.md#english) · [Google](docs/GOOGLE-CALENDAR.en.md) · [Разработка](docs/DEVELOPMENT.en.md) · [Лицензии](THIRD-PARTY-NOTICES.txt)
 
 Для сообщения об ошибке укажите версии приложения/Windows/плагинов, режим CLI или локальный режим и шаги воспроизведения. Не прикладывайте личные заметки, JSON OAuth или токены. [Issues](https://github.com/AvocadoWasabi/StickyNotes/issues)
+
+## Лицензия
+
+Код и документация этого проекта, авторские права на которые принадлежат AvocadoWasabi, распространяются по [лицензии MIT](LICENSE). Для стороннего кода и библиотек сохраняются их собственные лицензии.
+
+Markdig использует BSD 2-Clause. YamlDotNet, код дополнения и тестовые материалы на основе Obsidian Tasks, а также .NET / Windows Desktop / System.Security.Cryptography.ProtectedData используют MIT. Уведомления об авторских правах и условия приведены в [сторонних лицензиях](THIRD-PARTY-NOTICES.txt). ZIP-архив содержит LICENSE проекта, сторонние уведомления, а также лицензии .NET и дополнительные сторонние уведомления в licenses/.
